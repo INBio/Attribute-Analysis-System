@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+    <display-name>IABIN - Indicadores</display-name>
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>/WEB-INF/applicationContext.xml</param-value>
+    </context-param>
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <servlet>
+        <servlet-name>dispatcher</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+  <servlet>
+    <servlet-name>ajaxDispatcher</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <load-on-startup>2</load-on-startup>
+  </servlet>
+	
+    <!-- Configuring a proxy for GeoServer requests -->
+    <servlet>
+            <servlet-name>cgi</servlet-name>
+            <servlet-class>org.apache.catalina.servlets.CGIServlet</servlet-class>
+            <init-param>
+                    <param-name>debug</param-name>
+                    <param-value>0</param-value>
+            </init-param>
+            <init-param>
+                    <param-name>cgiPathPrefix</param-name>
+                    <param-value>WEB-INF/cgi</param-value>
+            </init-param>
+            <load-on-startup>5</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+            <servlet-name>cgi</servlet-name>
+            <url-pattern>/cgi-bin/*</url-pattern>
+    </servlet-mapping>
+
+   <!-- Main dispatcher -->
+   <servlet-mapping>
+	<servlet-name>dispatcher</servlet-name>
+	<url-pattern>*.htm</url-pattern>
+    </servlet-mapping>
+
+    <!-- Ajax dispatcher -->
+    <servlet-mapping>
+    <servlet-name>ajaxDispatcher</servlet-name>
+    <url-pattern>/ajax/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- Session time out -->
+    <session-config>
+	<session-timeout>
+	    30
+	</session-timeout>
+    </session-config>
+    <!-- Welcome jsp -->
+    <welcome-file-list>
+	<welcome-file>redirect.jsp</welcome-file>
+    </welcome-file-list>
+    <!-- Define the basename for a resource bundle -->
+    <context-param>
+    <param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
+    <param-value>messages</param-value>
+    </context-param>
+</web-app>

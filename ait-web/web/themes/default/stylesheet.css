@@ -1,0 +1,134 @@
+/* 
+    Document   : stylesheet
+    Created on : 12/01/2010, 04:33:39 PM
+    Author     : esmata
+    Description:
+        CSS to customize the gui of this application
+*/
+
+html {height:100%}
+body {
+    height: 100%;
+    width:100%;
+    margin: 0 0 50px 0;
+    font-size:0.8em;    
+    }
+
+/* Banner title */
+#title h1 {
+    float: left;
+    position:absolute;
+    font-family:arial, helvetica, sans-serif;
+    font-size:40px;
+    font-weight:bold;
+    margin:0;
+    width:800px;
+    padding: 54px 0 0 110px;
+    height:50px;
+    color:white;
+    background: url(images/banner-icon.png);
+    background-repeat:no-repeat;
+    background-position: 10px 15px;
+}
+
+/* Banner style */
+#banner {
+    background: url(images/banner.jpg) no-repeat 0 0;
+    height: 120px;
+}
+#banner-rep {
+    background: url(images/banner-rep.jpg) repeat-x 960px 0;
+    height: 120px;
+}
+
+/* Style for the language links */
+#lang {
+    width: 200px;
+    height:20px;
+    padding: 100px 0 0 0;
+    float:right;
+    z-index:999
+}
+
+/* Para el ccontenido de cada .jsp */
+#contenido {
+    text-align:justify;
+    padding: 0 15% 0 15%;
+    background: url(images/bk-conten.png)  repeat-x  top center;
+    margin: 0;
+    height:100%;
+}
+
+#contenido h2{
+    margin:0;
+    text-align:center;
+    padding: 5px 0 5px 0;
+}
+
+/* The map and the location bar */
+#map {
+    clear: both;
+    position: relative;
+    width: 100%;
+    height: 410px;
+    border: 1px solid silver;
+    border-style:dashed;
+}
+
+#wrapper {
+    width: 100%;
+}
+
+#location {
+    float: right;
+}
+
+#centered{
+    padding-left:10%;
+    padding-right:10%;
+}
+
+#queryPanel {
+    border: 1px solid silver;
+    border-style:groove;
+    width:210px;
+    height:82px;
+    text-align:justify;
+    float:left;
+    padding-bottom:3px;
+    padding-top:3px;
+    padding-right:40px;
+}
+
+.dDown {
+    width:203px;
+    text-align:justify;
+}
+
+/* Para div de links del menu */
+#menu_links{
+    font-size:16px;
+}
+/* Para los links del menu */
+.link{
+    padding: 3px 0 0 35px;
+    background: url(images/tabs.png);
+    background-repeat:no-repeat;
+    background-position: 10px 3px;
+}
+
+/* Para el link de home */
+.link_home{
+    padding: 12px 0 0 40px;
+    background: url(images/home.png);
+    background-repeat:no-repeat;
+    background-position: 10px 10px;
+}
+
+/* Para el link de about */
+.link_about{
+    padding: 12px 0 0 40px;
+    background: url(images/about.png);
+    background-repeat:no-repeat;
+    background-position: 10px 10px;
+}
