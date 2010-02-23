@@ -24,7 +24,7 @@ public class SpeciesDAOImpl extends SimpleJdbcDaoSupport implements SpeciesDAO {
     public List<Species> getSpeciesList() {
         List<Species> species = new ArrayList<Species>();
         try{
-            String query = "Select * from ait.species  order by globaluniqueidentifier limit 10 offset 0;";
+            String query = "Select * from ait.plinian_core  order by globaluniqueidentifier limit 10 offset 0;";
             species = getSimpleJdbcTemplate().query(query,
                     new SpeciesMapper());
         }

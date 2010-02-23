@@ -12,7 +12,6 @@ import java.util.List;
 import org.inbio.ait.dao.SpecimenDAO;
 import org.inbio.ait.model.AutocompleteNode;
 import org.inbio.ait.model.Specimen;
-import org.inbio.ait.model.TaxonomicalRange;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
@@ -26,7 +25,7 @@ public class SpecimenDAOImpl extends SimpleJdbcDaoSupport implements SpecimenDAO
         List<Specimen> specimens = new ArrayList<Specimen>();
         try{
             //limit = num_registros_devueltos offset = inicio
-            String query = "Select * from ait.specimen order by " +
+            String query = "Select * from ait.darwin_core order by " +
                     "globaluniqueidentifier limit 10 offset 0;";
             specimens = getSimpleJdbcTemplate().query(query,
                     new SpecimenMapper());
@@ -45,7 +44,7 @@ public class SpecimenDAOImpl extends SimpleJdbcDaoSupport implements SpecimenDAO
     public List<AutocompleteNode> getElementsByRange(String partialName,int range,String atributeName){
         List<AutocompleteNode> nodes = new ArrayList<AutocompleteNode>();
         try{
-            String query = "Select DISTINCT "+atributeName+" from ait.specimen as s " +
+            String query = "Select DISTINCT "+atributeName+" from ait.darwin_core as s " +
                     "where s."+atributeName+" like '%"+partialName+"%' limit 10 offset 0;";
 
             nodes = getSimpleJdbcTemplate().query(query,
