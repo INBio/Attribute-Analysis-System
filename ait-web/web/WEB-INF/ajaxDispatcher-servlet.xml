@@ -14,7 +14,7 @@
 
         <property name="mappings">
             <props>
-            <!-- AutoComplete  -->
+            <!-- YUI AutoComplete  -->
                 <prop key="/kingdom/**/**">taxonomyAutoCompleteController</prop>
                 <prop key="/phylum/**/**">taxonomyAutoCompleteController</prop>
                 <prop key="/class1/**/**">taxonomyAutoCompleteController</prop>
@@ -22,7 +22,9 @@
                 <prop key="/family/**/**">taxonomyAutoCompleteController</prop>
                 <prop key="/genus/**/**">taxonomyAutoCompleteController</prop>
                 <prop key="/specificEpithet/**/**">taxonomyAutoCompleteController</prop>
-                <prop key="/scientificname/**/**">taxonomyAutoCompleteController</prop>    
+                <prop key="/scientificname/**/**">taxonomyAutoCompleteController</prop>
+            <!-- YUI Tree -->
+                <prop key="/nodeInfo/**/**">indicatorsTreeController</prop>
             </props>
         </property>
     </bean>
@@ -55,16 +57,30 @@
     </bean>
 
     <!--.....................................................................-->
+    <!--.......................... YUI Tree suppot ..........................-->
+    <!--.....................................................................-->
+    <!-- Taxonomy search support  -->
+    <bean id="indicatorsTreeController" class="org.inbio.ait.web.ajax.controller.IndicatorsTreeController">
+      <property name="indicatorsManager" ref="indicatorsManager"/>
+    </bean>
+
+    <!--.....................................................................-->
     <!--................... Manager Beans ...............................-->
     <!--.....................................................................-->
     <bean id="taxonomyManager" class="org.inbio.ait.manager.impl.TaxonomyManagerImpl">
         <property name="specimenDAO" ref="specimenDAO"/>
+    </bean>
+    <bean id="indicatorsManager" class="org.inbio.ait.manager.impl.IndicatorsManagerImpl">
+        <property name="indicatorDAO" ref="indicatorDAO"/>
     </bean>
 
     <!--.....................................................................-->
     <!--.................... DAO Declarations ...............................-->
     <!--.....................................................................-->
      <bean id="specimenDAO" class="org.inbio.ait.dao.impl.SpecimenDAOImpl">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+     <bean id="indicatorDAO" class="org.inbio.ait.dao.impl.IndicatorDAOImpl">
         <property name="dataSource" ref="dataSource" />
     </bean>
 

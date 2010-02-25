@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.inbio.ait.manager.TaxonomyManager;
 import org.inbio.ait.model.AutocompleteNode;
-import org.inbio.ait.model.Specimen;
 import org.inbio.ait.model.TaxonomicalRange;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;

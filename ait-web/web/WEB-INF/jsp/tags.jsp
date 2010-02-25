@@ -18,3 +18,5 @@
 <script src="${pageContext.request.contextPath}/javascript/taxonAutocomplete.js" type="text/javascript" language="javascript"></script>
 <script src="${pageContext.request.contextPath}/javascript/setupAutocomplete.js" type="text/javascript" language="javascript"></script>
 <script src="${pageContext.request.contextPath}/javascript/filters.js" type="text/javascript" language="javascript"></script> <%-- FIXME --%>
+<script src="${pageContext.request.contextPath}/javascript/yui/treeview/treeview-min.js" type="text/javascript" language="javascript"></script>
+<script src="${pageContext.request.contextPath}/javascript/treeEvent.js" type="text/javascript" language="javascript"></script>

@@ -17,6 +17,9 @@
         href="<c:out value="${pageContext.request.contextPath}"/>/<spring:theme code='styleSheet'/>"/>
         <link rel="stylesheet" type="text/css"
         href="<c:out value="${pageContext.request.contextPath}"/>/<spring:theme code='autocomplete'/>"/>
+        <link rel="stylesheet" type="text/css"
+        href="<c:out value="${pageContext.request.contextPath}"/>/<spring:theme code='tree'/>"/>
+        
         <title><fmt:message key="title"/></title>
 
         <script src="http://216.75.53.105:80/geoserver/openlayers/OpenLayers.js" type="text/javascript"></script>       
@@ -42,6 +45,14 @@
             var layerIndex;
             //Base Layer
             var base;
+            //Indicators tree
+            var tree;
+            var currentIconMode;
+            //Getting a reference to the root node of indicators tree
+            var rootNode;
+            //Current selected indicators tree node
+            var selectedNodeId;
+            var selectedNodeName;
 
             //Pink tile avoidance
             OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
@@ -83,11 +94,11 @@
                 );
 
                 //Setup CR Provinces layer
-                provincias = addLayerWMS( "Provincias-CR",'IABIN_Indicadores:bd_cr_provincias');
+                provincias = addLayerWMS( 'Provincias-CR','IABIN_Indicadores:bd_cr_provincias');
                 provincias.setVisibility(true);
 
                 //Setup PMA ASP layer
-                aspPMA = addLayerWMS( "ASP-PMA",'IABIN_Indicadores:bd_pan_areas_protegidas');
+                aspPMA = addLayerWMS( 'ASP-PMA','IABIN_Indicadores:bd_pan_areas_protegidas');
                 aspPMA.setVisibility(true);
 
                 map.addLayer(base);
@@ -134,10 +145,13 @@
                 //Create a drop down to specified the current layer
                 createDDLayers();
 
+                //Init indicators tree
+                initIndicators();
+
             } //init() ends
 
             /*
-             *Create a drop down to specified the current layer
+             * Create a drop down to specified the current layer
              */
             function createDDLayers(){
                 var dropdown = "<p style=\"margin:1px\"><a> Capas: </a></p>";
@@ -148,6 +162,28 @@
                 }
                 dropdown+= "</select>";
                 document.getElementById('currentLayer').innerHTML = dropdown;
+            }
+
+            /*
+             * Initialazing the indicators tree
+             */
+            function initIndicators(){
+                //Creating the tree
+                tree = new YAHOO.widget.TreeView("treeDiv");
+                //Turn dynamic loading on for entire tree
+                tree.setDynamicLoad(loadNodeData, currentIconMode);
+                //Getting a reference to the root element
+                rootNode = tree.getRoot();
+                //Add the root element
+                var tempNode = new YAHOO.widget.TextNode('Indicadores Taxonómicos', rootNode, false);
+                tempNode.data = 0;
+                //Render the tree
+                tree.draw();
+                //Suscribing the event to get the selected node
+                tree.subscribe('clickEvent',function(oArgs) {
+                    selectedNodeId = oArgs.node.data;
+                    selectedNodeName = oArgs.node.label;
+                });
             }
 
             /*
@@ -314,6 +350,39 @@
             }
 
             /*
+             * Agrega un nuevo filtro de indicadores
+             */
+            function addIndicatorParam(){
+                //Validar que se haya seleccionado un nodo
+                if(selectedNodeId==null||selectedNodeName==null){
+                    alert('Primero debe seleccionar un indicador taxonómico');
+                    return;
+                }
+                //Validar que el indicador seleccionado no sea repetido
+                var aux_exist = document.getElementById(selectedNodeId);
+                if(aux_exist!=null){
+                    alert('El indicador ya fue agregado anteriormente');
+                    return;
+                }
+                //Agregar el parametro a la lista
+                var indicatorslist = document.getElementById('treeParameters');
+                var newdiv = document.createElement('div');
+                newdiv.setAttribute("id",selectedNodeId);
+                newdiv.innerHTML =
+                    "<a href=\"javascript:\" onclick=\"removeTreeParamElement(\'"+selectedNodeId+"\')\">"+selectedNodeName+"</a>";
+                indicatorslist.appendChild(newdiv);
+            }
+
+            /*
+             * Elimina un elemento dado su id
+             */
+            function removeTreeParamElement(divNum) {
+              var d = document.getElementById('treeParameters');
+              var olddiv = document.getElementById(divNum);
+              d.removeChild(olddiv);
+            }
+
+            /*
              * Setea en su valor inicial las variables geograficas
              */
             function clearGeograficVars(){
@@ -330,10 +399,31 @@
              */
             function makeQuery(){
                 var layerslist = document.getElementById('mapParameters');
-                if(layerslist.childNodes.length==0){
-                    alert('No hay filtros de GIS');
+                var taxonlist = document.getElementById('taxParameters');
+                var treelist = document.getElementById('treeParameters');
+                //Validar que exista al menos un criterio de búsqueda
+                if(layerslist.childNodes.length==0&&taxonlist.childNodes.length==0&&treelist.childNodes.length==0){
+                    alert('Por favor seleccione algún criterio de búsqueda');
                     return;
                 }
+                //Recorrer los criterios geográficos
+                var selectedLayers = "";
+                for (var i =0; i <layerslist.childNodes.length; i++){
+                    selectedLayers += layerslist.childNodes[i].id+"|";
+                }
+                alert("Criterios geográficos: \n"+selectedLayers);
+                //Recorrer los criterios taxonómicos
+                var selectedTaxa = "";
+                for (var j =0; j <taxonlist.childNodes.length; j++){
+                    selectedTaxa += taxonlist.childNodes[j].textContent+"|";
+                }
+                alert("Criterios taxonómicos: \n"+selectedTaxa);
+                //Recorrer los criterios de indicadores
+                var selectedIndicators = "";
+                for (var k =0; k <treelist.childNodes.length; k++){
+                    selectedIndicators += treelist.childNodes[k].id+"|";
+                }
+                alert("Criterios de indicadores: \n"+selectedIndicators);
             }
             
         </script>
@@ -364,7 +454,7 @@
                         <div id="currentLayer"></div>
                         <div id="info"></div>
                         <input type="button" class="my_Button" id="addToListButton"
-                        value="Agregar filtro"
+                        value="Agregar criterio"
                         onclick="addLayerParam(currentPolygomId,layerId,currentPolygomName,layerName)" />
                         <span id="mapParameters"></span>
                     </div>
@@ -384,7 +474,7 @@
                             <input id="taxonId" tabindex="13" class="componentSize" type="text" name="taxonValue" value="<c:out value="${taxonValue}"/>"/>
                             <div id="taxonContainer"></div>
                         </span>
-                        <input type="button" class="my_Button" id="addToListButtonTax" value="Agregar filtro" onclick="addTaxonParam()" />
+                        <input type="button" class="my_Button" id="addToListButtonTax" value="Agregar criterio" onclick="addTaxonParam()" />
                         <span id="taxParameters"></span>
                         <script type="text/javascript">
                             changeTaxonInput();
@@ -393,7 +483,9 @@
 
                     <!-- Indicator Button -->
                     <div id="queryPanel">
-
+                        <div id="treeDiv"></div>
+                        <input type="button" class="my_Button" id="addToListButtonIndi" value="Agregar criterio" onclick="addIndicatorParam()" />
+                         <span id="treeParameters"></span>
                     </div>
 
                     <!-- Query Button -->
