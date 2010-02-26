@@ -25,6 +25,8 @@
                 <prop key="/scientificname/**/**">taxonomyAutoCompleteController</prop>
             <!-- YUI Tree -->
                 <prop key="/nodeInfo/**/**">indicatorsTreeController</prop>
+            <!-- Query support -->
+                <prop key="/finalQuery/**/**">queryController</prop>
             </props>
         </property>
     </bean>
@@ -65,6 +67,14 @@
     </bean>
 
     <!--.....................................................................-->
+    <!--.......................... Query suppot ..........................-->
+    <!--.....................................................................-->
+    <!-- Taxonomy search support  -->
+    <bean id="queryController" class="org.inbio.ait.web.ajax.controller.QueryController">
+      <property name="queryManager" ref="queryManager"/>
+    </bean>
+
+    <!--.....................................................................-->
     <!--................... Manager Beans ...............................-->
     <!--.....................................................................-->
     <bean id="taxonomyManager" class="org.inbio.ait.manager.impl.TaxonomyManagerImpl">
@@ -72,6 +82,9 @@
     </bean>
     <bean id="indicatorsManager" class="org.inbio.ait.manager.impl.IndicatorsManagerImpl">
         <property name="indicatorDAO" ref="indicatorDAO"/>
+    </bean>
+    <bean id="queryManager" class="org.inbio.ait.manager.impl.QueryManagerImpl">
+        <property name="taxonInfoIndexDAO" ref="taxonInfoIndexDAO"/>
     </bean>
 
     <!--.....................................................................-->
@@ -81,6 +94,9 @@
         <property name="dataSource" ref="dataSource" />
     </bean>
      <bean id="indicatorDAO" class="org.inbio.ait.dao.impl.IndicatorDAOImpl">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+     <bean id="taxonInfoIndexDAO" class="org.inbio.ait.dao.impl.TaxonInfoIndexDAOImpl">
         <property name="dataSource" ref="dataSource" />
     </bean>
 

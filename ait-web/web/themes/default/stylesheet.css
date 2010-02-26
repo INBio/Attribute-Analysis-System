@@ -110,6 +110,9 @@ body {
 }
 
 .my_Button{
+   background: url(images/add.png);
+   background-repeat:no-repeat;
+   background-position: 30px 4px;
    display:block;
    width:202px;
    height:22px;

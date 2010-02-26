@@ -221,16 +221,25 @@
              */
             function parseHTML(html){
                 var rows = html.split("<tr>");
-                var polygons = new Array();
-                polygons.push(new Array(""," -- Seleccionar -- ")); //Non selected option
-                //Loop into the rows to obtain polygons' ids
-                //In the second position the polygons appears
-                for(var i = 2;i<rows.length;i++){ 
-                    var row = rows[i];
-                    var node = new Array(trim(row.split("<td>")[1]),
-                    trim(row.split("<td>")[2])); //id,name
-                    polygons.push(node);
+                var prepolygon = rows[2];
+                var prepolygonIni = prepolygon.replace("<td>","|_|");
+                var prepolygonFin = prepolygonIni.replace("</tr>","|_|");
+                var polygonArray = prepolygonFin.split("|_|");
+                var polygon = polygonArray[1];
+                //quitar separadores (cambios de linea ...)
+                var withOutSeparators = deleteSeparators(polygon);
+                //homogenizar el delimitador de los atributos
+                var homogenized = withOutSeparators.replace(/<\/td>/gi,"");
+                //get the final info
+                var atributes = homogenized.split("<td>");
+                var id = atributes[0];
+                var info = "";
+                for(var i = 1;i<atributes.length;i++){
+                    info += trim(atributes[i])+" ";
                 }
+                var polygons = new Array();
+                polygons.push(new Array(""," -- Seleccionar -- "));
+                polygons.push(new Array(id,info));
                 polygonsList = polygons;
             };
 
@@ -240,6 +249,14 @@
             function trim(string)
             {
                 var str = string.replace(/^\s*|\s*$/g,"");
+                return str;
+            };
+
+            /**
+             * Delete all separators caracters
+             */
+            function deleteSeparators(string){
+                var str = string.replace(/(\r\n|\r|\n|\s|\u0085|\u000C|\u2028|\u2029)/g,"");
                 return str;
             };
 
@@ -297,9 +314,10 @@
                 layerslist.appendChild(newdiv);
                 //Restablecer el estado del mecanismo de seleccion de capas
                 document.getElementById('info').innerHTML = "";
-                clearGeograficVars();
-                createDDLayers();
-            }
+                currentPolygomId = null;
+                currentPolygomName = null;
+                polygonsList = null;
+            };
 
             /*
              * Elimina un elemento dado su id
@@ -308,7 +326,7 @@
               var d = document.getElementById('mapParameters');
               var olddiv = document.getElementById(divNum);
               d.removeChild(olddiv);
-            }
+            };
 
             /*
              * Agrega un nuevo filtro taxonomico
@@ -338,7 +356,7 @@
                     "<a href=\"javascript:\" onclick=\"removeTaxonParamElement(\'"+text+"\')\">"+text+"</a>";
                 taxonlist.appendChild(newdiv);
                 txTaxon.value = null;
-            }
+            };
 
             /*
              * Elimina un elemento dado su id
@@ -347,7 +365,7 @@
               var d = document.getElementById('taxParameters');
               var olddiv = document.getElementById(divNum);
               d.removeChild(olddiv);
-            }
+            };
 
             /*
              * Agrega un nuevo filtro de indicadores
@@ -371,7 +389,7 @@
                 newdiv.innerHTML =
                     "<a href=\"javascript:\" onclick=\"removeTreeParamElement(\'"+selectedNodeId+"\')\">"+selectedNodeName+"</a>";
                 indicatorslist.appendChild(newdiv);
-            }
+            };
 
             /*
              * Elimina un elemento dado su id
@@ -380,7 +398,7 @@
               var d = document.getElementById('treeParameters');
               var olddiv = document.getElementById(divNum);
               d.removeChild(olddiv);
-            }
+            };
 
             /*
              * Setea en su valor inicial las variables geograficas
@@ -392,7 +410,7 @@
                 layerIndex = 0;
                 layerName = 'Paises - Mesoamérica';
                 polygonsList = null;
-            }
+            };
 
             /*
              * To make the final query
@@ -411,20 +429,19 @@
                 for (var i =0; i <layerslist.childNodes.length; i++){
                     selectedLayers += layerslist.childNodes[i].id+"|";
                 }
-                alert("Criterios geográficos: \n"+selectedLayers);
                 //Recorrer los criterios taxonómicos
                 var selectedTaxa = "";
                 for (var j =0; j <taxonlist.childNodes.length; j++){
                     selectedTaxa += taxonlist.childNodes[j].textContent+"|";
                 }
-                alert("Criterios taxonómicos: \n"+selectedTaxa);
                 //Recorrer los criterios de indicadores
                 var selectedIndicators = "";
                 for (var k =0; k <treelist.childNodes.length; k++){
                     selectedIndicators += treelist.childNodes[k].id+"|";
                 }
-                alert("Criterios de indicadores: \n"+selectedIndicators);
-            }
+                //Lamar a la función que traera el resultado de la consulta asincronicamente
+                executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators);
+            };
             
         </script>
 
@@ -456,7 +473,7 @@
                         <input type="button" class="my_Button" id="addToListButton"
                         value="Agregar criterio"
                         onclick="addLayerParam(currentPolygomId,layerId,currentPolygomName,layerName)" />
-                        <span id="mapParameters"></span>
+                        <span id="mapParameters" style="font-size:10px"></span>
                     </div>
 
                     <!-- Taxonomy Panel -->
@@ -475,7 +492,7 @@
                             <div id="taxonContainer"></div>
                         </span>
                         <input type="button" class="my_Button" id="addToListButtonTax" value="Agregar criterio" onclick="addTaxonParam()" />
-                        <span id="taxParameters"></span>
+                        <span id="taxParameters" style="font-size:10px"></span>
                         <script type="text/javascript">
                             changeTaxonInput();
                         </script>
@@ -485,12 +502,12 @@
                     <div id="queryPanel">
                         <div id="treeDiv"></div>
                         <input type="button" class="my_Button" id="addToListButtonIndi" value="Agregar criterio" onclick="addIndicatorParam()" />
-                         <span id="treeParameters"></span>
+                         <span id="treeParameters" style="font-size:10px"></span>
                     </div>
 
                     <!-- Query Button -->
                     <input type="button" class="main_Button" id="makeQueryButton" value="Hacer consulta"
-                    onclick="makeQuery()" />
+                    onclick="makeQuery()" /> 
 
                 </div>
 
