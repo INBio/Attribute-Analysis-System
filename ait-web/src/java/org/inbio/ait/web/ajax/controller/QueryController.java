@@ -28,15 +28,11 @@ public class QueryController implements Controller{
         String paramTaxon = request.getParameter("taxons");
         String paramIndi = request.getParameter("indi");
 		String errorMsj = "Error con los parámetros: "+paramLayer+" "+paramTaxon+" "+paramIndi;
-		List<TaxonInfoIndex> tiiList = new ArrayList<TaxonInfoIndex>();
 
 		try {
-            String[] layerList = paramLayer.split("|");
-            String[] taxonList = paramTaxon.split("|");
-            String[] indicList = paramIndi.split("|");
 
             Long totalMatch = queryManager.countByCriteria
-                    (layerList, taxonList, indicList);
+                    (paramLayer.split("\\|"), paramTaxon.split("\\|"), paramIndi.split("\\|"));
 
 			return writeReponse(request,response,totalMatch);
 
