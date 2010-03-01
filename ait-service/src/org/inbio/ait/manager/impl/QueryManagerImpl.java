@@ -43,9 +43,38 @@ public class QueryManagerImpl implements QueryManager{
      */
     public Long countByCriteria(String[] layerList, String[] taxonList, String[] indicList) {
         //Build the query string base on parameters
-        String query = "Select count(globaluniqueidentifier) from ait.taxon_info_index";
+
+        String query = "Select count(distinct globaluniqueidentifier) from ait.taxon_info_index where ";
+        if(layerList.length>0){
+            query += "(";
+            for(int i = 0;i<layerList.length;i++){
+                if(i==layerList.length-1){ //last element
+                    String layer = layerList[i].split("~")[0];
+                    String polygon = layerList[i].split("~")[1];
+                    query += "(layer_table = '"+layer.split("\\:")[1]+"' and polygom_id = "+polygon.split("\\.")[1]+")";
+                }
+                else{
+                    String layer = layerList[i].split("~")[0];
+                    String polygon = layerList[i].split("~")[1];
+                    query += "(layer_table = '"+layer.split("\\:")[1]+"' and polygom_id = "+polygon.split("\\.")[1]+") or ";
+                }
+            }
+            query += ")";
+        }
+
+        System.out.println(query);
+
+        return 0L;
+
+         /*Select  count(distinct globaluniqueidentifier) from ait.taxon_info_index
+         where (capa = c1 and polygon = p1 or capa = c2 and polygon = p2) and
+         (reino = r or filo = f) and
+         (indicador = i or indicador = i2)*/
+
+
+        //String query = "Select count(globaluniqueidentifier) from ait.taxon_info_index";
         //Execute query
-        return taxonInfoIndexDAO.countTaxonsByQuery(query);
+        //return taxonInfoIndexDAO.countTaxonsByQuery(query);
     }
 
 }
