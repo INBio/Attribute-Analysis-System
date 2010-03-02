@@ -34,8 +34,8 @@
             //Available poligons [[id,name],...] Depends on layersList
             var polygonsList;
             //Current selected polygon
-            var currentPolygomId; //(FID)
-            var currentPolygomName; //(Name)
+            var currentPolygonId; //(FID)
+            var currentPolygonName; //(Name)
             //Available layers [[id,name],...]
             var layersList;
             //Current selected layer
@@ -54,10 +54,13 @@
             var selectedNodeId;
             var selectedNodeName;
             var isLeaf;
+            //Var to store friendly user(to show) query criteria
+            var queryCriteriaToShow;
 
             /*              Internacionalization variables                */
             var layerText;
             var consultText;
+            var loadingText;
 
             //Pink tile avoidance
             OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
@@ -118,7 +121,7 @@
                 new Array('IABIN_Indicadores:bd_pan_areas_protegidas','Área Silvestre Protegida - PMA'));
 
                 map.events.register('click', map, function (e) {
-                    document.getElementById('info').innerHTML = "Cargando...";
+                    document.getElementById('info').innerHTML = loadingText;
                     polygonsList = null;
                     var params = { REQUEST: "GetFeatureInfo",
                         EXCEPTIONS: "application/vnd.ogc.se_xml",
@@ -215,18 +218,19 @@
              * Sets the HTML provided into the nodelist element
              */
             function setHTML(response){
-                //Obtain the selected polygon(s), value set on currentPolygomId var
+                //Obtain the selected polygon(s), value set on currentPolygonId var
                 parseHTML(response.responseText);
-                //Set up drop down to select polygons
-                var dd = "<p style=\"margin:1px\"><a> Polígonos: </a></p>";
-                dd += "<select name=ddPolygon class=\"componentSize\" onchange='onChangePolygon(this.form.ddPolygon);'>";
-                //Setting drop down options
-                for(var i=0;i<polygonsList.length;i++){
-                    dd+= "<option>"+polygonsList[i][1]+"</option>";
+                //Verify if the polygon is unique
+                if(polygonsList.length!=1){
+                    alert('Debe seleccionar solo un polígono de la capa');
+                    return;
                 }
-                dd+= "</select>";
-                //Show drop down
-                document.getElementById('info').innerHTML = dd;
+                //Add the polygon to the geografical criteria list
+                currentPolygonId = polygonsList[0][0];
+                currentPolygonName = polygonsList[0][1];
+                addLayerParam(currentPolygonId,layerId,currentPolygonName,layerName);
+                //Clean the Loading status
+                document.getElementById('info').innerHTML = "";
             };
 
             /*
@@ -251,7 +255,6 @@
                     info += trim(atributes[i])+" ";
                 }
                 var polygons = new Array();
-                polygons.push(new Array(""," -- Seleccionar -- "));
                 polygons.push(new Array(id,info));
                 polygonsList = polygons;
             };
@@ -274,17 +277,6 @@
             };
 
             /*
-             * When the value of polygoms drop down is changed
-             */
-            function onChangePolygon(dropdown)
-            {
-                var selectedIndex = dropdown.selectedIndex;
-                currentPolygomId = polygonsList[selectedIndex][0];
-                currentPolygomName = polygonsList[selectedIndex][1];
-                return true;
-            };
-
-            /*
              * When the value of layers drop down is changed
              */
             function onChangeLayer(dropdown)
@@ -294,8 +286,8 @@
                 layerId = layersList[selectedIndex][0];
                 layerName = layersList[selectedIndex][1];
                 document.getElementById('info').innerHTML = "";
-                currentPolygomId = null;
-                currentPolygomName = null;
+                currentPolygonId = null;
+                currentPolygonName = null;
                 polygonsList = null;
                 return true;
             };
@@ -303,32 +295,33 @@
             /*
              * Agrega un nuevo filtro geografico
              */
-            function addLayerParam(polygom,capa,pname,cname) {
+            function addLayerParam(polygon,capa,pname,cname) {
                 //Validar que ninguno de los parametros sea nulo
-                if(capa==null||polygom==null){
+                if(capa==null||polygon==null){
                     alert('Se debe seleccionar una capa y un polígono');
                     return;
                 }
                 //Validar que la capa/polígono seleccionados no sean repetidos
-                var aux_exist = document.getElementById(capa+"~"+polygom);
+                var aux_exist = document.getElementById(capa+"~"+polygon);
                 if(aux_exist!=null){
                     alert('La capa y polígono seleccionados ya fue agregada anteriormente');
                     document.getElementById('info').innerHTML = "";
-                    clearGeograficVars();
-                    createDDLayers();
+                    currentPolygonId = null;
+                    currentPolygonName = null;
+                    polygonsList = null;
                     return;
                 }
                 //Agregar el parametro a la lista
                 var layerslist = document.getElementById('mapParameters');
                 var newdiv = document.createElement('div');
-                newdiv.setAttribute("id",capa+"~"+polygom);
+                newdiv.setAttribute("id",capa+"~"+polygon);
                 newdiv.innerHTML =
-                    "<a href=\"javascript:\" onclick=\"removeLayerParamElement(\'"+capa+"~"+polygom+"\')\">"+pname+"</a>";
+                    "<a href=\"javascript:\" onclick=\"removeLayerParamElement(\'"+capa+"~"+polygon+"\')\">"+pname+"</a>";
                 layerslist.appendChild(newdiv);
                 //Restablecer el estado del mecanismo de seleccion de capas
                 document.getElementById('info').innerHTML = "";
-                currentPolygomId = null;
-                currentPolygomName = null;
+                currentPolygonId = null;
+                currentPolygonName = null;
                 polygonsList = null;
             };
 
@@ -422,8 +415,8 @@
              * Setea en su valor inicial las variables geograficas
              */
             function clearGeograficVars(){
-                currentPolygomId = null;
-                currentPolygomName = null;
+                currentPolygonId = null;
+                currentPolygonName = null;
                 layerId = 'IABIN_Indicadores:bd_meso_limite_paies';
                 layerIndex = 0;
                 layerName = 'Paises - Mesoamérica';
@@ -443,22 +436,31 @@
                     return;
                 }
                 //Recorrer los criterios geográficos
+                queryCriteriaToShow = "<a>"; //Cleanning the variable
                 var selectedLayers = "";
                 for (var i =0; i <layerslist.childNodes.length; i++){
                     selectedLayers += layerslist.childNodes[i].id+"|";
+                    queryCriteriaToShow += "* "+layerslist.childNodes[i].textContent+" ";
                 }
+                queryCriteriaToShow += "</a><br>";
                 //Recorrer los criterios taxonómicos
+                queryCriteriaToShow += "<a>";
                 var selectedTaxa = "";
                 for (var j =0; j <taxonlist.childNodes.length; j++){
                     selectedTaxa += taxonlist.childNodes[j].textContent+"|";
+                    queryCriteriaToShow += "* "+taxonlist.childNodes[j].textContent+" ";
                 }
+                queryCriteriaToShow += "</a><br>";
                 //Recorrer los criterios de indicadores
+                queryCriteriaToShow += "<a>";
                 var selectedIndicators = "";
                 for (var k =0; k <treelist.childNodes.length; k++){
                     selectedIndicators += treelist.childNodes[k].id+"|";
+                    queryCriteriaToShow += "* "+treelist.childNodes[k].textContent+" ";
                 }
+                queryCriteriaToShow += "</a><br>";
                 //Lamar a la función que traera el resultado de la consulta asincronicamente
-                executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators);
+                executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators,queryCriteriaToShow);
             };
             
         </script>
@@ -467,6 +469,7 @@
         <script type="text/javascript">
             function internationalization(){
                 layerText =  "<fmt:message key="layers"/>";
+                loadingText = "<fmt:message key="loading"/>";
             };
         </script>
 
@@ -497,9 +500,6 @@
                             <fmt:message key="geografical_criteria_title"/></p>
                         <div id="currentLayer"></div>
                         <div id="info"></div>
-                        <input type="button" class="my_Button" id="addToListButton"
-                        value="<fmt:message key="add_criteria"/>"
-                        onclick="addLayerParam(currentPolygomId,layerId,currentPolygomName,layerName)" />
                         <span id="mapParameters" style="font-size:10px"></span>
                     </div>
 

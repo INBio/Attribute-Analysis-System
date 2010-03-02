@@ -2,7 +2,7 @@
 /**
  * Execute final query by especific parameters
  */
-function executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators)  {
+function executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators,queryCriteriaToShow)  {
 
     //Prepare URL for XHR request:
     var sUrl = "/ait-web/ajax/finalQuery?layers="+selectedLayers+"&taxons="+selectedTaxa+"&indi="+selectedIndicators;
@@ -25,7 +25,7 @@ function executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators)  {
             tree.collapseAll();            
             //Mostrar el resultado y los criterios de la búsqueda
             var resultHTML = "<b>Criterios de búsqueda:</b><br>";
-            resultHTML += "<a>      "+selectedLayers+"  "+selectedTaxa+"  "+selectedIndicators+"</a><br>";
+            resultHTML += queryCriteriaToShow;
             resultHTML += "<b>Total de especímenes que cumplen los criterios:</b><br>";
             resultHTML += "<a>      "+totalCount+"</a>";
             document.getElementById('resultsPanel').innerHTML = resultHTML;
