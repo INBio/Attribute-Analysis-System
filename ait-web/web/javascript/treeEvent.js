@@ -22,9 +22,13 @@ function loadNodeData(node, fnLoadComplete)  {
             var root = oResponse.responseXML.documentElement;
             //child node (nodes)
             var rootChildNodes = root.childNodes;
-            //
+            //indicate that the node is a leaf
             if(rootChildNodes.length==0){
                 node.isLeaf = true;
+                isLeaf = "true";
+            }
+            else{
+                isLeaf = "false";
             }
             //Loop over children
             for(var i=0; i< rootChildNodes.length; i++){

@@ -22,8 +22,9 @@ function executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators)  {
             document.getElementById('mapParameters').innerHTML = "";
             document.getElementById('taxParameters').innerHTML = "";
             document.getElementById('treeParameters').innerHTML = "";
+            tree.collapseAll();            
             //Mostrar el resultado y los criterios de la búsqueda
-            var resultHTML = "<b>Criterios de búsqueda seleccionados:</b><br>";
+            var resultHTML = "<b>Criterios de búsqueda:</b><br>";
             resultHTML += "<a>      "+selectedLayers+"  "+selectedTaxa+"  "+selectedIndicators+"</a><br>";
             resultHTML += "<b>Total de especímenes que cumplen los criterios:</b><br>";
             resultHTML += "<a>      "+totalCount+"</a>";

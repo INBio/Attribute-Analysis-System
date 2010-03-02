@@ -53,6 +53,7 @@
             //Current selected indicators tree node
             var selectedNodeId;
             var selectedNodeName;
+            var isLeaf;
 
             //Pink tile avoidance
             OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
@@ -183,6 +184,12 @@
                 tree.subscribe('clickEvent',function(oArgs) {
                     selectedNodeId = oArgs.node.data;
                     selectedNodeName = oArgs.node.label;
+                    if(oArgs.node.isLeaf){
+                        isLeaf = "true";
+                    }
+                    else{
+                        isLeaf = "false";
+                    }
                 });
             }
 
@@ -374,6 +381,11 @@
                 //Validar que se haya seleccionado un nodo
                 if(selectedNodeId==null||selectedNodeName==null){
                     alert('Primero debe seleccionar un indicador taxonómico');
+                    return;
+                }
+                //Validar si es hoja
+                if(isLeaf=="false"){
+                    alert('El indicador debe ser una hoja del árbol');
                     return;
                 }
                 //Validar que el indicador seleccionado no sea repetido
