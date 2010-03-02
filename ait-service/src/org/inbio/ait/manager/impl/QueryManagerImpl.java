@@ -67,7 +67,12 @@ public class QueryManagerImpl implements QueryManager{
 
         //If there is taxonomy criteria
         if(taxonList.length>0 && !taxonList[0].equals("")){
-            query += " and (";
+            if(layerList.length>0 && !layerList[0].equals("")){
+                query += " and (";
+            }
+            else{
+                query += "(";
+            }
             for(int i = 0;i<taxonList.length;i++){
                 //Get the name and taxonomical level of the specified taxon
                 TaxonIndex ti = taxonIndexDAO.getTaxonIndexByName(taxonList[i]);
@@ -111,7 +116,12 @@ public class QueryManagerImpl implements QueryManager{
 
         //If there is indicators criteria
         if(indicList.length>0 && !indicList[0].equals("")){
-            query += " and (";
+            if(taxonList.length>0 && !taxonList[0].equals("")){
+                query += " and (";
+            }
+            else{
+                query += "(";
+            }
             for(int i = 0;i<indicList.length;i++){
                 if(i==indicList.length-1){ //last element
                     query += "(indicator_id = "+indicList[i]+")";
