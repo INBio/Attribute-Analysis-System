@@ -70,7 +70,7 @@ body {
 #map {
     position: relative;
     width: 100%;
-    height: 430px;
+    height: 440px;
     border: 1px solid silver;
     border-style:dashed;
 }

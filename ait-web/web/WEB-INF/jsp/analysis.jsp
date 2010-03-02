@@ -55,12 +55,18 @@
             var selectedNodeName;
             var isLeaf;
 
+            /*              Internacionalization variables                */
+            var layerText;
+            var consultText;
+
             //Pink tile avoidance
             OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
             //Make OL compute scale according to WMS spec
             OpenLayers.DOTS_PER_INCH = 25.4 / 0.28;
 
             function init(){
+
+                internationalization(); //Load messages content
 
                 format = 'image/png';
 
@@ -155,7 +161,7 @@
              * Create a drop down to specified the current layer
              */
             function createDDLayers(){
-                var dropdown = "<p style=\"margin:1px\"><a> Capas: </a></p>";
+                var dropdown = "<p style=\"margin:1px\"><a> "+layerText+": </a></p>";
                 dropdown += "<select name=ddLayer class=\"componentSize\" onchange='onChangeLayer(this.form.ddLayer);'>";
                 //Setting drop down options
                 for(var i=0;i<layersList.length;i++){
@@ -457,10 +463,17 @@
             
         </script>
 
+        <!-- Internacionalización-->
+        <script type="text/javascript">
+            function internationalization(){
+                layerText =  "<fmt:message key="layers"/>";
+            };
+        </script>
+
     </head>
     <body onload="init()">
 
-        <%-- TaxonFilter Auto Completes--%>
+        <!-- TaxonFilter Auto Completes-->
         <script type="text/javascript">
             var taxonAutoCompleteUrls = new Array(${ fn:length(model.taxonFilters)});
             <c:forEach items="${model.taxonFilters}" var="taxonFilter" varStatus="filterStatus" begin="0">
@@ -480,16 +493,20 @@
                 <div id="querysPanel">
                     <!-- GIS Panel -->
                     <div id="queryPanel">
+                        <p style="font-weight:bold;font-style:italic;margin:2px;text-align:center;">
+                            <fmt:message key="geografical_criteria_title"/></p>
                         <div id="currentLayer"></div>
                         <div id="info"></div>
                         <input type="button" class="my_Button" id="addToListButton"
-                        value="Agregar criterio"
+                        value="<fmt:message key="add_criteria"/>"
                         onclick="addLayerParam(currentPolygomId,layerId,currentPolygomName,layerName)" />
                         <span id="mapParameters" style="font-size:10px"></span>
                     </div>
 
                     <!-- Taxonomy Panel -->
                     <div id="queryPanel">
+                        <p style="font-weight:bold;font-style:italic;margin:2px;text-align:center;">
+                            <fmt:message key="taxonomical_criteria_title"/></p>
                         <p style="margin:1px"><a> <fmt:message key="taxonomy_level"/>: </a></p>
                         <select name="taxonType" id="taxonTypeId" class="componentSize" tabindex="12" onchange="javascript:changeTaxonInput();" onKeyUp="javascript:changeTaxonInput();">
                             <c:forEach items="${model.taxonFilters}" var="taxonFilter">
@@ -510,15 +527,17 @@
                         </script>
                     </div>
 
-                    <!-- Indicator Button -->
+                    <!-- Indicator Panel -->
                     <div id="queryPanel">
+                        <p style="font-weight:bold;font-style:italic;margin:2px;text-align:center;">
+                            <fmt:message key="indicators_criteria_title"/></p>
                         <div id="treeDiv"></div>
                         <input type="button" class="my_Button" id="addToListButtonIndi" value="Agregar criterio" onclick="addIndicatorParam()" />
                          <span id="treeParameters" style="font-size:10px"></span>
                     </div>
 
                     <!-- Query Button -->
-                    <input type="button" class="main_Button" id="makeQueryButton" value="Hacer consulta"
+                    <input type="button" class="main_Button" id="makeQueryButton" value="<fmt:message key="consult"/>"
                     onclick="makeQuery()" /> 
 
                 </div>
