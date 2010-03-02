@@ -56,10 +56,11 @@ public class TaxonInfoIndexDAOImpl extends SimpleJdbcDaoSupport implements Taxon
      */
     public Long countTaxonsByQuery(String q) {
         Long result = 0L;
-        try{
+        try {
             result = getSimpleJdbcTemplate().queryForLong(q);
+        } catch (Exception e) {
+            return result;
         }
-        catch(Exception e){return result;}
 
         return result;
     }

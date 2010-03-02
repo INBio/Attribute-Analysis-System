@@ -12,27 +12,29 @@ package org.inbio.ait.model;
 
 public enum TaxonomicalRange {
 
-	ROOT(0, "Raíz"),
-	KINGDOM(1,"Reino"),
-	PHYLUM(2, "Filo"),
-	CLASS(3, "Clase"),
-	ORDER(4,"Orden"),
-	FAMILY(5,"Familia"),
-	GENUS(6,"Género"),
-	SPECIFICEPITHET(7,"Especie"),
-    SCIENTIFICNAME(8,"NombreC");
+	ROOT(0, "Raíz","N/A"),
+	KINGDOM(1,"Reino","kingdom_id"),
+	PHYLUM(2, "Filo","phylum_id"),
+	CLASS(3, "Clase","class_id"),
+	ORDER(4,"Orden","order_id"),
+	FAMILY(5,"Familia","family_id"),
+	GENUS(6,"Género","genus_id"),
+	SPECIFICEPITHET(7,"Especie","specificEpithet_id"),
+    SCIENTIFICNAME(8,"NombreC","scientificName_id");
 
 
 	private int id;
 	private String name;
+    private String fieldName; //In taxon_info_index table
 
 	/**
 	 * @param id
 	 * @param name
 	 */
-	private TaxonomicalRange(int id, String name) {
+	private TaxonomicalRange(int id, String name,String fieldName) {
 		this.id = id;
 		this.name = name;
+        this.fieldName = fieldName;
 	}
 
 	/**
@@ -63,6 +65,19 @@ public enum TaxonomicalRange {
 		this.name = name;
 	}
 
+    /**
+     * @return the fieldName
+     */
+    public String getFieldName() {
+        return fieldName;
+    }
+
+    /**
+     * @param fieldName the fieldName to set
+     */
+    public void setFieldName(String fieldName) {
+        this.fieldName = fieldName;
+    }
 
 }
 
