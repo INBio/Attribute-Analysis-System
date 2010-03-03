@@ -220,6 +220,10 @@
             function setHTML(response){
                 //Obtain the selected polygon(s), value set on currentPolygonId var
                 parseHTML(response.responseText);
+                //Verify if the list is null
+                if(polygonsList==null){
+                    return;
+                }
                 //Verify if the polygon is unique
                 if(polygonsList.length!=1){
                     alert('Debe seleccionar solo un polígono de la capa');
@@ -238,6 +242,12 @@
              */
             function parseHTML(html){
                 var rows = html.split("<tr>");
+                //validar que la respuesta tenga al menos un poligono
+                if(rows.length<3){ //En la posicion 3 esta el primer poligono
+                    alert('No se ha seleccionado un polígono válido');
+                    document.getElementById('info').innerHTML = "";
+                    return;
+                }
                 var prepolygon = rows[2];
                 var prepolygonIni = prepolygon.replace("<td>","|_|");
                 var prepolygonFin = prepolygonIni.replace("</tr>","|_|");
