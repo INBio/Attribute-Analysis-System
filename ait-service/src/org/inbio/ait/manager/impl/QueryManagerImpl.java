@@ -116,7 +116,7 @@ public class QueryManagerImpl implements QueryManager{
 
         //If there is indicators criteria
         if(indicList.length>0 && !indicList[0].equals("")){
-            if(taxonList.length>0 && !taxonList[0].equals("")){
+            if((taxonList.length>0 && !taxonList[0].equals(""))||(layerList.length>0 && !layerList[0].equals(""))){
                 query += " and (";
             }
             else{

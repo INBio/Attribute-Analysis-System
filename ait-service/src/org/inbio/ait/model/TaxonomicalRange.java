@@ -19,8 +19,8 @@ public enum TaxonomicalRange {
 	ORDER(4,"Orden","order_id"),
 	FAMILY(5,"Familia","family_id"),
 	GENUS(6,"Género","genus_id"),
-	SPECIFICEPITHET(7,"Especie","specificEpithet_id"),
-    SCIENTIFICNAME(8,"NombreC","scientificName_id");
+	SPECIFICEPITHET(7,"Especie","specific_epithet_id"),
+    SCIENTIFICNAME(8,"NombreC","scientific_name_id");
 
 
 	private int id;

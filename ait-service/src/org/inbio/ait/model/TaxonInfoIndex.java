@@ -22,8 +22,8 @@ public class TaxonInfoIndex {
     private Long order_id;
     private Long family_id;
     private Long genus_id;
-    private Long specificEpithet_id;
-    private Long scientificName_id;
+    private Long specific_epithet_id;
+    private Long scientific_name_id;
     private Long indicator_id;
     private Long layer_id;
     private Long polygom_id;
@@ -127,34 +127,6 @@ public class TaxonInfoIndex {
     }
 
     /**
-     * @return the specificEpithet_id
-     */
-    public Long getSpecificEpithet_id() {
-        return specificEpithet_id;
-    }
-
-    /**
-     * @param specificEpithet_id the specificEpithet_id to set
-     */
-    public void setSpecificEpithet_id(Long specificEpithet_id) {
-        this.specificEpithet_id = specificEpithet_id;
-    }
-
-    /**
-     * @return the scientificName_id
-     */
-    public Long getScientificName_id() {
-        return scientificName_id;
-    }
-
-    /**
-     * @param scientificName_id the scientificName_id to set
-     */
-    public void setScientificName_id(Long scientificName_id) {
-        this.scientificName_id = scientificName_id;
-    }
-
-    /**
      * @return the indicator_id
      */
     public Long getIndicator_id() {
@@ -194,6 +166,34 @@ public class TaxonInfoIndex {
      */
     public void setPolygom_id(Long polygom_id) {
         this.polygom_id = polygom_id;
+    }
+
+    /**
+     * @return the specific_epithet_id
+     */
+    public Long getSpecific_epithet_id() {
+        return specific_epithet_id;
+    }
+
+    /**
+     * @param specific_epithet_id the specific_epithet_id to set
+     */
+    public void setSpecific_epithet_id(Long specific_epithet_id) {
+        this.specific_epithet_id = specific_epithet_id;
+    }
+
+    /**
+     * @return the scientific_name_id
+     */
+    public Long getScientific_name_id() {
+        return scientific_name_id;
+    }
+
+    /**
+     * @param scientific_name_id the scientific_name_id to set
+     */
+    public void setScientific_name_id(Long scientific_name_id) {
+        this.scientific_name_id = scientific_name_id;
     }
 
 }

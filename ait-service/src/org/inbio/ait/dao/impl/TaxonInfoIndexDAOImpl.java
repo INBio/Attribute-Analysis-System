@@ -79,8 +79,8 @@ public class TaxonInfoIndexDAOImpl extends SimpleJdbcDaoSupport implements Taxon
             ti.setOrder_id(rs.getLong("order_id"));
             ti.setPhylum_id(rs.getLong("phylum_id"));
             ti.setPolygom_id(rs.getLong("polygom_id"));
-            ti.setScientificName_id(rs.getLong("scientificName_id"));
-            ti.setSpecificEpithet_id(rs.getLong("specificEpithet_id"));
+            ti.setScientific_name_id(rs.getLong("scientific_name_id"));
+            ti.setSpecific_epithet_id(rs.getLong("specific_epithet_id"));
             return ti;
 
         }
