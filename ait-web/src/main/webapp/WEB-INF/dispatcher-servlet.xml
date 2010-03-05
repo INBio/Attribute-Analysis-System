@@ -78,7 +78,7 @@
     <!--.....................................................................-->
     <!-- The welcome controller -->
     <bean name="/welcome.htm" class="org.inbio.ait.web.controller.WelcomeController"/>
-    <!-- The species controller -->
+    <!-- The geospatial analysis controller -->
     <bean name="/analysis.htm" class="org.inbio.ait.web.controller.AnalysisController">
         <property name="analysisManager" ref="analysisManager"/>
         <property name="filtersMap" ref="taxonFilters"/>
@@ -89,6 +89,8 @@
     <bean name="/config.htm" class="org.inbio.ait.web.controller.ConfigController"/>
     <!-- The about page controller -->
     <bean name="/about.htm" class="org.inbio.ait.web.controller.AboutController"/>
+    <!-- The estatistical analysis page controller -->
+    <bean name="/statistical.htm" class="org.inbio.ait.web.controller.StatisticalController"/>
 
     <!--.....................................................................-->
     <!--................... Manager Injections ...............................-->

@@ -561,9 +561,7 @@
                     </div>
                 </div>
 
-                <div id="resultsPanel">
-
-                </div>
+                <div id="resultsPanel"></div>
 
             </div>
         </form>

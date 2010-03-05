@@ -27,6 +27,8 @@
             <div id="menu_links">
                 <a class="link" href="analysis.htm" style="height: 24px; width: 46px;">
                     <fmt:message key="analysis_title"/></a><br/>
+                <a class="link" href="statistical.htm" style="height: 24px; width: 46px">
+                    <fmt:message key="statistic_analysis"/></a><br>
                 <a class="link" href="config.htm" style="height: 24px; width: 46px">
                     <fmt:message key="config_title"/></a>
             </div>

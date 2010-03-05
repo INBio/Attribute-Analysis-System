@@ -19,7 +19,7 @@
     <body>
         <!-- Header -->
         <jsp:include page="/WEB-INF/jsp/header.jsp"/>
-        <form name = "species" method = "get">
+        <form name = "form1" method = "get">
             <div id="contenido">
                 <h2><fmt:message key="about_title"/></h2>
                 <p><fmt:message key="about_content"/></p>

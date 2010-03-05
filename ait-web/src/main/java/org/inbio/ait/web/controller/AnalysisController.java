@@ -37,8 +37,9 @@ public class AnalysisController implements Controller{
      * @throws javax.servlet.ServletException
      * @throws java.io.IOException
      */
-    public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    @Override
+    public ModelAndView handleRequest(HttpServletRequest request, 
+            HttpServletResponse response) throws ServletException, IOException {
 
         //Map to storage all madel data needed
         Map<String, Object> myModel = new HashMap<String, Object>();
@@ -53,7 +54,7 @@ public class AnalysisController implements Controller{
             "    return true;"+"\n"+
             "};"; //<c:out value="${model.js}"/> ON JSP */
 
-        logger.info("Getting all Specimens ");
+        logger.info("Initialazing geoespatial analysis page");
 
         myModel.put(filtersKey,filtersMap.getFilters());
         return new ModelAndView("analysis", "model", myModel);
