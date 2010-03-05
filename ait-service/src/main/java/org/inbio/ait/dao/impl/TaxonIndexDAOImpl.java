@@ -18,6 +18,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
  */
 public class TaxonIndexDAOImpl extends SimpleJdbcDaoSupport implements TaxonIndexDAO{
 
+    @Override
     public TaxonIndex getTaxonIndexByName(String name) {
         TaxonIndex tIndex = new TaxonIndex();
         try {
@@ -32,6 +33,7 @@ public class TaxonIndexDAOImpl extends SimpleJdbcDaoSupport implements TaxonInde
 
      private static class tIndexMapper implements ParameterizedRowMapper<TaxonIndex> {
 
+        @Override
         public TaxonIndex mapRow(ResultSet rs, int rowNum) throws SQLException {
             TaxonIndex ti = new TaxonIndex();
             ti.setTaxon_id(rs.getLong("taxon_id"));

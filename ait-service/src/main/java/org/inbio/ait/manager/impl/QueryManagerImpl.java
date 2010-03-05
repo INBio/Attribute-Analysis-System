@@ -22,6 +22,7 @@ public class QueryManagerImpl implements QueryManager{
     private TaxonInfoIndexDAO taxonInfoIndexDAO;
     private TaxonIndexDAO taxonIndexDAO;
 
+    @Override
     public List<TaxonInfoIndex> getallTaxonInfo() {
         return taxonInfoIndexDAO.getallTaxonInfo();
     }
@@ -45,6 +46,7 @@ public class QueryManagerImpl implements QueryManager{
      * with the specified query criteria
      * @return
      */
+    @Override
     public Long countByCriteria(String[] layerList, String[] taxonList, String[] indicList) {
         //Build the query string base on parameters
         String query = "Select count(distinct globaluniqueidentifier) from ait.taxon_info_index where ";

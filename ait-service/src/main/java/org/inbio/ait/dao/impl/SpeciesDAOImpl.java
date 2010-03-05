@@ -21,6 +21,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
 public class SpeciesDAOImpl extends SimpleJdbcDaoSupport implements SpeciesDAO {
 
+    @Override
     public List<Species> getSpeciesList() {
         List<Species> species = new ArrayList<Species>();
         try{
@@ -35,6 +36,7 @@ public class SpeciesDAOImpl extends SimpleJdbcDaoSupport implements SpeciesDAO {
 
     private static class SpeciesMapper implements ParameterizedRowMapper<Species> {
 
+        @Override
         public Species mapRow(ResultSet rs, int rowNum) throws SQLException {
             Species sp = new Species();
             sp.setGlobaluniqueidentifier(rs.getString("globaluniqueidentifier"));

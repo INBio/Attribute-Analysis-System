@@ -18,6 +18,7 @@ public class IndicatorsManagerImpl implements IndicatorsManager{
 
     private IndicatorDAO indicatorDAO;
 
+    @Override
     public List<AutocompleteNode> getChildNodesByNodeId(int nodeId) {
         return indicatorDAO.getChildNodesByNodeId(nodeId);
     }

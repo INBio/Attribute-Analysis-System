@@ -20,6 +20,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
  */
 public class TaxonInfoIndexDAOImpl extends SimpleJdbcDaoSupport implements TaxonInfoIndexDAO {
 
+    @Override
     public List<TaxonInfoIndex> getallTaxonInfo(){
         List<TaxonInfoIndex> tInfo = new ArrayList<TaxonInfoIndex>();
         try{
@@ -37,6 +38,7 @@ public class TaxonInfoIndexDAOImpl extends SimpleJdbcDaoSupport implements Taxon
      * @param q
      * @return
      */
+    @Override
     public List<TaxonInfoIndex> getTaxonsByQuery(String q) {
         List<TaxonInfoIndex> tInfo = new ArrayList<TaxonInfoIndex>();
         try{
@@ -54,6 +56,7 @@ public class TaxonInfoIndexDAOImpl extends SimpleJdbcDaoSupport implements Taxon
      * @param q
      * @return
      */
+    @Override
     public Long countTaxonsByQuery(String q) {
         Long result = 0L;
         try {
@@ -67,6 +70,7 @@ public class TaxonInfoIndexDAOImpl extends SimpleJdbcDaoSupport implements Taxon
     
      private static class tInfoMapper implements ParameterizedRowMapper<TaxonInfoIndex> {
 
+        @Override
         public TaxonInfoIndex mapRow(ResultSet rs, int rowNum) throws SQLException {
              TaxonInfoIndex ti = new TaxonInfoIndex();
             ti.setGlobaluniqueidentifier(rs.getString("globaluniqueidentifier"));

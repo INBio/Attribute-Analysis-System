@@ -32,10 +32,12 @@ public class AnalysisManagerImpl implements AnalysisManager{
     }
     //*******************************************************************
 
+    @Override
     public List<Species> getAllSpecies() {
         return speciesDAO.getSpeciesList();
     }
 
+    @Override
     public List<Specimen> getAllSpecimens() {
         return specimenDAO.getSpecimenList();
     }

@@ -21,6 +21,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
  */
 public class SpecimenDAOImpl extends SimpleJdbcDaoSupport implements SpecimenDAO{
 
+    @Override
     public List<Specimen> getSpecimenList() {
         List<Specimen> specimens = new ArrayList<Specimen>();
         try{
@@ -41,6 +42,7 @@ public class SpecimenDAOImpl extends SimpleJdbcDaoSupport implements SpecimenDAO
      * @param range
      * @return
      */
+    @Override
     public List<AutocompleteNode> getElementsByRange(String partialName,int range,String atributeName){
         List<AutocompleteNode> nodes = new ArrayList<AutocompleteNode>();
         try{
@@ -56,6 +58,7 @@ public class SpecimenDAOImpl extends SimpleJdbcDaoSupport implements SpecimenDAO
 
     private static class SpecimenMapper implements ParameterizedRowMapper<Specimen> {
 
+        @Override
         public Specimen mapRow(ResultSet rs, int rowNum) throws SQLException {
             Specimen sp = new Specimen();
             sp.setGlobaluniqueidentifier(rs.getString("globaluniqueidentifier"));

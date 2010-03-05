@@ -20,6 +20,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
  */
 public class IndicatorDAOImpl extends SimpleJdbcDaoSupport implements IndicatorDAO{
 
+    @Override
     public List<AutocompleteNode> getChildNodesByNodeId(int nodeId) {
         List<AutocompleteNode> nodes = new ArrayList<AutocompleteNode>();
         try{
@@ -34,6 +35,7 @@ public class IndicatorDAOImpl extends SimpleJdbcDaoSupport implements IndicatorD
 
     private static class AutocompleteMapper implements ParameterizedRowMapper<AutocompleteNode> {
 
+        @Override
         public AutocompleteNode mapRow(ResultSet rs, int rowNum) throws SQLException {
 
             AutocompleteNode acn = new AutocompleteNode();

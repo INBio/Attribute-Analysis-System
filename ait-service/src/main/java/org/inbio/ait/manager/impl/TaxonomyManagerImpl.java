@@ -26,6 +26,7 @@ public class TaxonomyManagerImpl implements TaxonomyManager {
      * @param range
      * @return
      */
+    @Override
 	public List<AutocompleteNode> getElementsByTaxonomicalRange(String value,int range) {
         if(range == TaxonomicalRange.KINGDOM.getId()){
             return specimenDAO.getElementsByRange(value,range,"kingdom");
