@@ -311,8 +311,11 @@
                     alert('Se debe seleccionar una capa y un polígono');
                     return;
                 }
+                //Afinar el dato de capa y poligono
+                var newCapa = capa.split(":")[1];
+                var newPolygon = polygon.split(".")[1];
                 //Validar que la capa/polígono seleccionados no sean repetidos
-                var aux_exist = document.getElementById(capa+"~"+polygon);
+                var aux_exist = document.getElementById(newCapa+"~"+newPolygon);
                 if(aux_exist!=null){
                     alert('La capa y polígono seleccionados ya fue agregada anteriormente');
                     document.getElementById('info').innerHTML = "";
@@ -324,9 +327,9 @@
                 //Agregar el parametro a la lista
                 var layerslist = document.getElementById('mapParameters');
                 var newdiv = document.createElement('div');
-                newdiv.setAttribute("id",capa+"~"+polygon);
+                newdiv.setAttribute("id",newCapa+"~"+newPolygon);
                 newdiv.innerHTML =
-                    "<a href=\"javascript:\" onclick=\"removeLayerParamElement(\'"+capa+"~"+polygon+"\')\">"+pname+"</a>";
+                    "<a href=\"javascript:\" onclick=\"removeLayerParamElement(\'"+newCapa+"~"+newPolygon+"\')\">"+pname+"</a>";
                 layerslist.appendChild(newdiv);
                 //Restablecer el estado del mecanismo de seleccion de capas
                 document.getElementById('info').innerHTML = "";
