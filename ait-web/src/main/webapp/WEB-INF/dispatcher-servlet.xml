@@ -83,14 +83,15 @@
         <property name="analysisManager" ref="analysisManager"/>
         <property name="filtersMap" ref="taxonFilters"/>
         <property name="filtersKey" value="taxonFilters"/>
-
     </bean>
     <!-- The config controller -->
     <bean name="/config.htm" class="org.inbio.ait.web.controller.ConfigController"/>
     <!-- The about page controller -->
     <bean name="/about.htm" class="org.inbio.ait.web.controller.AboutController"/>
     <!-- The estatistical analysis page controller -->
-    <bean name="/statistical.htm" class="org.inbio.ait.web.controller.StatisticalController"/>
+    <bean name="/statisticalParameters.htm" class="org.inbio.ait.web.controller.StatisticalController">
+        <property name="formView" value="statistical"/>
+    </bean>
 
     <!--.....................................................................-->
     <!--................... Manager Injections ...............................-->

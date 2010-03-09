@@ -165,3 +165,20 @@ body {
     background-repeat:no-repeat;
     background-position: 10px 10px;
 }
+
+.titles {
+	font-size:24px;
+	font-family:"Times New Roman", Times, serif;
+	font-weight:bold;
+	color: #C82B0F;
+	}
+
+.texts {
+	font-size:12px;
+	color:#2E2E2E;
+	font-family: Arial, Helvetica, sans-serif;
+	text-align: justify;
+	margin: 12px 35px 12px 35px;
+	font-style: normal;
+	line-height: normal;
+	}

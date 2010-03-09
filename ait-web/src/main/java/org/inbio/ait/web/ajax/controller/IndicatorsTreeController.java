@@ -23,6 +23,7 @@ public class IndicatorsTreeController implements Controller{
 
     private IndicatorsManager indicatorsManager;
 
+    @Override
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String param = request.getParameter("query");
 		String errorMsj = "No se pudo obtener la lista de hijos para el nodo: "+param;

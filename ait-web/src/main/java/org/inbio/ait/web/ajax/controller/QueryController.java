@@ -5,13 +5,10 @@
 
 package org.inbio.ait.web.ajax.controller;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.inbio.ait.manager.QueryManager;
-import org.inbio.ait.model.TaxonInfoIndex;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 
@@ -23,6 +20,7 @@ public class QueryController implements Controller{
 
     private QueryManager queryManager;
 
+    @Override
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String paramLayer = request.getParameter("layers");
         String paramTaxon = request.getParameter("taxons");

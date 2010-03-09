@@ -16,62 +16,62 @@
         href="<c:out value="${pageContext.request.contextPath}"/>/<spring:theme code='styleSheet'/>"/>
         <title><fmt:message key="title"/></title>
 
-        <script type="text/javascript">
-		    function doSubmit(taxon_id, fieldTrip, taxonName, site){
-			var form = document.getElementById('objectInfo');
+        <script language="javascript">
+            function doSubmit(){
+                var form = document.getElementById('parameters');
 
-			var fieldTripId = document.getElementById('fieldTripId');
-			var taxonId = document.getElementById('taxonId');
-			var indicatorId = document.getElementById('indicatorId');
-			var siteName = document.getElementById('siteName');
-			var taxonScientificName = document.getElementById('taxonScientificName');
+                var xData = document.getElementById('xData');
+                var yData = document.getElementById('yData');
 
-			fieldTripId.value = fieldTrip;
-			taxonId.value = taxon_id;
-			indicatorId.value = '<c:out value="${indicatorValue}"/>';
+                xData.value = "pruebaX";
+                yData.value = "pruebaY";
 
-			taxonScientificName.value = taxonName;
-			siteName.value = site;
-
-			form.submit();
-		    }
+                form.submit();
+            }
         </script>
         
     </head>
     <body>
         <!-- Header -->
         <jsp:include page="/WEB-INF/jsp/header.jsp"/>
+
+        <!-- Chart parameters form -->
+        <form:form method="POST" commandName="parameters">
+            <!-- Values to get data for building the chart -->
+            <form:hidden path="xdata" id="xData"/>
+            <form:hidden path="ydata" id="yData"/>
+        </form:form>
+
         <!-- Content -->
-        <form name = "form1" method = "get">
-            <div id="contenido">
-                <h2><fmt:message key="statistic_analysis"/></h2>
+        <div id="contenido">
+            <h2><fmt:message key="statistic_analysis"/></h2>
 
-                <div id="querysPanel">
-                    <!-- GIS Panel -->
-                    <div id="queryPanel">
-                    </div>
-
-                    <!-- Taxonomy Panel -->
-                    <div id="queryPanel">
-                    </div>
-
-                    <!-- Indicator Panel -->
-                    <div id="queryPanel">
-                    </div>
-
-                    <!-- Query Button -->
-                    <input type="button" class="main_Button" id="makeQueryButton" value="<fmt:message key="consult"/>" />
-
+            <div id="querysPanel">
+                <!-- GIS Panel -->
+                <div id="queryPanel">
                 </div>
 
-                <div id="mapPanel">
+                <!-- Taxonomy Panel -->
+                <div id="queryPanel">
                 </div>
 
-                <div id="resultsPanel">
+                <!-- Indicator Panel -->
+                <div id="queryPanel">
                 </div>
+
+                <!-- Query Button -->
+                <input type="submit" class="main_Button" id="makeQueryButton" value="<fmt:message key="consult"/>"
+                       onclick="doSubmit()" />
 
             </div>
-        </form>
+
+            <div id="mapPanel">
+            </div>
+
+            <div id="resultsPanel">
+            </div>
+
+        </div>
         <!-- Content ends -->
     </body>
 </html>

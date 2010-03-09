@@ -4,6 +4,7 @@
  */
 
 package org.inbio.ait.web.controller;
+
 import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.ServletException;
@@ -17,6 +18,7 @@ public class AboutController implements Controller {
 
     protected final Log logger = LogFactory.getLog(getClass());
 
+    @Override
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
