@@ -35,15 +35,16 @@
         <!-- Header -->
         <jsp:include page="/WEB-INF/jsp/header.jsp"/>
 
-        <!-- Chart parameters form -->
-        <form:form method="POST" commandName="parameters">
-            <!-- Values to get data for building the chart -->
-            <form:hidden path="xdata" id="xData"/>
-            <form:hidden path="ydata" id="yData"/>
-        </form:form>
-
         <!-- Content -->
         <div id="contenido">
+
+            <!-- Chart parameters form -->
+            <form:form method="POST" commandName="parameters" cssStyle="margin:0">
+                <!-- Values to get data for building the chart -->
+                <form:hidden path="xdata" id="xData"/>
+                <form:hidden path="ydata" id="yData"/>
+            </form:form>
+
             <h2><fmt:message key="statistic_analysis"/></h2>
 
             <div id="querysPanel">

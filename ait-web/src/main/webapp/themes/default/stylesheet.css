@@ -150,6 +150,13 @@ body {
     background-position: 10px 3px;
 }
 
+.link_back{
+    padding: 3px 0 0 35px;
+    background: url(images/back.png);
+    background-repeat:no-repeat;
+    background-position: 10px 3px;
+}
+
 /* Para el link de home */
 .link_home{
     padding: 12px 0 0 40px;

@@ -7,9 +7,7 @@ package org.inbio.ait.web.controller;
 
 import com.keypoint.PngEncoder;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,7 +15,6 @@ import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
 import org.inbio.ait.web.utils.ChartParameters;
 import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
@@ -44,17 +41,21 @@ public class StatisticalController extends SimpleFormController {
 
         //Create the data set
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        dataset.addValue(1.0, "Fila 1", "Columna 1");
-        dataset.addValue(5.0, "Fila 1", "Columna 2");
-        dataset.addValue(3.0, "Fila 1", "Columna 3");
+        dataset.addValue(1.0, "Peligro de extinción", "Familia X");
+        dataset.addValue(5.0, "Peligro de extinción", "Familia Y");
+        dataset.addValue(3.0, "Peligro de extinción", "Familia Z");
         
-        dataset.addValue(2.0, "Fila 2", "Columna 1");
-        dataset.addValue(3.0, "Fila 2", "Columna 2");
-        dataset.addValue(2.0, "Fila 2", "Columna 3");
+        dataset.addValue(2.0, "Extinta", "Familia X");
+        dataset.addValue(3.0, "Extinta", "Familia Y");
+        dataset.addValue(2.0, "Extinta", "Familia Z");
+
+        dataset.addValue(2.0, "Vulnerable", "Familia X");
+        dataset.addValue(7.0, "Vulnerable", "Familia Y");
+        dataset.addValue(8.0, "Vulnerable", "Familia Z");
 
         //Create the chart
-        JFreeChart chart = ChartFactory.createBarChart(
-        "Mi gráfico", //title
+        JFreeChart chart = ChartFactory.createBarChart3D(
+        "Gráfico de prueba", //title
         parameters.getXdata(), // x axis label
         parameters.getYdata(),  // y axis label
         dataset, //dataset
@@ -78,38 +79,13 @@ public class StatisticalController extends SimpleFormController {
 		plot.getDomainAxis().setLabel("Fecha del registro");
 		plot.getRangeAxis().setLabel("Cantidad de Huellas");*/
 
+		//Store te chart in the session.
+		request.getSession(true).setAttribute("chart", chart);
+
 		//Show the resultant chart
-        return writeReponse(request, response,chart);
+        boolean chartDisplay = true;
+        ModelAndView mv = new ModelAndView(getSuccessView());
+        mv.addObject("chartDisplay",chartDisplay);
+        return mv;
     }
-
-	private ModelAndView writeReponse(HttpServletRequest request,
-			HttpServletResponse response,JFreeChart chart) throws Exception {
-
-		response.setContentType("image/png");
-        //response.setHeader("Content-Disposition","attachment;filename=\"chart.png\"");
-        
-        // Binary output
-		ServletOutputStream out = response.getOutputStream();
-
-        //Send the image
-        BufferedImage buf = chart.createBufferedImage(640, 400, null);
-        PngEncoder encoder = new PngEncoder(buf, false, 0, 9);
-        out.write(encoder.pngEncode());
-
-        //Close de outputStream
-		out.flush();
-		out.close();
-
-		return null;
-	}
-
-	/*private void setLabelsConfiguration(XYLineAndShapeRenderer renderer, DateFormat dfm) {
-
-		StandardXYItemLabelGenerator gen = null;
-
-		// Agrega las Etiquetas a los puntos de ocurrencia.
-		gen = new StandardXYItemLabelGenerator("{1}", dfm, dfm);
-		renderer.setSeriesItemLabelGenerator(0, gen);
-		renderer.setSeriesItemLabelsVisible(0, true);
-	}*/
 }

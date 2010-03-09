@@ -91,7 +91,10 @@
     <!-- The estatistical analysis page controller -->
     <bean name="/statisticalParameters.htm" class="org.inbio.ait.web.controller.StatisticalController">
         <property name="formView" value="statistical"/>
+        <property name="successView" value="viewChart"/>
     </bean>
+    <!-- Chart viewer -->
+    <bean name="/chart.htm" class="org.inbio.ait.web.controller.ChartController"/>
 
     <!--.....................................................................-->
     <!--................... Manager Injections ...............................-->
