@@ -55,13 +55,14 @@ public class QueryManagerImpl implements QueryManager{
         if(layerList.length>0 && !layerList[0].equals("")){
             query += "(";
             for(int i = 0;i<layerList.length;i++){
-                String layer = layerList[i].split("~")[0];
-                String polygon = layerList[i].split("~")[1];
+                String[] aux = layerList[i].split("~");
+                String layer = aux[0];
+                String polygon = aux[1];
                 if(i==layerList.length-1){ //last element
-                    query += "(layer_table = '"+layer.split("\\:")[1]+"' and polygom_id = "+polygon.split("\\.")[1]+")";
+                    query += "(layer_table = '"+layer+"' and polygom_id = "+polygon+")";
                 }
                 else{
-                    query += "(layer_table = '"+layer.split("\\:")[1]+"' and polygom_id = "+polygon.split("\\.")[1]+") or ";
+                    query += "(layer_table = '"+layer+"' and polygom_id = "+polygon+") or ";
                 }
             }
             query += ")";
