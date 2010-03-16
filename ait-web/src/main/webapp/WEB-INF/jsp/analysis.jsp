@@ -54,8 +54,6 @@
             var selectedNodeId;
             var selectedNodeName;
             var isLeaf;
-            //Var to store friendly user(to show) query criteria
-            var queryCriteriaToShow;
 
             /*              Internacionalization variables                */
             var layerText;
@@ -142,7 +140,7 @@
                     OpenLayers.Event.stop(e);
                 });
 
-                // Build up all controls
+                //Build up all controls
                 map.addControl(new OpenLayers.Control.PanZoomBar({
                     position: new OpenLayers.Pixel(2, 15)
                 }));
@@ -242,8 +240,8 @@
              */
             function parseHTML(html){
                 var rows = html.split("<tr>");
-                //validar que la respuesta tenga al menos un poligono
-                if(rows.length<3){ //En la posicion 3 esta el primer poligono
+                //Validate that the response have at least one polygon
+                if(rows.length<3){ //On 3 position is the first polygon
                     alert('No se ha seleccionado un polígono válido');
                     document.getElementById('info').innerHTML = "";
                     return;
@@ -253,11 +251,11 @@
                 var prepolygonFin = prepolygonIni.replace("</tr>","|_|");
                 var polygonArray = prepolygonFin.split("|_|");
                 var polygon = polygonArray[1];
-                //quitar separadores (cambios de linea ...)
+                //Delete separators (new line ...)
                 var withOutSeparators = deleteSeparators(polygon);
-                //homogenizar el delimitador de los atributos
+                //Homogenize the delimeter of the atributes
                 var homogenized = withOutSeparators.replace(/<\/td>/gi,"");
-                //get the final info
+                //Get the final info
                 var atributes = homogenized.split("<td>");
                 var id = atributes[0];
                 var info = "";
@@ -303,18 +301,18 @@
             };
 
             /*
-             * Agrega un nuevo filtro geografico
+             * Add a new geographic filter
              */
             function addLayerParam(polygon,capa,pname,cname) {
-                //Validar que ninguno de los parametros sea nulo
+                //Validate null parameters
                 if(capa==null||polygon==null){
                     alert('Se debe seleccionar una capa y un polígono');
                     return;
                 }
-                //Afinar el dato de capa y poligono
+                //Get just the plain data of layer and polygon
                 var newCapa = capa.split(":")[1];
                 var newPolygon = polygon.split(".")[1];
-                //Validar que la capa/polígono seleccionados no sean repetidos
+                //Validate repeated layer/polygon
                 var aux_exist = document.getElementById(newCapa+"~"+newPolygon);
                 if(aux_exist!=null){
                     alert('La capa y polígono seleccionados ya fue agregada anteriormente');
@@ -324,14 +322,14 @@
                     polygonsList = null;
                     return;
                 }
-                //Agregar el parametro a la lista
+                //Add the parameter to the list
                 var layerslist = document.getElementById('mapParameters');
                 var newdiv = document.createElement('div');
                 newdiv.setAttribute("id",newCapa+"~"+newPolygon);
                 newdiv.innerHTML =
                     "<a href=\"javascript:\" onclick=\"removeLayerParamElement(\'"+newCapa+"~"+newPolygon+"\')\">"+pname+"</a>";
                 layerslist.appendChild(newdiv);
-                //Restablecer el estado del mecanismo de seleccion de capas
+                //Restore the mechanism for layer selection
                 document.getElementById('info').innerHTML = "";
                 currentPolygonId = null;
                 currentPolygonName = null;
@@ -339,7 +337,7 @@
             };
 
             /*
-             * Elimina un elemento dado su id
+             * Deletes an element by it's id
              */
             function removeLayerParamElement(divNum) {
               var d = document.getElementById('mapParameters');
@@ -348,26 +346,26 @@
             };
 
             /*
-             * Agrega un nuevo filtro taxonomico
+             * Add a new taxonomic filter
              */
             function addTaxonParam() {
-                //Obtener el valor del campo de texto
+                //Get the text field value
                 var txTaxon = document.getElementById('taxonId');
                 var text = txTaxon.value;
-                //Validar que no sea nulo
+                //Validate null values
                 if(text==null||text==''){
                     alert('Debe especificar el nombre del taxón que desea agregar');
                     txTaxon.value = null;
                     return
                 }
-                //Validar que no sea repetido
+                //Validate repeated values
                 var aux_exist = document.getElementById(text);
                 if(aux_exist!=null){
                     alert('El taxón seleccionado ya fue agregado anteriormente');
                     txTaxon.value = null;
                     return;
                 }
-                //Agregar el parametro de busqueda
+                //Add the search criteria
                 var taxonlist = document.getElementById('taxParameters');
                 var newdiv = document.createElement('div');
                 newdiv.setAttribute("id",text);
@@ -378,7 +376,7 @@
             };
 
             /*
-             * Elimina un elemento dado su id
+             * Deletes an element by it's id
              */
             function removeTaxonParamElement(divNum) {
               var d = document.getElementById('taxParameters');
@@ -387,26 +385,26 @@
             };
 
             /*
-             * Agrega un nuevo filtro de indicadores
+             * Add new indicators filter
              */
             function addIndicatorParam(){
-                //Validar que se haya seleccionado un nodo
+                //Validate that a node was selected
                 if(selectedNodeId==null||selectedNodeName==null){
                     alert('Primero debe seleccionar un indicador taxonómico');
                     return;
                 }
-                //Validar si es hoja
+                //Validate if it is a leaf
                 if(isLeaf=="false"){
                     alert('El indicador debe ser una hoja del árbol');
                     return;
                 }
-                //Validar que el indicador seleccionado no sea repetido
+                //Validate that the selected indicator was not repeated
                 var aux_exist = document.getElementById(selectedNodeId);
                 if(aux_exist!=null){
                     alert('El indicador ya fue agregado anteriormente');
                     return;
                 }
-                //Agregar el parametro a la lista
+                //Add the criteria to the list
                 var indicatorslist = document.getElementById('treeParameters');
                 var newdiv = document.createElement('div');
                 newdiv.setAttribute("id",selectedNodeId);
@@ -416,7 +414,7 @@
             };
 
             /*
-             * Elimina un elemento dado su id
+             * Deletes an element by it's id
              */
             function removeTreeParamElement(divNum) {
               var d = document.getElementById('treeParameters');
@@ -425,7 +423,7 @@
             };
 
             /*
-             * Setea en su valor inicial las variables geograficas
+             * Set the initial value to the geografic variables
              */
             function clearGeograficVars(){
                 currentPolygonId = null;
@@ -437,48 +435,47 @@
             };
 
             /*
-             * To make the final query
+             * This function calls another function that is on charge to make the
+             * final query and show the result to the user
              */
             function makeQuery(){
                 var layerslist = document.getElementById('mapParameters');
                 var taxonlist = document.getElementById('taxParameters');
                 var treelist = document.getElementById('treeParameters');
-                //Validar que exista al menos un criterio de búsqueda
+                var layersShow = new Array();
+                var taxonsShow = new Array();
+                var treeShow = new Array();
+                //Validate that exist at least one search criteria
                 if(layerslist.childNodes.length==0&&taxonlist.childNodes.length==0&&treelist.childNodes.length==0){
                     alert('Por favor seleccione algún criterio de búsqueda');
                     return;
                 }
-                //Recorrer los criterios geográficos
-                queryCriteriaToShow = "<a>"; //Cleanning the variable
+                //Loop over geographical criteria
                 var selectedLayers = "";
                 for (var i =0; i <layerslist.childNodes.length; i++){
                     selectedLayers += layerslist.childNodes[i].id+"|";
-                    queryCriteriaToShow += "* "+layerslist.childNodes[i].textContent+" ";
+                    layersShow.push(layerslist.childNodes[i].textContent);
                 }
-                queryCriteriaToShow += "</a><br>";
-                //Recorrer los criterios taxonómicos
-                queryCriteriaToShow += "<a>";
+                //Loop over taxonomic criteria
                 var selectedTaxa = "";
                 for (var j =0; j <taxonlist.childNodes.length; j++){
                     selectedTaxa += taxonlist.childNodes[j].textContent+"|";
-                    queryCriteriaToShow += "* "+taxonlist.childNodes[j].textContent+" ";
+                    taxonsShow.push(taxonlist.childNodes[j].textContent);
                 }
-                queryCriteriaToShow += "</a><br>";
-                //Recorrer los criterios de indicadores
-                queryCriteriaToShow += "<a>";
+                //Loop over indicators criteria
                 var selectedIndicators = "";
                 for (var k =0; k <treelist.childNodes.length; k++){
                     selectedIndicators += treelist.childNodes[k].id+"|";
-                    queryCriteriaToShow += "* "+treelist.childNodes[k].textContent+" ";
+                    treeShow.push(treelist.childNodes[k].textContent);
                 }
-                queryCriteriaToShow += "</a><br>";
-                //Lamar a la función que traera el resultado de la consulta asincronicamente
-                executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators,queryCriteriaToShow);
+                //Call the function that returns the result (xml) asincrinically
+                executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators,
+                layersShow,taxonsShow,treeShow);
             };
             
         </script>
 
-        <!-- Internacionalización-->
+        <!-- Internacionalization-->
         <script type="text/javascript">
             function internationalization(){
                 layerText =  "<fmt:message key="layers"/>";
@@ -489,7 +486,7 @@
     </head>
     <body onload="init()">
 
-        <!-- TaxonFilter Auto Completes-->
+        <!-- TaxonFilter Auto Complete-->
         <script type="text/javascript">
             var taxonAutoCompleteUrls = new Array(${ fn:length(model.taxonFilters)});
             <c:forEach items="${model.taxonFilters}" var="taxonFilter" varStatus="filterStatus" begin="0">

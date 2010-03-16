@@ -1,35 +1,86 @@
+/* AIT - Analysis of taxonomic indicators
+ *
+ * Copyright (C) 2010  INBio (Instituto Nacional de Biodiversidad)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /**
- * Execute final query by especific parameters
+ * Execute final query from especific parameters
  */
-function executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators,queryCriteriaToShow)  {
+function executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators,
+                           layersShow,taxonsShow,treeShow)  {
 
     //Prepare URL for XHR request:
     var sUrl = "/ait-web/ajax/finalQuery?layers="+selectedLayers+"&taxons="+selectedTaxa+"&indi="+selectedIndicators;
 
     //Prepare callback object
-    var callback2 = {
+    var callback = {
 
         //If XHR call is successful
         success: function(oResponse) {
-            //root element -> response
+            //Root element -> response
             var response = oResponse.responseXML.documentElement;
-            //child node (nodes)
+            //Child node <total></total>
             var totalCountNode = response.childNodes[0];
             //Get total count data
             var totalCount = totalCountNode.textContent;
-            //Limpiar las listas de criterios
+            //Child node <polygons></polygons>
+            var polygonsNode = response.childNodes[1];
+            //Get the list of polygons
+            var polygonsList = polygonsNode.childNodes;
+
+            //Clean criteria lists
             document.getElementById('mapParameters').innerHTML = "";
             document.getElementById('taxParameters').innerHTML = "";
             document.getElementById('treeParameters').innerHTML = "";
-            tree.collapseAll();            
-            //Mostrar el resultado y los criterios de la búsqueda
-            var resultHTML = "<b>Criterios de búsqueda:</b><br>";
-            resultHTML += queryCriteriaToShow;
-            resultHTML += "<b>Total de especímenes que cumplen los criterios:</b><br>";
-            resultHTML += "<a>      "+totalCount+"</a>";
+            tree.collapseAll();
+
+            //Show general result and the search criteria
+            var criteria = "";
+            for(var i = 0;i<layersShow.length;i++){
+                criteria += layersShow[i]+"  ";
+            }
+            for(var j = 0;j<taxonsShow.length;j++){
+                criteria += taxonsShow[j]+"  ";
+            }
+            for(var k = 0;k<treeShow.length;k++){
+                criteria += treeShow[k]+"  ";
+            }
+            var resultHTML = "<p style=\"font-weight:bold;font-size:14px;\">Resultados generales</p>"+
+            "<table class=\"contacts\" cellspacing=\"0\">"+
+            "<tr><th class=\"contactDept\" >Criterios de búsqueda</th>"+
+            "<th  class=\"contactDept\" >Total de coincidencias</th></tr><tr>"+
+            "<td class=\"contact\" width=\"70%\">"+criteria+"</td>"+
+            "<td class=\"contact\" width=\"30%\">"+totalCount+"</td>"+
+            "</tr></table>";
+
+            //Show the result in terms of polygons
+            if(polygonsList.length>1){
+                resultHTML += "<p style=\"font-weight:bold;font-size:14px;\">Resultados por polígono</p>";
+                for(var l = 0;l<polygonsList.length;l++){
+                    resultHTML += "<table class=\"contacts\" cellspacing=\"0\">"+
+                    "<tr><th class=\"contactDept\" >Criterio</th>"+
+                    "<th  class=\"contactDept\" >Coincidencias</th></tr><tr>"+
+                    "<td class=\"contact\" width=\"70%\">"+layersShow[l]+"</td>"+
+                    "<td class=\"contact\" width=\"30%\">"+polygonsList[l].textContent+"</td>"+
+                    "</tr></table>";
+                }
+            }
+
             document.getElementById('resultsPanel').innerHTML = resultHTML;
-        },
+        }, 
 
         //If XHR call is not successful
         failure: function(oResponse) {
@@ -41,5 +92,5 @@ function executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators,queryC
     };
 
     //Make our XHR call using Connection Manager's
-    YAHOO.util.Connect.asyncRequest('GET', sUrl, callback2);
+    YAHOO.util.Connect.asyncRequest('GET', sUrl, callback);
 }
