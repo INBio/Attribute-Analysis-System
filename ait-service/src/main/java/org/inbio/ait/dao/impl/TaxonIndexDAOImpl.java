@@ -1,6 +1,19 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/* AIT - Analysis of taxonomic indicators
+ *
+ * Copyright (C) 2010  INBio (Instituto Nacional de Biodiversidad)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package org.inbio.ait.dao.impl;
@@ -13,7 +26,7 @@ import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
 /**
- *
+ * Implementing TaxonIndexDAO methods
  * @author esmata
  */
 public class TaxonIndexDAOImpl extends SimpleJdbcDaoSupport implements TaxonIndexDAO{
@@ -31,7 +44,7 @@ public class TaxonIndexDAOImpl extends SimpleJdbcDaoSupport implements TaxonInde
         return tIndex;
     }
 
-     private static class tIndexMapper implements ParameterizedRowMapper<TaxonIndex> {
+    private static class tIndexMapper implements ParameterizedRowMapper<TaxonIndex> {
 
         @Override
         public TaxonIndex mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -41,7 +54,6 @@ public class TaxonIndexDAOImpl extends SimpleJdbcDaoSupport implements TaxonInde
             ti.setTaxon_range(rs.getLong("taxon_range"));
             return ti;
         }
-
-     }
+    }
 
 }

@@ -1,6 +1,19 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/* AIT - Analysis of taxonomic indicators
+ *
+ * Copyright (C) 2010  INBio (Instituto Nacional de Biodiversidad)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package org.inbio.ait.dao.impl;
@@ -16,7 +29,7 @@ import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
 /**
- *
+ * Implementing SpecimenDAO methods
  * @author esmata
  */
 public class SpecimenDAOImpl extends SimpleJdbcDaoSupport implements SpecimenDAO{
@@ -24,35 +37,36 @@ public class SpecimenDAOImpl extends SimpleJdbcDaoSupport implements SpecimenDAO
     @Override
     public List<Specimen> getSpecimenList() {
         List<Specimen> specimens = new ArrayList<Specimen>();
-        try{
+        try {
             //limit = num_registros_devueltos offset = inicio
             String query = "Select * from ait.darwin_core order by " +
                     "globaluniqueidentifier limit 10 offset 0;";
             specimens = getSimpleJdbcTemplate().query(query,
                     new SpecimenMapper());
+        } catch (Exception e) {
+            return specimens;
         }
-        catch(Exception e){return specimens;}
-
         return specimens;
     }
 
     /**
-     * Return all disctint elements for classes,phylums,kingdoms
+     * Return all disctint elements for classes,phylums,kingdoms ...
      * @param partialName
      * @param range
      * @return
      */
     @Override
-    public List<AutocompleteNode> getElementsByRange(String partialName,int range,String atributeName){
+    public List<AutocompleteNode> getElementsByRange(String partialName, int range, String atributeName) {
         List<AutocompleteNode> nodes = new ArrayList<AutocompleteNode>();
-        try{
-            String query = "Select DISTINCT "+atributeName+" from ait.darwin_core as s " +
-                    "where s."+atributeName+" like '%"+partialName+"%' limit 10 offset 0;";
+        try {
+            String query = "Select DISTINCT " + atributeName + " from ait.darwin_core as s " +
+                    "where s." + atributeName + " like '%" + partialName + "%' limit 10 offset 0;";
 
             nodes = getSimpleJdbcTemplate().query(query,
-                    new AutocompleteMapper(range,atributeName));
+                    new AutocompleteMapper(range, atributeName));
+        } catch (Exception e) {
+            return nodes;
         }
-        catch(Exception e){return nodes;}
         return nodes;
     }
 

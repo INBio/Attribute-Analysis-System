@@ -1,6 +1,19 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/* AIT - Analysis of taxonomic indicators
+ *
+ * Copyright (C) 2010  INBio (Instituto Nacional de Biodiversidad)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package org.inbio.ait.dao.impl;
@@ -15,21 +28,21 @@ import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
 /**
- *
+ * Implementing TaxonInfoIndexDAO methods
  * @author esmata
  */
 public class TaxonInfoIndexDAOImpl extends SimpleJdbcDaoSupport implements TaxonInfoIndexDAO {
 
     @Override
-    public List<TaxonInfoIndex> getallTaxonInfo(){
+    public List<TaxonInfoIndex> getallTaxonInfo() {
         List<TaxonInfoIndex> tInfo = new ArrayList<TaxonInfoIndex>();
-        try{
+        try {
             String query = "Select * from ait.taxon_info_index order by globaluniqueidentifier limit 10 offset 0;";
             tInfo = getSimpleJdbcTemplate().query(query,
                     new tInfoMapper());
+        } catch (Exception e) {
+            return tInfo;
         }
-        catch(Exception e){return tInfo;}
-
         return tInfo;
     }
 
@@ -41,18 +54,18 @@ public class TaxonInfoIndexDAOImpl extends SimpleJdbcDaoSupport implements Taxon
     @Override
     public List<TaxonInfoIndex> getTaxonsByQuery(String q) {
         List<TaxonInfoIndex> tInfo = new ArrayList<TaxonInfoIndex>();
-        try{
+        try {
             String query = q;
             tInfo = getSimpleJdbcTemplate().query(query,
                     new tInfoMapper());
+        } catch (Exception e) {
+            return tInfo;
         }
-        catch(Exception e){return tInfo;}
-
         return tInfo;
     }
 
     /**
-     * * Execute any count query of TaxonInfoIndex model object
+     * Execute any count query of TaxonInfoIndex model object
      * @param q
      * @return
      */
@@ -64,15 +77,14 @@ public class TaxonInfoIndexDAOImpl extends SimpleJdbcDaoSupport implements Taxon
         } catch (Exception e) {
             return result;
         }
-
         return result;
     }
     
-     private static class tInfoMapper implements ParameterizedRowMapper<TaxonInfoIndex> {
+    private static class tInfoMapper implements ParameterizedRowMapper<TaxonInfoIndex> {
 
         @Override
         public TaxonInfoIndex mapRow(ResultSet rs, int rowNum) throws SQLException {
-             TaxonInfoIndex ti = new TaxonInfoIndex();
+            TaxonInfoIndex ti = new TaxonInfoIndex();
             ti.setGlobaluniqueidentifier(rs.getString("globaluniqueidentifier"));
             ti.setClass_id(rs.getLong("class_id"));
             ti.setFamily_id(rs.getLong("family_id"));
@@ -86,9 +98,7 @@ public class TaxonInfoIndexDAOImpl extends SimpleJdbcDaoSupport implements Taxon
             ti.setScientific_name_id(rs.getLong("scientific_name_id"));
             ti.setSpecific_epithet_id(rs.getLong("specific_epithet_id"));
             return ti;
-
         }
-     
-     }
+    }
 
 }

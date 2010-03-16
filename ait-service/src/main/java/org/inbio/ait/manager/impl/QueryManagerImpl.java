@@ -1,6 +1,19 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/* AIT - Analysis of taxonomic indicators
+ *
+ * Copyright (C) 2010  INBio (Instituto Nacional de Biodiversidad)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package org.inbio.ait.manager.impl;
@@ -14,11 +27,11 @@ import org.inbio.ait.model.TaxonInfoIndex;
 import org.inbio.ait.model.TaxonomicalRange;
 
 /**
- *
  * @author esmata
  */
 public class QueryManagerImpl implements QueryManager{
 
+    //Dependency injections
     private TaxonInfoIndexDAO taxonInfoIndexDAO;
     private TaxonIndexDAO taxonIndexDAO;
 
@@ -49,32 +62,33 @@ public class QueryManagerImpl implements QueryManager{
     @Override
     public Long countByCriteria(String[] layerList, String[] taxonList, String[] indicList) {
         //Build the query string base on parameters
-        String query = "Select count(distinct globaluniqueidentifier) from ait.taxon_info_index where ";
+        StringBuilder query = new StringBuilder();
+        query.append("Select count(distinct globaluniqueidentifier) from ait.taxon_info_index where ");
 
         //If there is geografical criteria
         if(layerList.length>0 && !layerList[0].equals("")){
-            query += "(";
+            query.append("(");
             for(int i = 0;i<layerList.length;i++){
                 String[] aux = layerList[i].split("~");
                 String layer = aux[0];
                 String polygon = aux[1];
                 if(i==layerList.length-1){ //last element
-                    query += "(layer_table = '"+layer+"' and polygom_id = "+polygon+")";
+                    query.append("(layer_table = '"+layer+"' and polygom_id = "+polygon+")");
                 }
                 else{
-                    query += "(layer_table = '"+layer+"' and polygom_id = "+polygon+") or ";
+                    query.append("(layer_table = '"+layer+"' and polygom_id = "+polygon+") or ");
                 }
             }
-            query += ")";
+            query.append(")");
         }
 
         //If there is taxonomy criteria
         if(taxonList.length>0 && !taxonList[0].equals("")){
             if(layerList.length>0 && !layerList[0].equals("")){
-                query += " and (";
+                query.append(" and (");
             }
             else{
-                query += "(";
+                query.append("(");
             }
             for(int i = 0;i<taxonList.length;i++){
                 //Get the name and taxonomical level of the specified taxon
@@ -108,38 +122,38 @@ public class QueryManagerImpl implements QueryManager{
                         break;
                 }
                 if(i==taxonList.length-1){ //last element
-                    query += "("+levelColum+" = "+ti.getTaxon_id()+")";
+                    query.append("("+levelColum+" = "+ti.getTaxon_id()+")");
                 }
                 else{
-                    query += "("+levelColum+" = "+ti.getTaxon_id()+") or ";
+                    query.append("("+levelColum+" = "+ti.getTaxon_id()+") or ");
                 }
             }
-            query += ")";
+            query.append(")");
         }
 
         //If there is indicators criteria
         if(indicList.length>0 && !indicList[0].equals("")){
             if((taxonList.length>0 && !taxonList[0].equals(""))||(layerList.length>0 && !layerList[0].equals(""))){
-                query += " and (";
+                query.append(" and (");
             }
             else{
-                query += "(";
+                query.append("(");
             }
             for(int i = 0;i<indicList.length;i++){
                 if(i==indicList.length-1){ //last element
-                    query += "(indicator_id = "+indicList[i]+")";
+                    query.append("(indicator_id = "+indicList[i]+")");
                 }
                 else{
-                    query += "(indicator_id = "+indicList[i]+") or ";
+                    query.append("(indicator_id = "+indicList[i]+") or ");
                 }
             }
-            query += ")";
+            query.append(")");
         }
 
-        System.out.println(query);
+        //System.out.println(query.toString());
 
         //Execute query
-        return taxonInfoIndexDAO.countTaxonsByQuery(query);
+        return taxonInfoIndexDAO.countTaxonsByQuery(query.toString());
     }
 
     /**
