@@ -217,3 +217,14 @@ body {
     background-color: #fafafa;
     padding-top: 1px;
     padding-bottom: 1px; }
+
+    td.contactJusti
+    { border: 1px #6699CC solid;
+    text-align: justify;
+    font-family: Verdana, sans-serif, Arial;
+    font-weight: normal;
+    font-size: .7em;
+    color: #404040;
+    background-color: #fafafa;
+    padding-top: 1px;
+    padding-bottom: 1px; }

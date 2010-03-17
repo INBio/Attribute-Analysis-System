@@ -48,35 +48,37 @@ function executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators,
             tree.collapseAll();
 
             //Show general result and the search criteria
-            var criteria = "";
+            var criteria = "<b>Geográficos:</b>";
             for(var i = 0;i<layersShow.length;i++){
-                criteria += layersShow[i]+"  ";
+                criteria += layersShow[i]+"   ";
             }
+            criteria += "<br><b>Taxonómicos:</b>";
             for(var j = 0;j<taxonsShow.length;j++){
-                criteria += taxonsShow[j]+"  ";
+                criteria += taxonsShow[j]+"   ";
             }
+            criteria += "<br><b>Indicadores:</b>";
             for(var k = 0;k<treeShow.length;k++){
-                criteria += treeShow[k]+"  ";
+                criteria += treeShow[k]+"   ";
             }
             var resultHTML = "<p style=\"font-weight:bold;font-size:14px;\">Resultados generales</p>"+
             "<table class=\"contacts\" cellspacing=\"0\">"+
             "<tr><th class=\"contactDept\" >Criterios de búsqueda</th>"+
             "<th  class=\"contactDept\" >Total de coincidencias</th></tr><tr>"+
-            "<td class=\"contact\" width=\"70%\">"+criteria+"</td>"+
+            "<td class=\"contactJusti\" width=\"70%\">"+criteria+"</td>"+
             "<td class=\"contact\" width=\"30%\">"+totalCount+"</td>"+
             "</tr></table>";
 
             //Show the result in terms of polygons
             if(polygonsList.length>1){
-                resultHTML += "<p style=\"font-weight:bold;font-size:14px;\">Resultados por polígono</p>";
-                for(var l = 0;l<polygonsList.length;l++){
-                    resultHTML += "<table class=\"contacts\" cellspacing=\"0\">"+
+                resultHTML += "<p style=\"font-weight:bold;font-size:14px;\">Resultados por polígono</p>"+
+                    "<table class=\"contacts\" cellspacing=\"0\">"+
                     "<tr><th class=\"contactDept\" >Criterio</th>"+
-                    "<th  class=\"contactDept\" >Coincidencias</th></tr><tr>"+
-                    "<td class=\"contact\" width=\"70%\">"+layersShow[l]+"</td>"+
-                    "<td class=\"contact\" width=\"30%\">"+polygonsList[l].textContent+"</td>"+
-                    "</tr></table>";
+                    "<th  class=\"contactDept\" >Coincidencias</th></tr>";
+                for(var l = 0;l<polygonsList.length;l++){
+                    resultHTML += "<tr><td class=\"contact\" width=\"70%\">"+layersShow[l]+"</td>"+
+                    "<td class=\"contact\" width=\"30%\">"+polygonsList[l].textContent+"</td></tr>";
                 }
+                resultHTML += "</table>";
             }
 
             document.getElementById('resultsPanel').innerHTML = resultHTML;
