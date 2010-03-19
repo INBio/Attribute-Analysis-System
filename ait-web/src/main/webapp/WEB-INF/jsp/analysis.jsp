@@ -55,11 +55,6 @@
             var selectedNodeName;
             var isLeaf;
 
-            /*              Internacionalization variables                */
-            var layerText;
-            var consultText;
-            var loadingText;
-
             //Pink tile avoidance
             OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
             //Make OL compute scale according to WMS spec
@@ -68,8 +63,6 @@
             function init(){
 
                 internationalization(); //Load messages content
-
-                format = 'image/png';
 
                 var bounds = new OpenLayers.Bounds(
                     -102.184, 7.204,
@@ -157,20 +150,6 @@
                 initIndicators();
 
             } //init() ends
-
-            /*
-             * Create a drop down to specified the current layer
-             */
-            function createDDLayers(){
-                var dropdown = "<p style=\"margin:1px\"><a> "+layerText+": </a></p>";
-                dropdown += "<select name=ddLayer class=\"componentSize\" onchange='onChangeLayer(this.form.ddLayer);'>";
-                //Setting drop down options
-                for(var i=0;i<layersList.length;i++){
-                    dropdown+= "<option>"+layersList[i][1]+"</option>";
-                }
-                dropdown+= "</select>";
-                document.getElementById('currentLayer').innerHTML = dropdown;
-            }
 
             /*
              * Initialazing the indicators tree

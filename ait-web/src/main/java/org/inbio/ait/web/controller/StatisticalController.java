@@ -45,9 +45,7 @@ public class StatisticalController extends SimpleFormController {
         //Getting query parameters
 		ChartParameters parameters = (ChartParameters) command;
 
-        //Getting chart data
-		/*HashMap datos = tpd.getSpecieOcurrenciesData(form.getIndicatorId(),
-        form.getFieldTripId(), form.getTaxonId());*/
+        //Getting chart data from data base
 
         //Create the data set
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
@@ -66,8 +64,8 @@ public class StatisticalController extends SimpleFormController {
         //Create the chart
         JFreeChart chart = ChartFactory.createBarChart3D(
         "Gráfico de prueba", //title
-        parameters.getXdata(), // x axis label
-        parameters.getYdata(),  // y axis label
+        parameters.getXtitle(), // x axis label
+        parameters.getYtitle(),  // y axis label
         dataset, //dataset
         PlotOrientation.VERTICAL,
         true,  // include legend

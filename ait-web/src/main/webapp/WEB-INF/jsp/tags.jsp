@@ -21,3 +21,4 @@
 <script src="${pageContext.request.contextPath}/javascript/yui/treeview/treeview-min.js" type="text/javascript" language="javascript"></script>
 <script src="${pageContext.request.contextPath}/javascript/treeEvent.js" type="text/javascript" language="javascript"></script>
 <script src="${pageContext.request.contextPath}/javascript/finalQueryEvent.js" type="text/javascript" language="javascript"></script>
+<script src="${pageContext.request.contextPath}/javascript/analysisCommon.js" type="text/javascript" language="javascript"></script>

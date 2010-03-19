@@ -23,6 +23,8 @@ package org.inbio.ait.web.utils;
  * @author esmata
  */
 public class ChartParameters {
+    private String xtitle;
+    private String ytitle;
     private String xdata;
     private String ydata;
 
@@ -52,5 +54,33 @@ public class ChartParameters {
      */
     public void setYdata(String ydata) {
         this.ydata = ydata;
+    }
+
+    /**
+     * @return the xtitle
+     */
+    public String getXtitle() {
+        return xtitle;
+    }
+
+    /**
+     * @param xtitle the xtitle to set
+     */
+    public void setXtitle(String xtitle) {
+        this.xtitle = xtitle;
+    }
+
+    /**
+     * @return the ytitle
+     */
+    public String getYtitle() {
+        return ytitle;
+    }
+
+    /**
+     * @param ytitle the ytitle to set
+     */
+    public void setYtitle(String ytitle) {
+        this.ytitle = ytitle;
     }
 }
