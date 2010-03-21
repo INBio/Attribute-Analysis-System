@@ -27,6 +27,8 @@
                 <prop key="/nodeInfo/**/**">indicatorsTreeController</prop>
             <!-- Query support -->
                 <prop key="/finalQuery/**/**">queryController</prop>
+            <!-- Getting specimen info to show in the map the specimens point -->
+                <prop key="/getPoints/**/**">pointsController</prop>
             </props>
         </property>
     </bean>
@@ -73,6 +75,14 @@
     <bean id="queryController" class="org.inbio.ait.web.ajax.controller.QueryController">
       <property name="queryManager" ref="queryManager"/>
     </bean>
+    
+    <!--.....................................................................-->
+    <!--..................... Specimens map points ..........................-->
+    <!--.....................................................................-->
+    <!-- Taxonomy search support  -->
+    <bean id="pointsController" class="org.inbio.ait.web.ajax.controller.PointsController">
+      <property name="pointsManager" ref="pointsManager"/>
+    </bean>
 
     <!--.....................................................................-->
     <!--................... Manager Beans ...............................-->
@@ -86,6 +96,11 @@
     <bean id="queryManager" class="org.inbio.ait.manager.impl.QueryManagerImpl">
         <property name="taxonInfoIndexDAO" ref="taxonInfoIndexDAO"/>
         <property name="taxonIndexDAO" ref="taxonIndexDAO"/>
+    </bean>
+    <bean id="pointsManager" class="org.inbio.ait.manager.impl.PointsManagerImpl">
+        <property name="taxonInfoIndexDAO" ref="taxonInfoIndexDAO"/>
+        <property name="taxonIndexDAO" ref="taxonIndexDAO"/>
+        <property name="specimenDAO" ref="specimenDAO"/>
     </bean>
 
     <!--.....................................................................-->

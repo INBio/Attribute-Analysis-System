@@ -43,8 +43,6 @@
             var layerName; //(Name)
             //Current layer index (numeric)
             var layerIndex;
-            //Base Layer
-            var base;
             //Indicators tree
             var tree;
             var currentIconMode;
@@ -54,6 +52,10 @@
             var selectedNodeId;
             var selectedNodeName;
             var isLeaf;
+            //Layer to show specimens points
+            var vectorLayer = new OpenLayers.Layer.Vector('Specimens');
+            //To create a new atribute for each specimen point
+            var attributes;
 
             //Pink tile avoidance
             OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
@@ -102,9 +104,12 @@
                 aspPMA = addLayerWMS( 'ASP-PMA','IABIN_Indicadores:bd_pan_areas_protegidas');
                 aspPMA.setVisibility(true);
 
+                vectorLayer.setVisibility(true);
+
                 map.addLayer(base);
                 map.addLayer(provincias);
                 map.addLayer(aspPMA);
+                map.addLayer(vectorLayer);
 
                 //Variables to manage the events on the diferent layers
                 layersList = new Array(new Array('IABIN_Indicadores:bd_meso_limite_paies','Paises - Mesoamérica'),
@@ -447,9 +452,38 @@
                     selectedIndicators += treelist.childNodes[k].id+"|";
                     treeShow.push(treelist.childNodes[k].textContent);
                 }
+                //Setting to hidden fields the query values. Those info are goning to
+                //be used to show specimens point into the map
+                document.getElementById('hiddenLayers').value = selectedLayers;
+                document.getElementById('hiddenTaxa').value = selectedTaxa;
+                document.getElementById('hiddenIndicators').value = selectedIndicators;
                 //Call the function that returns the result (xml) asincrinically
                 executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators,
                 layersShow,taxonsShow,treeShow);
+
+                //Clean the specimen points layer
+                vectorLayer.refresh();
+                //Draw the specimen points into the map
+                showSpecimenPoints(selectedLayers,selectedTaxa,selectedIndicators);
+            };
+
+            /*
+             * This function adds a new point to the specimens Layer
+             */
+            function addPoint(x, y, attribute) {
+                var feature = new OpenLayers.Feature.Vector(
+                new OpenLayers.Geometry.Point(x, y), attribute);
+                vectorLayer.addFeatures(feature);
+            };
+
+            /*
+             * Creates a new atributes array for each speciemns point
+             */
+            function createAttrib(scientificName) {
+                attrib = {
+                    sScientificName: scientificName
+                }
+                return attrib;
             };
             
         </script>
@@ -541,6 +575,11 @@
                 </div>
 
                 <div id="resultsPanel"></div>
+
+                <!-- To show specimens points into the map -->
+                <input type="hidden" id="hiddenLayers" value="">
+                <input type="hidden" id="hiddenTaxa" value="">
+                <input type="hidden" id="hiddenIndicators" value="">
 
             </div>
         </form>
