@@ -48,4 +48,6 @@ public interface TaxonInfoIndexDAO {
      */
     public Long countTaxonsByQuery(String q);
 
+    public List<String> getGlobalUniqueIdentifiers(String q);
+
 }

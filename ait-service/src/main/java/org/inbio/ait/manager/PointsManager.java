@@ -15,40 +15,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-package org.inbio.ait.dao;
+package org.inbio.ait.manager;
 
 import java.util.List;
-import org.inbio.ait.model.AutocompleteNode;
 import org.inbio.ait.model.Specimen;
 
 /**
- * Data access object interface for the Specimen model class
+ *
  * @author esmata
  */
-public interface SpecimenDAO {
+public interface PointsManager {
 
-    /**
-     * Getting a list of all specimens from data base via jdbc
-     * @return
-     */
-    public List<Specimen> getSpecimenList();
-
-    /**
-     * Return all disctint elements for classes,phylums,kingdoms ...
-     * @param partialName
-     * @param range
-     * @param atributeName
-     * @return
-     */
-    public List<AutocompleteNode> getElementsByRange
-            (String partialName,int range,String atributeName);
-
-    /**
-     * Get a specimen list by a especific query
-     * @param q
-     * @return
-     */
-    public List<Specimen> getSpecimenListByQuery(String q);
+    public List<Specimen> specimensByCriteria(String[] layerList, String[] taxonList, String[] indicList);
 
 }

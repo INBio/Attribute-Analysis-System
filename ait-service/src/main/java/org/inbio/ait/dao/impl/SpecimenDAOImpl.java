@@ -49,6 +49,26 @@ public class SpecimenDAOImpl extends SimpleJdbcDaoSupport implements SpecimenDAO
         return specimens;
     }
 
+
+    /**
+     * Get a list of specimens by their globaluniqueidentifiers
+     * @param guiList
+     * @return
+     */
+    @Override
+    public List<Specimen> getSpecimenListByQuery(String q){
+        List<Specimen> specimens = new ArrayList<Specimen>();
+        try {
+            //limit = num_registros_devueltos offset = inicio
+            String query = q;
+            specimens = getSimpleJdbcTemplate().query(query,
+                    new SpecimenMapper());
+        } catch (Exception e) {
+            return specimens;
+        }
+        return specimens;
+    }
+
     /**
      * Return all disctint elements for classes,phylums,kingdoms ...
      * @param partialName

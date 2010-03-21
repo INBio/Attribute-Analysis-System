@@ -65,6 +65,25 @@ public class TaxonInfoIndexDAOImpl extends SimpleJdbcDaoSupport implements Taxon
     }
 
     /**
+     * Execute any query that returns a list of TaxonInfoIndex model object
+     * just with the globalUniqueIdentifier
+     * @param q
+     * @return
+     */
+    @Override
+    public List<String> getGlobalUniqueIdentifiers(String q) {
+        List<String> tInfo = new ArrayList<String>();
+        try {
+            String query = q;
+            tInfo = getSimpleJdbcTemplate().query(query,
+                    new tGUIMapper());
+        } catch (Exception e) {
+            return tInfo;
+        }
+        return tInfo;
+    }
+
+    /**
      * Execute any count query of TaxonInfoIndex model object
      * @param q
      * @return
@@ -98,6 +117,15 @@ public class TaxonInfoIndexDAOImpl extends SimpleJdbcDaoSupport implements Taxon
             ti.setScientific_name_id(rs.getLong("scientific_name_id"));
             ti.setSpecific_epithet_id(rs.getLong("specific_epithet_id"));
             return ti;
+        }
+    }
+
+    private static class tGUIMapper implements ParameterizedRowMapper<String> {
+
+        @Override
+        public String mapRow(ResultSet rs, int rowNum) throws SQLException {
+            String result = rs.getString("globaluniqueidentifier");
+            return result;
         }
     }
 
