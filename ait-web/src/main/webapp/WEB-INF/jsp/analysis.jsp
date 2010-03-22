@@ -5,7 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ include file="/WEB-INF/jsp/tags.jsp" %>
+<%@ include file="/WEB-INF/jsp/analysisTags.jsp" %>
 <%@ taglib uri="/WEB-INF/tld/fn.tld" prefix="fn" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
@@ -423,6 +423,7 @@
              * final query and show the result to the user
              */
             function makeQuery(){
+                showLoadingResults();
                 var layerslist = document.getElementById('mapParameters');
                 var taxonlist = document.getElementById('taxParameters');
                 var treelist = document.getElementById('treeParameters');
@@ -457,13 +458,14 @@
                 document.getElementById('hiddenLayers').value = selectedLayers;
                 document.getElementById('hiddenTaxa').value = selectedTaxa;
                 document.getElementById('hiddenIndicators').value = selectedIndicators;
+                
                 //Call the function that returns the result (xml) asincrinically
                 executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators,
                 layersShow,taxonsShow,treeShow);
 
                 //Clean the specimen points layer
-                vectorLayer.refresh();
-                //Draw the specimen points into the map
+                replaceVectorLayer();
+                //Draw the spevectorLayer.refresh();cimen points into the map
                 showSpecimenPoints(selectedLayers,selectedTaxa,selectedIndicators);
             };
 
@@ -485,6 +487,24 @@
                 }
                 return attrib;
             };
+
+            /*
+             * Deletes the current specimen points
+             */
+            function replaceVectorLayer(){
+                vectorLayer.destroy();
+                vectorLayer = new OpenLayers.Layer.Vector('Specimens');
+                vectorLayer.setVisibility(true);
+                map.addLayer(vectorLayer);
+            }
+
+            /*
+             * Shows a loaading image
+             */
+            function showLoadingResults(){
+                document.getElementById('resultsPanel').innerHTML =
+                    "<img src=\"http://localhost:8080/ait-web/themes/default/images/loader2.gif\" ></img>";
+            }
             
         </script>
 
