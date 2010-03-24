@@ -90,6 +90,8 @@
     <bean name="/about.htm" class="org.inbio.ait.web.controller.AboutController"/>
     <!-- The estatistical analysis page controller -->
     <bean name="/statisticalParameters.htm" class="org.inbio.ait.web.controller.StatisticalController">
+        <property name="filtersMap" ref="taxonFilters"/>
+        <property name="filtersKey" value="taxonFilters"/>
         <property name="formView" value="statistical"/>
         <property name="successView" value="viewChart"/>
     </bean>

@@ -19,8 +19,11 @@
 package org.inbio.ait.web.controller;
 
 import java.awt.Color;
+import java.util.HashMap;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.inbio.ait.web.filter.FilterMapWrapper;
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
 import org.inbio.ait.web.utils.ChartParameters;
@@ -33,11 +36,41 @@ import org.springframework.web.servlet.mvc.SimpleFormController;
 
 public class StatisticalController extends SimpleFormController {
 
+    private FilterMapWrapper filtersMap;
+    private String filtersKey;
+
+    /**
+     * Setting command class and command name
+     */
     public StatisticalController() {
         setCommandClass(ChartParameters.class);
         setCommandName("parameters");
     }
 
+    /**
+     * Pass to the form the necessary data to be shown in the jsp
+     * @param request
+     * @return
+     * @throws java.lang.Exception
+     */
+    @Override
+    protected Map referenceData(HttpServletRequest request) throws Exception {
+        Map referenceData = new HashMap();
+        referenceData.put(filtersKey,filtersMap.getFilters());
+        return referenceData;
+    }
+
+    /**
+     * Gets the chart parameters, build the chart based on those parameters.
+     * Then, the chart is passed as atribute trhow the session to another
+     * view and finally the chart is shown to the user.
+     * @param request
+     * @param response
+     * @param command
+     * @param errors
+     * @return
+     * @throws java.lang.Exception
+     */
     @Override
     protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response,
             Object command, BindException errors) throws Exception{
@@ -95,5 +128,33 @@ public class StatisticalController extends SimpleFormController {
         ModelAndView mv = new ModelAndView(getSuccessView());
         mv.addObject("chartDisplay",chartDisplay);
         return mv;
+    }
+
+    /**
+     * @return the filtersMap
+     */
+    public FilterMapWrapper getFiltersMap() {
+        return filtersMap;
+    }
+
+    /**
+     * @param filtersMap the filtersMap to set
+     */
+    public void setFiltersMap(FilterMapWrapper filtersMap) {
+        this.filtersMap = filtersMap;
+    }
+
+    /**
+     * @return the filtersKey
+     */
+    public String getFiltersKey() {
+        return filtersKey;
+    }
+
+    /**
+     * @param filtersKey the filtersKey to set
+     */
+    public void setFiltersKey(String filtersKey) {
+        this.filtersKey = filtersKey;
     }
 }

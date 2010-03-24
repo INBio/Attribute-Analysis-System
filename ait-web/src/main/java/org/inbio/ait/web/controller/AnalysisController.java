@@ -58,16 +58,6 @@ public class AnalysisController implements Controller{
         //Map to storage all madel data needed
         Map<String, Object> myModel = new HashMap<String, Object>();
 
-        //Test String to generate java script code dynamically
-        /*String jsCode = "function onChangeLayer(dropdown)"+"\n"+
-            "{"+"\n"+
-            "    var selectedIndex = dropdown.selectedIndex;"+"\n"+
-            "    layerIndex  = selectedIndex;"+"\n"+
-            "    layerName = layersList[selectedIndex][0];"+"\n"+
-            "    document.getElementById(\'info\').innerHTML = \"\";"+"\n"+
-            "    return true;"+"\n"+
-            "};"; //<c:out value="${model.js}"/> ON JSP */
-
         logger.info("Initialazing geoespatial analysis page");
 
         myModel.put(filtersKey,filtersMap.getFilters());
