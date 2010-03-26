@@ -56,21 +56,19 @@ public class IndicatorsTreeController implements Controller{
 			HttpServletResponse response, List<AutocompleteNode> acnList) throws Exception {
 
 		response.setCharacterEncoding("UTF-8");
-		response.setContentType("text/xml;charset=UTF-8");
+		response.setContentType("text/xml");
         // Binary output
 		ServletOutputStream out = response.getOutputStream();
 
         if (acnList != null) {
-
-            String result = "<response>";
+            StringBuilder result = new StringBuilder();
+            result.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?><response>");
             for (AutocompleteNode sp : acnList) {
-                result += "<node>";
-                result += "<id>"+sp.getItemId()+"</id>";
-                result += "<name>"+sp.getItemName()+"</name>";
-                result += "</node>";
+                result.append("<node><id>"+sp.getItemId()+"</id>");
+                result.append("<name>"+sp.getItemName()+"</name></node>");
             }
-            result += "</response>";
-            out.println(result);
+            result.append("</response>");
+            out.println(result.toString());
         }
 
 		out.flush();

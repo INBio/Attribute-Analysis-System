@@ -23,7 +23,7 @@
         <title><fmt:message key="title"/></title>
 
         <script src="http://216.75.53.105:80/geoserver/openlayers/OpenLayers.js" type="text/javascript"></script>       
-        <script type="text/JavaScript" src="http://openlayers.org/api/OpenLayers.js"></script>   
+        <script type="text/JavaScript" src="http://openlayers.org/api/OpenLayers.js"></script>
         <script defer="defer" type="text/javascript">
 
             //Use a proxy for GeoServer requesting
@@ -53,7 +53,7 @@
             var selectedNodeName;
             var isLeaf;
             //Layer to show specimens points
-            var vectorLayer = new OpenLayers.Layer.Vector('Specimens');
+            var vectorLayer;
             //To create a new atribute for each specimen point
             var attributes;
 
@@ -67,6 +67,7 @@
              * internationalization to the javascript code
              */
             function init(){
+                vectorLayer = new OpenLayers.Layer.Vector('Specimens');
                 //Load messages content
                 internationalization();
                 //initialize map functionality
@@ -165,7 +166,7 @@
                 document.getElementById('resultsPanel').innerHTML =
                     "<img src=\"${pageContext.request.contextPath}/themes/default/images/loader2.gif\" ></img>";
             }
-            
+ 
         </script>
 
         <!-- Internacionalization-->

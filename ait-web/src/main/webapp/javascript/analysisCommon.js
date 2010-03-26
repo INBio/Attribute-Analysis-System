@@ -127,7 +127,6 @@ function initMap(){
             WIDTH: map.size.w,
             HEIGHT: map.size.h,
             format: 'image/png' };
-        event = e;
         OpenLayers.loadURL("http://216.75.53.105:80/geoserver/wms", params, this, setHTML, setHTML);
         OpenLayers.Event.stop(e);
     });
@@ -312,14 +311,14 @@ function addTaxonParam() {
     //Validate null values
     if(text==null||text==''){
         alert(specifyTaxonE);
-        txTaxon.value = null;
+        txTaxon.value = '';
         return
     }
     //Validate repeated values
     var aux_exist = document.getElementById(text);
     if(aux_exist!=null){
         alert(alreadyAddedE);
-        txTaxon.value = null;
+        txTaxon.value = '';
         return;
     }
     //Add the search criteria
@@ -329,7 +328,7 @@ function addTaxonParam() {
     newdiv.innerHTML =
         "<a href=\"javascript:\" onclick=\"removeTaxonParamElement(\'"+text+"\')\">"+text+"</a>";
     taxonlist.appendChild(newdiv);
-    txTaxon.value = null;
+    txTaxon.value = '';
 }
 
 /*

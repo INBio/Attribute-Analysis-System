@@ -37,7 +37,7 @@ function loadNodeData(node, fnLoadComplete)  {
         //of the returned data and create child nodes.
         success: function(oResponse) {
             //root element -> response
-            var root = oResponse.responseXML.documentElement;
+            var root = oResponse.responseXML.documentElement;            
             //child node (nodes)
             var rootChildNodes = root.childNodes;
             //indicate that the node is a leaf

@@ -66,11 +66,11 @@ public class PointsController implements Controller{
             List<Specimen> specimens) throws Exception {
 
 		response.setCharacterEncoding("UTF-8");
-		response.setContentType("text/xml;charset=UTF-8");
+		response.setContentType("text/xml");
 		ServletOutputStream out = response.getOutputStream();
 
         StringBuilder result = new StringBuilder();
-        result.append("<response><specimens>");
+        result.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?><response><specimens>");
 
         for(Specimen s : specimens){
             result.append("<specimen><scientificname>"+s.getScientificname()+"</scientificname>" +
