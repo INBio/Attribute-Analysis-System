@@ -72,12 +72,12 @@ public class QueryController implements Controller{
 			HttpServletResponse response, Long totalMatch,
             List<Long> matchesByPolygon) throws Exception {
 
-		response.setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding("ISO-8859-1");
 		response.setContentType("text/xml");
 		ServletOutputStream out = response.getOutputStream();
 
         StringBuilder result = new StringBuilder();
-        result.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?><response><total>");
+        result.append("<?xml version='1.0' encoding='ISO-8859-1'?><response><total>");
         result.append("<data>"+totalMatch+"</data></total><polygons>");
 
         for(Long n : matchesByPolygon){

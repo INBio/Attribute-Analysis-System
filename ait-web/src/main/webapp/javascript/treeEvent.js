@@ -37,9 +37,9 @@ function loadNodeData(node, fnLoadComplete)  {
         //of the returned data and create child nodes.
         success: function(oResponse) {
             //root element -> response
-            var root = oResponse.responseXML.documentElement;            
+            var xmlDoc = oResponse.responseXML.documentElement;
             //child node (nodes)
-            var rootChildNodes = root.childNodes;
+            var rootChildNodes = xmlDoc.getElementsByTagName("node");
             //indicate that the node is a leaf
             if(rootChildNodes.length==0){
                 node.isLeaf = true;
@@ -50,9 +50,9 @@ function loadNodeData(node, fnLoadComplete)  {
             }
             //Loop over children
             for(var i=0; i< rootChildNodes.length; i++){
-                 var basicElement = root.childNodes[i];  //node
-                 var id =  basicElement.childNodes[0].textContent; //id
-                 var name =  basicElement.childNodes[1].textContent; //name
+                 var basicElement = rootChildNodes[i];  //node
+                 var id =  basicElement.getElementsByTagName("id")[0].childNodes[0].nodeValue; //id
+                 var name =  basicElement.getElementsByTagName("name")[0].childNodes[0].nodeValue; //name
 
                  var tempNode = new YAHOO.widget.TextNode(name, node, false);
                  tempNode.data = id;

@@ -31,15 +31,11 @@ function executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators,
         //If XHR call is successful
         success: function(oResponse) {
             //Root element -> response
-            var response = oResponse.responseXML.documentElement;
-            //Child node <total></total>
-            var totalCountNode = response.childNodes[0];
+            var xmlDoc = oResponse.responseXML.documentElement;
             //Get total count data
-            var totalCount = totalCountNode.textContent;
-            //Child node <polygons></polygons>
-            var polygonsNode = response.childNodes[1];
+            var totalCount = xmlDoc.getElementsByTagName("data")[0].childNodes[0].nodeValue;
             //Get the list of polygons
-            var polygonsList = polygonsNode.childNodes;
+            var polygonsList = xmlDoc.getElementsByTagName("polygon");
 
             //Clean criteria lists
             document.getElementById('mapParameters').innerHTML = "";
@@ -48,15 +44,15 @@ function executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators,
             tree.collapseAll();
 
             //Show general result and the search criteria
-            var criteria = "<b>Geográficos:</b>";
+            var criteria = "<b>Geográficos: </b>";
             for(var i = 0;i<layersShow.length;i++){
                 criteria += layersShow[i]+"   ";
             }
-            criteria += "<br><b>Taxonómicos:</b>";
+            criteria += "<br><b>Taxonómicos: </b>";
             for(var j = 0;j<taxonsShow.length;j++){
                 criteria += taxonsShow[j]+"   ";
             }
-            criteria += "<br><b>Indicadores:</b>";
+            criteria += "<br><b>Indicadores: </b>";
             for(var k = 0;k<treeShow.length;k++){
                 criteria += treeShow[k]+"   ";
             }
@@ -75,8 +71,9 @@ function executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators,
                     "<tr><th class=\"contactDept\" >Criterio</th>"+
                     "<th  class=\"contactDept\" >Coincidencias</th></tr>";
                 for(var l = 0;l<polygonsList.length;l++){
+                    var aux = polygonsList[l].getElementsByTagName("data")[0].childNodes[0].nodeValue;
                     resultHTML += "<tr><td class=\"contact\" width=\"70%\">"+layersShow[l]+"</td>"+
-                    "<td class=\"contact\" width=\"30%\">"+polygonsList[l].textContent+"</td></tr>";
+                    "<td class=\"contact\" width=\"30%\">"+aux+"</td></tr>";
                 }
                 resultHTML += "</table>";
             }

@@ -100,19 +100,35 @@
                 var selectedLayers = "";
                 for (var i =0; i <layerslist.childNodes.length; i++){
                     selectedLayers += layerslist.childNodes[i].id+"|";
-                    layersShow.push(layerslist.childNodes[i].textContent);
+                    if(document.all){
+                        layersShow.push(layerslist.childNodes[i].innerText);
+                    }
+                    else{
+                        layersShow.push(layerslist.childNodes[i].textContent);
+                    }
                 }
                 //Loop over taxonomic criteria
                 var selectedTaxa = "";
                 for (var j =0; j <taxonlist.childNodes.length; j++){
-                    selectedTaxa += taxonlist.childNodes[j].textContent+"|";
-                    taxonsShow.push(taxonlist.childNodes[j].textContent);
+                    if(document.all){
+                        selectedTaxa += taxonlist.childNodes[j].innerText+"|";
+                        taxonsShow.push(taxonlist.childNodes[j].innerText);
+                    }
+                    else{
+                        selectedTaxa += taxonlist.childNodes[j].textContent+"|";
+                        taxonsShow.push(taxonlist.childNodes[j].textContent);
+                    }
                 }
                 //Loop over indicators criteria
                 var selectedIndicators = "";
                 for (var k =0; k <treelist.childNodes.length; k++){
                     selectedIndicators += treelist.childNodes[k].id+"|";
-                    treeShow.push(treelist.childNodes[k].textContent);
+                    if(document.all){
+                        treeShow.push(treelist.childNodes[k].innerText);
+                    }
+                    else{
+                        treeShow.push(treelist.childNodes[k].textContent);
+                    }
                 }
                 //Setting to hidden fields the query values. Those info are goning to
                 //be used to show specimens point into the map
@@ -201,7 +217,7 @@
         <!-- Header -->
         <jsp:include page="/WEB-INF/jsp/header.jsp"/>
         <!-- Content -->
-        <form id="myform" name = "species" method = "get">
+        <form id="myform" name = "species" method = "get" style="margin:0px">
             <div id="contenido">
                 <h2><fmt:message key="analysis_title"/></h2>
 

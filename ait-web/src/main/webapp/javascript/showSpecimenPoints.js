@@ -30,16 +30,15 @@ function showSpecimenPoints(selectedLayers,selectedTaxa,selectedIndicators)  {
         //If XHR call is successful
         success: function(oResponse) {
             //Root element -> response
-            var response = oResponse.responseXML.documentElement;
-            //Child node <specimens></specimens>
-            var specimensNode = response.childNodes[0];
+            var xmlDoc = oResponse.responseXML.documentElement;
             //Get the list of specimens
-            var specimenList = specimensNode.childNodes;
+            var specimenList = xmlDoc.getElementsByTagName("specimen");
 
             for(var i = 0;i<specimenList.length;i++){
                 var node = specimenList[i];
-                attributes = createAttrib(node.childNodes[0].textContent);
-                addPoint(node.childNodes[1].textContent, node.childNodes[2].textContent,attributes);
+                attributes = createAttrib(node.getElementsByTagName("scientificname")[0].childNodes[0].nodeValue);
+                addPoint(node.getElementsByTagName("longitude")[0].childNodes[0].nodeValue,
+                node.getElementsByTagName("latitude")[0].childNodes[0].nodeValue,attributes);
             }
         }, 
 
