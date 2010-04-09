@@ -78,6 +78,14 @@ public class StatisticalController extends SimpleFormController {
         //Getting query parameters
 		ChartParameters parameters = (ChartParameters) command;
 
+        System.out.println(parameters.getXtitle());
+        System.out.println(parameters.getYtitle());
+        System.out.println(parameters.getXdata());
+        System.out.println(parameters.getYdata());
+        System.out.println(parameters.getType());
+        System.out.println(parameters.getXaxis());
+        System.out.println(parameters.getYaxis());
+
         //Getting chart data from data base
 
         //Create the data set

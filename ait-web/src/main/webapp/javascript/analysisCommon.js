@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* Internacionalization variables */
+/* Internacionalization variables in common */
 var layerText;
 var loadingText;
 var selectCriteriaE; //E mens error message
@@ -75,20 +75,12 @@ function initMap(){
 
     //Seting the default current layer (Layers drop down)
     layerId = 'IABIN_Indicadores:bd_meso_limite_paies';
-    layerIndex = 0;
+    layerIndex = 1; //Porque la 0 es la de Virtual Earth
     layerName = 'Paises - Mesoamérica';
 
-    //Setup base layer
-    base = new OpenLayers.Layer.WMS(
-        "Mesoamerica", "http://216.75.53.105:80/geoserver/wms",
-        {
-            width: '540',
-            height: '330',
-            transparent: "true",
-            layers: 'IABIN_Indicadores:bd_meso_limite_paies'
-        },
-        {isBaseLayer: true,singleTile: true, ratio: 1}
-    );
+    //Setup Meso layer
+    base = addLayerWMS( 'Mesoamerica','IABIN_Indicadores:bd_meso_limite_paies');
+    base.setVisibility(true);
 
     //Setup CR Provinces layer
     provincias = addLayerWMS( 'Provincias-CR','IABIN_Indicadores:bd_cr_provincias');
@@ -100,6 +92,7 @@ function initMap(){
 
     vectorLayer.setVisibility(true);
 
+    map.addLayer(virtualEarthLayer);
     map.addLayer(base);
     map.addLayer(provincias);
     map.addLayer(aspPMA);
@@ -246,7 +239,7 @@ function deleteSeparators(string){
 function onChangeLayer(dropdown)
 {
     var selectedIndex = dropdown.selectedIndex;
-    layerIndex  = selectedIndex;
+    layerIndex  = selectedIndex+1; //+1 is because of virtual earth layer
     layerId = layersList[selectedIndex][0];
     layerName = layersList[selectedIndex][1];
     document.getElementById('info').innerHTML = "";

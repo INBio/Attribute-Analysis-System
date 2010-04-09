@@ -35,13 +35,7 @@ function executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators,
             //Get total count data
             var totalCount = xmlDoc.getElementsByTagName("data")[0].childNodes[0].nodeValue;
             //Get the list of polygons
-            var polygonsList = xmlDoc.getElementsByTagName("polygon");
-
-            //Clean criteria lists
-            document.getElementById('mapParameters').innerHTML = "";
-            document.getElementById('taxParameters').innerHTML = "";
-            document.getElementById('treeParameters').innerHTML = "";
-            tree.collapseAll();
+            var polygonsList = xmlDoc.getElementsByTagName("polygon");           
 
             //Show general result and the search criteria
             var criteria = "<b>Geográficos: </b>";

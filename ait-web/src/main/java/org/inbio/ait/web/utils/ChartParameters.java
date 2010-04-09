@@ -27,6 +27,9 @@ public class ChartParameters {
     private String ytitle;
     private String xdata;
     private String ydata;
+    private String type; //Chart type
+    private String xaxis; //who's gonna be x axis
+    private String yaxis; //who's gonna be y axis
 
     /**
      * @return the xdata
@@ -82,5 +85,47 @@ public class ChartParameters {
      */
     public void setYtitle(String ytitle) {
         this.ytitle = ytitle;
+    }
+
+    /**
+     * @return the type
+     */
+    public String getType() {
+        return type;
+    }
+
+    /**
+     * @param type the type to set
+     */
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    /**
+     * @return the xaxis
+     */
+    public String getXaxis() {
+        return xaxis;
+    }
+
+    /**
+     * @param xaxis the xaxis to set
+     */
+    public void setXaxis(String xaxis) {
+        this.xaxis = xaxis;
+    }
+
+    /**
+     * @return the yaxis
+     */
+    public String getYaxis() {
+        return yaxis;
+    }
+
+    /**
+     * @param yaxis the yaxis to set
+     */
+    public void setYaxis(String yaxis) {
+        this.yaxis = yaxis;
     }
 }

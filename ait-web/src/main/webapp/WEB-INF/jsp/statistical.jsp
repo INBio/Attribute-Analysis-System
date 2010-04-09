@@ -24,6 +24,7 @@
         
         <script src="http://216.75.53.105:80/geoserver/openlayers/OpenLayers.js" type="text/javascript"></script>
         <script type="text/JavaScript" src="http://openlayers.org/api/OpenLayers.js"></script>
+        <script src='http://dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6.1'></script>
         <script defer="defer" type="text/javascript">
 
             //Use a proxy for GeoServer requesting
@@ -56,6 +57,8 @@
             var vectorLayer;
             //To create a new atribute for each specimen point
             var attributes;
+            //Base layer
+            var virtualEarthLayer  = new OpenLayers.Layer.VirtualEarth('Virtual Earth');
 
             //Pink tile avoidance
             OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
@@ -79,20 +82,76 @@
             }
 
             //Passing parameters to controller class throw path property
-            function doSubmit(){
+            function doSubmit(mapParams,taxonParams,treeParams){
+                //Getting the form reference
                 var form = document.getElementById('parameters');
 
+                //Getting a reference for chart data
                 var xData = document.getElementById('xData');
                 var yData = document.getElementById('yData');
                 var xTitle = document.getElementById('xTitle');
                 var yTitle = document.getElementById('yTitle');
 
-                xData.value = "pruebaX";
-                yData.value = "pruebaY";
+                //Variables to store the search criteria
+                var selectedLayers = "";
+                var selectedTaxa = "";
+                var selectedIndicators = "";
+                //Loop over geographical criteria
+                for (var i =0; i <mapParams.childNodes.length; i++){
+                    selectedLayers += mapParams.childNodes[i].id+"|";
+                }
+                //Loop over taxonomic criteria
+                for (var j =0; j <taxonParams.childNodes.length; j++){
+                    if(document.all){
+                        selectedTaxa += taxonParams.childNodes[j].innerText+"|";
+                    }
+                    else{
+                        selectedTaxa += taxonParams.childNodes[j].textContent+"|";
+                    }
+                }
+                //Loop over indicators criteria
+                for (var k =0; k <treeParams.childNodes.length; k++){
+                    selectedIndicators += treeParams.childNodes[k].id+"|";
+                }
+
+                //Setting the values passed throw submition
+                xData.value = selectedLayers;
+                yData.value = selectedTaxa;
                 xTitle.value = "Titulo X";
                 yTitle.value = "Titulo Y";
 
+                //Submiting the form
                 form.submit();
+            }
+
+            /*
+             * Validates if everything is correct with the chart parameters
+             */
+            function validateParameters(){
+                //Getting the parameter lists
+                var mapParams = document.getElementById('mapParameters');
+                var taxonParams = document.getElementById('taxParameters');
+                var treeParams = document.getElementById('treeParameters');
+                
+                //Getting the chart type,x axis, y axis selected values
+                var indexType = document.getElementById('chartType').selectedIndex;
+                var indexX = document.getElementById('xAxis').selectedIndex;
+                var indexY = document.getElementById('yAxis').selectedIndex;
+
+                //Validate if the user selected the chat type
+                if(indexType==0){
+                    alert('FIXME: Debe seleccionar tipo');
+                    return;
+                }
+
+                //Validate if the user already selected x and y axis
+                if(indexX==0||indexY==0){
+                    alert('FIXME: Debe indicar el eje x y el eje y');
+                    return;
+                }
+
+                //if everything is ok
+                doSubmit(mapParams,taxonParams,treeParams);
             }
 
         </script>
@@ -142,9 +201,41 @@
 
                 <h2><fmt:message key="statistic_analysis"/></h2>
 
+                <!-- Chart type Panel -->
+                <div id="settings">                    
+                    <div id="chartS1" class="chartSetting" >
+                        <p style="margin:1px"><a> <fmt:message key="chart_type"/>: </a></p>
+                        <form:select id="chartType" path="type" cssClass="componentSize">
+                            <form:option value="select"><fmt:message key="drop_down_null_option"/></form:option>
+                            <form:option value="bar"><fmt:message key="barChart"/></form:option>
+                            <form:option value="histogram"><fmt:message key="histoChart"/></form:option>
+                        </form:select>
+                    </div>
+                    <div id="chartS2" class="chartSetting">
+                        <p style="margin:1px"><a> <fmt:message key="x_axis"/>: </a></p>
+                        <form:select id="xAxis" path="xaxis" cssClass="componentSize">
+                            <form:option value="select"><fmt:message key="drop_down_null_option"/></form:option>
+                            <form:option value="taxo"><fmt:message key="taxonomical_criteria_title"/></form:option>
+                            <form:option value="geo"><fmt:message key="geografical_criteria_title"/></form:option>                            
+                            <form:option value="indi"><fmt:message key="indicators_criteria_title"/></form:option>
+                        </form:select>
+                    </div>
+                    <div id="chartS3" class="chartSetting">
+                        <p style="margin:1px"><a> <fmt:message key="y_axis"/>: </a></p>
+                        <form:select id="yAxis" path="yaxis" cssClass="componentSize">
+                            <form:option value="select"><fmt:message key="drop_down_null_option"/></form:option>
+                            <form:option value="indi"><fmt:message key="indicators_criteria_title"/></form:option>
+                            <form:option value="geo"><fmt:message key="geografical_criteria_title"/></form:option>
+                            <form:option value="taxo"><fmt:message key="taxonomical_criteria_title"/></form:option>
+                        </form:select>
+                    </div>
+                    <div class="clearboth"></div>
+                </div>
+
                 <div id="querysPanel">
+
                     <!-- GIS Panel -->
-                    <div id="queryPanel">
+                    <div id="queryPanel1" class="queryPanel">
                         <p style="font-weight:bold;font-style:italic;margin:2px;text-align:center;">
                             <fmt:message key="geografical_criteria_title"/></p>
                         <div id="currentLayer"></div>
@@ -153,7 +244,7 @@
                     </div>
 
                     <!-- Taxonomy Panel -->
-                    <div id="queryPanel">
+                    <div id="queryPanel2" class="queryPanel">
                         <p style="font-weight:bold;font-style:italic;margin:2px;text-align:center;">
                             <fmt:message key="taxonomical_criteria_title"/></p>
                         <p style="margin:1px"><a> <fmt:message key="taxonomy_level"/>: </a></p>
@@ -166,7 +257,7 @@
                         </select>
                         <p style="margin:1px"><a> <fmt:message key="taxon_name"/>: </a></p>
                         <span id="newTaxonValue">
-                            <input id="taxonId" tabindex="13" class="componentSize" type="text" name="taxonValue" value="<c:out value="${taxonValue}"/>"/>
+                            <input type="text" id="taxonId" tabindex="13" name="taxonValue" value="<c:out value="${taxonValue}"/>"/>
                             <div id="taxonContainer"></div>
                         </span>
                         <input type="button" class="my_Button" id="addToListButtonTax" value="Agregar criterio" onclick="addTaxonParam()" />
@@ -177,7 +268,7 @@
                     </div>
 
                     <!-- Indicator Panel -->
-                    <div id="queryPanel">
+                    <div id="queryPanel3" class="queryPanel">
                         <p style="font-weight:bold;font-style:italic;margin:2px;text-align:center;">
                             <fmt:message key="indicators_criteria_title"/></p>
                         <div id="treeDiv"></div>
@@ -186,8 +277,8 @@
                     </div>
 
                 <!-- Query Button -->
-                <input type="submit" class="main_Button" id="makeQueryButton" value="<fmt:message key="consult"/>"
-                       onclick="doSubmit()" />
+                <input type="button" class="main_Button" id="makeQueryButton" value="<fmt:message key="generate_chart"/>"
+                       onclick="validateParameters()" />
                 </div>
 
                 <!-- Map Panel -->

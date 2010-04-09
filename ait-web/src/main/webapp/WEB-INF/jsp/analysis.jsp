@@ -24,6 +24,7 @@
 
         <script src="http://216.75.53.105:80/geoserver/openlayers/OpenLayers.js" type="text/javascript"></script>       
         <script type="text/JavaScript" src="http://openlayers.org/api/OpenLayers.js"></script>
+        <script src='http://dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6.1'></script>
         <script defer="defer" type="text/javascript">
 
             //Use a proxy for GeoServer requesting
@@ -56,6 +57,8 @@
             var vectorLayer;
             //To create a new atribute for each specimen point
             var attributes;
+            //Base layer
+            var virtualEarthLayer  = new OpenLayers.Layer.VirtualEarth('Virtual Earth');
 
             //Pink tile avoidance
             OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
@@ -84,9 +87,11 @@
              */
             function makeQuery(){
                 showLoadingResults();
+                //Getting the parameter lists
                 var layerslist = document.getElementById('mapParameters');
                 var taxonlist = document.getElementById('taxParameters');
                 var treelist = document.getElementById('treeParameters');
+                //Arrays with parameters data (to show on the results table)
                 var layersShow = new Array();
                 var taxonsShow = new Array();
                 var treeShow = new Array();
@@ -130,13 +135,19 @@
                         treeShow.push(treelist.childNodes[k].textContent);
                     }
                 }
-                //Setting to hidden fields the query values. Those info are goning to
-                //be used to show specimens point into the map
+                //Setting to hidden fields the query values. Those info are going to
+                //be used to show specimens point into the map (not in use yet)
                 document.getElementById('hiddenLayers').value = selectedLayers;
                 document.getElementById('hiddenTaxa').value = selectedTaxa;
                 document.getElementById('hiddenIndicators').value = selectedIndicators;
+
+                //Clean criteria lists
+                document.getElementById('mapParameters').innerHTML = "";
+                document.getElementById('taxParameters').innerHTML = "";
+                document.getElementById('treeParameters').innerHTML = "";
+                tree.collapseAll();
                 
-                //Call the function that returns the result (xml) asincrinically
+                //Call the function that returns the result (xml) asincronically
                 executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators,
                 layersShow,taxonsShow,treeShow);
 
@@ -223,7 +234,7 @@
 
                 <div id="querysPanel">
                     <!-- GIS Panel -->
-                    <div id="queryPanel">
+                    <div id="queryPanel1" class="queryPanel">
                         <p style="font-weight:bold;font-style:italic;margin:2px;text-align:center;">
                             <fmt:message key="geografical_criteria_title"/></p>
                         <div id="currentLayer"></div>
@@ -232,7 +243,7 @@
                     </div>
 
                     <!-- Taxonomy Panel -->
-                    <div id="queryPanel">
+                    <div id="queryPanel2" class="queryPanel">
                         <p style="font-weight:bold;font-style:italic;margin:2px;text-align:center;">
                             <fmt:message key="taxonomical_criteria_title"/></p>
                         <p style="margin:1px"><a> <fmt:message key="taxonomy_level"/>: </a></p>
@@ -256,7 +267,7 @@
                     </div>
 
                     <!-- Indicator Panel -->
-                    <div id="queryPanel">
+                    <div id="queryPanel3" class="queryPanel">
                         <p style="font-weight:bold;font-style:italic;margin:2px;text-align:center;">
                             <fmt:message key="indicators_criteria_title"/></p>
                         <div id="treeDiv"></div>
