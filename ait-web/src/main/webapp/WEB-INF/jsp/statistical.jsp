@@ -60,6 +60,10 @@
             //Base layer
             var virtualEarthLayer  = new OpenLayers.Layer.VirtualEarth('Virtual Earth');
 
+            /* Internacionalization variables (just for statistical) */
+            var selectChartType;
+            var indicateAxis;
+
             //Pink tile avoidance
             OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
             //Make OL compute scale according to WMS spec
@@ -79,6 +83,10 @@
                 createDDLayers();
                 //Init indicators tree
                 initIndicators();
+                //Hide parameters panels
+                hide('queryPanel1');
+                hide('queryPanel2');
+                hide('queryPanel3');
             }
 
             //Passing parameters to controller class throw path property
@@ -138,20 +146,36 @@
                 var indexX = document.getElementById('xAxis').selectedIndex;
                 var indexY = document.getElementById('yAxis').selectedIndex;
 
-                //Validate if the user selected the chat type
+                //Validate if the user selected the chart type
                 if(indexType==0){
-                    alert('FIXME: Debe seleccionar tipo');
+                    alert(selectChartType);
                     return;
                 }
 
                 //Validate if the user already selected x and y axis
                 if(indexX==0||indexY==0){
-                    alert('FIXME: Debe indicar el eje x y el eje y');
+                    alert(indicateAxis);
                     return;
                 }
 
-                //if everything is ok
+                //If everything is ok
                 doSubmit(mapParams,taxonParams,treeParams);
+            }
+
+            //Set visible true
+            function show(element){
+                document.getElementById(element).style.visibility="visible";
+            }
+            //Set visible false
+            function hide(element){
+                document.getElementById(element).style.visibility="hidden";
+            }
+
+            /*
+             * Show or hide the panels dependding on x and y axis
+             */
+            function changeAxis(){
+                show('queryPanel1');
             }
 
         </script>
@@ -169,6 +193,8 @@
                 specifyTaxonE = "<fmt:message key="taxon_name_error"/>";
                 selectIndicatorFirstE = "<fmt:message key="first_select_indicator"/>";
                 treeLeafE = "<fmt:message key="indicator_leaf"/>";
+                selectChartType = "<fmt:message key="select_chart_type"/>";
+                indicateAxis = "<fmt:message key="indicate_axis"/>";
             };
         </script>
         
@@ -213,7 +239,7 @@
                     </div>
                     <div id="chartS2" class="chartSetting">
                         <p style="margin:1px"><a> <fmt:message key="x_axis"/>: </a></p>
-                        <form:select id="xAxis" path="xaxis" cssClass="componentSize">
+                        <form:select id="xAxis" path="xaxis" cssClass="componentSize" onchange="changeAxis()">
                             <form:option value="select"><fmt:message key="drop_down_null_option"/></form:option>
                             <form:option value="taxo"><fmt:message key="taxonomical_criteria_title"/></form:option>
                             <form:option value="geo"><fmt:message key="geografical_criteria_title"/></form:option>                            
@@ -222,7 +248,7 @@
                     </div>
                     <div id="chartS3" class="chartSetting">
                         <p style="margin:1px"><a> <fmt:message key="y_axis"/>: </a></p>
-                        <form:select id="yAxis" path="yaxis" cssClass="componentSize">
+                        <form:select id="yAxis" path="yaxis" cssClass="componentSize" onchange="changeAxis()">
                             <form:option value="select"><fmt:message key="drop_down_null_option"/></form:option>
                             <form:option value="indi"><fmt:message key="indicators_criteria_title"/></form:option>
                             <form:option value="geo"><fmt:message key="geografical_criteria_title"/></form:option>
