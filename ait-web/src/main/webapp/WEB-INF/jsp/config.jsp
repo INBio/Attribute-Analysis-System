@@ -25,6 +25,9 @@
                 <h2><fmt:message key="config_title"/></h2>
                 <!--<input type="submit" value="Submit" />-->
             </div>
+            <div id="footer">
+                <fmt:message key="footer_text"/>
+            </div>
         </form>
         <!-- Content ending -->
     </body>

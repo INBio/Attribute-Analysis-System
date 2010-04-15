@@ -48,7 +48,7 @@ public class ChartController extends AbstractController {
 			response.setContentType("image/png");
 
 			//Send the image
-			BufferedImage buf = chart.createBufferedImage(640, 400, null);
+			BufferedImage buf = chart.createBufferedImage(680, 440, null);
 			PngEncoder encoder = new PngEncoder(buf, false, 0, 9);
 			response.getOutputStream().write(encoder.pngEncode());
 		}

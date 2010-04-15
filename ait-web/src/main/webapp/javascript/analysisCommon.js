@@ -148,29 +148,6 @@ function addLayerWMS(name, layer)
 }
 
 /*
- * Sets the HTML provided into the nodelist element
- */
-function setHTML(response){
-    //Obtain the selected polygon(s), value set on currentPolygonId var
-    parseHTML(response.responseText);
-    //Verify if the list is null
-    if(polygonsList==null){
-        return;
-    }
-    //Verify if the polygon is unique
-    if(polygonsList.length!=1){
-        alert(selectOnePolygonE);
-        return;
-    }
-    //Add the polygon to the geografical criteria list
-    currentPolygonId = polygonsList[0][0];
-    currentPolygonName = polygonsList[0][1];
-    addLayerParam(currentPolygonId,layerId,currentPolygonName,layerName);
-    //Clean the Loading status
-    document.getElementById('info').innerHTML = "";
-}
-
-/*
  * To obtain an Array with all the selected polygons
  */
 function parseHTML(html){

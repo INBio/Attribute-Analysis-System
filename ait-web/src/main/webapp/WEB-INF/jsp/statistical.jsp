@@ -8,20 +8,20 @@
 <%@ include file="/WEB-INF/jsp/analysisTags.jsp" %>
 <%@ taglib uri="/WEB-INF/tld/fn.tld" prefix="fn" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-   "http://www.w3.org/TR/html4/loose.dtd">
+"http://www.w3.org/TR/html4/loose.dtd">
 
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" type="text/css"
-        href="<c:out value="${pageContext.request.contextPath}"/>/<spring:theme code='styleSheet'/>"/>
+              href="<c:out value="${pageContext.request.contextPath}"/>/<spring:theme code='styleSheet'/>"/>
         <link rel="stylesheet" type="text/css"
-        href="<c:out value="${pageContext.request.contextPath}"/>/<spring:theme code='autocomplete'/>"/>
+              href="<c:out value="${pageContext.request.contextPath}"/>/<spring:theme code='autocomplete'/>"/>
         <link rel="stylesheet" type="text/css"
-        href="<c:out value="${pageContext.request.contextPath}"/>/<spring:theme code='tree'/>"/>
+              href="<c:out value="${pageContext.request.contextPath}"/>/<spring:theme code='tree'/>"/>
 
         <title><fmt:message key="title"/></title>
-        
+
         <script src="http://216.75.53.105:80/geoserver/openlayers/OpenLayers.js" type="text/javascript"></script>
         <script type="text/JavaScript" src="http://openlayers.org/api/OpenLayers.js"></script>
         <script src='http://dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6.1'></script>
@@ -63,6 +63,7 @@
             /* Internacionalization variables (just for statistical) */
             var selectChartType;
             var indicateAxis;
+            var sameAxis;
 
             //Pink tile avoidance
             OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
@@ -74,6 +75,11 @@
              * internationalization to the javascript code
              */
             function init(){
+                //Hide parameters panels
+                hide('queryPanel1');
+                hide('queryPanel2');
+                hide('queryPanel3');
+                //The vector layer to show the specimen points
                 vectorLayer = new OpenLayers.Layer.Vector('Specimens');
                 //Load messages content
                 internationalization();
@@ -83,10 +89,6 @@
                 createDDLayers();
                 //Init indicators tree
                 initIndicators();
-                //Hide parameters panels
-                hide('queryPanel1');
-                hide('queryPanel2');
-                hide('queryPanel3');
             }
 
             //Passing parameters to controller class throw path property
@@ -99,34 +101,83 @@
                 var yData = document.getElementById('yData');
                 var xTitle = document.getElementById('xTitle');
                 var yTitle = document.getElementById('yTitle');
+                var xDataToShow = document.getElementById('xDataToShow');
+                var yDataToShow = document.getElementById('yDataToShow');
 
                 //Variables to store the search criteria
-                var selectedLayers = "";
-                var selectedTaxa = "";
-                var selectedIndicators = "";
+                var selectedLayers = "",layersToShow = "";
+                var selectedTaxa = "", taxaToShow = "";
+                var selectedIndicators = "", indiToShow = "";
+
                 //Loop over geographical criteria
                 for (var i =0; i <mapParams.childNodes.length; i++){
                     selectedLayers += mapParams.childNodes[i].id+"|";
+                    if(document.all){
+                        layersToShow += mapParams.childNodes[i].innerText+"|";
+                    }
+                    else{
+                        layersToShow += mapParams.childNodes[i].textContent+"|";
+                    }
                 }
                 //Loop over taxonomic criteria
                 for (var j =0; j <taxonParams.childNodes.length; j++){
                     if(document.all){
                         selectedTaxa += taxonParams.childNodes[j].innerText+"|";
+                        taxaToShow += taxonParams.childNodes[j].innerText+"|";
                     }
                     else{
                         selectedTaxa += taxonParams.childNodes[j].textContent+"|";
+                        taxaToShow += taxonParams.childNodes[j].textContent+"|";
                     }
                 }
                 //Loop over indicators criteria
                 for (var k =0; k <treeParams.childNodes.length; k++){
                     selectedIndicators += treeParams.childNodes[k].id+"|";
+                    if(document.all){
+                        indiToShow += treeParams.childNodes[k].innerText+"|";
+                    }
+                    else{
+                        indiToShow += treeParams.childNodes[k].textContent+"|";
+                    }
                 }
 
-                //Setting the values passed throw submition
-                xData.value = selectedLayers;
-                yData.value = selectedTaxa;
-                xTitle.value = "Titulo X";
-                yTitle.value = "Titulo Y";
+                //Setting the data passed throw submition
+                var x = document.getElementById('xAxis').selectedIndex;
+                var y = document.getElementById('yAxis').selectedIndex;
+                switch(x){
+                    case 1: //taxonomical
+                        xData.value = selectedTaxa;
+                        xDataToShow.value = taxaToShow;
+                        xTitle.value = "<fmt:message key="taxonomical_criteria_title"/>";
+                        break;
+                    case 2: //geographical
+                        xData.value = selectedLayers;
+                        xDataToShow.value = layersToShow;
+                        xTitle.value = "<fmt:message key="geografical_criteria_title"/>";
+                        break;
+                    case 3: //indicators
+                        xData.value = selectedIndicators;
+                        xDataToShow.value = indiToShow;
+                        xTitle.value = "<fmt:message key="indicators_criteria_title"/>";
+                        break;
+                }
+                switch(y){
+                    case 1: //taxonomical
+                        yData.value = selectedTaxa;
+                        yDataToShow.value = taxaToShow;
+                        yTitle.value = "<fmt:message key="taxonomical_criteria_title"/>";
+                        break;
+                    case 2: //geographical
+                        yData.value = selectedLayers;
+                        yDataToShow.value = layersToShow;
+                        yTitle.value = "<fmt:message key="geografical_criteria_title"/>";
+                        break;
+                    case 3: //indicators
+                        yData.value = selectedIndicators;
+                        yDataToShow.value = indiToShow;
+                        yTitle.value = "<fmt:message key="indicators_criteria_title"/>";
+                        break;
+                }                
 
                 //Submiting the form
                 form.submit();
@@ -140,21 +191,27 @@
                 var mapParams = document.getElementById('mapParameters');
                 var taxonParams = document.getElementById('taxParameters');
                 var treeParams = document.getElementById('treeParameters');
-                
+
                 //Getting the chart type,x axis, y axis selected values
                 var indexType = document.getElementById('chartType').selectedIndex;
                 var indexX = document.getElementById('xAxis').selectedIndex;
                 var indexY = document.getElementById('yAxis').selectedIndex;
 
-                //Validate if the user selected the chart type
+                //Validate if the user has selected the chart type
                 if(indexType==0){
                     alert(selectChartType);
                     return;
                 }
 
-                //Validate if the user already selected x and y axis
+                //Validate if the user already select x and y axis
                 if(indexX==0||indexY==0){
                     alert(indicateAxis);
+                    return;
+                }
+
+                //Validate if the user select the same option for x and y axis
+                if(indexX==indexY){
+                    alert(sameAxis);
                     return;
                 }
 
@@ -162,20 +219,82 @@
                 doSubmit(mapParams,taxonParams,treeParams);
             }
 
+            /*
+             * Show or hide the panels dependding on x and y axis
+             * 1 means taxonomical criteria
+             * 2 means geographic criteria
+             * 3 means indicators criteria
+             * See ChartCriteria.java class
+             */
+            function changeAxis(){
+                var x = document.getElementById('xAxis').selectedIndex;
+                var y = document.getElementById('yAxis').selectedIndex;
+                hide('queryPanel1');
+                hide('queryPanel2');
+                hide('queryPanel3');
+                switch(x){
+                    case 1: //taxonomical
+                        show('queryPanel2');
+                        break;
+                    case 2: //geographical
+                        show('queryPanel1');
+                        break;
+                    case 3: //indicators
+                        show('queryPanel3');
+                        break;
+                }
+                switch(y){
+                    case 1: //taxonomical
+                        show('queryPanel2');
+                        break;
+                    case 2: //geographical
+                        show('queryPanel1');
+                        break;
+                    case 3: //indicators
+                        show('queryPanel3');
+                        break;
+                }
+            }
+
             //Set visible true
             function show(element){
-                document.getElementById(element).style.visibility="visible";
+                document.getElementById(element).style.display="";
             }
             //Set visible false
             function hide(element){
-                document.getElementById(element).style.visibility="hidden";
+                document.getElementById(element).style.display="none";
             }
 
             /*
-             * Show or hide the panels dependding on x and y axis
+             * Sets the HTML provided into the nodelist element from
+             * the maps response
              */
-            function changeAxis(){
-                show('queryPanel1');
+            function setHTML(response){
+                //Validate if is posible to select geoespatial criteria
+                var x = document.getElementById('xAxis').selectedIndex;
+                var y = document.getElementById('yAxis').selectedIndex;
+                if(x!=2&&y!=2){ //2 means geoespatial criteria
+                    document.getElementById('info').innerHTML = "";
+                    return;
+                }
+
+                //Obtain the selected polygon(s), value set on currentPolygonId var
+                parseHTML(response.responseText);
+                //Verify if the list is null
+                if(polygonsList==null){
+                    return;
+                }
+                //Verify if the polygon is unique
+                if(polygonsList.length!=1){
+                    alert(selectOnePolygonE);
+                    return;
+                }
+                //Add the polygon to the geografical criteria list
+                currentPolygonId = polygonsList[0][0];
+                currentPolygonName = polygonsList[0][1];
+                addLayerParam(currentPolygonId,layerId,currentPolygonName,layerName);
+                //Clean the Loading status
+                document.getElementById('info').innerHTML = "";
             }
 
         </script>
@@ -195,9 +314,10 @@
                 treeLeafE = "<fmt:message key="indicator_leaf"/>";
                 selectChartType = "<fmt:message key="select_chart_type"/>";
                 indicateAxis = "<fmt:message key="indicate_axis"/>";
+                sameAxis = "<fmt:message key="same_axis"/>";
             };
         </script>
-        
+
     </head>
     <body onload="init()">
 
@@ -206,7 +326,7 @@
             var taxonAutoCompleteUrls = new Array(${ fn:length(taxonFilters)});
             <c:forEach items="${taxonFilters}" var="taxonFilter" varStatus="filterStatus" begin="0">
               <c:if test="${not empty taxonFilter.autoCompleteUrl}">
-                taxonAutoCompleteUrls[${taxonFilter.id}] = "${pageContext.request.contextPath}/${taxonFilter.autoCompleteUrl}";
+                  taxonAutoCompleteUrls[${taxonFilter.id}] = "${pageContext.request.contextPath}/${taxonFilter.autoCompleteUrl}";
               </c:if>
             </c:forEach>
         </script>
@@ -217,53 +337,57 @@
         <!-- Content -->
         <form:form method="POST" commandName="parameters" cssStyle="margin:0">
 
-        <!-- Values to get data for building the chart -->
-        <form:hidden path="xdata" id="xData"/>
-        <form:hidden path="ydata" id="yData"/>
-        <form:hidden path="xtitle" id="xTitle"/>
-        <form:hidden path="ytitle" id="yTitle"/>
+            <!-- Values to get data for building the chart -->
+            <form:hidden path="xdata" id="xData"/>
+            <form:hidden path="ydata" id="yData"/>
+            <form:hidden path="xtitle" id="xTitle"/>
+            <form:hidden path="ytitle" id="yTitle"/>
+            <form:hidden path="xdatatoshow" id="xDataToShow"/>
+            <form:hidden path="ydatatoshow" id="yDataToShow"/>
 
             <div id="contenido">
 
                 <h2><fmt:message key="statistic_analysis"/></h2>
 
-                <!-- Chart type Panel -->
-                <div id="settings">                    
-                    <div id="chartS1" class="chartSetting" >
-                        <p style="margin:1px"><a> <fmt:message key="chart_type"/>: </a></p>
-                        <form:select id="chartType" path="type" cssClass="componentSize">
-                            <form:option value="select"><fmt:message key="drop_down_null_option"/></form:option>
-                            <form:option value="bar"><fmt:message key="barChart"/></form:option>
-                            <form:option value="histogram"><fmt:message key="histoChart"/></form:option>
-                        </form:select>
-                    </div>
-                    <div id="chartS2" class="chartSetting">
-                        <p style="margin:1px"><a> <fmt:message key="x_axis"/>: </a></p>
-                        <form:select id="xAxis" path="xaxis" cssClass="componentSize" onchange="changeAxis()">
-                            <form:option value="select"><fmt:message key="drop_down_null_option"/></form:option>
-                            <form:option value="taxo"><fmt:message key="taxonomical_criteria_title"/></form:option>
-                            <form:option value="geo"><fmt:message key="geografical_criteria_title"/></form:option>                            
-                            <form:option value="indi"><fmt:message key="indicators_criteria_title"/></form:option>
-                        </form:select>
-                    </div>
-                    <div id="chartS3" class="chartSetting">
-                        <p style="margin:1px"><a> <fmt:message key="y_axis"/>: </a></p>
-                        <form:select id="yAxis" path="yaxis" cssClass="componentSize" onchange="changeAxis()">
-                            <form:option value="select"><fmt:message key="drop_down_null_option"/></form:option>
-                            <form:option value="indi"><fmt:message key="indicators_criteria_title"/></form:option>
-                            <form:option value="geo"><fmt:message key="geografical_criteria_title"/></form:option>
-                            <form:option value="taxo"><fmt:message key="taxonomical_criteria_title"/></form:option>
-                        </form:select>
-                    </div>
-                    <div class="clearboth"></div>
-                </div>
-
                 <div id="querysPanel">
+
+                    <!-- Chart type Panel -->
+                    <div id="settings" class="queryPanel">
+                        <div id="chartS1" class="chartSetting" >
+                            <p style="margin:1px"><a> <fmt:message key="chart_type"/>: </a></p>
+                            <form:select id="chartType" path="type" cssClass="componentSize">
+                                <!-- See ChartType.java enum to verify de options values -->
+                                <form:option value="select"><fmt:message key="drop_down_null_option"/></form:option>
+                                <form:option value="bar"><fmt:message key="barChart"/></form:option>
+                                <form:option value="line"><fmt:message key="lineChart"/></form:option>
+                            </form:select>
+                        </div>
+                        <div id="chartS2" class="chartSetting">
+                            <p style="margin:1px"><a> <fmt:message key="x_axis"/>: </a></p>
+                            <form:select id="xAxis" path="xaxis" cssClass="componentSize" onchange="changeAxis()">
+                                <!-- See ChartCriteria.java enum to verify the options values -->
+                                <form:option value="0"><fmt:message key="drop_down_null_option"/></form:option>
+                                <form:option value="1"><fmt:message key="taxonomical_criteria_title"/></form:option>
+                                <form:option value="2"><fmt:message key="geografical_criteria_title"/></form:option>
+                                <form:option value="3"><fmt:message key="indicators_criteria_title"/></form:option>
+                            </form:select>
+                        </div>
+                        <div id="chartS3" class="chartSetting">
+                            <p style="margin:1px"><a> <fmt:message key="y_axis"/>: </a></p>
+                            <form:select id="yAxis" path="yaxis" cssClass="componentSize" onchange="changeAxis()">
+                                <!-- See ChartCriteria.java enum to verify the options values -->
+                                <form:option value="0"><fmt:message key="drop_down_null_option"/></form:option>
+                                <form:option value="1"><fmt:message key="taxonomical_criteria_title"/></form:option>
+                                <form:option value="2"><fmt:message key="geografical_criteria_title"/></form:option>
+                                <form:option value="3"><fmt:message key="indicators_criteria_title"/></form:option>
+                            </form:select>
+                        </div>
+                    </div>
 
                     <!-- GIS Panel -->
                     <div id="queryPanel1" class="queryPanel">
                         <p style="font-weight:bold;font-style:italic;margin:2px;text-align:center;">
-                            <fmt:message key="geografical_criteria_title"/></p>
+                        <fmt:message key="geografical_criteria_title"/></p>
                         <div id="currentLayer"></div>
                         <div id="info"></div>
                         <span id="mapParameters" style="font-size:10px"></span>
@@ -272,7 +396,7 @@
                     <!-- Taxonomy Panel -->
                     <div id="queryPanel2" class="queryPanel">
                         <p style="font-weight:bold;font-style:italic;margin:2px;text-align:center;">
-                            <fmt:message key="taxonomical_criteria_title"/></p>
+                        <fmt:message key="taxonomical_criteria_title"/></p>
                         <p style="margin:1px"><a> <fmt:message key="taxonomy_level"/>: </a></p>
                         <select name="taxonType" id="taxonTypeId" class="componentSize" tabindex="12" onchange="javascript:changeTaxonInput();" onKeyUp="javascript:changeTaxonInput();">
                             <c:forEach items="${taxonFilters}" var="taxonFilter">
@@ -296,15 +420,15 @@
                     <!-- Indicator Panel -->
                     <div id="queryPanel3" class="queryPanel">
                         <p style="font-weight:bold;font-style:italic;margin:2px;text-align:center;">
-                            <fmt:message key="indicators_criteria_title"/></p>
+                        <fmt:message key="indicators_criteria_title"/></p>
                         <div id="treeDiv"></div>
                         <input type="button" class="my_Button" id="addToListButtonIndi" value="Agregar criterio" onclick="addIndicatorParam()" />
-                         <span id="treeParameters" style="font-size:10px"></span>
+                        <span id="treeParameters" style="font-size:10px"></span>
                     </div>
 
-                <!-- Query Button -->
-                <input type="button" class="main_Button" id="makeQueryButton" value="<fmt:message key="generate_chart"/>"
-                       onclick="validateParameters()" />
+                    <!-- Query Button -->
+                    <input type="button" class="main_Button" id="makeQueryButton" value="<fmt:message key="generate_chart"/>"
+                           onclick="validateParameters()" />
                 </div>
 
                 <!-- Map Panel -->
@@ -319,6 +443,9 @@
                 <!-- Results Panel -->
                 <div id="resultsPanel"></div>
 
+            </div>
+            <div id="footer">
+                <fmt:message key="footer_text"/>
             </div>
         </form:form>
         <!-- Content ends -->

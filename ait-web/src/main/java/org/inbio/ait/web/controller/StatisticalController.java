@@ -23,10 +23,12 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.inbio.ait.manager.QueryManager;
 import org.inbio.ait.web.filter.FilterMapWrapper;
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
 import org.inbio.ait.web.utils.ChartParameters;
+import org.inbio.ait.web.utils.ChartType;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
@@ -38,6 +40,7 @@ public class StatisticalController extends SimpleFormController {
 
     private FilterMapWrapper filtersMap;
     private String filtersKey;
+    private QueryManager queryManager;
 
     /**
      * Setting command class and command name
@@ -78,55 +81,68 @@ public class StatisticalController extends SimpleFormController {
         //Getting query parameters
 		ChartParameters parameters = (ChartParameters) command;
 
-        System.out.println(parameters.getXtitle());
-        System.out.println(parameters.getYtitle());
-        System.out.println(parameters.getXdata());
-        System.out.println(parameters.getYdata());
-        System.out.println(parameters.getType());
-        System.out.println(parameters.getXaxis());
-        System.out.println(parameters.getYaxis());
+        //Arrays that contains the parameters data
+        String[] xArray,yArray,xToShow,yToShow;
+        //Validate if the user don't specify the x and y criteria
+        if(parameters.getXdata().equals("")||parameters.getYdata().equals("")){
+            xArray = new String[0];
+            yArray = new String[0];
+            xToShow = new String[0];
+            yToShow = new String[0];
+        }
+        else{
+            xArray = parameters.getXdata().split("\\|");
+            yArray = parameters.getYdata().split("\\|");
+            xToShow = parameters.getXdatatoshow().split("\\|");
+            yToShow = parameters.getYdatatoshow().split("\\|");
+        }
+
+        //Create the data set (value,row,colum) = (value,y,x)
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
+        //Getting x and y axis int values
+        int x = 0, y = 0;
+        try{
+            x = Integer.parseInt(parameters.getXaxis());
+            y = Integer.parseInt(parameters.getYaxis());
+        }
+        catch(Exception e){}
 
         //Getting chart data from data base
-
-        //Create the data set
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        dataset.addValue(1.0, "Peligro de extinción", "Familia X");
-        dataset.addValue(5.0, "Peligro de extinción", "Familia Y");
-        dataset.addValue(3.0, "Peligro de extinción", "Familia Z");
-        
-        dataset.addValue(2.0, "Extinta", "Familia X");
-        dataset.addValue(3.0, "Extinta", "Familia Y");
-        dataset.addValue(2.0, "Extinta", "Familia Z");
-
-        dataset.addValue(2.0, "Vulnerable", "Familia X");
-        dataset.addValue(7.0, "Vulnerable", "Familia Y");
-        dataset.addValue(8.0, "Vulnerable", "Familia Z");
+        for(int i = 0;i < xArray.length;i++){
+            for(int j = 0;j < yArray.length;j++){
+                Long result = getQueryManager().countByCriteria(xArray[i],yArray[j],x,y);
+                dataset.addValue(result,yToShow[j], xToShow[i]); //(value,y,x)
+            }
+        }
 
         //Create the chart
-        JFreeChart chart = ChartFactory.createBarChart3D(
-        "Gráfico de prueba", //title
-        parameters.getXtitle(), // x axis label
-        parameters.getYtitle(),  // y axis label
-        dataset, //dataset
-        PlotOrientation.VERTICAL,
-        true,  // include legend
-        true,  // tooltips
-        false); // urls
+        JFreeChart chart;
+        if(parameters.getType().equals(ChartType.BAR_CHART.getType())){
+            chart = ChartFactory.createBarChart3D(
+            "FIXME: Título del gráfico", //title
+            parameters.getXtitle(), // x axis label
+            parameters.getYtitle(),  // y axis label
+            dataset, //dataset
+            PlotOrientation.VERTICAL,
+            true,  // include legend
+            true,  // tooltips
+            false); // urls
+        }
+        else{
+            chart = ChartFactory.createLineChart3D(
+            "FIXME: Título del gráfico", //title
+            parameters.getXtitle(), // x axis label
+            parameters.getYtitle(),  // y axis label
+            dataset, //dataset
+            PlotOrientation.VERTICAL,
+            true,  // include legend
+            true,  // tooltips
+            false); // urls
+        }
 
 		//Customize the chart
 		chart.setBackgroundPaint(Color.WHITE);
-		/*XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
-		renderer.setSeriesLinesVisible(0, true);
-		renderer.setSeriesShapesVisible(0, true);
-		XYPlot plot = chart.getXYPlot();
-		plot.setRenderer(renderer);
-		//Configuring the fonts
-		plot.getDomainAxis().setLabelFont
-                (new Font(Font.SANS_SERIF, Font.BOLD, 12));
-		plot.getRangeAxis().setLabelFont
-                (new Font(Font.SANS_SERIF, Font.BOLD, 12));
-		plot.getDomainAxis().setLabel("Fecha del registro");
-		plot.getRangeAxis().setLabel("Cantidad de Huellas");*/
 
 		//Store te chart in the session.
 		request.getSession(true).setAttribute("chart", chart);
@@ -164,5 +180,19 @@ public class StatisticalController extends SimpleFormController {
      */
     public void setFiltersKey(String filtersKey) {
         this.filtersKey = filtersKey;
+    }
+
+    /**
+     * @return the queryManager
+     */
+    public QueryManager getQueryManager() {
+        return queryManager;
+    }
+
+    /**
+     * @param queryManager the queryManager to set
+     */
+    public void setQueryManager(QueryManager queryManager) {
+        this.queryManager = queryManager;
     }
 }

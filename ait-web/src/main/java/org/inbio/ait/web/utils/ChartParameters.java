@@ -30,6 +30,8 @@ public class ChartParameters {
     private String type; //Chart type
     private String xaxis; //who's gonna be x axis
     private String yaxis; //who's gonna be y axis
+    private String xdatatoshow; //Data to be shown in the chart
+    private String ydatatoshow; //Data to be shown in teh chart
 
     /**
      * @return the xdata
@@ -127,5 +129,33 @@ public class ChartParameters {
      */
     public void setYaxis(String yaxis) {
         this.yaxis = yaxis;
+    }
+
+    /**
+     * @return the xdatatoshow
+     */
+    public String getXdatatoshow() {
+        return xdatatoshow;
+    }
+
+    /**
+     * @param xdatatoshow the xdatatoshow to set
+     */
+    public void setXdatatoshow(String xdatatoshow) {
+        this.xdatatoshow = xdatatoshow;
+    }
+
+    /**
+     * @return the ydatatoshow
+     */
+    public String getYdatatoshow() {
+        return ydatatoshow;
+    }
+
+    /**
+     * @param ydatatoshow the ydatatoshow to set
+     */
+    public void setYdatatoshow(String ydatatoshow) {
+        this.ydatatoshow = ydatatoshow;
     }
 }

@@ -34,5 +34,8 @@
             </div>
         </div>
         <!-- Content ending -->
+        <div id="footer">
+            <fmt:message key="footer_text"/>
+        </div>
     </body>
 </html>

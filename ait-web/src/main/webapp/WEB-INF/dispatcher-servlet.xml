@@ -94,6 +94,7 @@
         <property name="filtersKey" value="taxonFilters"/>
         <property name="formView" value="statistical"/>
         <property name="successView" value="viewChart"/>
+        <property name="queryManager" ref="queryManager"/>
     </bean>
     <!-- Chart viewer -->
     <bean name="/chart.htm" class="org.inbio.ait.web.controller.ChartController"/>
@@ -105,6 +106,10 @@
         <property name="speciesDAO" ref="speciesDAO"/>
         <property name="specimenDAO" ref="specimenDAO"/>
     </bean>
+    <bean id="queryManager" class="org.inbio.ait.manager.impl.QueryManagerImpl">
+        <property name="taxonInfoIndexDAO" ref="taxonInfoIndexDAO"/>
+        <property name="taxonIndexDAO" ref="taxonIndexDAO"/>
+    </bean>
 
     <!--.....................................................................-->
     <!--.................... DAO Declarations ...............................-->
@@ -113,6 +118,12 @@
         <property name="dataSource" ref="dataSource" />
     </bean>
      <bean id="specimenDAO" class="org.inbio.ait.dao.impl.SpecimenDAOImpl">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+     <bean id="taxonInfoIndexDAO" class="org.inbio.ait.dao.impl.TaxonInfoIndexDAOImpl">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+     <bean id="taxonIndexDAO" class="org.inbio.ait.dao.impl.TaxonIndexDAOImpl">
         <property name="dataSource" ref="dataSource" />
     </bean>
     

@@ -187,11 +187,35 @@
             }
 
             /*
-             * Shows a loaading image
+             * Shows a loading image
              */
             function showLoadingResults(){
                 document.getElementById('resultsPanel').innerHTML =
                     "<img src=\"${pageContext.request.contextPath}/themes/default/images/loader2.gif\" ></img>";
+            }
+
+            /*
+             * Sets the HTML provided into the nodelist element from
+             * the maps response
+             */
+            function setHTML(response){
+                //Obtain the selected polygon(s), value set on currentPolygonId var
+                parseHTML(response.responseText);
+                //Verify if the list is null
+                if(polygonsList==null){
+                    return;
+                }
+                //Verify if the polygon is unique
+                if(polygonsList.length!=1){
+                    alert(selectOnePolygonE);
+                    return;
+                }
+                //Add the polygon to the geografical criteria list
+                currentPolygonId = polygonsList[0][0];
+                currentPolygonName = polygonsList[0][1];
+                addLayerParam(currentPolygonId,layerId,currentPolygonName,layerName);
+                //Clean the Loading status
+                document.getElementById('info').innerHTML = "";
             }
  
         </script>
@@ -297,6 +321,9 @@
                 <input type="hidden" id="hiddenTaxa" value="">
                 <input type="hidden" id="hiddenIndicators" value="">
 
+            </div>
+            <div id="footer">
+                <fmt:message key="footer_text"/>
             </div>
         </form>
         <!-- Content ending -->

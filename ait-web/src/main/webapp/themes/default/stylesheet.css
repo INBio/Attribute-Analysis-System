@@ -14,7 +14,7 @@ body {
     height: 100%;
     width:100%;
     margin: 0 0 50px 0;
-    font-size:0.8em;    
+    font-size:0.8em;
     }
 #command {margin:0}
 
@@ -54,15 +54,6 @@ body {
     z-index:999
 }
 
-/* The content of each .jsp */
-#contenido {
-    text-align:justify;
-    padding: 0 15% 0 15%;
-    background: url(images/bk-conten.png)  repeat-x  top center;
-    margin: 0;
-    height:100%;
-}
-
 #contenido h2{
     margin:0;
     text-align:center;
@@ -91,19 +82,24 @@ body {
     float:left;
 }
 
-#settings {
-    width:984px;
-    padding:5px;
-    margin-bottom:5px;
-    border:solid gray 1px;
-}
-
 #mapPanel {
     margin: 0 0 0 290px;
 }
 
 #resultsPanel {
     clear:both;
+}
+
+/* The content of each .jsp */
+#contenido {
+    text-align:justify;
+    padding: 0 15% 0 15%;
+    background: url(images/bk-conten.png)  repeat-x  top center;
+    margin: 0;
+    height:100%;
+    display: block;
+    margin-bottom: 3em;
+    min-height: 100%;
 }
 
 /*----------------------------------- Classes -----------------------------------*/
@@ -116,9 +112,8 @@ body {
 }
 
 .chartSetting {
-    float:left;
     width:260px;
-    margin-left:50px;
+    margin-right:10px;
 }
 
 .clearboth{
@@ -128,6 +123,7 @@ body {
 .componentSize {
     width:260px;
     text-align:justify;
+    height:24px;
 }
 
 .my_Button{
@@ -211,25 +207,27 @@ body {
 	line-height: normal;
 	}
 
-    table.contacts
-    { width: 750px;
+table.contacts
+{ width: 750px;
     background-color: #fafafa;
     border: 1px #000000 solid;
     border-collapse: collapse;
-    border-spacing: 0px; }
+    border-spacing: 0px;
+}
 
-    th.contactDept
-    { background-color: #99CCCC;
+th.contactDept
+{ background-color: #99CCCC;
     border: 1px #6699CC solid;
     font-family: Verdana;
     font-weight: bold;
     font-size: 12px;
     padding-top:3px;
     padding-bottom:3px;
-    color: #404040; }
+    color: #404040;
+}
 
-    td.contact
-    { border: 1px #6699CC solid;
+td.contact
+{ border: 1px #6699CC solid;
     text-align: center;
     font-family: Verdana, sans-serif, Arial;
     font-weight: normal;
@@ -237,10 +235,11 @@ body {
     color: #404040;
     background-color: #fafafa;
     padding-top: 1px;
-    padding-bottom: 1px; }
+    padding-bottom: 1px;
+}
 
-    td.contactJusti
-    { border: 1px #6699CC solid;
+td.contactJusti
+{ border: 1px #6699CC solid;
     text-align: justify;
     font-family: Verdana, sans-serif, Arial;
     font-weight: normal;
@@ -248,4 +247,29 @@ body {
     color: #404040;
     background-color: #fafafa;
     padding-top: 1px;
-    padding-bottom: 1px; }
+    padding-bottom: 1px;
+}
+
+/*------------------------------- Footer by Cristian Granados --------------------------------*/
+#footer {
+        margin:auto;
+        background: #2D8F8D;
+        width: 100%;
+        bottom: 0px;
+        left: 0;
+        right: 0;
+        position: fixed;
+        text-align:center;
+        color:white;
+        font-weight:bold;
+    }
+
+<[if gte IE 5.5]><![if lt IE 7]>
+#footer {
+top: expression( ( 0 - footer.offsetHeight + ( document.documentElement.clientHeight ? document.documentElement.clientHeight : document.body.clientHeight ) + ( ignoreMe = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop ) ) + 'px' );
+position:absolute;
+}
+<![endif]><![endif]>
+
+/*------------------------------- Footer by Cristian Granados --------------------------------*/
+

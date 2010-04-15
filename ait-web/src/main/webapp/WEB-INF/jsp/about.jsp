@@ -24,6 +24,9 @@
                 <h2><fmt:message key="about_title"/></h2>
                 <p><fmt:message key="about_content"/></p>
             </div>
+            <div id="footer">
+                <fmt:message key="footer_text"/>
+            </div>
         </form>
     </body>
 </html>
