@@ -20,6 +20,7 @@ package org.inbio.ait.manager;
 
 import java.util.List;
 import org.inbio.ait.model.TaxonInfoIndex;
+import org.inbio.ait.util.ChartCriteria;
 
 /**
  * @author esmata
@@ -35,5 +36,17 @@ public interface QueryManager {
      */
     public Long countByCriteria
             (String[] layerList,String[] taxonList,String[] indicList);
+
+    /**
+     * Count all dwc registers from taxonInfoIndex table that match
+     * with the specified query criteria
+     * @param x represents the first search criteria corresponding to the data
+     * from x axis on the chart
+     * @param y tha same as x but with the y axis
+     * @param xType it coul be "geo","indi" or "taxo" see ChartCriteria.java enum
+     * @param yType it coul be "geo","indi" or "taxo" see ChartCriteria.java enum
+     * @return
+     */
+    public Long countByCriteria(String x,String y,int xType,int yType);
 
 }

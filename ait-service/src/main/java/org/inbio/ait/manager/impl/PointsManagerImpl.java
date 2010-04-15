@@ -71,40 +71,52 @@ public class PointsManagerImpl implements PointsManager{
             for(int i = 0;i<taxonList.length;i++){
                 //Get the name and taxonomical level of the specified taxon
                 TaxonIndex ti = getTaxonIndexDAO().getTaxonIndexByName(taxonList[i]);
-                //To search in the specified taxonomyField
-                String levelColum;
-                switch (ti.getTaxon_range().intValue()) {
-                    case 1:
-                        levelColum = TaxonomicalRange.KINGDOM.getFieldName();
-                        break;
-                    case 2:
-                        levelColum = TaxonomicalRange.PHYLUM.getFieldName();
-                        break;
-                    case 3:
-                        levelColum = TaxonomicalRange.CLASS.getFieldName();
-                        break;
-                    case 4:
-                        levelColum = TaxonomicalRange.ORDER.getFieldName();
-                        break;
-                    case 5:
-                        levelColum = TaxonomicalRange.FAMILY.getFieldName();
-                        break;
-                    case 6:
-                        levelColum = TaxonomicalRange.GENUS.getFieldName();
-                        break;
-                    case 7:
-                        levelColum = TaxonomicalRange.SPECIFICEPITHET.getFieldName();
-                        break;
-                    default:
-                        levelColum = TaxonomicalRange.SCIENTIFICNAME.getFieldName();
-                        break;
+                if(ti.getTaxon_id()!=null){
+                    //To search in the specified taxonomyField
+                    String levelColum;
+                    switch (ti.getTaxon_range().intValue()) {
+                        case 1:
+                            levelColum = TaxonomicalRange.KINGDOM.getFieldName();
+                            break;
+                        case 2:
+                            levelColum = TaxonomicalRange.PHYLUM.getFieldName();
+                            break;
+                        case 3:
+                            levelColum = TaxonomicalRange.CLASS.getFieldName();
+                            break;
+                        case 4:
+                            levelColum = TaxonomicalRange.ORDER.getFieldName();
+                            break;
+                        case 5:
+                            levelColum = TaxonomicalRange.FAMILY.getFieldName();
+                            break;
+                        case 6:
+                            levelColum = TaxonomicalRange.GENUS.getFieldName();
+                            break;
+                        case 7:
+                            levelColum = TaxonomicalRange.SPECIFICEPITHET.getFieldName();
+                            break;
+                        default:
+                            levelColum = TaxonomicalRange.SCIENTIFICNAME.getFieldName();
+                            break;
+                    }
+                    if(i==taxonList.length-1){ //last element
+                        query.append("("+levelColum+" = "+ti.getTaxon_id()+")");
+                    }
+                    else{
+                        query.append("("+levelColum+" = "+ti.getTaxon_id()+") or ");
+                    }
                 }
-                if(i==taxonList.length-1){ //last element
-                    query.append("("+levelColum+" = "+ti.getTaxon_id()+")");
+                else{ //If the taxon doesn't exist on data base
+                    String levelColum = TaxonomicalRange.KINGDOM.getFieldName();
+                    if(i==taxonList.length-1){ //last element
+                        query.append("("+levelColum+" = "+-1+")");
+                    }
+                    else{
+                        query.append("("+levelColum+" = "+-1+") or ");
+                    }
                 }
-                else{
-                    query.append("("+levelColum+" = "+ti.getTaxon_id()+") or ");
-                }
+
             }
             query.append(")");
         }
@@ -143,6 +155,9 @@ public class PointsManagerImpl implements PointsManager{
                 specimenQuery.append("s.globaluniqueidentifier = '"+tiiList.get(i)+"' or ");
             }
         }
+
+        //System.out.println(query.toString());
+
         return specimenDAO.getSpecimenListByQuery(specimenQuery.toString());
     }
 

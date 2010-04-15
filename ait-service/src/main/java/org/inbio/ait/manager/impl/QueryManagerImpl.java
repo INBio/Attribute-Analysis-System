@@ -57,6 +57,111 @@ public class QueryManagerImpl implements QueryManager{
     /**
      * Count all dwc registers from taxonInfoIndex table that match
      * with the specified query criteria
+     * @param x represents the first search criteria corresponding to the data
+     * from x axis on the chart
+     * @param y tha same as x but with the y axis
+     * @param xType it coul be "geo","indi" or "taxo" see ChartCriteria.java enum
+     * @param yType it coul be "geo","indi" or "taxo" see ChartCriteria.java enum
+     * @return
+     */
+    @Override
+    public Long countByCriteria(String x,String y,int xType,int yType){
+        //Build the query string base on parameters
+        StringBuilder query = new StringBuilder();
+        query.append("Select count(distinct globaluniqueidentifier) from ait.taxon_info_index where ");
+
+        switch(xType){
+            case 1: //Taxonomical criteria
+                query.append(getTaxoCriteria(x));
+                break;
+            case 2: //Geographical criteria
+                query.append(getGeoCriteria(x));
+                break;
+            case 3: //Indicators criteria
+                query.append(getIndiCriteria(x));
+                break;
+        }
+
+        switch(yType){
+            case 1: //Taxonomical criteria
+                query.append(" and "+getTaxoCriteria(y));
+                break;
+            case 2: //Geographical criteria
+                query.append(" and "+getGeoCriteria(y));
+                break;
+            case 3: //Indicators criteria
+                query.append(" and "+getIndiCriteria(y));
+                break;
+        }
+
+        //System.out.println(query.toString());
+
+        //Execute query
+        return taxonInfoIndexDAO.countTaxonsByQuery(query.toString());
+    }
+
+    //Constructing the sql query filter for taxonomical criteria
+    private String getTaxoCriteria(String taxonName){
+        String result = "";
+        //Get the name and taxonomical level of the specified taxon
+        TaxonIndex ti = taxonIndexDAO.getTaxonIndexByName(taxonName);
+        if(ti.getTaxon_id()!=null){
+            //To search in the specified taxonomyField
+            String levelColum;
+            switch (ti.getTaxon_range().intValue()) {
+                case 1:
+                    levelColum = TaxonomicalRange.KINGDOM.getFieldName();
+                    break;
+                case 2:
+                    levelColum = TaxonomicalRange.PHYLUM.getFieldName();
+                    break;
+                case 3:
+                    levelColum = TaxonomicalRange.CLASS.getFieldName();
+                    break;
+                case 4:
+                    levelColum = TaxonomicalRange.ORDER.getFieldName();
+                    break;
+                case 5:
+                    levelColum = TaxonomicalRange.FAMILY.getFieldName();
+                    break;
+                case 6:
+                    levelColum = TaxonomicalRange.GENUS.getFieldName();
+                    break;
+                case 7:
+                    levelColum = TaxonomicalRange.SPECIFICEPITHET.getFieldName();
+                    break;
+                default:
+                    levelColum = TaxonomicalRange.SCIENTIFICNAME.getFieldName();
+                    break;
+            }
+            result = "("+levelColum+" = "+ti.getTaxon_id()+")";
+            return result;
+        }
+        else{
+            String levelColum = TaxonomicalRange.KINGDOM.getFieldName();
+            result = "("+levelColum+" = "+-1+")";
+            return result;
+        } 
+    }
+
+    //Constructing the sql query filter for geospatial criteria
+    private String getGeoCriteria(String geoData){
+        String[] aux = geoData.split("~");
+        String layer = aux[0];
+        String polygon = aux[1];
+        String result = "(layer_table = '"+layer+"' and polygom_id = "+polygon+")";
+        return result;
+    }
+
+    //Constructing the sql query filter for indicators criteria
+    private String getIndiCriteria(String indiData){
+        String result = "(indicator_id = "+indiData+")";
+        return result;
+    }
+
+    /**
+     * Count all dwc registers from taxonInfoIndex table that match
+     * with the specified query criteria
      * @return
      */
     @Override
@@ -93,39 +198,50 @@ public class QueryManagerImpl implements QueryManager{
             for(int i = 0;i<taxonList.length;i++){
                 //Get the name and taxonomical level of the specified taxon
                 TaxonIndex ti = taxonIndexDAO.getTaxonIndexByName(taxonList[i]);
-                //To search in the specified taxonomyField
-                String levelColum;
-                switch (ti.getTaxon_range().intValue()) {
-                    case 1:
-                        levelColum = TaxonomicalRange.KINGDOM.getFieldName();
-                        break;
-                    case 2:
-                        levelColum = TaxonomicalRange.PHYLUM.getFieldName();
-                        break;
-                    case 3:
-                        levelColum = TaxonomicalRange.CLASS.getFieldName();
-                        break;
-                    case 4:
-                        levelColum = TaxonomicalRange.ORDER.getFieldName();
-                        break;
-                    case 5:
-                        levelColum = TaxonomicalRange.FAMILY.getFieldName();
-                        break;
-                    case 6:
-                        levelColum = TaxonomicalRange.GENUS.getFieldName();
-                        break;
-                    case 7:
-                        levelColum = TaxonomicalRange.SPECIFICEPITHET.getFieldName();
-                        break;
-                    default:
-                        levelColum = TaxonomicalRange.SCIENTIFICNAME.getFieldName();
-                        break;
+                if(ti.getTaxon_id()!=null){
+                    //To search in the specified taxonomyField
+                    String levelColum;
+                    switch (ti.getTaxon_range().intValue()) {
+                        case 1:
+                            levelColum = TaxonomicalRange.KINGDOM.getFieldName();
+                            break;
+                        case 2:
+                            levelColum = TaxonomicalRange.PHYLUM.getFieldName();
+                            break;
+                        case 3:
+                            levelColum = TaxonomicalRange.CLASS.getFieldName();
+                            break;
+                        case 4:
+                            levelColum = TaxonomicalRange.ORDER.getFieldName();
+                            break;
+                        case 5:
+                            levelColum = TaxonomicalRange.FAMILY.getFieldName();
+                            break;
+                        case 6:
+                            levelColum = TaxonomicalRange.GENUS.getFieldName();
+                            break;
+                        case 7:
+                            levelColum = TaxonomicalRange.SPECIFICEPITHET.getFieldName();
+                            break;
+                        default:
+                            levelColum = TaxonomicalRange.SCIENTIFICNAME.getFieldName();
+                            break;
+                    }
+                    if(i==taxonList.length-1){ //last element
+                        query.append("("+levelColum+" = "+ti.getTaxon_id()+")");
+                    }
+                    else{
+                        query.append("("+levelColum+" = "+ti.getTaxon_id()+") or ");
+                    }
                 }
-                if(i==taxonList.length-1){ //last element
-                    query.append("("+levelColum+" = "+ti.getTaxon_id()+")");
-                }
-                else{
-                    query.append("("+levelColum+" = "+ti.getTaxon_id()+") or ");
+                else{ //If the taxon doesn't exist on data base
+                    String levelColum = TaxonomicalRange.KINGDOM.getFieldName();
+                    if(i==taxonList.length-1){ //last element
+                        query.append("("+levelColum+" = "+-1+")");
+                    }
+                    else{
+                        query.append("("+levelColum+" = "+-1+") or ");
+                    }
                 }
             }
             query.append(")");
