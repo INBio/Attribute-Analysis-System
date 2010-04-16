@@ -68,7 +68,7 @@ public class QueryManagerImpl implements QueryManager{
     public Long countByCriteria(String x,String y,int xType,int yType){
         //Build the query string base on parameters
         StringBuilder query = new StringBuilder();
-        query.append("Select count(distinct globaluniqueidentifier) from ait.taxon_info_index where ");
+        query.append("Select count(distinct scientific_name_id) from ait.taxon_info_index where ");
 
         switch(xType){
             case 1: //Taxonomical criteria
@@ -168,7 +168,7 @@ public class QueryManagerImpl implements QueryManager{
     public Long countByCriteria(String[] layerList, String[] taxonList, String[] indicList) {
         //Build the query string base on parameters
         StringBuilder query = new StringBuilder();
-        query.append("Select count(distinct globaluniqueidentifier) from ait.taxon_info_index where ");
+        query.append("Select count(distinct scientific_name_id) from ait.taxon_info_index where ");
 
         //If there is geografical criteria
         if(layerList.length>0 && !layerList[0].equals("")){

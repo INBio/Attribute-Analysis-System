@@ -20,7 +20,6 @@ package org.inbio.ait.manager;
 
 import java.util.List;
 import org.inbio.ait.model.TaxonInfoIndex;
-import org.inbio.ait.util.ChartCriteria;
 
 /**
  * @author esmata
