@@ -60,11 +60,6 @@
             //Base layer
             var virtualEarthLayer  = new OpenLayers.Layer.VirtualEarth('Virtual Earth');
 
-            /* Internacionalization variables (just for statistical) */
-            var selectChartType;
-            var indicateAxis;
-            var sameAxis;
-
             //Pink tile avoidance
             OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
             //Make OL compute scale according to WMS spec
@@ -199,19 +194,19 @@
 
                 //Validate if the user has selected the chart type
                 if(indexType==0){
-                    alert(selectChartType);
+                    alert("<fmt:message key="select_chart_type"/>");
                     return;
                 }
 
                 //Validate if the user already select x and y axis
                 if(indexX==0||indexY==0){
-                    alert(indicateAxis);
+                    alert("<fmt:message key="indicate_axis"/>");
                     return;
                 }
 
                 //Validate if the user select the same option for x and y axis
                 if(indexX==indexY){
-                    alert(sameAxis);
+                    alert("<fmt:message key="same_axis"/>");
                     return;
                 }
 
@@ -312,9 +307,6 @@
                 specifyTaxonE = "<fmt:message key="taxon_name_error"/>";
                 selectIndicatorFirstE = "<fmt:message key="first_select_indicator"/>";
                 treeLeafE = "<fmt:message key="indicator_leaf"/>";
-                selectChartType = "<fmt:message key="select_chart_type"/>";
-                indicateAxis = "<fmt:message key="indicate_axis"/>";
-                sameAxis = "<fmt:message key="same_axis"/>";
             };
         </script>
 
