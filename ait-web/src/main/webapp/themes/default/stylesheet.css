@@ -13,7 +13,8 @@ html {
 body {
     height: 100%;
     width:100%;
-    margin: 0 0 50px 0;
+    margin:0;
+    padding:0;
     font-size:0.8em;
     }
 #command {margin:0}

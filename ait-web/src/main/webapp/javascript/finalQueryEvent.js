@@ -73,15 +73,13 @@ function executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators,
             }
 
             document.getElementById('resultsPanel').innerHTML = resultHTML;
+            YAHOO.example.container.wait.hide();
         }, 
 
         //If XHR call is not successful
         failure: function(oResponse) {
             YAHOO.log("Failed to process XHR transaction.", "info", "example");
         }
-
-        //Timeout -- if more than 7 seconds go by, we'll abort
-        //timeout: 7000
     };
 
     //Make our XHR call using Connection Manager's

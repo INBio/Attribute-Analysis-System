@@ -27,6 +27,7 @@ var alreadyAddedE;
 var specifyTaxonE;
 var selectIndicatorFirstE;
 var treeLeafE;
+var loadingImage; //To store the image URL
 
 /*
  * Initialazing the indicators tree
@@ -54,6 +55,29 @@ function initIndicators(){
             isLeaf = "false";
         }
     });
+}
+
+/*
+ * Initialize a panel to show the loading image
+ */
+function initLoadingPanel(){
+    if (!YAHOO.example.container.wait) {
+       YAHOO.example.container.wait =
+            new YAHOO.widget.Panel("wait",
+        {
+            width:"240px",
+            fixedcenter:true,
+            close:false,
+            draggable:false,
+            zindex:999,
+            modal:true,
+            visible:false
+        }
+    );
+        YAHOO.example.container.wait.setHeader(loadingText);
+        YAHOO.example.container.wait.setBody(loadingImage);
+        YAHOO.example.container.wait.render(document.getElementById('contenido'));
+    }
 }
 
 /*

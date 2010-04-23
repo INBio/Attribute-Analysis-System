@@ -22,3 +22,5 @@
 <script src="${pageContext.request.contextPath}/javascript/finalQueryEvent.js" type="text/javascript" language="javascript"></script>
 <script src="${pageContext.request.contextPath}/javascript/analysisCommon.js" type="text/javascript" language="javascript"></script>
 <script src="${pageContext.request.contextPath}/javascript/showSpecimenPoints.js" type="text/javascript" language="javascript"></script>
+<script src="${pageContext.request.contextPath}/javascript/yui/dragdrop/dragdrop-min.js" type="text/javascript" language="javascript"></script>
+<script src="${pageContext.request.contextPath}/javascript/yui/container/container.js" type="text/javascript" language="javascript"></script>

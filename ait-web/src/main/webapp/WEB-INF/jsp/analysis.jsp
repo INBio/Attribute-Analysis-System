@@ -19,8 +19,10 @@
         href="<c:out value="${pageContext.request.contextPath}"/>/<spring:theme code='autocomplete'/>"/>
         <link rel="stylesheet" type="text/css"
         href="<c:out value="${pageContext.request.contextPath}"/>/<spring:theme code='tree'/>"/>
+        <link rel="stylesheet" type="text/css"
+        href="<c:out value="${pageContext.request.contextPath}"/>/<spring:theme code='container'/>"/>
         
-        <title><fmt:message key="title"/></title>
+        <title><fmt:message key="title"/></title> 
 
         <script src="http://216.75.53.105:80/geoserver/openlayers/OpenLayers.js" type="text/javascript"></script>       
         <script type="text/JavaScript" src="http://openlayers.org/api/OpenLayers.js"></script>
@@ -64,6 +66,8 @@
             OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
             //Make OL compute scale according to WMS spec
             OpenLayers.DOTS_PER_INCH = 25.4 / 0.28;
+            //Using to show the loading panel
+            YAHOO.namespace("example.container");
 
             /*
              * Initialize the map, the indicators tree and sets the
@@ -79,14 +83,17 @@
                 createDDLayers();
                 //Init indicators tree
                 initIndicators();
-            }
+                //Init the loading javascript                
+                initLoadingPanel();
+            };
 
             /*
              * This function calls another function that is on charge to make the
              * final query and show the result to the user
              */
-            function makeQuery(){
-                showLoadingResults();
+            function makeQuery(){                
+                //Show loading
+                YAHOO.example.container.wait.show();
                 //Getting the parameter lists
                 var layerslist = document.getElementById('mapParameters');
                 var taxonlist = document.getElementById('taxParameters');
@@ -99,6 +106,7 @@
                 if(layerslist.childNodes.length==0&&taxonlist.childNodes.length==0&&treelist.childNodes.length==0){
                     alert(selectCriteriaE);
                     document.getElementById('resultsPanel').innerHTML = "";
+                    YAHOO.example.container.wait.hide();
                     return;
                 }
                 //Loop over geographical criteria
@@ -187,14 +195,6 @@
             }
 
             /*
-             * Shows a loading image
-             */
-            function showLoadingResults(){
-                document.getElementById('resultsPanel').innerHTML =
-                    "<img src=\"${pageContext.request.contextPath}/themes/default/images/loader2.gif\" ></img>";
-            }
-
-            /*
              * Sets the HTML provided into the nodelist element from
              * the maps response
              */
@@ -233,11 +233,12 @@
                 specifyTaxonE = "<fmt:message key="taxon_name_error"/>";
                 selectIndicatorFirstE = "<fmt:message key="first_select_indicator"/>";
                 treeLeafE = "<fmt:message key="indicator_leaf"/>";
+                loadingImage = "<img src=\"${pageContext.request.contextPath}/themes/default/images/ajax-loader.gif\" ></img>";
             };
         </script>
 
     </head>
-    <body onload="init()">
+    <body onload="init()" class=" yui-skin-sam">
 
         <!-- TaxonFilter Auto Complete-->
         <script type="text/javascript">
@@ -301,7 +302,7 @@
 
                     <!-- Query Button -->
                     <input type="button" class="main_Button" id="makeQueryButton" value="<fmt:message key="consult"/>"
-                    onclick="makeQuery()" /> 
+                    onclick="makeQuery()" />
 
                 </div>
 
@@ -314,7 +315,7 @@
                     </div>
                 </div>
 
-                <div id="resultsPanel"></div>
+                <div id="resultsPanel" style="padding-bottom:15px"></div>
 
                 <!-- To show specimens points into the map -->
                 <input type="hidden" id="hiddenLayers" value="">

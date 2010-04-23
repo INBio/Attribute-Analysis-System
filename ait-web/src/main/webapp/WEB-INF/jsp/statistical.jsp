@@ -19,6 +19,8 @@
               href="<c:out value="${pageContext.request.contextPath}"/>/<spring:theme code='autocomplete'/>"/>
         <link rel="stylesheet" type="text/css"
               href="<c:out value="${pageContext.request.contextPath}"/>/<spring:theme code='tree'/>"/>
+        <link rel="stylesheet" type="text/css"
+              href="<c:out value="${pageContext.request.contextPath}"/>/<spring:theme code='container'/>"/>
 
         <title><fmt:message key="title"/></title>
 
@@ -64,6 +66,8 @@
             OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
             //Make OL compute scale according to WMS spec
             OpenLayers.DOTS_PER_INCH = 25.4 / 0.28;
+            //Using to show the loading panel
+            YAHOO.namespace("example.container");
 
             /*
              * Initialize the map, the indicators tree and sets the
@@ -84,10 +88,13 @@
                 createDDLayers();
                 //Init indicators tree
                 initIndicators();
+                //Init the loading javascript
+                initLoadingPanel();
             }
 
             //Passing parameters to controller class throw path property
             function doSubmit(mapParams,taxonParams,treeParams){
+
                 //Getting the form reference
                 var form = document.getElementById('parameters');
 
@@ -182,6 +189,8 @@
              * Validates if everything is correct with the chart parameters
              */
             function validateParameters(){
+                //Show loading image
+                YAHOO.example.container.wait.show();
                 //Getting the parameter lists
                 var mapParams = document.getElementById('mapParameters');
                 var taxonParams = document.getElementById('taxParameters');
@@ -195,18 +204,21 @@
                 //Validate if the user has selected the chart type
                 if(indexType==0){
                     alert("<fmt:message key="select_chart_type"/>");
+                    YAHOO.example.container.wait.hide();
                     return;
                 }
 
                 //Validate if the user already select x and y axis
                 if(indexX==0||indexY==0){
                     alert("<fmt:message key="indicate_axis"/>");
+                    YAHOO.example.container.wait.hide();
                     return;
                 }
 
                 //Validate if the user select the same option for x and y axis
                 if(indexX==indexY){
                     alert("<fmt:message key="same_axis"/>");
+                    YAHOO.example.container.wait.hide();
                     return;
                 }
 
@@ -307,11 +319,12 @@
                 specifyTaxonE = "<fmt:message key="taxon_name_error"/>";
                 selectIndicatorFirstE = "<fmt:message key="first_select_indicator"/>";
                 treeLeafE = "<fmt:message key="indicator_leaf"/>";
+                loadingImage = "<img src=\"${pageContext.request.contextPath}/themes/default/images/ajax-loader.gif\" ></img>";
             };
         </script>
 
     </head>
-    <body onload="init()">
+    <body onload="init()"  class=" yui-skin-sam">
 
         <!-- TaxonFilter Auto Complete-->
         <script type="text/javascript">
