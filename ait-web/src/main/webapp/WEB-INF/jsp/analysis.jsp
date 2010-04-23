@@ -85,8 +85,19 @@
                 initIndicators();
                 //Init the loading javascript                
                 initLoadingPanel();
-            };
 
+                // Instantiate a Panel from markup
+                /*YAHOO.example.container.queryPanel1 = new YAHOO.widget.Panel("queryPanel1", { visible:true, draggable:true, close:false } );
+                YAHOO.example.container.queryPanel1.render();
+
+                YAHOO.example.container.queryPanel2 = new YAHOO.widget.Panel("queryPanel2", { visible:true, draggable:true, close:false } );
+                YAHOO.example.container.queryPanel2.render();
+
+                YAHOO.example.container.queryPanel3 = new YAHOO.widget.Panel("queryPanel3", { visible:true, draggable:true, close:false } );
+                YAHOO.example.container.queryPanel3.render();
+                             http://developer.yahoo.com/yui/examples/container/panel.html*/
+            };
+            
             /*
              * This function calls another function that is on charge to make the
              * final query and show the result to the user
