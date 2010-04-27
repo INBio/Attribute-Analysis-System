@@ -18,7 +18,6 @@
 
 package org.inbio.ait.web.ajax.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -49,26 +48,93 @@ public class QueryController implements Controller{
             String[] taxonArray = paramTaxon.split("\\|");
             String[] indiArray = paramIndi.split("\\|");
 
-            //Total of matches
-            Long totalMatches = queryManager.countByCriteria
-                    (layerArray, taxonArray, indiArray);
+            //If there is just one or two parameters. It means type 0 on xml
+            //------------------------------------------------------------------
+            if(isOneOrTwoParameters(layerArray,taxonArray,indiArray)){
+                //Total of matches
+                Long totalMatches = queryManager.countByCriteria
+                        (layerArray, taxonArray, indiArray);
 
-            //List that contains the matches by polygon
-            List<Long> matchesByPolygon = new ArrayList<Long>();
-            for(int i=0;i<layerArray.length;i++){
-                String[] thePolygon = {layerArray[i]};
-                Long aux = queryManager.countByCriteria(thePolygon,taxonArray,indiArray);
-                matchesByPolygon.add(aux);
+                return writeReponse0(request,response,totalMatches);
             }
-
-			return writeReponse(request,response,totalMatches,matchesByPolygon);
+            else{ //If there are three parameters. It means type 1 on xml
+                return null;
+            }
 
 		} catch (IllegalArgumentException iae) {
 			throw new Exception(errorMsj + " "+ iae.getMessage());
 		}
     }
 
-	private ModelAndView writeReponse(HttpServletRequest request,
+    /**
+     * Method to determine if there is one or two parameters
+     * Return false when there are three parameters or there is no parameters
+     * Return true if there is one or two parameters
+     */
+    private boolean isOneOrTwoParameters(String[] l, String[] t, String[] i) {
+        int ll = myLength(l);
+        int tl = myLength(t);
+        int il = myLength(i);
+        if (ll != 0 && tl != 0 && il != 0) {
+            return false;
+        } else if (ll == 0 && tl == 0 && il == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    private int myLength(String[] array){
+        if(array==null){
+            return 0;
+        }
+        else{
+            if(array[0].equals("")){
+                array = new String[0];
+            }
+            return array.length;
+        }
+    }
+
+    /**
+     * Write the XML to be parsed on the analysis view
+     * Case: one or two parameters (0)
+     * @param request
+     * @param response
+     * @param totalMatch
+     * @param matchesByPolygon
+     * @return
+     * @throws java.lang.Exception
+     */
+	private ModelAndView writeReponse0(HttpServletRequest request,
+			HttpServletResponse response, Long totalMatch) throws Exception {
+
+		response.setCharacterEncoding("ISO-8859-1");
+		response.setContentType("text/xml");
+		ServletOutputStream out = response.getOutputStream();
+
+        StringBuilder result = new StringBuilder();
+        result.append("<?xml version='1.0' encoding='ISO-8859-1'?><response>");
+        result.append("<type>0</type>");
+        result.append("<total>"+totalMatch+"</total></response>");
+
+        out.println(result.toString());
+		out.flush();
+		out.close();
+
+		return null;
+	}
+
+    /**
+     * Write the XML to be parsed on the analysis view
+     * Case: three parameters (1)
+     * @param request
+     * @param response
+     * @param totalMatch
+     * @param matchesByPolygon
+     * @return
+     * @throws java.lang.Exception
+     */
+	private ModelAndView writeReponse1(HttpServletRequest request,
 			HttpServletResponse response, Long totalMatch,
             List<Long> matchesByPolygon) throws Exception {
 

@@ -32,56 +32,99 @@ function executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators,
         success: function(oResponse) {
             //Root element -> response
             var xmlDoc = oResponse.responseXML.documentElement;
-            //Get total count data
-            var totalCount = xmlDoc.getElementsByTagName("data")[0].childNodes[0].nodeValue;
-            //Get the list of polygons
-            var polygonsList = xmlDoc.getElementsByTagName("polygon");           
+            //Get the XML type. 0 means one or two parameters. 1 means 3 parameters
+            var type = xmlDoc.getElementsByTagName("type")[0].childNodes[0].nodeValue;
 
-            //Show general result and the search criteria
-            var criteria = "<b>Geográficos: </b>";
-            for(var i = 0;i<layersShow.length;i++){
-                criteria += layersShow[i]+"   ";
-            }
-            criteria += "<br><b>Taxonómicos: </b>";
-            for(var j = 0;j<taxonsShow.length;j++){
-                criteria += taxonsShow[j]+"   ";
-            }
-            criteria += "<br><b>Indicadores: </b>";
-            for(var k = 0;k<treeShow.length;k++){
-                criteria += treeShow[k]+"   ";
-            }
-            var resultHTML = "<p style=\"font-weight:bold;font-size:14px;\">Resultados generales</p>"+
-            "<table class=\"contacts\" cellspacing=\"0\">"+
-            "<tr><th class=\"contactDept\" >Criterios de búsqueda</th>"+
-            "<th  class=\"contactDept\" >Total de coincidencias</th></tr><tr>"+
-            "<td class=\"contactJusti\" width=\"70%\">"+criteria+"</td>"+
-            "<td class=\"contact\" width=\"30%\">"+totalCount+"</td>"+
-            "</tr></table>";
+            switch(type){
+                case '0': // 0 means one or two parameters
+                    //Get total count data
+                    var total = xmlDoc.getElementsByTagName("total")[0].childNodes[0].nodeValue;
+                    //Show general result and the search criteria
+                    var criteria = "";
+                    if(layersShow.length>0){
+                        criteria += "<b>"+geographical+" </b>";
+                        for(var i = 0;i<layersShow.length;i++){
+                            criteria += layersShow[i]+"   ";
+                        }
+                        criteria += "<br>";
+                    }
+                    if(taxonsShow.length>0){
+                        criteria += "<b>"+taxonomic+" </b>";
+                        for(var j = 0;j<taxonsShow.length;j++){
+                            criteria += taxonsShow[j]+"   ";
+                        }
+                        criteria += "<br>";
+                    }
+                    if(treeShow.length>0){
+                        criteria += "<b>"+indicators+" </b>";
+                        for(var k = 0;k<treeShow.length;k++){
+                            criteria += treeShow[k]+"   ";
+                        }
+                        criteria += "<br>";
+                    }                    
+                    var resultHTML = createReportHeader(criteria, total);
+                    document.getElementById('resultsPanel').innerHTML = resultHTML;
+                    YAHOO.example.container.wait.hide();
+                    callAnchor('#anchorResult');
+                    break;
 
-            //Show the result in terms of polygons
-            if(polygonsList.length>1){
-                resultHTML += "<p style=\"font-weight:bold;font-size:14px;\">Resultados por polígono</p>"+
-                    "<table class=\"contacts\" cellspacing=\"0\">"+
-                    "<tr><th class=\"contactDept\" >Criterio</th>"+
-                    "<th  class=\"contactDept\" >Coincidencias</th></tr>";
-                for(var l = 0;l<polygonsList.length;l++){
-                    var aux = polygonsList[l].getElementsByTagName("data")[0].childNodes[0].nodeValue;
-                    resultHTML += "<tr><td class=\"contact\" width=\"70%\">"+layersShow[l]+"</td>"+
-                    "<td class=\"contact\" width=\"30%\">"+aux+"</td></tr>";
-                }
-                resultHTML += "</table>";
+                case '1': // 1 means 3 parameters
+                    break;
             }
-
-            document.getElementById('resultsPanel').innerHTML = resultHTML;
-            YAHOO.example.container.wait.hide();
-        }, 
+            
+        },
 
         //If XHR call is not successful
         failure: function(oResponse) {
             YAHOO.log("Failed to process XHR transaction.", "info", "example");
         }
     };
-
+    
     //Make our XHR call using Connection Manager's
     YAHOO.util.Connect.asyncRequest('GET', sUrl, callback);
 }
+
+/**
+ * This function creates the general report, so, return an html string
+ * with the search criteria and the general count of matches
+ */
+function createReportHeader(criteria,total){
+    var result = '<div id="reportHeader">'+
+        '<h2>'+searchResults+'</h2>'+
+        '<h3>'+searchCriteria+'</h3>'+criteria+
+        '<h3>'+speciesMatches+'</h3>'+total+'</div>'+
+    '<input type="button" id="viewDetail0" value="'+seeDetail+'" onclick="showDetailsFromHiddenData()" />'+
+    '<input type="button" id="showOnMap0" value="'+seeOnMap+'" onclick="showPointFromHiddenData()" />';
+    return result;
+}
+
+/**
+ * To draw the specimen points into the map
+ */
+function showPointFromHiddenData(){
+    //Show loading
+    YAHOO.example.container.wait.show();
+    //Getting the query parameters
+    var layers = document.getElementById('hiddenLayers').value;
+    var taxa = document.getElementById('hiddenTaxa').value;
+    var indi = document.getElementById('hiddenIndicators').value;
+    //Drowing the points
+    showSpecimenPoints(layers,taxa,indi);
+}
+
+/**
+ * To get a detailed report of the query when there is one or two parameters
+ * Return a List of specimens that match with the criteria
+ */
+function showDetailsFromHiddenData(){
+    //Show loading
+    YAHOO.example.container.wait.show();
+    //Getting the query parameters
+    var layers = document.getElementById('hiddenLayers').value;
+    var taxa = document.getElementById('hiddenTaxa').value;
+    var indi = document.getElementById('hiddenIndicators').value;
+    //Drowing the points
+    viewSimpleDetail(layers,taxa,indi);
+}
+
+

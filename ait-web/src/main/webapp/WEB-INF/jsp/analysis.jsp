@@ -62,13 +62,17 @@
             //Base layer
             var virtualEarthLayer  = new OpenLayers.Layer.VirtualEarth('Virtual Earth');
 
+            //Internacionalization of the report texts
+            var searchResults,geographical,taxonomic,indicators,speciesMatches,
+            seeOnMap,seeDetail,searchCriteria,speciesList;
+
             //Pink tile avoidance
             OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
             //Make OL compute scale according to WMS spec
             OpenLayers.DOTS_PER_INCH = 25.4 / 0.28;
             //Using to show the loading panel
             YAHOO.namespace("example.container");
-
+            
             /*
              * Initialize the map, the indicators tree and sets the
              * internationalization to the javascript code
@@ -85,26 +89,17 @@
                 initIndicators();
                 //Init the loading javascript                
                 initLoadingPanel();
-
-                // Instantiate a Panel from markup
-                /*YAHOO.example.container.queryPanel1 = new YAHOO.widget.Panel("queryPanel1", { visible:true, draggable:true, close:false } );
-                YAHOO.example.container.queryPanel1.render();
-
-                YAHOO.example.container.queryPanel2 = new YAHOO.widget.Panel("queryPanel2", { visible:true, draggable:true, close:false } );
-                YAHOO.example.container.queryPanel2.render();
-
-                YAHOO.example.container.queryPanel3 = new YAHOO.widget.Panel("queryPanel3", { visible:true, draggable:true, close:false } );
-                YAHOO.example.container.queryPanel3.render();
-                             http://developer.yahoo.com/yui/examples/container/panel.html*/
             };
             
             /*
              * This function calls another function that is on charge to make the
              * final query and show the result to the user
              */
-            function makeQuery(){                
+            function makeQuery(){             
                 //Show loading
                 YAHOO.example.container.wait.show();
+                //Clear vector layer
+                replaceVectorLayer();
                 //Getting the parameter lists
                 var layerslist = document.getElementById('mapParameters');
                 var taxonlist = document.getElementById('taxParameters');
@@ -117,6 +112,7 @@
                 if(layerslist.childNodes.length==0&&taxonlist.childNodes.length==0&&treelist.childNodes.length==0){
                     alert(selectCriteriaE);
                     document.getElementById('resultsPanel').innerHTML = "";
+                    document.getElementById('detailedResults').innerHTML = "";
                     YAHOO.example.container.wait.hide();
                     return;
                 }
@@ -165,45 +161,12 @@
                 document.getElementById('taxParameters').innerHTML = "";
                 document.getElementById('treeParameters').innerHTML = "";
                 tree.collapseAll();
+                document.getElementById('detailedResults').innerHTML = "";
                 
                 //Call the function that returns the result (xml) asincronically
                 executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators,
                 layersShow,taxonsShow,treeShow);
-
-                //Clean the specimen points layer
-                replaceVectorLayer();
-                //Draw the spevectorLayer.refresh();cimen points into the map
-                showSpecimenPoints(selectedLayers,selectedTaxa,selectedIndicators);
             };
-
-            /*
-             * This function adds a new point to the specimens Layer
-             */
-            function addPoint(x, y, attribute) {
-                var feature = new OpenLayers.Feature.Vector(
-                new OpenLayers.Geometry.Point(x, y), attribute);
-                vectorLayer.addFeatures(feature);
-            };
-
-            /*
-             * Creates a new atributes array for each speciemns point
-             */
-            function createAttrib(scientificName) {
-                attrib = {
-                    sScientificName: scientificName
-                }
-                return attrib;
-            };
-
-            /*
-             * Deletes the current specimen points
-             */
-            function replaceVectorLayer(){
-                vectorLayer.destroy();
-                vectorLayer = new OpenLayers.Layer.Vector('Specimens');
-                vectorLayer.setVisibility(true);
-                map.addLayer(vectorLayer);
-            }
 
             /*
              * Sets the HTML provided into the nodelist element from
@@ -228,6 +191,11 @@
                 //Clean the Loading status
                 document.getElementById('info').innerHTML = "";
             }
+
+            //Go to anchor
+            function callAnchor(anchor){
+            document.location.href = anchor;
+            }
  
         </script>
 
@@ -245,6 +213,16 @@
                 selectIndicatorFirstE = "<fmt:message key="first_select_indicator"/>";
                 treeLeafE = "<fmt:message key="indicator_leaf"/>";
                 loadingImage = "<img src=\"${pageContext.request.contextPath}/themes/default/images/ajax-loader.gif\" ></img>";
+                searchResults = "<fmt:message key="search_results"/>";
+                geographical = "<fmt:message key="geographical"/>";
+                taxonomic = "<fmt:message key="taxonomic"/>";
+                indicators = "<fmt:message key="indicators"/>";
+                speciesMatches = "<fmt:message key="species_matches"/>";
+                seeOnMap = "<fmt:message key="see_on_map"/>";
+                seeDetail = "<fmt:message key="see_detail"/>";
+                searchCriteria = "<fmt:message key="search_criteria"/>";
+                speciesList = "<fmt:message key="species_list"/>";
+
             };
         </script>
 
@@ -321,12 +299,17 @@
                     <!-- Map Panel -->
                     <div id="map"> </div>
                     <div id="wrapper">
-                        <div id="location">location</div>
+                        <div id="location"></div>
                         <div id="scale"></div>
                     </div>
                 </div>
 
-                <div id="resultsPanel" style="padding-bottom:15px"></div>
+                <!-- Panel to show the result header (abstract) -->
+                <a name="anchorResult"></a>
+                <div id="resultsPanel"></div>
+
+                <!-- Panel to show the detailed result -->
+                <div id="detailedResults"></div>
 
                 <!-- To show specimens points into the map -->
                 <input type="hidden" id="hiddenLayers" value="">

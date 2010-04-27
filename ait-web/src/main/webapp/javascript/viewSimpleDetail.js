@@ -19,29 +19,37 @@
 /**
  * Execute final query from especific parameters
  */
-function showSpecimenPoints(selectedLayers,selectedTaxa,selectedIndicators)  {
+function viewSimpleDetail(selectedLayers,selectedTaxa,selectedIndicators)  {
 
     //Prepare URL for XHR request:
-    var sUrl = "/ait-web/ajax/getPoints?layers="+selectedLayers+"&taxons="+selectedTaxa+"&indi="+selectedIndicators;
+    var sUrl = "/ait-web/ajax/getSpecies?layers="+selectedLayers+"&taxons="+selectedTaxa+"&indi="+selectedIndicators;
 
     //Prepare callback object
     var callback = {
 
         //If XHR call is successful
         success: function(oResponse) {
-            //Clear vector layer
-            replaceVectorLayer();
             //Root element -> response
             var xmlDoc = oResponse.responseXML.documentElement;
             //Get the list of specimens
-            var specimenList = xmlDoc.getElementsByTagName("specimen");
+            var species = xmlDoc.getElementsByTagName("species");
 
-            for(var i = 0;i<specimenList.length;i++){
-                var node = specimenList[i];
-                attributes = createAttrib(node.getElementsByTagName("scientificname")[0].childNodes[0].nodeValue);
-                addPoint(node.getElementsByTagName("longitude")[0].childNodes[0].nodeValue,
-                node.getElementsByTagName("latitude")[0].childNodes[0].nodeValue,attributes);
+            var dwcList = '';
+            for(var i = 0;i<species.length;i++){
+                var node = species[i];
+                dwcList += (i+1)+') '+node.getElementsByTagName
+                ("scientificname")[0].childNodes[0].nodeValue+'<br>';
             }
+
+            // Show the result
+            document.getElementById('detailedResults').innerHTML = '<p>'+speciesList+'</p>'+dwcList;
+
+            /*YAHOO.example.container.detailedResults = new YAHOO.widget.Panel
+            ("detailedResults", { width:"800px", visible:true, draggable:false, close:false} );
+            YAHOO.example.container.detailedResults.setHeader(speciesList);
+            YAHOO.example.container.detailedResults.setBody(dwcList);
+            YAHOO.example.container.detailedResults.render();*/
+
             YAHOO.example.container.wait.hide();
         }, 
 
@@ -53,33 +61,4 @@ function showSpecimenPoints(selectedLayers,selectedTaxa,selectedIndicators)  {
 
     //Make our XHR call using Connection Manager's
     YAHOO.util.Connect.asyncRequest('GET', sUrl, callback);
-}
-
-/*
- * This function adds a new point to the specimens Layer
- */
-function addPoint(x, y, attribute) {
-    var feature = new OpenLayers.Feature.Vector(
-    new OpenLayers.Geometry.Point(x, y), attribute);
-    vectorLayer.addFeatures(feature);
-}
-
-/*
- * Creates a new atributes array for each speciemns point
- */
-function createAttrib(scientificName) {
-    attrib = {
-        sScientificName: scientificName
-    }
-    return attrib;
-}
-
-/*
- * Deletes the current specimen points
- */
-function replaceVectorLayer(){
-    vectorLayer.destroy();
-    vectorLayer = new OpenLayers.Layer.Vector('Specimens');
-    vectorLayer.setVisibility(true);
-    map.addLayer(vectorLayer);
 }

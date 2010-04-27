@@ -55,12 +55,6 @@ body {
     z-index:999
 }
 
-#contenido h2{
-    margin:0;
-    text-align:center;
-    padding: 5px 0 5px 0;
-}
-
 /* The map and the location bar */
 #map {
     position: relative;
@@ -89,6 +83,7 @@ body {
 
 #resultsPanel {
     clear:both;
+    font-size:12px;
 }
 
 /* The content of each .jsp */
@@ -101,6 +96,25 @@ body {
     display: block;
     margin-bottom: 3em;
     min-height: 100%;
+}
+
+#contenido h2{
+    margin:0;
+    text-align:center;
+    padding: 5px 0 5px 0;
+}
+
+/* Report header */
+#reportHeader h2{
+    margin:0;
+    text-align:center;
+    padding: 5px 0 5px 0;
+}
+
+#reportHeader h3{
+    margin:0;
+    text-align:justify;
+    padding: 5px 0 5px 0;
 }
 
 /*----------------------------------- Classes -----------------------------------*/
@@ -207,49 +221,6 @@ body {
 	font-style: normal;
 	line-height: normal;
 	}
-
-table.contacts
-{ width: 750px;
-    background-color: #fafafa;
-    border: 1px #000000 solid;
-    border-collapse: collapse;
-    border-spacing: 0px;
-}
-
-th.contactDept
-{ background-color: #99CCCC;
-    border: 1px #6699CC solid;
-    font-family: Verdana;
-    font-weight: bold;
-    font-size: 12px;
-    padding-top:3px;
-    padding-bottom:3px;
-    color: #404040;
-}
-
-td.contact
-{ border: 1px #6699CC solid;
-    text-align: center;
-    font-family: Verdana, sans-serif, Arial;
-    font-weight: normal;
-    font-size: .7em;
-    color: #404040;
-    background-color: #fafafa;
-    padding-top: 1px;
-    padding-bottom: 1px;
-}
-
-td.contactJusti
-{ border: 1px #6699CC solid;
-    text-align: justify;
-    font-family: Verdana, sans-serif, Arial;
-    font-weight: normal;
-    font-size: .7em;
-    color: #404040;
-    background-color: #fafafa;
-    padding-top: 1px;
-    padding-bottom: 1px;
-}
 
 /*------------------------------- Footer by Cristian Granados --------------------------------*/
 #footer {

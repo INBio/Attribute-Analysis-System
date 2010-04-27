@@ -29,6 +29,8 @@
                 <prop key="/finalQuery/**/**">queryController</prop>
             <!-- Getting specimen info to show in the map the specimens point -->
                 <prop key="/getPoints/**/**">pointsController</prop>
+            <!-- Getting disctint species list from specimen info -->
+                <prop key="/getSpecies/**/**">speciesController</prop>
             </props>
         </property>
     </bean>
@@ -63,7 +65,6 @@
     <!--.....................................................................-->
     <!--.......................... YUI Tree suppot ..........................-->
     <!--.....................................................................-->
-    <!-- Taxonomy search support  -->
     <bean id="indicatorsTreeController" class="org.inbio.ait.web.ajax.controller.IndicatorsTreeController">
       <property name="indicatorsManager" ref="indicatorsManager"/>
     </bean>
@@ -71,7 +72,6 @@
     <!--.....................................................................-->
     <!--.......................... Query suppot ..........................-->
     <!--.....................................................................-->
-    <!-- Taxonomy search support  -->
     <bean id="queryController" class="org.inbio.ait.web.ajax.controller.QueryController">
       <property name="queryManager" ref="queryManager"/>
     </bean>
@@ -79,9 +79,15 @@
     <!--.....................................................................-->
     <!--..................... Specimens map points ..........................-->
     <!--.....................................................................-->
-    <!-- Taxonomy search support  -->
     <bean id="pointsController" class="org.inbio.ait.web.ajax.controller.PointsController">
       <property name="pointsManager" ref="pointsManager"/>
+    </bean>
+
+    <!--.....................................................................-->
+    <!--............. Species list from especimens repository ...............-->
+    <!--.....................................................................-->
+    <bean id="speciesController" class="org.inbio.ait.web.ajax.controller.SpeciesController">
+      <property name="speciesManager" ref="speciesManager"/>
     </bean>
 
     <!--.....................................................................-->
@@ -101,6 +107,10 @@
         <property name="taxonInfoIndexDAO" ref="taxonInfoIndexDAO"/>
         <property name="taxonIndexDAO" ref="taxonIndexDAO"/>
         <property name="specimenDAO" ref="specimenDAO"/>
+    </bean>
+    <bean id="speciesManager" class="org.inbio.ait.manager.impl.SpeciesManagerImpl">
+        <property name="taxonInfoIndexDAO" ref="taxonInfoIndexDAO"/>
+        <property name="taxonIndexDAO" ref="taxonIndexDAO"/>
     </bean>
 
     <!--.....................................................................-->
