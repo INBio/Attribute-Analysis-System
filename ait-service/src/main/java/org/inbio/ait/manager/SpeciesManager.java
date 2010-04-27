@@ -16,40 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.inbio.ait.dao;
+package org.inbio.ait.manager;
 
 import java.util.List;
-import org.inbio.ait.model.TaxonInfoIndex;
 
 /**
  *
  * @author esmata
  */
-public interface TaxonInfoIndexDAO {
+public interface SpeciesManager {
 
-    /**
-     * Getting a list that contains all information asociated with the diferent
-     * taxons
-     * @return
-     */
-    public List<TaxonInfoIndex> getallTaxonInfo();
-
-    /**
-     * Execute any query that returns a list of TaxonInfoIndex model object
-     * @param q
-     * @return
-     */
-    public List<TaxonInfoIndex> getTaxonsByQuery(String q);
-
-    /**
-     * Execute any count query of TaxonInfoIndex model object
-     * @param q
-     * @return
-     */
-    public Long countTaxonsByQuery(String q);
-
-    public List<String> getGlobalUniqueIdentifiers(String q);
-
-    public List<String> getScientificNames(String q);
+    public List<String> speciesByCriteria(String[] layerList, String[] taxonList, String[] indicList);
 
 }

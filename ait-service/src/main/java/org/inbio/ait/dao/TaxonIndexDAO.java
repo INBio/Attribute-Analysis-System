@@ -33,4 +33,6 @@ public interface TaxonIndexDAO {
      */
     public TaxonIndex getTaxonIndexByName(String name);
 
+    public TaxonIndex getTaxonIndexById(String id);
+
 }

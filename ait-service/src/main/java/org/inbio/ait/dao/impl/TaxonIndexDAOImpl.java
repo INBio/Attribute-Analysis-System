@@ -44,6 +44,19 @@ public class TaxonIndexDAOImpl extends SimpleJdbcDaoSupport implements TaxonInde
         return tIndex;
     }
 
+    @Override
+    public TaxonIndex getTaxonIndexById(String id) {
+        TaxonIndex tIndex = new TaxonIndex();
+        try {
+            String query = "Select * from ait.taxon_index where taxon_id = '"+ id +"';";
+            tIndex = getSimpleJdbcTemplate().queryForObject(query,new tIndexMapper());
+        } catch (Exception e) {
+            return tIndex;
+        }
+
+        return tIndex;
+    }
+
     private static class tIndexMapper implements ParameterizedRowMapper<TaxonIndex> {
 
         @Override
