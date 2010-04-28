@@ -88,6 +88,7 @@
     <!--.....................................................................-->
     <bean id="speciesController" class="org.inbio.ait.web.ajax.controller.SpeciesController">
       <property name="speciesManager" ref="speciesManager"/>
+      <property name="queryManager" ref="queryManager"/>
     </bean>
 
     <!--.....................................................................-->

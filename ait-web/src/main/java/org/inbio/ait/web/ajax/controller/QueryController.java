@@ -23,6 +23,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.inbio.ait.manager.QueryManager;
+import org.inbio.ait.web.utils.TaxonInfoIndexColums;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 
@@ -53,7 +54,7 @@ public class QueryController implements Controller{
             if(isOneOrTwoParameters(layerArray,taxonArray,indiArray)){
                 //Total of matches
                 Long totalMatches = queryManager.countByCriteria
-                        (layerArray, taxonArray, indiArray);
+                        (layerArray, taxonArray, indiArray,TaxonInfoIndexColums.SPECIES.getName());
 
                 return writeReponse0(request,response,totalMatches);
             }

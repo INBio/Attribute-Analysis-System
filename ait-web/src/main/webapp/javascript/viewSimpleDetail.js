@@ -33,6 +33,8 @@ function viewSimpleDetail(selectedLayers,selectedTaxa,selectedIndicators)  {
             var xmlDoc = oResponse.responseXML.documentElement;
             //Get the list of specimens
             var species = xmlDoc.getElementsByTagName("species");
+            //Get the total of specimen matches
+            var specimens = xmlDoc.getElementsByTagName("specimens")[0].childNodes[0].nodeValue;
 
             var dwcList = '';
             for(var i = 0;i<species.length;i++){
@@ -42,13 +44,9 @@ function viewSimpleDetail(selectedLayers,selectedTaxa,selectedIndicators)  {
             }
 
             // Show the result
-            document.getElementById('detailedResults').innerHTML = '<p>'+speciesList+'</p>'+dwcList;
-
-            /*YAHOO.example.container.detailedResults = new YAHOO.widget.Panel
-            ("detailedResults", { width:"800px", visible:true, draggable:false, close:false} );
-            YAHOO.example.container.detailedResults.setHeader(speciesList);
-            YAHOO.example.container.detailedResults.setBody(dwcList);
-            YAHOO.example.container.detailedResults.render();*/
+            document.getElementById('detailedResults').innerHTML = '<p style="text-align:center;"><b>'+speciesList+'</b></p>'+
+                dwcList+'<p style="text-align:center;">* '+specimens+' '+specimensMatches+'</p>';
+            document.getElementById("detailedResults").className = "detailedResults";
 
             YAHOO.example.container.wait.hide();
         }, 

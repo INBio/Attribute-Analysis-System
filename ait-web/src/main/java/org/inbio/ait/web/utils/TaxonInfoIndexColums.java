@@ -22,31 +22,31 @@ package org.inbio.ait.web.utils;
  *
  * @author esmata
  */
-public enum ChartType {
+public enum TaxonInfoIndexColums {
 
-    BAR_CHART("bar"),
-    LINE_CHART("line");
-    
+    SPECIES("scientific_name_id"),
+    SPECIMENS("globaluniqueidentifier");
+
     //Atricutes
-    private String type;
+    private String name;
 
     //Constructor
-    private ChartType(String n) {
-        this.type = n;
+    private TaxonInfoIndexColums(String name) {
+        this.name = name;
     }
 
     /**
-     * @return the type
+     * @return the name
      */
-    public String getType() {
-        return type;
+    public String getName() {
+        return name;
     }
 
     /**
-     * @param type the type to set
+     * @param name the name to set
      */
-    public void setType(String type) {
-        this.type = type;
+    public void setName(String name) {
+        this.name = name;
     }
 
 }

@@ -59,8 +59,6 @@
             var vectorLayer;
             //To create a new atribute for each specimen point
             var attributes;
-            //Base layer
-            var virtualEarthLayer  = new OpenLayers.Layer.VirtualEarth('Virtual Earth');
 
             //Pink tile avoidance
             OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;

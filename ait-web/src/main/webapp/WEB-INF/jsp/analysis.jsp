@@ -27,6 +27,7 @@
         <script src="http://216.75.53.105:80/geoserver/openlayers/OpenLayers.js" type="text/javascript"></script>       
         <script type="text/JavaScript" src="http://openlayers.org/api/OpenLayers.js"></script>
         <script src='http://dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6.1'></script>
+        <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
         <script defer="defer" type="text/javascript">
 
             //Use a proxy for GeoServer requesting
@@ -59,12 +60,10 @@
             var vectorLayer;
             //To create a new atribute for each specimen point
             var attributes;
-            //Base layer
-            var virtualEarthLayer  = new OpenLayers.Layer.VirtualEarth('Virtual Earth');
 
             //Internacionalization of the report texts
             var searchResults,geographical,taxonomic,indicators,speciesMatches,
-            seeOnMap,seeDetail,searchCriteria,speciesList;
+            seeOnMap,seeDetail,searchCriteria,speciesList,specimensMatches;
 
             //Pink tile avoidance
             OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
@@ -113,6 +112,7 @@
                     alert(selectCriteriaE);
                     document.getElementById('resultsPanel').innerHTML = "";
                     document.getElementById('detailedResults').innerHTML = "";
+                    document.getElementById("detailedResults").className = "";
                     YAHOO.example.container.wait.hide();
                     return;
                 }
@@ -162,6 +162,7 @@
                 document.getElementById('treeParameters').innerHTML = "";
                 tree.collapseAll();
                 document.getElementById('detailedResults').innerHTML = "";
+                document.getElementById("detailedResults").className = "";
                 
                 //Call the function that returns the result (xml) asincronically
                 executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators,
@@ -222,6 +223,7 @@
                 seeDetail = "<fmt:message key="see_detail"/>";
                 searchCriteria = "<fmt:message key="search_criteria"/>";
                 speciesList = "<fmt:message key="species_list"/>";
+                specimensMatches = "<fmt:message key="specimens_matches"/>";
 
             };
         </script>
@@ -317,9 +319,9 @@
                 <input type="hidden" id="hiddenIndicators" value="">
 
             </div>
-            <div id="footer">
+            <!--<div id="footer">
                 <fmt:message key="footer_text"/>
-            </div>
+            </div>-->
         </form>
         <!-- Content ending -->
     </body>

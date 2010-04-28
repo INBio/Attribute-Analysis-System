@@ -115,9 +115,18 @@ body {
     margin:0;
     text-align:justify;
     padding: 5px 0 5px 0;
+    color:#334563;
 }
 
 /*----------------------------------- Classes -----------------------------------*/
+.detailedResults{
+   background-color:#B4C7D4;
+   border:1px dashed gray;
+   padding:10px;
+   text-align:justify;
+   width:60%;
+}
+
 .queryPanel {
     width:260px;
     text-align:justify;
@@ -160,6 +169,22 @@ body {
    padding:1px;
    margin-top:3px;
    margin-bottom:3px;
+   -moz-border-radius: 2px;
+   -webkit-border-radius: 2px;
+}
+
+.simple_button{
+   width:200px;
+   height:24px;
+   background-color:#dff4ff;
+   border:1px solid #456C84;
+   font-family:sans-serif;
+   text-align:center;
+   font-weight:normal;
+   color:#334563;
+   cursor:pointer;
+   padding:1px;
+   margin:2px;
    -moz-border-radius: 2px;
    -webkit-border-radius: 2px;
 }

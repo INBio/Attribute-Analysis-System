@@ -92,9 +92,9 @@ function createReportHeader(criteria,total){
     var result = '<div id="reportHeader">'+
         '<h2>'+searchResults+'</h2>'+
         '<h3>'+searchCriteria+'</h3>'+criteria+
-        '<h3>'+speciesMatches+'</h3>'+total+'</div>'+
-    '<input type="button" id="viewDetail0" value="'+seeDetail+'" onclick="showDetailsFromHiddenData()" />'+
-    '<input type="button" id="showOnMap0" value="'+seeOnMap+'" onclick="showPointFromHiddenData()" />';
+        '<h3>'+total+' '+speciesMatches+'</h3></div>'+
+    '<input type="button" class="simple_button" id="viewDetail0" value="'+seeDetail+'" onclick="showDetailsFromHiddenData()" />'+
+    '<input type="button" class="simple_button" id="showOnMap0" value="'+seeOnMap+'" onclick="showPointFromHiddenData()" />';
     return result;
 }
 

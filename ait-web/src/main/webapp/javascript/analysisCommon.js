@@ -102,6 +102,9 @@ function initMap(){
     layerIndex = 1; //Porque la 0 es la de Virtual Earth
     layerName = 'Paises - Mesoamérica';
 
+    //Base layer
+    virtualEarthLayer  = new OpenLayers.Layer.VirtualEarth('Virtual Earth');
+
     //Setup Meso layer
     base = addLayerWMS( 'Mesoamerica','IABIN_Indicadores:bd_meso_limite_paies');
     base.setVisibility(true);

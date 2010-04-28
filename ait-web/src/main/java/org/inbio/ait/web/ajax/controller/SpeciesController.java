@@ -22,7 +22,9 @@ import java.util.List;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.inbio.ait.manager.QueryManager;
 import org.inbio.ait.manager.SpeciesManager;
+import org.inbio.ait.web.utils.TaxonInfoIndexColums;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 
@@ -33,6 +35,7 @@ import org.springframework.web.servlet.mvc.Controller;
 public class SpeciesController implements Controller{
 
     private SpeciesManager speciesManager;
+    private QueryManager queryManager;
 
     @Override
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -53,7 +56,10 @@ public class SpeciesController implements Controller{
             List<String> species = speciesManager.speciesByCriteria
                     (layerArray, taxonArray, indiArray);
 
-			return writeReponse(request,response,species);
+            Long specimenes = queryManager.countByCriteria(layerArray, taxonArray,
+                    indiArray,TaxonInfoIndexColums.SPECIMENS.getName());
+
+			return writeReponse(request,response,species,specimenes);
 
 		} catch (IllegalArgumentException iae) {
 			throw new Exception(errorMsj + " "+ iae.getMessage());
@@ -62,15 +68,15 @@ public class SpeciesController implements Controller{
 
 	private ModelAndView writeReponse(HttpServletRequest request,
 			HttpServletResponse response,
-            List<String> species) throws Exception {
+            List<String> species,Long specimenes) throws Exception {
 
 		response.setCharacterEncoding("ISO-8859-1");
 		response.setContentType("text/xml");
 		ServletOutputStream out = response.getOutputStream();
 
         StringBuilder result = new StringBuilder();
-        result.append("<?xml version='1.0' encoding='ISO-8859-1'?><response><speciesList>");
-
+        result.append("<?xml version='1.0' encoding='ISO-8859-1'?><response>");
+        result.append("<specimens>"+specimenes+"</specimens><speciesList>");
         for(String s : species){
             result.append("<species><scientificname>"+s+"</scientificname></species>");
         }
@@ -95,6 +101,20 @@ public class SpeciesController implements Controller{
      */
     public void setSpeciesManager(SpeciesManager speciesManager) {
         this.speciesManager = speciesManager;
+    }
+
+    /**
+     * @return the queryManager
+     */
+    public QueryManager getQueryManager() {
+        return queryManager;
+    }
+
+    /**
+     * @param queryManager the queryManager to set
+     */
+    public void setQueryManager(QueryManager queryManager) {
+        this.queryManager = queryManager;
     }
 
 }
