@@ -34,7 +34,7 @@ public interface QueryManager {
      * @return
      */
     public Long countByCriteria
-            (String[] layerList,String[] taxonList,String[] indicList);
+            (String[] layerList,String[] taxonList,String[] indicList,String colum);
 
     /**
      * Count all dwc registers from taxonInfoIndex table that match

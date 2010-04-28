@@ -55,7 +55,7 @@ public class QueryManagerImpl implements QueryManager{
     }
 
     /**
-     * Count all dwc registers from taxonInfoIndex table that match
+     * Count all disctint species from taxonInfoIndex table that match
      * with the specified query criteria
      * @param x represents the first search criteria corresponding to the data
      * from x axis on the chart
@@ -93,8 +93,6 @@ public class QueryManagerImpl implements QueryManager{
                 query.append(" and "+getIndiCriteria(y));
                 break;
         }
-
-        //System.out.println(query.toString());
 
         //Execute query
         return taxonInfoIndexDAO.countTaxonsByQuery(query.toString());
@@ -160,15 +158,17 @@ public class QueryManagerImpl implements QueryManager{
     }
 
     /**
-     * Count all dwc registers from taxonInfoIndex table that match
-     * with the specified query criteria
+     * Count all registers (indicate in last param) from taxon info index table
+     * @param layerList
+     * @param taxonList
+     * @param indicList
      * @return
      */
     @Override
-    public Long countByCriteria(String[] layerList, String[] taxonList, String[] indicList) {
+    public Long countByCriteria(String[] layerList, String[] taxonList, String[] indicList,String colum) {
         //Build the query string base on parameters
         StringBuilder query = new StringBuilder();
-        query.append("Select count(distinct scientific_name_id) from ait.taxon_info_index where ");
+        query.append("Select count(distinct "+colum+") from ait.taxon_info_index where ");
 
         //If there is geografical criteria
         if(layerList.length>0 && !layerList[0].equals("")){
@@ -265,8 +265,6 @@ public class QueryManagerImpl implements QueryManager{
             }
             query.append(")");
         }
-
-        //System.out.println(query.toString());
 
         //Execute query
         return taxonInfoIndexDAO.countTaxonsByQuery(query.toString());
