@@ -63,7 +63,7 @@
 
             //Internacionalization of the report texts
             var searchResults,geographical,taxonomic,indicators,speciesMatches,
-            seeOnMap,seeDetail,searchCriteria,speciesList,specimensMatches;
+            seeOnMap,seeDetail,searchCriteria,speciesList,newSearch,criteriaText,speciesText;
 
             //Pink tile avoidance
             OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
@@ -107,6 +107,8 @@
                 var layersShow = new Array();
                 var taxonsShow = new Array();
                 var treeShow = new Array();
+                //String with parameters data (to store in hidden field)
+                var layersAsText = '';
                 //Validate that exist at least one search criteria
                 if(layerslist.childNodes.length==0&&taxonlist.childNodes.length==0&&treelist.childNodes.length==0){
                     alert(selectCriteriaE);
@@ -122,9 +124,11 @@
                     selectedLayers += layerslist.childNodes[i].id+"|";
                     if(document.all){
                         layersShow.push(layerslist.childNodes[i].innerText);
+                        layersAsText += layerslist.childNodes[i].innerText+'|';
                     }
                     else{
                         layersShow.push(layerslist.childNodes[i].textContent);
+                        layersAsText += layerslist.childNodes[i].textContent+'|';
                     }
                 }
                 //Loop over taxonomic criteria
@@ -150,24 +154,40 @@
                         treeShow.push(treelist.childNodes[k].textContent);
                     }
                 }
-                //Setting to hidden fields the query values. Those info are going to
-                //be used to show specimens point into the map (not in use yet)
-                document.getElementById('hiddenLayers').value = selectedLayers;
-                document.getElementById('hiddenTaxa').value = selectedTaxa;
-                document.getElementById('hiddenIndicators').value = selectedIndicators;
+                //Setting to hidden fields the query values.
+                setHiddenValues(selectedLayers,selectedTaxa,selectedIndicators,
+                layersAsText);
 
                 //Clean criteria lists
+                cleanAfterRequest();
+                
+                //Call the function that returns the result (xml) asincronically
+                executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators,
+                layersShow,taxonsShow,treeShow);
+            };
+
+            /*
+             * Clean the page after request a new report
+             */
+            function cleanAfterRequest(){
                 document.getElementById('mapParameters').innerHTML = "";
                 document.getElementById('taxParameters').innerHTML = "";
                 document.getElementById('treeParameters').innerHTML = "";
                 tree.collapseAll();
                 document.getElementById('detailedResults').innerHTML = "";
                 document.getElementById("detailedResults").className = "";
-                
-                //Call the function that returns the result (xml) asincronically
-                executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators,
-                layersShow,taxonsShow,treeShow);
-            };
+            }
+
+            /*
+             * Setting to hidden fields the query values. Those info are going to
+             * be used to show specimens point into the map (not in use yet)
+             */
+            function setHiddenValues(selectedLayers,selectedTaxa,selectedIndicators,layersAsText){
+                document.getElementById('hiddenLayers').value = selectedLayers;
+                document.getElementById('hiddenTaxa').value = selectedTaxa;
+                document.getElementById('hiddenIndicators').value = selectedIndicators;
+                document.getElementById('hidLayersToShow').value = layersAsText;
+            }
 
             /*
              * Sets the HTML provided into the nodelist element from
@@ -223,7 +243,9 @@
                 seeDetail = "<fmt:message key="see_detail"/>";
                 searchCriteria = "<fmt:message key="search_criteria"/>";
                 speciesList = "<fmt:message key="species_list"/>";
-                specimensMatches = "<fmt:message key="specimens_matches"/>";
+                newSearch = "<fmt:message key="new_search"/>";
+                criteriaText = "<fmt:message key="criteria"/>";
+                speciesText = "<fmt:message key="species"/>";
 
             };
         </script>
@@ -241,13 +263,14 @@
             </c:forEach>
         </script>
 
+        <a name="anchorTop"></a>
         <!-- Header -->
         <jsp:include page="/WEB-INF/jsp/header.jsp"/>
         <!-- Content -->
         <form id="myform" name = "species" method = "get" style="margin:0px">
             <div id="contenido">
                 <h2><fmt:message key="analysis_title"/></h2>
-
+                
                 <div id="querysPanel">
                     <!-- GIS Panel -->
                     <div id="queryPanel1" class="queryPanel">
@@ -317,6 +340,7 @@
                 <input type="hidden" id="hiddenLayers" value="">
                 <input type="hidden" id="hiddenTaxa" value="">
                 <input type="hidden" id="hiddenIndicators" value="">
+                <input type="hidden" id="hidLayersToShow" value="">
 
             </div>
             <!--<div id="footer">

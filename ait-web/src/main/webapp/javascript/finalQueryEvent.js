@@ -94,8 +94,20 @@ function createReportHeader(criteria,total){
         '<h3>'+searchCriteria+'</h3>'+criteria+
         '<h3>'+total+' '+speciesMatches+'</h3></div>'+
     '<input type="button" class="simple_button" id="viewDetail0" value="'+seeDetail+'" onclick="showDetailsFromHiddenData()" />'+
-    '<input type="button" class="simple_button" id="showOnMap0" value="'+seeOnMap+'" onclick="showPointFromHiddenData()" />';
+    '<input type="button" class="simple_button" id="showOnMap0" value="'+seeOnMap+'" onclick="showPointFromHiddenData()" />'+
+    '<input type="button" class="simple_button" id="showOnMap0" value="'+newSearch+'" onclick="cleanPage()" />';
     return result;
+}
+
+/**
+ * Get ready for a new query
+ */
+function cleanPage(){
+    document.getElementById('detailedResults').innerHTML = "";
+    document.getElementById("detailedResults").className = "";
+    document.getElementById('resultsPanel').innerHTML = "";
+    replaceVectorLayer();
+    callAnchor('#anchorTop');
 }
 
 /**
@@ -123,8 +135,9 @@ function showDetailsFromHiddenData(){
     var layers = document.getElementById('hiddenLayers').value;
     var taxa = document.getElementById('hiddenTaxa').value;
     var indi = document.getElementById('hiddenIndicators').value;
+    var lToShow = document.getElementById('hidLayersToShow').value;
     //Drowing the points
-    viewSimpleDetail(layers,taxa,indi);
+    viewSimpleDetail(layers,taxa,indi,lToShow);
 }
 
 

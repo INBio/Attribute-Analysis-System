@@ -18,6 +18,7 @@
 
 package org.inbio.ait.web.ajax.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -52,37 +53,69 @@ public class SpeciesController implements Controller{
             String[] taxonArray = paramTaxon.split("\\|");
             String[] indiArray = paramIndi.split("\\|");
 
-            //Specimens that match with the search criteria
-            List<String> species = speciesManager.speciesByCriteria
-                    (layerArray, taxonArray, indiArray);
-
-            Long specimenes = queryManager.countByCriteria(layerArray, taxonArray,
-                    indiArray,TaxonInfoIndexColums.SPECIMENS.getName());
-
-			return writeReponse(request,response,species,specimenes);
+            if(layerArray!=null && !layerArray[0].equals("")){ //If there is geographical criteria
+                List<List<String>> matchesByPolygon = new ArrayList<List<String>>();
+                //Get matches by polygon
+                for(int i=0;i<layerArray.length;i++){
+                    String[] thePolygon = {layerArray[i]};
+                    List<String> aux = speciesManager.speciesByCriteria(thePolygon, taxonArray, indiArray);
+                    matchesByPolygon.add(aux);
+                }
+                return writeReponse(request,response,null,matchesByPolygon);
+            }
+            else{
+                //Specimens that match with the search criteria
+                List<String> species = speciesManager.speciesByCriteria
+                        (layerArray, taxonArray, indiArray);
+                return writeReponse(request,response,species,null);
+            }
 
 		} catch (IllegalArgumentException iae) {
 			throw new Exception(errorMsj + " "+ iae.getMessage());
 		}
     }
 
+    /**
+     * Return the XML with the results
+     * @param request
+     * @param response
+     * @param species
+     * @param matchesByPolygon
+     * @return
+     * @throws java.lang.Exception
+     */
 	private ModelAndView writeReponse(HttpServletRequest request,
-			HttpServletResponse response,
-            List<String> species,Long specimenes) throws Exception {
+			HttpServletResponse response,List<String> species,
+            List<List<String>> matchesByPolygon) throws Exception {
 
 		response.setCharacterEncoding("ISO-8859-1");
 		response.setContentType("text/xml");
 		ServletOutputStream out = response.getOutputStream();
-
         StringBuilder result = new StringBuilder();
-        result.append("<?xml version='1.0' encoding='ISO-8859-1'?><response>");
-        result.append("<specimens>"+specimenes+"</specimens><speciesList>");
-        for(String s : species){
-            result.append("<species><scientificname>"+s+"</scientificname></species>");
-        }
-        result.append("</speciesList></response>");
 
-        out.println(result.toString());
+        if(matchesByPolygon==null){ //If there is not geographical criteria
+            result.append("<?xml version='1.0' encoding='ISO-8859-1'?><response><speciesList>");
+            for(String s : species){
+                result.append("<species>"+s+"</species>");
+            }
+            result.append("</speciesList><polygons></polygons></response>");
+            out.println(result.toString());
+        }
+        else{ //If there is gegraphical criteria
+            result.append("<?xml version='1.0' encoding='ISO-8859-1'?><response>");
+            result.append("<speciesList></speciesList>");
+            result.append("<polygons>");
+            for(List<String> listByPolygon : matchesByPolygon){
+                result.append("<polygon>");
+                for(String sp : listByPolygon){
+                    result.append("<sp>"+sp+"</sp>");
+                }
+                result.append("</polygon>");
+            }
+            result.append("</polygons></response>");
+            out.println(result.toString());
+        }
+        
 		out.flush();
 		out.close();
 
