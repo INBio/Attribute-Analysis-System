@@ -150,7 +150,16 @@ public class StatisticalController extends SimpleFormController {
 		//Show the resultant chart
         boolean chartDisplay = true;
         ModelAndView mv = new ModelAndView(getSuccessView());
+        //Chart
         mv.addObject("chartDisplay",chartDisplay);
+        //ChartParameters atributes
+        mv.addObject("xdata",parameters.getXdata());
+        mv.addObject("ydata",parameters.getYdata());
+        mv.addObject("xaxis",parameters.getXaxis());
+        mv.addObject("yaxis",parameters.getYaxis());
+        mv.addObject("xdatatoshow",parameters.getXdatatoshow());
+        mv.addObject("ydatatoshow",parameters.getYdatatoshow());
+        mv.addObject("isgeo",parameters.getIsgeo());
         return mv;
     }
 

@@ -28,10 +28,12 @@ public class ChartParameters {
     private String xdata;
     private String ydata;
     private String type; //Chart type
-    private String xaxis; //who's gonna be x axis
+    private String xaxis; //who's gonna be x axis 1=taxa, 2 geo and 3=indi
     private String yaxis; //who's gonna be y axis
     private String xdatatoshow; //Data to be shown in the chart
     private String ydatatoshow; //Data to be shown in teh chart
+    //x = geo in x and y = geo in y
+    private String isgeo; //Bool that indicates if there is geo parameters
 
     /**
      * @return the xdata
@@ -157,5 +159,19 @@ public class ChartParameters {
      */
     public void setYdatatoshow(String ydatatoshow) {
         this.ydatatoshow = ydatatoshow;
+    }
+
+    /**
+     * @return the isgeo
+     */
+    public String getIsgeo() {
+        return isgeo;
+    }
+
+    /**
+     * @param isgeo the isgeo to set
+     */
+    public void setIsgeo(String isgeo) {
+        this.isgeo = isgeo;
     }
 }

@@ -103,6 +103,8 @@
                 var yTitle = document.getElementById('yTitle');
                 var xDataToShow = document.getElementById('xDataToShow');
                 var yDataToShow = document.getElementById('yDataToShow');
+                var isGeo = document.getElementById('isGeo');
+
 
                 //Variables to store the search criteria
                 var selectedLayers = "",layersToShow = "";
@@ -154,6 +156,7 @@
                         xData.value = selectedLayers;
                         xDataToShow.value = layersToShow;
                         xTitle.value = "<fmt:message key="geografical_criteria_title"/>";
+                        isGeo.value = "x";
                         break;
                     case 3: //indicators
                         xData.value = selectedIndicators;
@@ -165,17 +168,18 @@
                     case 1: //taxonomical
                         yData.value = selectedTaxa;
                         yDataToShow.value = taxaToShow;
-                        yTitle.value = "<fmt:message key="taxonomical_criteria_title"/>";
+                        yTitle.value = "<fmt:message key="species_number"/>";
                         break;
                     case 2: //geographical
                         yData.value = selectedLayers;
                         yDataToShow.value = layersToShow;
-                        yTitle.value = "<fmt:message key="geografical_criteria_title"/>";
+                        yTitle.value = "<fmt:message key="species_number"/>";
+                        isGeo.value = "y";
                         break;
                     case 3: //indicators
                         yData.value = selectedIndicators;
                         yDataToShow.value = indiToShow;
-                        yTitle.value = "<fmt:message key="indicators_criteria_title"/>";
+                        yTitle.value = "<fmt:message key="species_number"/>";
                         break;
                 }                
 
@@ -347,6 +351,7 @@
             <form:hidden path="ytitle" id="yTitle"/>
             <form:hidden path="xdatatoshow" id="xDataToShow"/>
             <form:hidden path="ydatatoshow" id="yDataToShow"/>
+            <form:hidden path="isgeo" id="isGeo"/>
 
             <div id="contenido">
 

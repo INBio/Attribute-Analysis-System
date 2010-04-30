@@ -136,7 +136,7 @@ function showDetailsFromHiddenData(){
     var taxa = document.getElementById('hiddenTaxa').value;
     var indi = document.getElementById('hiddenIndicators').value;
     var lToShow = document.getElementById('hidLayersToShow').value;
-    //Drowing the points
+    //Showing the details
     viewSimpleDetail(layers,taxa,indi,lToShow);
 }
 
