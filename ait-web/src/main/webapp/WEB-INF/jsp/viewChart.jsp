@@ -123,8 +123,8 @@
                 <!--<p class="texts"><fmt:message key="chart_description"/></p>-->
             </div>
         </div>
-        <!--<div id="footer">
+        <div id="footer">
             <fmt:message key="footer_text"/>
-        </div>-->
+        </div>
 	</body>
 </html>

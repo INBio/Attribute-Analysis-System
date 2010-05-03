@@ -343,9 +343,11 @@
                 <input type="hidden" id="hidLayersToShow" value="">
 
             </div>
-            <!--<div id="footer">
+            <br>
+            <br>
+            <div id="footer">
                 <fmt:message key="footer_text"/>
-            </div>-->
+            </div>
         </form>
         <!-- Content ending -->
     </body>

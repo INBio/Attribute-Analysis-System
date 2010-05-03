@@ -34,6 +34,8 @@ public class ChartParameters {
     private String ydatatoshow; //Data to be shown in teh chart
     //x = geo in x and y = geo in y
     private String isgeo; //Bool that indicates if there is geo parameters
+    //Chart title
+    private String title;
 
     /**
      * @return the xdata
@@ -173,5 +175,19 @@ public class ChartParameters {
      */
     public void setIsgeo(String isgeo) {
         this.isgeo = isgeo;
+    }
+
+    /**
+     * @return the title
+     */
+    public String getTitle() {
+        return title;
+    }
+
+    /**
+     * @param title the title to set
+     */
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

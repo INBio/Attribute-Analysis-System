@@ -59,6 +59,8 @@
             var vectorLayer;
             //To create a new atribute for each specimen point
             var attributes;
+            //Internationalization variable
+            var chartTitle;
 
             //Pink tile avoidance
             OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
@@ -104,7 +106,9 @@
                 var xDataToShow = document.getElementById('xDataToShow');
                 var yDataToShow = document.getElementById('yDataToShow');
                 var isGeo = document.getElementById('isGeo');
-
+                var ChartTitle = document.getElementById('ChartTitle');
+                var aux = prompt(chartTitle,'');
+                ChartTitle.value = aux;
 
                 //Variables to store the search criteria
                 var selectedLayers = "",layersToShow = "";
@@ -322,6 +326,7 @@
                 selectIndicatorFirstE = "<fmt:message key="first_select_indicator"/>";
                 treeLeafE = "<fmt:message key="indicator_leaf"/>";
                 loadingImage = "<img src=\"${pageContext.request.contextPath}/themes/default/images/ajax-loader.gif\" ></img>";
+                chartTitle = "<fmt:message key="chart_title"/>";
             };
         </script>
 
@@ -352,6 +357,7 @@
             <form:hidden path="xdatatoshow" id="xDataToShow"/>
             <form:hidden path="ydatatoshow" id="yDataToShow"/>
             <form:hidden path="isgeo" id="isGeo"/>
+            <form:hidden path="title" id="ChartTitle"/>
 
             <div id="contenido">
 

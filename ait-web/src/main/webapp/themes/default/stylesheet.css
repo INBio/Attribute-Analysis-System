@@ -120,8 +120,6 @@ body {
 
 /*----------------------------------- Classes -----------------------------------*/
 .detailedResults{
-   background-color:#B4C7D4;
-   border:1px dashed gray;
    padding:10px;
    text-align:justify;
    width:60%;
@@ -132,7 +130,8 @@ body {
     text-align:justify;
     padding:10px;
     margin-bottom:5px;
-    border:solid gray 1px;
+    border-bottom:dashed gray 1px;
+    border-top:dashed gray 1px;
 }
 
 .chartSetting {
@@ -256,7 +255,7 @@ body {
 
     th.contactDept
     { background-color: #99CCCC;
-    border: 1px #6699CC solid;
+    border: 1px #739999 solid;
     font-family: Verdana;
     font-weight: bold;
     font-size: 12px;
@@ -265,7 +264,7 @@ body {
     color: #404040; }
 
     td.contact
-    { border: 1px #6699CC solid;
+    { border: 1px #739999 solid;
     text-align: center;
     font-family: Verdana, sans-serif, Arial;
     font-weight: normal;

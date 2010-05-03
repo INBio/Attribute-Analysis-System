@@ -120,7 +120,7 @@ public class StatisticalController extends SimpleFormController {
         JFreeChart chart;
         if(parameters.getType().equals(ChartType.BAR_CHART.getType())){
             chart = ChartFactory.createBarChart3D(
-            "FIXME: Título del gráfico", //title
+            parameters.getTitle(), //title
             parameters.getXtitle(), // x axis label
             parameters.getYtitle(),  // y axis label
             dataset, //dataset
@@ -131,7 +131,7 @@ public class StatisticalController extends SimpleFormController {
         }
         else{
             chart = ChartFactory.createLineChart3D(
-            "FIXME: Título del gráfico", //title
+            parameters.getTitle(), //title
             parameters.getXtitle(), // x axis label
             parameters.getYtitle(),  // y axis label
             dataset, //dataset
