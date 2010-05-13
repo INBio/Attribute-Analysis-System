@@ -60,6 +60,8 @@
             var vectorLayer;
             //To create a new atribute for each specimen point
             var attributes;
+            //Array that contains the id's of each <div> from multiple div results
+            var divIds = new Array();
 
             //Internacionalization of the report texts
             var searchResults,geographical,taxonomic,indicators,speciesMatches,
@@ -104,17 +106,13 @@
                 var taxonlist = document.getElementById('taxParameters');
                 var treelist = document.getElementById('treeParameters');
                 //Arrays with parameters data (to show on the results table)
-                var layersShow = new Array();
-                var taxonsShow = new Array();
-                var treeShow = new Array();
+                var layersShow = new Array(),taxonsShow = new Array(),treeShow = new Array();
                 //String with parameters data (to store in hidden field)
-                var layersAsText = '';
+                var layersAsText = '',indiAsText = '';
                 //Validate that exist at least one search criteria
                 if(layerslist.childNodes.length==0&&taxonlist.childNodes.length==0&&treelist.childNodes.length==0){
                     alert(selectCriteriaE);
-                    document.getElementById('resultsPanel').innerHTML = "";
-                    document.getElementById('detailedResults').innerHTML = "";
-                    document.getElementById("detailedResults").className = "";
+                    simpleCleannig();
                     YAHOO.example.container.wait.hide();
                     return;
                 }
@@ -149,14 +147,16 @@
                     selectedIndicators += treelist.childNodes[k].id+"|";
                     if(document.all){
                         treeShow.push(treelist.childNodes[k].innerText);
+                        indiAsText += treelist.childNodes[k].innerText+'|';
                     }
                     else{
                         treeShow.push(treelist.childNodes[k].textContent);
+                        indiAsText += treelist.childNodes[k].textContent+'|';
                     }
                 }
                 //Setting to hidden fields the query values.
                 setHiddenValues(selectedLayers,selectedTaxa,selectedIndicators,
-                layersAsText);
+                layersAsText,indiAsText);
 
                 //Clean criteria lists
                 cleanAfterRequest();
@@ -165,6 +165,12 @@
                 executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators,
                 layersShow,taxonsShow,treeShow);
             };
+
+            function simpleCleannig(){
+                document.getElementById('resultsPanel').innerHTML = "";
+                document.getElementById('detailedResults').innerHTML = "";
+                document.getElementById("detailedResults").className = "";
+            }
 
             /*
              * Clean the page after request a new report
@@ -176,17 +182,19 @@
                 tree.collapseAll();
                 document.getElementById('detailedResults').innerHTML = "";
                 document.getElementById("detailedResults").className = "";
+                divIds = new Array();
             }
 
             /*
              * Setting to hidden fields the query values. Those info are going to
              * be used to show specimens point into the map (not in use yet)
              */
-            function setHiddenValues(selectedLayers,selectedTaxa,selectedIndicators,layersAsText){
+            function setHiddenValues(selectedLayers,selectedTaxa,selectedIndicators,layersAsText,indiAsText){
                 document.getElementById('hiddenLayers').value = selectedLayers;
                 document.getElementById('hiddenTaxa').value = selectedTaxa;
                 document.getElementById('hiddenIndicators').value = selectedIndicators;
                 document.getElementById('hidLayersToShow').value = layersAsText;
+                document.getElementById('hiddenIndiToShow').value = indiAsText;
             }
 
             /*
@@ -273,7 +281,7 @@
                 
                 <div id="querysPanel">
                     <!-- GIS Panel -->
-                    <div id="queryPanel1" class="queryPanel">
+                    <div id="queryPanel1" class="queryPanel" style="background-color:#FFF2B6;">
                         <p style="font-weight:bold;font-style:italic;margin:2px;text-align:center;">
                             <fmt:message key="geografical_criteria_title"/></p>
                         <div id="currentLayer"></div>
@@ -282,7 +290,7 @@
                     </div>
 
                     <!-- Taxonomy Panel -->
-                    <div id="queryPanel2" class="queryPanel">
+                    <div id="queryPanel2" class="queryPanel" style="background-color:#B6F2CC;">
                         <p style="font-weight:bold;font-style:italic;margin:2px;text-align:center;">
                             <fmt:message key="taxonomical_criteria_title"/></p>
                         <p style="margin:1px"><a> <fmt:message key="taxonomy_level"/>: </a></p>
@@ -306,7 +314,7 @@
                     </div>
 
                     <!-- Indicator Panel -->
-                    <div id="queryPanel3" class="queryPanel">
+                    <div id="queryPanel3" class="queryPanel" style="background-color:#DDFFFF;">
                         <p style="font-weight:bold;font-style:italic;margin:2px;text-align:center;">
                             <fmt:message key="indicators_criteria_title"/></p>
                         <div id="treeDiv"></div>
@@ -341,6 +349,7 @@
                 <input type="hidden" id="hiddenTaxa" value="">
                 <input type="hidden" id="hiddenIndicators" value="">
                 <input type="hidden" id="hidLayersToShow" value="">
+                <input type="hidden" id="hiddenIndiToShow" value="">
 
             </div>
             <br>

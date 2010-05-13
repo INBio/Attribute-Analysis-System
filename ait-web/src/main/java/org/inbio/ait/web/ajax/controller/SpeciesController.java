@@ -25,7 +25,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.inbio.ait.manager.QueryManager;
 import org.inbio.ait.manager.SpeciesManager;
-import org.inbio.ait.web.utils.TaxonInfoIndexColums;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 

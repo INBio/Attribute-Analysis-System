@@ -7,6 +7,13 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
         <div style="-rave-layout: grid">
             <form:form>
+
+                <div id="lang">
+                    <!--<a href="spanish"><fmt:message key="properties_es"/></a>
+                            <a href="english"><fmt:message key="properties_en"/></a>-->
+                    <a class="link_home" href="welcome.htm"><fmt:message key="home_title"/></a>
+                    <a class="link_about" href="about.htm"><fmt:message key="about_title"/></a>
+                </div>
                 <div id="banner-rep">
                     <div id="banner">
                         <div id="title">
@@ -14,13 +21,8 @@
                                 <fmt:message key="applicationName"/>
                             </h1>
                         </div>
-                        <div id="lang">
-                            <!--<a href="spanish" style="height: 24px; width: 46px"><fmt:message key="properties_es"/></a>
-                            <a href="english" style="height: 24px; width: 46px"><fmt:message key="properties_en"/></a>-->
-                            <a class="link_home" href="welcome.htm" style="height: 24px; width: 46px"><fmt:message key="home_title"/></a>
-                            <a class="link_about" href="about.htm" style="height: 24px; width: 46px"><fmt:message key="about_title"/></a>
-                        </div>
                     </div>
                 </div>
+
             </form:form>
         </div>

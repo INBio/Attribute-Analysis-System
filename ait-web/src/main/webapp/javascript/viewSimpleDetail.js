@@ -60,8 +60,8 @@ function viewSimpleDetail(selectedLayers,selectedTaxa,selectedIndicators,lToShow
                     for(var j = 0;j<spList.length;j++){
                         aux += '- '+spList[j].childNodes[0].nodeValue+'<br>';
                     }
-                    resultHTML += '<tr><td class="contact" width="50%">'+layersToShow[l]+'</td>'+
-                    '<td class="contact" width="50%">'+aux+'</td></tr>';
+                    resultHTML += '<tr><td class="contact" width="60%">'+layersToShow[l]+'</td>'+
+                    '<td class="contact" width="40%">'+aux+'</td></tr>';
                 }
                 resultHTML += '</table>';
                 // Show the result

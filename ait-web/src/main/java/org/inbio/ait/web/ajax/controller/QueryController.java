@@ -18,6 +18,7 @@
 
 package org.inbio.ait.web.ajax.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -49,17 +50,35 @@ public class QueryController implements Controller{
             String[] taxonArray = paramTaxon.split("\\|");
             String[] indiArray = paramIndi.split("\\|");
 
-            //If there is just one or two parameters. It means type 0 on xml
+            /*If there is just one criteria category or especifically these categories
+            (geographical and taxonomical). It means type 0 on xml*/
             //------------------------------------------------------------------
-            if(isOneOrTwoParameters(layerArray,taxonArray,indiArray)){
+            if(isOneOrGeoTax(layerArray,taxonArray,indiArray)){
                 //Total of matches
                 Long totalMatches = queryManager.countByCriteria
                         (layerArray, taxonArray, indiArray,TaxonInfoIndexColums.SPECIES.getName());
 
                 return writeReponse0(request,response,totalMatches);
             }
-            else{ //If there are three parameters. It means type 1 on xml
-                return null;
+            //If there are three criteria categories. It means type 1 on xml
+            else{
+                //Total matches by polygon
+                List<Long> matchesByPolygon = new ArrayList<Long>();
+                for(int i=0;i<layerArray.length;i++){
+                    String[] thePolygon = {layerArray[i]};
+                    Long aux = queryManager.countByCriteria
+                        (thePolygon, taxonArray, indiArray,TaxonInfoIndexColums.SPECIES.getName());
+                    matchesByPolygon.add(aux);
+                }
+                //Total matches by indicator
+                List<Long> matchesByIndicator = new ArrayList<Long>();
+                for(int i=0;i<indiArray.length;i++){
+                    String[] theIndicator = {indiArray[i]};
+                    Long aux = queryManager.countByCriteria
+                        (layerArray, taxonArray, theIndicator,TaxonInfoIndexColums.SPECIES.getName());
+                    matchesByIndicator.add(aux);
+                }
+                return writeReponse1(request,response,matchesByPolygon,matchesByIndicator);
             }
 
 		} catch (IllegalArgumentException iae) {
@@ -68,20 +87,24 @@ public class QueryController implements Controller{
     }
 
     /**
-     * Method to determine if there is one or two parameters
-     * Return false when there are three parameters or there is no parameters
-     * Return true if there is one or two parameters
+     * Method to determine if (a) there is one criteria category or these
+     * two (geographical and taxonomical)
+     * Return false when there are three different criteria categories or there is nothing at all
+     * Return true if (a)
      */
-    private boolean isOneOrTwoParameters(String[] l, String[] t, String[] i) {
+    private boolean isOneOrGeoTax(String[] l, String[] t, String[] i) {
         int ll = myLength(l);
         int tl = myLength(t);
         int il = myLength(i);
-        if (ll != 0 && tl != 0 && il != 0) {
-            return false;
-        } else if (ll == 0 && tl == 0 && il == 0) {
-            return false;
-        } else {
+
+        if(ll != 0 && tl != 0 && il == 0){
             return true;
+        }
+        else if((ll!=0&&tl==0&&il==0)||(ll==0&&tl!=0&&il==0)||(ll==0&&tl==0&&il!=0)){
+            return true;
+        }
+        else{
+            return false;
         }
     }
     private int myLength(String[] array){
@@ -98,7 +121,8 @@ public class QueryController implements Controller{
 
     /**
      * Write the XML to be parsed on the analysis view
-     * Case: one or two parameters (0)
+     * Case 0: If there is just one criteria category or especifically these categories
+     * (geographical and taxonomical). It means type 0 on xml
      * @param request
      * @param response
      * @param totalMatch
@@ -136,21 +160,23 @@ public class QueryController implements Controller{
      * @throws java.lang.Exception
      */
 	private ModelAndView writeReponse1(HttpServletRequest request,
-			HttpServletResponse response, Long totalMatch,
-            List<Long> matchesByPolygon) throws Exception {
+			HttpServletResponse response, List<Long> matchesByPolygon,
+            List<Long> matchesByIndicator) throws Exception {
 
 		response.setCharacterEncoding("ISO-8859-1");
 		response.setContentType("text/xml");
 		ServletOutputStream out = response.getOutputStream();
 
         StringBuilder result = new StringBuilder();
-        result.append("<?xml version='1.0' encoding='ISO-8859-1'?><response><total>");
-        result.append("<data>"+totalMatch+"</data></total><polygons>");
-
-        for(Long n : matchesByPolygon){
-            result.append("<polygon><data>"+n+"</data></polygon>");
+        result.append("<?xml version='1.0' encoding='ISO-8859-1'?><response>");
+        result.append("<type>1</type>");
+        for(Long mp : matchesByPolygon){
+            result.append("<bypolygon>"+mp+"</bypolygon>");
         }
-        result.append("</polygons></response>");
+        for(Long mi : matchesByIndicator){
+            result.append("<byindicator>"+mi+"</byindicator>");
+        }
+        result.append("</response>");
 
         out.println(result.toString());
 		out.flush();

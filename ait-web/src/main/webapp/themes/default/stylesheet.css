@@ -3,7 +3,7 @@
     Created on : 12/01/2010, 04:33:39 PM
     Author     : esmata
     Description:
-        CSS to customize the gui of this application
+        CSS to customize the gui of IABIN Taxonomic Indicators Application
 */
 
 html {
@@ -21,39 +21,43 @@ body {
 
 /* Banner title */
 #title h1 {
-    float: left;
-    position:absolute;
-    font-family:arial, helvetica, sans-serif;
-    font-size:30px;
-    font-weight:bold;
-    margin:0;
-    width:800px;
-    padding: 42px 0 0 110px;
-    height:50px;
-    color:white;
-    background: url(images/banner-icon.png);
-    background-repeat:no-repeat;
-    background-position: 10px 15px;
+	position:absolute;
+	font-family:arial, helvetica, sans-serif;
+	text-align:center;
+	font-size: 36px;
+	font-weight:bold;
+	margin:0;
+	width:100%;
+	height:30px;
+	padding: 55px 0 0 0px;
+	color:white;
 }
 
 /* Banner style */
 #banner {
-    background: url(images/banner.jpg) no-repeat 0 0;
-    height: 120px;
+	height: 110px;
+	background-image: url(images/banner.png);
+	background-repeat: no-repeat;
+	background-position: center center;	
 }
+
 #banner-rep {
-    background: url(images/banner-rep.jpg) repeat-x 960px 0;
-    height: 120px;
+	height:110px;
+	background-color: #000;
+	background-image: url(images/banner-rep.png);
+	background-position: 0;
 }
 
 /* Style for the language links */
+
 #lang {
-    width: 200px;
-    height:20px;
-    padding: 100px 0 0 0;
+	width: 200px;
+	height:20px;
+	z-index:auto;
+    padding: 90px 0 0 0;
     float:right;
-    z-index:999
 }
+
 
 /* The map and the location bar */
 #map {
@@ -61,7 +65,9 @@ body {
     width: 100%;
     height: 380px;
     border: 1px solid silver;
-    border-style:dashed;
+    border-style:solid;
+   -moz-border-radius: 5px;
+   -webkit-border-radius: 5px;
 }
 
 #wrapper {
@@ -86,6 +92,20 @@ body {
     font-size:12px;
 }
 
+/* Report header */
+#resultsPanel h2{
+    margin:0;
+    text-align:center;
+    padding: 5px 0 5px 0;
+}
+
+#resultsPanel h3{
+    margin:0;
+    text-align:justify;
+    padding: 5px 0 5px 0;
+    color:#334563;
+}
+
 /* The content of each .jsp */
 #contenido {
     text-align:justify;
@@ -104,25 +124,10 @@ body {
     padding: 5px 0 5px 0;
 }
 
-/* Report header */
-#reportHeader h2{
-    margin:0;
-    text-align:center;
-    padding: 5px 0 5px 0;
-}
-
-#reportHeader h3{
-    margin:0;
-    text-align:justify;
-    padding: 5px 0 5px 0;
-    color:#334563;
-}
-
 /*----------------------------------- Classes -----------------------------------*/
 .detailedResults{
-   padding:10px;
    text-align:justify;
-   width:60%;
+   width:80%;
 }
 
 .queryPanel {
@@ -130,8 +135,9 @@ body {
     text-align:justify;
     padding:10px;
     margin-bottom:5px;
-    border-bottom:dashed gray 1px;
-    border-top:dashed gray 1px;
+    border:solid gray 1px;
+   -moz-border-radius: 5px;
+   -webkit-border-radius: 5px;
 }
 
 .chartSetting {
@@ -173,17 +179,40 @@ body {
 }
 
 .simple_button{
-   width:200px;
+   width:160px;
    height:24px;
-   background-color:#dff4ff;
-   border:1px solid #456C84;
+   background-color:#9BC238;
+   border:1px solid #F6B56F;
    font-family:sans-serif;
    text-align:center;
    font-weight:normal;
-   color:#334563;
+   color:#212A0C;
    cursor:pointer;
    padding:1px;
    margin:2px;
+   -moz-border-radius: 2px;
+   -webkit-border-radius: 2px;
+}
+
+.new_search_button{
+   width:160px;
+   height:24px;
+   background-color:#F1E5AC;
+   border:1px solid #F6B56F;
+   font-family:sans-serif;
+   text-align:center;
+   font-weight:normal;
+   color:#212A0C;
+   cursor:pointer;
+   padding:1px;
+   margin:2px;
+   -moz-border-radius: 2px;
+   -webkit-border-radius: 2px;
+}
+
+.current_Selected{
+   background-color:#F9FFFF;
+   border:1px dashed #A3B4B7;
    -moz-border-radius: 2px;
    -webkit-border-radius: 2px;
 }
@@ -216,17 +245,30 @@ body {
 /* Para el link de home */
 .link_home{
     padding: 12px 0 0 40px;
-    background: url(images/home.png);
-    background-repeat:no-repeat;
-    background-position: 10px 10px;
+	background: url(images/home.png);
+	background-repeat:no-repeat;
+	background-position: 10px 10px;
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 10px;
+	color: #FC0;
+	padding-top: 20px;
+	padding-right: 0;
+	padding-bottom: 0;
+	padding-left: 35px;
 }
 
 /* Para el link de about */
 .link_about{
-    padding: 12px 0 0 40px;
-    background: url(images/about.png);
-    background-repeat:no-repeat;
-    background-position: 10px 10px;
+	background-repeat:no-repeat;
+	background-position: 10px 10px;
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 10px;
+	color: #FC0;
+	padding-left: 35px;
+	padding-top: 20px;
+	padding-right: 0;
+	padding-bottom: 0px;
+	background-image: url(images/about.png);
 }
 
 .titles {
@@ -246,38 +288,41 @@ body {
 	line-height: normal;
 	}
 
-    table.contacts
-    { width: 100%;
+table.contacts
+{
+    width: 100%;
     background-color: #fafafa;
     border: 1px #000000 solid;
     border-collapse: collapse;
-    border-spacing: 0px; }
+    border-spacing: 0px;
+}
 
-    th.contactDept
-    { background-color: #99CCCC;
+th.contactDept{
+    background-color: #DFF5FF;
     border: 1px #739999 solid;
     font-family: Verdana;
     font-weight: bold;
     font-size: 12px;
     padding-top:3px;
     padding-bottom:3px;
-    color: #404040; }
+    color: #404040;
+}
 
-    td.contact
-    { border: 1px #739999 solid;
-    text-align: center;
+td.contact{
+    border: 1px #739999 solid;
+    text-align: justify;
     font-family: Verdana, sans-serif, Arial;
     font-weight: normal;
     font-size: 12px;
     color: #404040;
     background-color: #fafafa;
-    padding-top: 1px;
-    padding-bottom: 1px; }
+    padding:1px 0 1px 15px;
+}
 
 /*------------------------------- Footer by Cristian Granados --------------------------------*/
 #footer {
         margin:auto;
-        background: #2D8F8D;
+        background: #124D90;
         width: 100%;
         bottom: 0px;
         left: 0;

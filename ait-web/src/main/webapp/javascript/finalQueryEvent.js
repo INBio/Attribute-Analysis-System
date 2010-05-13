@@ -36,7 +36,7 @@ function executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators,
             var type = xmlDoc.getElementsByTagName("type")[0].childNodes[0].nodeValue;
 
             switch(type){
-                case '0': // 0 means one or two parameters
+                case '0': // 0 means one or these tow categories (geographical and taxonomical)
                     //Get total count data
                     var total = xmlDoc.getElementsByTagName("total")[0].childNodes[0].nodeValue;
                     //Show general result and the search criteria
@@ -62,13 +62,28 @@ function executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators,
                         }
                         criteria += "<br>";
                     }                    
+                    //Show the results
                     var resultHTML = createReportHeader(criteria, total);
                     document.getElementById('resultsPanel').innerHTML = resultHTML;
+                    //Close de "Loading image"
                     YAHOO.example.container.wait.hide();
+                    //Calling the anchor to positionate the page focus on the results
                     callAnchor('#anchorResult');
                     break;
 
-                case '1': // 1 means 3 parameters
+                case '1': // 1 means 3 different criteria categories
+                    //Getting the xml dom
+                    document.getElementById('resultsPanel').innerHTML = xmlDoc.toString();
+                    //Variables that are going to contain the results
+                    var byPolygon = xmlDoc.getElementsByTagName("bypolygon");
+                    var byIndicator = xmlDoc.getElementsByTagName("byindicator");
+                    //Show the results
+                    var result = createAdvancedHeader(byPolygon,byIndicator,layersShow,taxonsShow,treeShow);
+                    document.getElementById('resultsPanel').innerHTML = result;
+                    //Close de "Loading image"
+                    YAHOO.example.container.wait.hide();
+                    //Calling the anchor to positionate the page focus on the results
+                    callAnchor('#anchorResult');
                     break;
             }
             
@@ -86,28 +101,43 @@ function executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators,
 
 /**
  * This function creates the general report, so, return an html string
- * with the search criteria and the general count of matches
+ * to show on results panel
  */
-function createReportHeader(criteria,total){
-    var result = '<div id="reportHeader">'+
-        '<h2>'+searchResults+'</h2>'+
-        '<h3>'+searchCriteria+'</h3>'+criteria+
-        '<h3>'+total+' '+speciesMatches+'</h3></div>'+
-    '<input type="button" class="simple_button" id="viewDetail0" value="'+seeDetail+'" onclick="showDetailsFromHiddenData()" />'+
-    '<input type="button" class="simple_button" id="showOnMap0" value="'+seeOnMap+'" onclick="showPointFromHiddenData()" />'+
-    '<input type="button" class="simple_button" id="showOnMap0" value="'+newSearch+'" onclick="cleanPage()" />';
+function createAdvancedHeader(byPolygon,byIndicator,layersShow,taxonsShow,treeShow){
+    var result = '';
+    for(var i = 0;i<byPolygon.length;i++){
+        divIds.push('p'+i);
+        result += '<div id="p'+i+'">'+
+        '<h3>'+layersShow[i]+'</h3>'+
+        '<p>'+byPolygon[i].childNodes[0].nodeValue+' que cumplen algun indicador (FIXME)<p>'+
+        '<input type="button" class="simple_button" id="viewDetail'+i+'" value="'+seeDetail+'" onclick="showDetails('+i+',\'p\')" />'+
+        '<input type="button" class="simple_button" id="showOnMap'+i+'" value="'+seeOnMap+'" onclick="showPoints('+i+',\'p\')" /></div>';
+    }
+    for(var j = 0;j<byIndicator.length;j++){
+        divIds.push('i'+j);
+        result += '<div id="i'+j+'">'+
+        '<h3>'+treeShow[j]+'</h3>'+
+        '<p>'+byIndicator[j].childNodes[0].nodeValue+' que cumplen algun polígono (FIXME)</p>'+
+        '<input type="button" class="simple_button" id="viewDetail'+i+'" value="'+seeDetail+'" onclick="showDetails('+j+',\'i\')" />'+
+        '<input type="button" class="simple_button" id="showOnMap'+i+'" value="'+seeOnMap+'" onclick="showPoints('+j+',\'i\')" /></div>';
+    }
+    result+='<br><input type="button" class="new_search_button" id="newSearch" value="'+newSearch+'" onclick="cleanPage()" /><br><br><br>';
     return result;
 }
 
 /**
- * Get ready for a new query
+ * This function creates the general report, so, return an html string
+ * based on the search criteria and the general count of matches
  */
-function cleanPage(){
-    document.getElementById('detailedResults').innerHTML = "";
-    document.getElementById("detailedResults").className = "";
-    document.getElementById('resultsPanel').innerHTML = "";
-    replaceVectorLayer();
-    callAnchor('#anchorTop');
+function createReportHeader(criteria,total){
+    var result = '<div id="reportHeader">'+
+    '<h2>'+searchResults+'</h2>'+
+    '<h3>'+searchCriteria+'</h3>'+criteria+
+    '<h3>'+total+' '+speciesMatches+'</h3></div>'+
+    '<input type="button" class="simple_button" id="viewDetail0" value="'+seeDetail+'" onclick="showDetailsFromHiddenData()" />'+
+    '<input type="button" class="simple_button" id="showOnMap0" value="'+seeOnMap+'" onclick="showPointFromHiddenData()" />'+
+    '<input type="button" class="new_search_button" id="newSearch" value="'+newSearch+'" onclick="cleanPage()" />';
+    return result;
 }
 
 /**
@@ -122,6 +152,52 @@ function showPointFromHiddenData(){
     var indi = document.getElementById('hiddenIndicators').value;
     //Drowing the points
     showSpecimenPoints(layers,taxa,indi);
+}
+
+/**
+ * To draw the specimen points into the map
+ * id = polygon id or indicator id
+ * type p = polygon or i = indicator
+ */
+function showPoints(id,type){
+    var layers = document.getElementById('hiddenLayers').value;
+    var taxa = document.getElementById('hiddenTaxa').value;
+    var indi = document.getElementById('hiddenIndicators').value;
+    if(type=='p'){
+        //Show loading
+        YAHOO.example.container.wait.show();
+        //Getting the query parameters
+        var layersArray = layers.split('|');
+        //Indicate de current selected
+        indicateCurrent('p'+id);
+        //Drowing the points
+        showSpecimenPoints(layersArray[id]+'|',taxa,indi);
+    }
+    else{
+        //Show loading
+        YAHOO.example.container.wait.show();
+        //Getting the query parameters
+        var indiArray = indi.split('|');
+        //Indicate de current selected
+        indicateCurrent('i'+id);
+        //Drowing the points
+        showSpecimenPoints(layers,taxa,indiArray[id]+'|');
+    }
+}
+
+/**
+ * To get a detailed report of the query when there is one or two parameters
+ * Return a List of specimens that match with the criteria
+ * id = polygon id or indicator id
+ * type p = polygon or i = indicator
+ */
+function showDetails(id,type){
+    if(type=='p'){
+        document.getElementById('p'+id).innerHTML += 'hola<br>mundo!!<br>polygon';
+    }
+    else{
+        document.getElementById('i'+id).innerHTML += 'hola<br>mundo!!<br>indicator';
+    }
 }
 
 /**
@@ -140,4 +216,28 @@ function showDetailsFromHiddenData(){
     viewSimpleDetail(layers,taxa,indi,lToShow);
 }
 
+/**
+ * Get ready for a new query
+ */
+function cleanPage(){
+    document.getElementById('detailedResults').innerHTML = "";
+    document.getElementById("detailedResults").className = "";
+    document.getElementById('resultsPanel').innerHTML = "";
+    replaceVectorLayer();
+    divIds = new Array();
+    callAnchor('#anchorTop');
+}
 
+/**
+ * Indicates de current selected <div> from resultsPanel
+ */
+function indicateCurrent(id){
+    for(var i = 0;i<divIds.length;i++){
+        if(id==divIds[i]){ //Indicar
+            document.getElementById(divIds[i]).className = "current_Selected";
+        }
+        else{ //No indicar
+            document.getElementById(divIds[i]).className = "";
+        }
+    }
+}
