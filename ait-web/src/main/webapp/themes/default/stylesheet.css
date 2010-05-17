@@ -255,6 +255,14 @@ body {
 	padding-left: 35px;
 }
 
+.user{
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 10px;
+	color: black;
+    float:right;
+    padding-right:5px;
+}
+
 /* Para el link de about */
 .link_about{
 	background-repeat:no-repeat;

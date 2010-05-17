@@ -20,7 +20,7 @@
         <!-- Header -->
         <jsp:include page="/WEB-INF/jsp/header.jsp"/>
         <!-- Content -->
-        <div id="contenido">
+        <div id="contenido"> <br><br><br>
             <form method="post" accept-charset="UTF-8" action="j_spring_security_check">
 
                 <c:if test="${not empty param.error}">
@@ -32,14 +32,14 @@
                     <b><fmt:message key="login_username"/>:</b><br>
                     <input type="text" class="componentSize" id="userNameInput" name="j_username" />
                 </label>
-                <br/>
+                <br>
 
                 <%--Password --%>
                 <label>
                     <b><fmt:message key="login_password"/>:</b><br>
                     <input type="password" class="componentSize" name="j_password"/>
                 </label>
-                <br/>
+                <br><br>
 
                 <input type="submit" value="<fmt:message key="accept"/>" />
                 <input type="reset" name="<fmt:message key="reset"/>" />

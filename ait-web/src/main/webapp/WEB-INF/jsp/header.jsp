@@ -5,6 +5,8 @@
 --%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <div style="-rave-layout: grid">
             <form:form>
 
@@ -23,23 +25,18 @@
                     <a class="link_home" href="welcome.htm"><fmt:message key="home_title"/></a>
                     <a class="link_about" href="about.htm"><fmt:message key="about_title"/></a>
                 </div>
+                <div class="user">
+                    <sec:authorize ifAnyGranted="ROLE_ADMIN,ROLE_USER">
+                        <sec:authentication property="principal.username"/>
+                        <a href="<c:url value="/j_spring_security_logout"/>"><fmt:message key="logout"/></a>
+                    </sec:authorize>
+
+                    <sec:authorize ifNotGranted="ROLE_ADMIN,ROLE_USER">
+                        <a href="<c:out value="${pageContext.request.contextPath}"/>/login.htm" title="<fmt:message key="login"/>"><fmt:message key="login"/></a>
+                        <a href="<c:url value="/j_spring_security_logout"/>"><fmt:message key="logout"/></a>
+                    </sec:authorize>
+                </div>
 
             </form:form>
         </div>
 
-
-<!--
-<div id="user-info">
-
- <sec:authorize ifAnyGranted="ROLE_ADMIN,ROLE_USER">
-  <spring:message code="m3s.login.welcome"/>: <sec:authentication property="principal.username"/> | <a href="<c:url value="/j_spring_security_logout"/>"><spring:message code='m3s.logout'/></a>
- </sec:authorize>
-
- <sec:authorize ifNotGranted="ROLE_ADMIN,ROLE_USER">
-    <a href="<c:out value="${pageContext.request.contextPath}"/>/login.html" title="<spring:message code='m3s.login'/>"><spring:message code='m3s.login'/>
-    </a> | <a href="<c:url value="/j_spring_security_logout"/>"><spring:message code='m3s.logout'/>
-    </a>
-  </sec:authorize>
-
-</div>
--->
