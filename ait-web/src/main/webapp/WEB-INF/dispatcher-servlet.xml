@@ -19,6 +19,8 @@
         <property name="mappings">
             <props>
                 <prop key="index.htm">indexController</prop>
+                <prop key="login.htm">loginController</prop>
+                <prop key="accessDeniedPage.htm">deniedController</prop>
             </props>
         </property>
     </bean>
@@ -27,6 +29,14 @@
     <bean name="indexController"
           class="org.springframework.web.servlet.mvc.ParameterizableViewController"
           p:viewName="index" />
+
+    <bean name="loginController"
+          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+          p:viewName="login" />
+
+    <bean name="deniedController"
+          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+          p:viewName="accessDeniedPage" />
 
     <!-- ***********************************************************************
     Resolves the views in the request/responce flow
@@ -44,33 +54,6 @@
     </bean>
     <bean id="themeSource" class="org.springframework.ui.context.support.ResourceBundleThemeSource">
     <property name="basenamePrefix" value="theme-"/>
-    </bean>
-
-    <!-- ***********************************************************************
-    Connecting to database
-    ************************************************************************ -->
-   <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="${jdbc.driverClassName}"/>
-        <property name="url" value="${jdbc.url}"/>
-        <property name="username" value="${jdbc.username}"/>
-        <property name="password" value="${jdbc.password}"/>
-    </bean>
-
-    <bean id="propertyConfigurer"
-          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="locations">
-            <list>
-                <value>classpath:jdbc.properties</value>
-            </list>
-        </property>
-    </bean>
-
-    <!-- ***********************************************************************
-    Configuring the transaction manager
-    ************************************************************************ -->
-    <bean id="transactionManager"
-          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="dataSource" />
     </bean>
 
     <!--.....................................................................-->
@@ -98,33 +81,5 @@
     </bean>
     <!-- Chart viewer -->
     <bean name="/chart.htm" class="org.inbio.ait.web.controller.ChartController"/>
-
-    <!--.....................................................................-->
-    <!--................... Manager Injections ...............................-->
-    <!--.....................................................................-->
-    <bean id="analysisManager" class="org.inbio.ait.manager.impl.AnalysisManagerImpl">
-        <property name="speciesDAO" ref="speciesDAO"/>
-        <property name="specimenDAO" ref="specimenDAO"/>
-    </bean>
-    <bean id="queryManager" class="org.inbio.ait.manager.impl.QueryManagerImpl">
-        <property name="taxonInfoIndexDAO" ref="taxonInfoIndexDAO"/>
-        <property name="taxonIndexDAO" ref="taxonIndexDAO"/>
-    </bean>
-
-    <!--.....................................................................-->
-    <!--.................... DAO Declarations ...............................-->
-    <!--.....................................................................-->
-     <bean id="speciesDAO" class="org.inbio.ait.dao.impl.SpeciesDAOImpl">
-        <property name="dataSource" ref="dataSource" />
-    </bean>
-     <bean id="specimenDAO" class="org.inbio.ait.dao.impl.SpecimenDAOImpl">
-        <property name="dataSource" ref="dataSource" />
-    </bean>
-     <bean id="taxonInfoIndexDAO" class="org.inbio.ait.dao.impl.TaxonInfoIndexDAOImpl">
-        <property name="dataSource" ref="dataSource" />
-    </bean>
-     <bean id="taxonIndexDAO" class="org.inbio.ait.dao.impl.TaxonIndexDAOImpl">
-        <property name="dataSource" ref="dataSource" />
-    </bean>
     
 </beans>

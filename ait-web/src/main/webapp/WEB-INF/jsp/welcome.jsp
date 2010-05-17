@@ -21,7 +21,7 @@
         <jsp:include page="/WEB-INF/jsp/header.jsp"/>
         <!-- Content -->
         <div id="contenido">
-            <!--<h2><fmt:message key="welcome"/></h2>--><br><br>
+            <!--<h2><fmt:message key="welcome"/></h2>--><br><br><br><br>
 
             <div align="center"> <table width="50%" border="0" align="center" cellpadding="0" cellspacing="1" class="tabla-opciones">
                     <!--<tr>

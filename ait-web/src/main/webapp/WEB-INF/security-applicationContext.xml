@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+  xmlns:beans="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+  http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.4.xsd">
+
+
+  <http access-denied-page="/accessDeniedPage.htm">
+    <!-- Access to system pages -->
+    <intercept-url pattern="/analysis.htm*" access="ROLE_USER"/>
+    <intercept-url pattern="/statisticalParameters.htm*" access="ROLE_USER"/>
+        <intercept-url pattern="/chart.htm*" access="ROLE_USER"/>
+    <intercept-url pattern="/config.htm*" access="ROLE_ADMIN"/>
+    <!-- Access to ajax services -->
+    <intercept-url pattern="/ajax*" access="ROLE_USER" />
+<!-- Login page -->
+    <form-login login-page="/login.htm" default-target-url="/welcome.htm" authentication-failure-url="/accessDeniedPage.htm" />
+    <logout/>
+    <concurrent-session-control max-sessions="1" />
+  </http>
+
+<!-- Authentication based on a properties file  -->
+  <!--
+  <authentication-provider>
+    <user-service id="userDetailsInFileService" properties="WEB-INF/classes/users.properties"/>
+  </authentication-provider>
+   -->
+
+<!-- Authentication based on a data base  -->
+   <authentication-provider user-service-ref="sysUserManagerImpl">
+       <password-encoder hash="md5"/>
+   </authentication-provider>
+
+</beans:beans>

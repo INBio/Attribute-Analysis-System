@@ -20,11 +20,11 @@
         <link rel="stylesheet" type="text/css"
         href="<c:out value="${pageContext.request.contextPath}"/>/<spring:theme code='tree'/>"/>
         <link rel="stylesheet" type="text/css"
-        href="<c:out value="${pageContext.request.contextPath}"/>/<spring:theme code='container'/>"/>
+        href="<c:out value="${pageContext.request.contextPath}"/>/<spring:theme code='container'/>"/>        
         
         <title><fmt:message key="title"/></title> 
 
-        <script src="http://216.75.53.105:80/geoserver/openlayers/OpenLayers.js" type="text/javascript"></script>       
+        <link rel="stylesheet" type="text/css" href="http://openlayers.org/theme/default/style.css"/>
         <script type="text/JavaScript" src="http://openlayers.org/api/OpenLayers.js"></script>
         <script src='http://dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6.1'></script>
         <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
@@ -281,7 +281,7 @@
                 
                 <div id="querysPanel">
                     <!-- GIS Panel -->
-                    <div id="queryPanel1" class="queryPanel" style="background-color:#FFF2B6;">
+                    <div id="queryPanel1" class="queryPanel" style="background-color:#FFF8D8;">
                         <p style="font-weight:bold;font-style:italic;margin:2px;text-align:center;">
                             <fmt:message key="geografical_criteria_title"/></p>
                         <div id="currentLayer"></div>
@@ -290,7 +290,7 @@
                     </div>
 
                     <!-- Taxonomy Panel -->
-                    <div id="queryPanel2" class="queryPanel" style="background-color:#B6F2CC;">
+                    <div id="queryPanel2" class="queryPanel" style="background-color:#FFF8D8;">
                         <p style="font-weight:bold;font-style:italic;margin:2px;text-align:center;">
                             <fmt:message key="taxonomical_criteria_title"/></p>
                         <p style="margin:1px"><a> <fmt:message key="taxonomy_level"/>: </a></p>
@@ -314,7 +314,7 @@
                     </div>
 
                     <!-- Indicator Panel -->
-                    <div id="queryPanel3" class="queryPanel" style="background-color:#DDFFFF;">
+                    <div id="queryPanel3" class="queryPanel" style="background-color:#FFF8D8;">
                         <p style="font-weight:bold;font-style:italic;margin:2px;text-align:center;">
                             <fmt:message key="indicators_criteria_title"/></p>
                         <div id="treeDiv"></div>

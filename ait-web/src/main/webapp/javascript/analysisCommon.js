@@ -155,10 +155,10 @@ function initMap(){
     map.addControl(new OpenLayers.Control.PanZoomBar({
         position: new OpenLayers.Pixel(2, 15)
     }));
+    map.addControl(new OpenLayers.Control.LayerSwitcher({'ascending':false},{'position':OpenLayers.Control}));
     map.addControl(new OpenLayers.Control.Navigation());
     map.addControl(new OpenLayers.Control.Scale($('scale')));
     map.addControl(new OpenLayers.Control.MousePosition({element: $('location')}));
-    map.addControl(new OpenLayers.Control.LayerSwitcher());
     map.zoomToExtent(bounds);
 }
 
