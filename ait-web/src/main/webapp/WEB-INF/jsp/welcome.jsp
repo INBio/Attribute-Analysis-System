@@ -21,17 +21,27 @@
         <jsp:include page="/WEB-INF/jsp/header.jsp"/>
         <!-- Content -->
         <div id="contenido">
-            <h2><fmt:message key="welcome"/></h2>
-            <!--<p><c:out value="${now}"/></p>-->
-            <p><fmt:message key="greeting"/></p>
-            <div id="menu_links">
-                <a class="link" href="analysis.htm" style="height: 24px; width: 46px;">
-                    <fmt:message key="analysis_title"/></a><br/>
-                <a class="link" href="statisticalParameters.htm" style="height: 24px; width: 46px">
-                    <fmt:message key="statistic_analysis"/></a><br>
-                <a class="link" href="config.htm" style="height: 24px; width: 46px">
-                    <fmt:message key="config_title"/></a>
+            <!--<h2><fmt:message key="welcome"/></h2>--><br><br>
+
+            <div align="center"> <table width="50%" border="0" align="center" cellpadding="0" cellspacing="1" class="tabla-opciones">
+                    <!--<tr>
+                        <td colspan="2" class="celda01-opciones"><span class="texto-principal"><fmt:message key="greeting"/></span></td>
+                    </tr>-->
+                    <tr>
+                        <td width="22%" class="celda01-opciones"><img src="themes/default/images/ico-geoespacial.png" width="61" height="66"></td>
+                        <td width="78%" class="celda02-opciones"><a class="link-celda02" href="analysis.htm" style="height: 24px; width: 46px;"><fmt:message key="analysis_title"/></a><br/></td>
+                    </tr>
+                    <tr>
+                        <td class="celda01-opciones"><img src="themes/default/images/ico-estadisticas.png" width="61" height="66"></td>
+                        <td class="celda02-opciones"><a class="link-celda02" href="statisticalParameters.htm" style="height: 24px; width: 46px"><fmt:message key="statistic_analysis"/></a></td>
+                    </tr>
+                    <tr>
+                        <td class="celda01-opciones"><img src="themes/default/images/ico-config.png" width="61" height="66"></td>
+                        <td class="celda02-opciones"><a class="link-celda02" href="config.htm" style="height: 24px; width: 46px"><fmt:message key="config_title"/></a></td>
+                    </tr>
+                </table>
             </div>
+            
         </div>
         <!-- Content ending -->
         <div id="footer">
