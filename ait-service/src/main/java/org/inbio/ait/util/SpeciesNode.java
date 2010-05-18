@@ -16,19 +16,45 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.inbio.ait.manager;
-
-import java.util.List;
-import org.inbio.ait.util.SpeciesNode;
+package org.inbio.ait.util;
 
 /**
  *
  * @author esmata
  */
-public interface SpeciesManager {
+public class SpeciesNode {
 
-    public List<String> speciesByCriteria(String[] layerList, String[] taxonList, String[] indicList);
+    private String name;
+    private String id;
 
-    public List<SpeciesNode> speciesNodesByCriteria(String[] layerList, String[] taxonList, String[] indicList);
+    public SpeciesNode(){}
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * @return the id
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(String id) {
+        this.id = id;
+    }
 
 }

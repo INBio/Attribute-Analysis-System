@@ -158,7 +158,42 @@ public class QueryManagerImpl implements QueryManager{
     }
 
     /**
-     * Count all registers (indicate in last param) from taxon info index table
+     * Counts all registers (indicate in last param) from taxon info index table
+     * that match the specified species and indicator
+     * @param species
+     * @param indicator
+     * @param colunm
+     * @return
+     */
+    @Override
+    public Long countByIndicator(String species,String indicator,String colunm){
+        String query = "Select count(distinct "+colunm+") from ait.taxon_info_index where "+
+                "scientific_name_id = "+species+" and indicator_id = "+indicator;
+        //Execute query
+        return taxonInfoIndexDAO.countTaxonsByQuery(query.toString());
+    }
+
+    /**
+     * Counts all registers (indicate in last param) from taxon info index table
+     * that match the specified species and polygon
+     * @param species
+     * @param indicator
+     * @param colunm
+     * @return
+     */
+    @Override
+    public Long countByPolygon(String species,String polygon,String colunm){
+        String[] aux = polygon.split("~");
+        String layer = aux[0];
+        String poly = aux[1];
+        String query = "Select count(distinct "+colunm+") from ait.taxon_info_index where "+
+                "scientific_name_id = "+species+" and (layer_table = '"+layer+"' and polygom_id = "+poly+")";
+        //Execute query
+        return taxonInfoIndexDAO.countTaxonsByQuery(query.toString());
+    }
+
+    /**
+     * Counts all registers (indicate in last param) from taxon info index table
      * @param layerList
      * @param taxonList
      * @param indicList
