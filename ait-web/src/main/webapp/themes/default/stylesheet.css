@@ -28,7 +28,7 @@ body {
 	margin:0;
 	width:100%;
 	padding: 25px 0 0 0px;
-	color:#172636;
+	color:white;
 }
 
 /* Banner style */
@@ -335,7 +335,7 @@ td.contact{
         right: 0;
         position: fixed;
         text-align:center;
-        color:#172636;
+        color:white;
     }
 
 /* tabla opciones e íconos Leila */

@@ -78,7 +78,7 @@ function executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators,
                     var byPolygon = xmlDoc.getElementsByTagName("bypolygon");
                     var byIndicator = xmlDoc.getElementsByTagName("byindicator");
                     //Show the results
-                    var result = createAdvancedHeader(byPolygon,byIndicator,layersShow,taxonsShow,treeShow);
+                    var result = createAdvancedHeader(byPolygon,byIndicator,layersShow,treeShow);
                     document.getElementById('resultsPanel').innerHTML = result;
                     //Close de "Loading image"
                     YAHOO.example.container.wait.hide();
@@ -103,14 +103,14 @@ function executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators,
  * This function creates the general report, so, return an html string
  * to show on results panel
  */
-function createAdvancedHeader(byPolygon,byIndicator,layersShow,taxonsShow,treeShow){
+function createAdvancedHeader(byPolygon,byIndicator,layersShow,treeShow){
     var result = '';
     for(var i = 0;i<byPolygon.length;i++){
         divIds.push('p'+i);
         result += '<div id="p'+i+'">'+
         '<h3>'+layersShow[i]+'</h3>'+
         '<p>'+byPolygon[i].childNodes[0].nodeValue+' que cumplen algun indicador (FIXME)<p>'+
-        '<input type="button" class="simple_button" id="viewDetail'+i+'" value="'+seeDetail+'" onclick="showDetails('+i+',\'p\')" />'+
+        '<input type="button" class="simple_button" id="viewDetail'+i+'" value="'+seeDetail+'" onclick="showDetails('+i+',\'p\',\''+arrayToString(treeShow)+'\')" />'+
         '<input type="button" class="simple_button" id="showOnMap'+i+'" value="'+seeOnMap+'" onclick="showPoints('+i+',\'p\')" /></div>';
     }
     for(var j = 0;j<byIndicator.length;j++){
@@ -118,7 +118,7 @@ function createAdvancedHeader(byPolygon,byIndicator,layersShow,taxonsShow,treeSh
         result += '<div id="i'+j+'">'+
         '<h3>'+treeShow[j]+'</h3>'+
         '<p>'+byIndicator[j].childNodes[0].nodeValue+' que cumplen algun polígono (FIXME)</p>'+
-        '<input type="button" class="simple_button" id="viewDetail'+i+'" value="'+seeDetail+'" onclick="showDetails('+j+',\'i\')" />'+
+        '<input type="button" class="simple_button" id="viewDetail'+i+'" value="'+seeDetail+'" onclick="showDetails('+j+',\'i\',\''+arrayToString(layersShow)+'\')" />'+
         '<input type="button" class="simple_button" id="showOnMap'+i+'" value="'+seeOnMap+'" onclick="showPoints('+j+',\'i\')" /></div>';
     }
     result+='<br><input type="button" class="new_search_button" id="newSearch" value="'+newSearch+'" onclick="cleanPage()" /><br><br><br>';
@@ -190,13 +190,31 @@ function showPoints(id,type){
  * Return a List of specimens that match with the criteria
  * id = polygon id or indicator id
  * type p = polygon or i = indicator
+ * toShow polygons or indicators to show in the final matrix
  */
-function showDetails(id,type){
+function showDetails(id,type,toShow){
+    var layers = document.getElementById('hiddenLayers').value;
+    var taxa = document.getElementById('hiddenTaxa').value;
+    var indi = document.getElementById('hiddenIndicators').value;
     if(type=='p'){
-        document.getElementById('p'+id).innerHTML += 'hola<br>mundo!!<br>polygon';
+        //Show loading
+        YAHOO.example.container.wait.show();
+        //Getting the query parameters
+        var layersArray = layers.split('|');
+        //Indicate de current selected
+        indicateCurrent('p'+id);
+        //Drowing the points
+        detailedTable(layersArray[id]+'|',taxa,indi,toShow,type,id);
     }
     else{
-        document.getElementById('i'+id).innerHTML += 'hola<br>mundo!!<br>indicator';
+        //Show loading
+        YAHOO.example.container.wait.show();
+        //Getting the query parameters
+        var indiArray = indi.split('|');
+        //Indicate de current selected
+        indicateCurrent('i'+id);
+        //Drowing the points
+        detailedTable(layers,taxa,indiArray[id]+'|',toShow,type,id);
     }
 }
 
@@ -240,4 +258,13 @@ function indicateCurrent(id){
             document.getElementById(divIds[i]).className = "";
         }
     }
+}
+
+//Array to string
+function arrayToString(array){
+    var result = '';
+    for(var i = 0 ;i<array.length ;i++){
+        result += array[i]+"|";
+    }
+    return result;
 }

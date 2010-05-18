@@ -18,13 +18,14 @@
 
 package org.inbio.ait.web.ajax.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.inbio.ait.manager.QueryManager;
 import org.inbio.ait.manager.SpeciesManager;
+import org.inbio.ait.util.SpeciesNode;
+import org.inbio.ait.web.utils.TaxonInfoIndexColums;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 
@@ -32,18 +33,19 @@ import org.springframework.web.servlet.mvc.Controller;
  *
  * @author esmata
  */
-public class SpeciesController implements Controller{
+public class TableController implements Controller{
 
     private SpeciesManager speciesManager;
     private QueryManager queryManager;
 
     @Override
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		String paramLayer = request.getParameter("layers");
-        String paramTaxon = request.getParameter("taxons");
-        String paramIndi = request.getParameter("indi");
+		String paramLayer = request.getParameter("l");
+        String paramTaxon = request.getParameter("tx");
+        String paramIndi = request.getParameter("i");
+        String type = request.getParameter("t");
 		String errorMsj = "Error con los parámetros: "+
-                paramLayer+" "+paramTaxon+" "+paramIndi;
+                paramLayer+" "+paramTaxon+" "+paramIndi+" "+type;
 
 		try {
             //Arrays that contains the parameters data
@@ -51,22 +53,46 @@ public class SpeciesController implements Controller{
             String[] taxonArray = paramTaxon.split("\\|");
             String[] indiArray = paramIndi.split("\\|");
 
-            if(layerArray!=null && !layerArray[0].equals("")){ //If there is geographical criteria
-                List<List<String>> matchesByPolygon = new ArrayList<List<String>>();
-                //Get matches by polygon
-                for(int i=0;i<layerArray.length;i++){
-                    String[] thePolygon = {layerArray[i]};
-                    List<String> aux = speciesManager.speciesByCriteria(thePolygon, taxonArray, indiArray);
-                    matchesByPolygon.add(aux);
+            //Obtain the species list by all criteria
+            List<SpeciesNode> species = speciesManager.speciesNodesByCriteria
+                    (layerArray, taxonArray, indiArray);
+
+            //Matrix to store the results
+            Long[][] matrix;
+
+             //Building the matrix content
+            int x = species.size(), y = 0;
+            if(type.equals("p")){ //If polygons, show species * indicators
+                y = indiArray.length;
+                matrix = new Long[x][y];
+                //Loop over rows
+                for(int i = 0;i<x;i++){
+                    SpeciesNode node = species.get(i);
+                    //Loop over columns
+                    for(int j = 0;j<y;j++){
+                        matrix[i][j] = queryManager.countByIndicator(node.getId(),
+                                indiArray[j],
+                                TaxonInfoIndexColums.SPECIMENS.getName());
+                    }
                 }
-                return writeReponse(request,response,null,matchesByPolygon);
             }
-            else{
-                //Specimens that match with the search criteria
-                List<String> species = speciesManager.speciesByCriteria
-                        (layerArray, taxonArray, indiArray);
-                return writeReponse(request,response,species,null);
+            else{ //if indicators, show species * polygons
+                y = layerArray.length;
+                matrix = new Long[x][y];
+                //Loop over rows
+                for(int i = 0;i<x;i++){
+                    SpeciesNode node = species.get(i);
+                    //Loop over columns
+                    for(int j = 0;j<y;j++){
+                        matrix[i][j] = queryManager.countByPolygon(node.getId(),
+                                layerArray[j],
+                                TaxonInfoIndexColums.SPECIMENS.getName());
+                    }
+                }
             }
+
+            //Return results via xml
+            return writeReponse(request,response,matrix,species);
 
 		} catch (IllegalArgumentException iae) {
 			throw new Exception(errorMsj + " "+ iae.getMessage());
@@ -83,37 +109,34 @@ public class SpeciesController implements Controller{
      * @throws java.lang.Exception
      */
 	private ModelAndView writeReponse(HttpServletRequest request,
-			HttpServletResponse response,List<String> species,
-            List<List<String>> matchesByPolygon) throws Exception {
+			HttpServletResponse response,Long[][] matrix,
+            List<SpeciesNode> species) throws Exception {
 
 		response.setCharacterEncoding("ISO-8859-1");
 		response.setContentType("text/xml");
 		ServletOutputStream out = response.getOutputStream();
-        StringBuilder result = new StringBuilder();
-
-        if(matchesByPolygon==null){ //If there is not geographical criteria
-            result.append("<?xml version='1.0' encoding='ISO-8859-1'?><response><speciesList>");
-            for(String s : species){
-                result.append("<species>"+s+"</species>");
-            }
-            result.append("</speciesList><polygons></polygons></response>");
-            out.println(result.toString());
-        }
-        else{ //If there is gegraphical criteria
-            result.append("<?xml version='1.0' encoding='ISO-8859-1'?><response>");
-            result.append("<speciesList></speciesList>");
-            result.append("<polygons>");
-            for(List<String> listByPolygon : matchesByPolygon){
-                result.append("<polygon>");
-                for(String sp : listByPolygon){
-                    result.append("<sp>"+sp+"</sp>");
-                }
-                result.append("</polygon>");
-            }
-            result.append("</polygons></response>");
-            out.println(result.toString());
-        }
         
+        StringBuilder result = new StringBuilder();
+        result.append("<?xml version='1.0' encoding='ISO-8859-1'?><response>");
+        result.append("<speciesList>");
+        for(SpeciesNode sp : species){
+            result.append("<species>"+sp.getName()+"</species>");
+        }
+        result.append("</speciesList>");
+        if(matrix.length>0){
+            int rows = matrix.length;
+            int columns = matrix[0].length;
+            for (int i = 0; i < rows; i++) {
+                result.append("<row>");
+                for (int j = 0; j < columns; j++) {
+                    result.append("<column>" + matrix[i][j] + "</column>");
+                }
+                result.append("</row>");
+            }
+        }
+        result.append("</response>");
+
+        out.println(result.toString());
 		out.flush();
 		out.close();
 

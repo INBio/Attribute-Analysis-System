@@ -281,7 +281,7 @@
                 
                 <div id="querysPanel">
                     <!-- GIS Panel -->
-                    <div id="queryPanel1" class="queryPanel" style="background-color:#FFF8D8;">
+                    <div id="queryPanel1" class="queryPanel" style="background-color:#FFFFFF;">
                         <p style="font-weight:bold;font-style:italic;margin:2px;text-align:center;">
                             <fmt:message key="geografical_criteria_title"/></p>
                         <div id="currentLayer"></div>
@@ -290,7 +290,7 @@
                     </div>
 
                     <!-- Taxonomy Panel -->
-                    <div id="queryPanel2" class="queryPanel" style="background-color:#FFF8D8;">
+                    <div id="queryPanel2" class="queryPanel" style="background-color:#FFFFFF;">
                         <p style="font-weight:bold;font-style:italic;margin:2px;text-align:center;">
                             <fmt:message key="taxonomical_criteria_title"/></p>
                         <p style="margin:1px"><a> <fmt:message key="taxonomy_level"/>: </a></p>
@@ -314,7 +314,7 @@
                     </div>
 
                     <!-- Indicator Panel -->
-                    <div id="queryPanel3" class="queryPanel" style="background-color:#FFF8D8;">
+                    <div id="queryPanel3" class="queryPanel" style="background-color:#FFFFFF;">
                         <p style="font-weight:bold;font-style:italic;margin:2px;text-align:center;">
                             <fmt:message key="indicators_criteria_title"/></p>
                         <div id="treeDiv"></div>

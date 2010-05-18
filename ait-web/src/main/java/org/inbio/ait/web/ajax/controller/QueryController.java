@@ -51,9 +51,9 @@ public class QueryController implements Controller{
             String[] indiArray = paramIndi.split("\\|");
 
             /*If there is just one criteria category or especifically these categories
-            (geographical and taxonomical). It means type 0 on xml*/
+            (geographical-taxonomical or taxonomical-indicator). It means type 0 on xml*/
             //------------------------------------------------------------------
-            if(isOneOrGeoTax(layerArray,taxonArray,indiArray)){
+            if(isOneGeoTaxOrIndiTax(layerArray,taxonArray,indiArray)){
                 //Total of matches
                 Long totalMatches = queryManager.countByCriteria
                         (layerArray, taxonArray, indiArray,TaxonInfoIndexColums.SPECIES.getName());
@@ -92,15 +92,18 @@ public class QueryController implements Controller{
      * Return false when there are three different criteria categories or there is nothing at all
      * Return true if (a)
      */
-    private boolean isOneOrGeoTax(String[] l, String[] t, String[] i) {
+    private boolean isOneGeoTaxOrIndiTax(String[] l, String[] t, String[] i) {
         int ll = myLength(l);
         int tl = myLength(t);
         int il = myLength(i);
 
-        if(ll != 0 && tl != 0 && il == 0){
+        if(ll != 0 && tl != 0 && il == 0){ //Geo-Tax
             return true;
         }
-        else if((ll!=0&&tl==0&&il==0)||(ll==0&&tl!=0&&il==0)||(ll==0&&tl==0&&il!=0)){
+        else if(ll == 0 && tl != 0 && il != 0){ //Indi-Tax
+            return true;
+        }
+        else if((ll!=0&&tl==0&&il==0)||(ll==0&&tl!=0&&il==0)||(ll==0&&tl==0&&il!=0)){ //Just one
             return true;
         }
         else{
@@ -122,7 +125,7 @@ public class QueryController implements Controller{
     /**
      * Write the XML to be parsed on the analysis view
      * Case 0: If there is just one criteria category or especifically these categories
-     * (geographical and taxonomical). It means type 0 on xml
+     * (geographical-taxonomical or or taxonomical-indicator). It means type 0 on xml
      * @param request
      * @param response
      * @param totalMatch

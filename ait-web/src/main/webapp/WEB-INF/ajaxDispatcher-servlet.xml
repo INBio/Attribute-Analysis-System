@@ -31,6 +31,8 @@
                 <prop key="/getPoints/**/**">pointsController</prop>
             <!-- Getting disctint species list from specimen info -->
                 <prop key="/getSpecies/**/**">speciesController</prop>
+            <!-- Getting detailed tables from query -->
+                <prop key="/getTable/**/**">tableController</prop>
             </props>
         </property>
     </bean>
@@ -68,6 +70,14 @@
     <!--............. Species list from especimens repository ...............-->
     <!--.....................................................................-->
     <bean id="speciesController" class="org.inbio.ait.web.ajax.controller.SpeciesController">
+      <property name="speciesManager" ref="speciesManager"/>
+      <property name="queryManager" ref="queryManager"/>
+    </bean>
+
+    <!--.....................................................................-->
+    <!--...... Detailed table from query (To show detailed results) .........-->
+    <!--.....................................................................-->
+    <bean id="tableController" class="org.inbio.ait.web.ajax.controller.TableController">
       <property name="speciesManager" ref="speciesManager"/>
       <property name="queryManager" ref="queryManager"/>
     </bean>
