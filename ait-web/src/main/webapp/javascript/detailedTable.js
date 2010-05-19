@@ -36,16 +36,24 @@ function detailedTable(selectedLayers,selectedTaxa,selectedIndicators,toShow,typ
             var species = xmlDoc.getElementsByTagName("species");
             //Get the matrix rows
             var rows = xmlDoc.getElementsByTagName("row");
+            var toShowArray = toShow.split('|');
             //HTML result
-            var result = '<br>';
-
+            var result = '<table class="contacts" cellspacing="0"><tr><th class="contactDept"> ---- </th>';
+            for(var k = 0 ;k<toShowArray.length;k++){ //Headings row
+                if(toShowArray[k] != ""){
+                    result += '<th class="contactDept"> '+toShowArray[k]+' </th>';
+                }
+            }
+            result += '</tr>';
             for(var i = 0;i<rows.length;i++){ //Loop over rows
+                result += '<tr><th class="contactDept"> '+species[i].childNodes[0].nodeValue+' </th>';
                 var columns = rows[i].getElementsByTagName("column");
                 for(var j = 0;j<columns.length;j++){
-                    result += columns[j].childNodes[0].nodeValue+' ';
+                    result += '<td class="contact"> '+columns[j].childNodes[0].nodeValue+' </td>';
                 }
-                result += '<br>';
+                result += '</tr>';
             }
+            result += '</table>';
 
             document.getElementById(type+id).innerHTML += result;
             YAHOO.example.container.wait.hide();

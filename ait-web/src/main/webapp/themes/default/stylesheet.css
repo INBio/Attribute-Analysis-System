@@ -213,11 +213,22 @@ body {
    -webkit-border-radius: 2px;
 }
 
-.current_Selected{
-   background-color:#F9FFFF;
+.detailed_results{
+   background-color:#F9FFD7;
    border:1px dashed #A3B4B7;
-   -moz-border-radius: 2px;
-   -webkit-border-radius: 2px;
+   margin-bottom:2px;
+   padding:5px;
+   -moz-border-radius: 5px;
+   -webkit-border-radius: 5px;
+}
+
+.current_Selected{
+   background-color:#E9FFB9;
+   border:1px dashed #A3B4B7;
+   margin-bottom:2px;
+   padding:5px;
+   -moz-border-radius: 5px;
+   -webkit-border-radius: 5px;
 }
 
 .main_Button{    

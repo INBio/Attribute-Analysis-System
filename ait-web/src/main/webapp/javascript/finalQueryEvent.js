@@ -107,19 +107,29 @@ function createAdvancedHeader(byPolygon,byIndicator,layersShow,treeShow){
     var result = '';
     for(var i = 0;i<byPolygon.length;i++){
         divIds.push('p'+i);
-        result += '<div id="p'+i+'">'+
+        result += '<div id="p'+i+'" class="detailed_results">'+
         '<h3>'+layersShow[i]+'</h3>'+
-        '<p>'+byPolygon[i].childNodes[0].nodeValue+' que cumplen algun indicador (FIXME)<p>'+
-        '<input type="button" class="simple_button" id="viewDetail'+i+'" value="'+seeDetail+'" onclick="showDetails('+i+',\'p\',\''+arrayToString(treeShow)+'\')" />'+
+        '<p>'+byPolygon[i].childNodes[0].nodeValue+' especies que cumplen algun indicador (FIXME)';
+        if(byPolygon[i].childNodes[0].nodeValue != '0'){
+            result += '<p><input type="button" class="simple_button" id="viewDetail'+i+'" value="'+seeDetail+'" onclick="showDetails('+i+',\'p\',\''+arrayToString(treeShow)+'\')" />'+
         '<input type="button" class="simple_button" id="showOnMap'+i+'" value="'+seeOnMap+'" onclick="showPoints('+i+',\'p\')" /></div>';
+        }
+        else{
+            result += '</div>';
+        }
     }
     for(var j = 0;j<byIndicator.length;j++){
         divIds.push('i'+j);
-        result += '<div id="i'+j+'">'+
+        result += '<div id="i'+j+'" class="detailed_results">'+
         '<h3>'+treeShow[j]+'</h3>'+
-        '<p>'+byIndicator[j].childNodes[0].nodeValue+' que cumplen algun polígono (FIXME)</p>'+
-        '<input type="button" class="simple_button" id="viewDetail'+i+'" value="'+seeDetail+'" onclick="showDetails('+j+',\'i\',\''+arrayToString(layersShow)+'\')" />'+
+        '<p>'+byIndicator[j].childNodes[0].nodeValue+' especies que cumplen algun polígono (FIXME)';
+        if(byIndicator[j].childNodes[0].nodeValue != '0'){
+            result += '</p><input type="button" class="simple_button" id="viewDetail'+i+'" value="'+seeDetail+'" onclick="showDetails('+j+',\'i\',\''+arrayToString(layersShow)+'\')" />'+
         '<input type="button" class="simple_button" id="showOnMap'+i+'" value="'+seeOnMap+'" onclick="showPoints('+j+',\'i\')" /></div>';
+        }
+        else{
+            result += '</div>';
+        }
     }
     result+='<br><input type="button" class="new_search_button" id="newSearch" value="'+newSearch+'" onclick="cleanPage()" /><br><br><br>';
     return result;
@@ -193,6 +203,7 @@ function showPoints(id,type){
  * toShow polygons or indicators to show in the final matrix
  */
 function showDetails(id,type,toShow){
+    replaceVectorLayer();
     var layers = document.getElementById('hiddenLayers').value;
     var taxa = document.getElementById('hiddenTaxa').value;
     var indi = document.getElementById('hiddenIndicators').value;
@@ -255,7 +266,7 @@ function indicateCurrent(id){
             document.getElementById(divIds[i]).className = "current_Selected";
         }
         else{ //No indicar
-            document.getElementById(divIds[i]).className = "";
+            document.getElementById(divIds[i]).className = "detailed_results";
         }
     }
 }
