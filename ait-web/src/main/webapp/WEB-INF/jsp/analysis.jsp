@@ -26,8 +26,8 @@
 
         <link rel="stylesheet" type="text/css" href="http://openlayers.org/theme/default/style.css"/>
         <script type="text/JavaScript" src="http://openlayers.org/api/OpenLayers.js"></script>
+        
         <script src='http://dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6.1'></script>
-        <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
         <script defer="defer" type="text/javascript">
 
             //Use a proxy for GeoServer requesting
@@ -65,7 +65,8 @@
 
             //Internacionalization of the report texts
             var searchResults,geographical,taxonomic,indicators,speciesMatches,
-            seeOnMap,seeDetail,searchCriteria,speciesList,newSearch,criteriaText,speciesText;
+            seeOnMap,seeDetail,searchCriteria,speciesList,newSearch,criteriaText,
+            speciesText,hideMap,hideDetail;
 
             //Pink tile avoidance
             OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
@@ -83,7 +84,7 @@
                 //Load messages content
                 internationalization();
                 //initialize map functionality
-                initMap();
+                initMap('map');
                 //Create a drop down to specified the current layer
                 createDDLayers();
                 //Init indicators tree
@@ -158,7 +159,7 @@
                 setHiddenValues(selectedLayers,selectedTaxa,selectedIndicators,
                 layersAsText,indiAsText);
 
-                //Clean criteria lists
+                //Clean entry criteria lists
                 cleanAfterRequest();
                 
                 //Call the function that returns the result (xml) asincronically
@@ -176,12 +177,7 @@
              * Clean the page after request a new report
              */
             function cleanAfterRequest(){
-                document.getElementById('mapParameters').innerHTML = "";
-                document.getElementById('taxParameters').innerHTML = "";
-                document.getElementById('treeParameters').innerHTML = "";
-                tree.collapseAll();
-                document.getElementById('detailedResults').innerHTML = "";
-                document.getElementById("detailedResults").className = "";
+                document.getElementById('entryCriteria').innerHTML = "";
                 divIds = new Array();
             }
 
@@ -254,7 +250,8 @@
                 newSearch = "<fmt:message key="new_search"/>";
                 criteriaText = "<fmt:message key="criteria"/>";
                 speciesText = "<fmt:message key="species"/>";
-
+                hideMap = "<fmt:message key="hide_map"/>";
+                hideDetail = "<fmt:message key="hide_detail"/>";
             };
         </script>
 
@@ -278,67 +275,69 @@
         <form id="myform" name = "species" method = "get" style="margin:0px">
             <div id="contenido">
                 <h2><fmt:message key="analysis_title"/></h2>
-                
-                <div id="querysPanel">
-                    <!-- GIS Panel -->
-                    <div id="queryPanel1" class="queryPanel" style="background-color:#FFFFFF;">
-                        <p style="font-weight:bold;font-style:italic;margin:2px;text-align:center;">
-                            <fmt:message key="geografical_criteria_title"/></p>
-                        <div id="currentLayer"></div>
-                        <div id="info"></div>
-                        <span id="mapParameters" style="font-size:10px"></span>
+
+                <div id="entryCriteria"> <!-- Entry criteria div -->
+                    <div id="querysPanel">
+                        <!-- GIS Panel -->
+                        <div id="queryPanel1" class="queryPanel" style="background-color:#FFFFFF;">
+                            <p style="font-weight:bold;font-style:italic;margin:2px;text-align:center;">
+                                <fmt:message key="geografical_criteria_title"/></p>
+                            <div id="currentLayer"></div>
+                            <div id="info"></div>
+                            <span id="mapParameters" style="font-size:10px"></span>
+                        </div>
+
+                        <!-- Taxonomy Panel -->
+                        <div id="queryPanel2" class="queryPanel" style="background-color:#FFFFFF;">
+                            <p style="font-weight:bold;font-style:italic;margin:2px;text-align:center;">
+                                <fmt:message key="taxonomical_criteria_title"/></p>
+                            <p style="margin:1px"><a> <fmt:message key="taxonomy_level"/>: </a></p>
+                            <select name="taxonType" id="taxonTypeId" class="componentSize" tabindex="12" onchange="javascript:changeTaxonInput();" onKeyUp="javascript:changeTaxonInput();">
+                                <c:forEach items="${model.taxonFilters}" var="taxonFilter">
+                                    <option value="<c:out value="${taxonFilter.id}"/>"<c:if test="${taxonFilter.id == taxonType}"> selected="selected"</c:if>>
+                                        <fmt:message key="${taxonFilter.displayName}"/>
+                                    </option>
+                                </c:forEach>
+                            </select>
+                            <p style="margin:1px"><a> <fmt:message key="taxon_name"/>: </a></p>
+                            <span id="newTaxonValue">
+                                <input id="taxonId" tabindex="13" class="componentSize" type="text" name="taxonValue" value="<c:out value="${taxonValue}"/>"/>
+                                <div id="taxonContainer"></div>
+                            </span>
+                            <input type="button" class="my_Button" id="addToListButtonTax" value="<fmt:message key="add_criteria"/>" onclick="addTaxonParam()" />
+                            <span id="taxParameters" style="font-size:10px"></span>
+                            <script type="text/javascript">
+                                changeTaxonInput();
+                            </script>
+                        </div>
+
+                        <!-- Indicator Panel -->
+                        <div id="queryPanel3" class="queryPanel" style="background-color:#FFFFFF;">
+                            <p style="font-weight:bold;font-style:italic;margin:2px;text-align:center;">
+                                <fmt:message key="indicators_criteria_title"/></p>
+                            <div id="treeDiv"></div>
+                            <input type="button" class="my_Button" id="addToListButtonIndi" value="<fmt:message key="add_criteria"/>" onclick="addIndicatorParam()" />
+                             <span id="treeParameters" style="font-size:10px"></span>
+                        </div>
+
+                        <!-- Query Button -->
+                        <input type="button" class="main_Button" id="makeQueryButton" value="<fmt:message key="consult"/>"
+                        onclick="makeQuery()" />
+
                     </div>
 
-                    <!-- Taxonomy Panel -->
-                    <div id="queryPanel2" class="queryPanel" style="background-color:#FFFFFF;">
-                        <p style="font-weight:bold;font-style:italic;margin:2px;text-align:center;">
-                            <fmt:message key="taxonomical_criteria_title"/></p>
-                        <p style="margin:1px"><a> <fmt:message key="taxonomy_level"/>: </a></p>
-                        <select name="taxonType" id="taxonTypeId" class="componentSize" tabindex="12" onchange="javascript:changeTaxonInput();" onKeyUp="javascript:changeTaxonInput();">
-                            <c:forEach items="${model.taxonFilters}" var="taxonFilter">
-                                <option value="<c:out value="${taxonFilter.id}"/>"<c:if test="${taxonFilter.id == taxonType}"> selected="selected"</c:if>>
-                                    <fmt:message key="${taxonFilter.displayName}"/>
-                                </option>
-                            </c:forEach>
-                        </select>
-                        <p style="margin:1px"><a> <fmt:message key="taxon_name"/>: </a></p>
-                        <span id="newTaxonValue">
-                            <input id="taxonId" tabindex="13" class="componentSize" type="text" name="taxonValue" value="<c:out value="${taxonValue}"/>"/>
-                            <div id="taxonContainer"></div>
-                        </span>
-                        <input type="button" class="my_Button" id="addToListButtonTax" value="<fmt:message key="add_criteria"/>" onclick="addTaxonParam()" />
-                        <span id="taxParameters" style="font-size:10px"></span>
-                        <script type="text/javascript">
-                            changeTaxonInput();
-                        </script>
+                    <div id="mapPanel">
+                        <!-- Map Panel -->
+                        <div id="map"> </div>
+                        <div id="wrapper">
+                            <div id="location"></div>
+                            <div id="scale"></div>
+                        </div>
                     </div>
 
-                    <!-- Indicator Panel -->
-                    <div id="queryPanel3" class="queryPanel" style="background-color:#FFFFFF;">
-                        <p style="font-weight:bold;font-style:italic;margin:2px;text-align:center;">
-                            <fmt:message key="indicators_criteria_title"/></p>
-                        <div id="treeDiv"></div>
-                        <input type="button" class="my_Button" id="addToListButtonIndi" value="<fmt:message key="add_criteria"/>" onclick="addIndicatorParam()" />
-                         <span id="treeParameters" style="font-size:10px"></span>
-                    </div>
-
-                    <!-- Query Button -->
-                    <input type="button" class="main_Button" id="makeQueryButton" value="<fmt:message key="consult"/>"
-                    onclick="makeQuery()" />
-
-                </div>
-
-                <div id="mapPanel">
-                    <!-- Map Panel -->
-                    <div id="map"> </div>
-                    <div id="wrapper">
-                        <div id="location"></div>
-                        <div id="scale"></div>
-                    </div>
-                </div>
+                </div> <!-- End entry criteria div -->
 
                 <!-- Panel to show the result header (abstract) -->
-                <a name="anchorResult"></a>
                 <div id="resultsPanel"></div>
 
                 <!-- Panel to show the detailed result -->

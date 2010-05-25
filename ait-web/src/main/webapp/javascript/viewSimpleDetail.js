@@ -45,8 +45,7 @@ function viewSimpleDetail(selectedLayers,selectedTaxa,selectedIndicators,lToShow
                     dwcList += '- '+node.childNodes[0].nodeValue+'<br>';
                 }
                 // Show the result
-                document.getElementById('detailedResults').innerHTML = '<p style="text-align:center;"><b>'+
-                    speciesList+'</b></p>'+dwcList+'<br><br>';
+                document.getElementById('detailedResults').innerHTML = '<p style="text-align:center;"></p>'+dwcList+'<br><br>';
                 document.getElementById("detailedResults").className = "detailedResults";
             }
             else{
@@ -65,8 +64,7 @@ function viewSimpleDetail(selectedLayers,selectedTaxa,selectedIndicators,lToShow
                 }
                 resultHTML += '</table>';
                 // Show the result
-                document.getElementById('detailedResults').innerHTML = '<p style="text-align:center;"><b>'+
-                    speciesList+'</b></p>'+resultHTML+'<br><br>';
+                document.getElementById('detailedResults').innerHTML = '<p style="text-align:center;"></p>'+resultHTML+'<br><br>';
                 document.getElementById("detailedResults").className = "detailedResults";
             }
 

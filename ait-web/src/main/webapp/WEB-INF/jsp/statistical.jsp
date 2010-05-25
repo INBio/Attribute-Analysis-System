@@ -24,8 +24,9 @@
 
         <title><fmt:message key="title"/></title>
 
-        <script src="http://216.75.53.105:80/geoserver/openlayers/OpenLayers.js" type="text/javascript"></script>
+        <link rel="stylesheet" type="text/css" href="http://openlayers.org/theme/default/style.css"/>
         <script type="text/JavaScript" src="http://openlayers.org/api/OpenLayers.js"></script>
+
         <script src='http://dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6.1'></script>
         <script defer="defer" type="text/javascript">
 
@@ -83,7 +84,7 @@
                 //Load messages content
                 internationalization();
                 //initialize map functionality
-                initMap();
+                initMap('map');
                 //Create a drop down to specified the current layer
                 createDDLayers();
                 //Init indicators tree

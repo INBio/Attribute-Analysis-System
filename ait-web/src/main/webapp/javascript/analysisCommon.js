@@ -83,7 +83,7 @@ function initLoadingPanel(){
 /*
  * Initialazing the gis functionality
  */
-function initMap(){
+function initMap(divId){
    var bounds = new OpenLayers.Bounds(
         -102.184, 7.204,
         -77.157, 22.472
@@ -95,13 +95,14 @@ function initMap(){
         projection: "EPSG:900913",
         units: 'm'
     };
-    map = new OpenLayers.Map('map', options);
+    map = new OpenLayers.Map(divId,options);
 
-    //Seting the default current layer (Layers drop down)
+    //Setting the default current layer (Layers drop down)
     layerId = 'IABIN_Indicadores:bd_meso_limite_paies';
     layerIndex = 1; //Porque la 0 es la de Virtual Earth
     layerName = 'Paises - Mesoamérica';
 
+    //------------------------------ Layers ------------------------------------
     //Base layer
     virtualEarthLayer  = new OpenLayers.Layer.VirtualEarth('Virtual Earth');
 
@@ -124,12 +125,31 @@ function initMap(){
     map.addLayer(provincias);
     map.addLayer(aspPMA);
     map.addLayer(vectorLayer);
+    //--------------------------------------------------------------------------
 
-    //Variables to manage the events on the diferent layers
+    //Variables to manage the events on the diferent layers (FIXME)
     layersList = new Array(new Array('IABIN_Indicadores:bd_meso_limite_paies','Paises - Mesoamérica'),
     new Array('IABIN_Indicadores:bd_cr_provincias','Provincias - CR'),
     new Array('IABIN_Indicadores:bd_pan_areas_protegidas','Área Silvestre Protegida - PMA'));
 
+    //Map event to enter the geographical parameters
+    mapParametersEvent();
+
+    //Build up all controls
+    map.addControl(new OpenLayers.Control.PanZoomBar({
+        position: new OpenLayers.Pixel(2, 15)
+    }));
+    map.addControl(new OpenLayers.Control.LayerSwitcher({'ascending':false},{'position':OpenLayers.Control}));
+    map.addControl(new OpenLayers.Control.Navigation());
+    map.addControl(new OpenLayers.Control.Scale($('scale')));
+    map.addControl(new OpenLayers.Control.MousePosition({element: $('location')}));
+    map.zoomToExtent(bounds);
+}
+
+/*
+ * Event to indicate the geographical parameters into the search criteria
+ */
+function mapParametersEvent(){
     map.events.register('click', map, function (e) {
         document.getElementById('info').innerHTML = loadingText;
         polygonsList = null;
@@ -150,16 +170,6 @@ function initMap(){
         OpenLayers.loadURL("http://216.75.53.105:80/geoserver/wms", params, this, setHTML, setHTML);
         OpenLayers.Event.stop(e);
     });
-
-    //Build up all controls
-    map.addControl(new OpenLayers.Control.PanZoomBar({
-        position: new OpenLayers.Pixel(2, 15)
-    }));
-    map.addControl(new OpenLayers.Control.LayerSwitcher({'ascending':false},{'position':OpenLayers.Control}));
-    map.addControl(new OpenLayers.Control.Navigation());
-    map.addControl(new OpenLayers.Control.Scale($('scale')));
-    map.addControl(new OpenLayers.Control.MousePosition({element: $('location')}));
-    map.zoomToExtent(bounds);
 }
 
 /*

@@ -99,7 +99,7 @@ body {
 #resultsPanel h3{
     margin:0;
     text-align:justify;
-    padding: 5px 0 5px 0;
+    padding: 0px;
     color:#334563;
 }
 
@@ -182,39 +182,39 @@ body {
 }
 
 .simple_button{
-   width:100px;
-   height:20px;
-   background-color:#9BC238;
-   border:1px solid #F6B56F;
+   width:140px;
+   height:24px;
+   background-color:#6C7487;
+   border:1px solid #7F899F;
    font-family:sans-serif;
    text-align:center;
    font-weight:normal;
-   color:#212A0C;
+   color:white;
    cursor:pointer;
    padding:1px;
    margin:2px;
-   -moz-border-radius: 2px;
-   -webkit-border-radius: 2px;
+   -moz-border-radius: 8px;
+   -webkit-border-radius: 8px;
 }
 
 .new_search_button{
-   width:100px;
-   height:20px;
-   background-color:#F1E5AC;
-   border:1px solid #F6B56F;
+   width:140px;
+   height:24px;
+   background-color:#339A2B;
+   border:1px solid #3BB232;
    font-family:sans-serif;
    text-align:center;
    font-weight:normal;
-   color:#212A0C;
+   color:white;
    cursor:pointer;
    padding:1px;
    margin:2px;
-   -moz-border-radius: 2px;
-   -webkit-border-radius: 2px;
+   -moz-border-radius: 8px;
+   -webkit-border-radius: 8px;
 }
 
 .detailed_results{
-   background-color:#F9FFD7;
+   background-color:#F6F8FF;
    border:1px dashed #A3B4B7;
    margin-bottom:2px;
    padding:5px;
@@ -223,7 +223,7 @@ body {
 }
 
 .current_Selected{
-   background-color:#E9FFB9;
+   background-color:#D7D8DE;
    border:1px dashed #A3B4B7;
    margin-bottom:2px;
    padding:5px;
@@ -312,6 +312,7 @@ table.contacts
     border: 1px #000000 solid;
     border-collapse: collapse;
     border-spacing: 0px;
+    margin-top:4px;
 }
 
 th.contactDept{

@@ -68,7 +68,7 @@ function executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators,
                     //Close de "Loading image"
                     YAHOO.example.container.wait.hide();
                     //Calling the anchor to positionate the page focus on the results
-                    callAnchor('#anchorResult');
+                    callAnchor('#anchorTop');
                     break;
 
                 case '1': // 1 means 3 different criteria categories
@@ -83,7 +83,7 @@ function executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators,
                     //Close de "Loading image"
                     YAHOO.example.container.wait.hide();
                     //Calling the anchor to positionate the page focus on the results
-                    callAnchor('#anchorResult');
+                    callAnchor('#anchorTop');
                     break;
             }
             
@@ -109,29 +109,31 @@ function createAdvancedHeader(byPolygon,byIndicator,layersShow,treeShow){
         divIds.push('p'+i);
         result += '<div id="p'+i+'" class="detailed_results">'+
         '<h3>'+layersShow[i]+'</h3>'+
-        '<p>'+byPolygon[i].childNodes[0].nodeValue+' especies que cumplen algun indicador (FIXME)';
+        '<p>'+byPolygon[i].childNodes[0].nodeValue+' especies que cumplen algun indicador (FIXME)<p>';
         if(byPolygon[i].childNodes[0].nodeValue != '0'){
-            result += '<p><input type="button" class="simple_button" id="viewDetail'+i+'" value="'+seeDetail+'" onclick="showDetails('+i+',\'p\',\''+arrayToString(treeShow)+'\')" />'+
-        '<input type="button" class="simple_button" id="showOnMap'+i+'" value="'+seeOnMap+'" onclick="showPoints('+i+',\'p\')" /></div>';
+            result += '<input type="button" class="simple_button" id="viewDetail'+i+'" value="'+seeDetail+'" onclick="showDetails('+i+',\'p\',\''+arrayToString(treeShow)+'\')" />'+
+        '<input type="button" class="simple_button" id="showOnMap'+i+'" value="'+seeOnMap+'" onclick="showPoints('+i+',\'p\')" />'+
+        '<div id="p'+i+'detail"></div><div id="p'+i+'map"></div></div>';
         }
         else{
-            result += '</div>';
+            result += '<div id="p'+i+'detail"></div><div id="p'+i+'map"></div></div>';
         }
     }
     for(var j = 0;j<byIndicator.length;j++){
         divIds.push('i'+j);
         result += '<div id="i'+j+'" class="detailed_results">'+
         '<h3>'+treeShow[j]+'</h3>'+
-        '<p>'+byIndicator[j].childNodes[0].nodeValue+' especies que cumplen algun polígono (FIXME)';
+        '<p>'+byIndicator[j].childNodes[0].nodeValue+' especies que cumplen algun polígono (FIXME)</p>';
         if(byIndicator[j].childNodes[0].nodeValue != '0'){
-            result += '</p><input type="button" class="simple_button" id="viewDetail'+i+'" value="'+seeDetail+'" onclick="showDetails('+j+',\'i\',\''+arrayToString(layersShow)+'\')" />'+
-        '<input type="button" class="simple_button" id="showOnMap'+i+'" value="'+seeOnMap+'" onclick="showPoints('+j+',\'i\')" /></div>';
+            result += '<input type="button" class="simple_button" id="viewDetail'+i+'" value="'+seeDetail+'" onclick="showDetails('+j+',\'i\',\''+arrayToString(layersShow)+'\')" />'+
+        '<input type="button" class="simple_button" id="showOnMap'+i+'" value="'+seeOnMap+'" onclick="showPoints('+j+',\'i\')" />'+
+        '<div id="i'+j+'detail"></div><div id="i'+j+'map"></div></div>';
         }
         else{
-            result += '</div>';
+            result += '<div id="i'+j+'detail"></div><div id="i'+j+'map"></div></div>';
         }
     }
-    result+='<br><input type="button" class="new_search_button" id="newSearch" value="'+newSearch+'" onclick="cleanPage()" /><br><br><br>';
+    result+='<input type="submit" class="new_search_button" id="newSearch" value="'+newSearch+'"/><br><br><br>';
     return result;
 }
 
@@ -141,27 +143,99 @@ function createAdvancedHeader(byPolygon,byIndicator,layersShow,treeShow){
  */
 function createReportHeader(criteria,total){
     var result = '<div id="reportHeader">'+
-    '<h2>'+searchResults+'</h2>'+
     '<h3>'+searchCriteria+'</h3>'+criteria+
-    '<h3>'+total+' '+speciesMatches+'</h3></div>'+
-    '<input type="button" class="simple_button" id="viewDetail0" value="'+seeDetail+'" onclick="showDetailsFromHiddenData()" />'+
-    '<input type="button" class="simple_button" id="showOnMap0" value="'+seeOnMap+'" onclick="showPointFromHiddenData()" />'+
-    '<input type="button" class="new_search_button" id="newSearch" value="'+newSearch+'" onclick="cleanPage()" />';
+    '<h3>'+total+' '+speciesMatches+'</h3>'+
+    '<input type="button" class="simple_button" id="viewDetail0" value="'+seeDetail+'" onclick="showDetailsFromHiddenData(\'viewDetail0\')" />'+
+    '<input type="button" class="simple_button" id="showOnMap0" value="'+seeOnMap+'" onclick="showPointFromHiddenData(\'showOnMap0\')" />'+
+    '<input type="submit" class="new_search_button" id="newSearch" value="'+newSearch+'" /></div>'+
+    '<div id="s0map"></div>';
     return result;
 }
 
 /**
  * To draw the specimen points into the map
  */
-function showPointFromHiddenData(){
+function showPointFromHiddenData(inputId){
     //Show loading
     YAHOO.example.container.wait.show();
     //Getting the query parameters
     var layers = document.getElementById('hiddenLayers').value;
     var taxa = document.getElementById('hiddenTaxa').value;
     var indi = document.getElementById('hiddenIndicators').value;
+    //Add div to show the map
+    document.getElementById('s0map').innerHTML = '<div id="map"></div>';
+    //Show the map
+    map.render('map');
     //Drowing the points
     showSpecimenPoints(layers,taxa,indi);
+    //Change button title
+    changeInputText(inputId,hideMap);
+    //Change button acction
+    goToHidePointsFromHidden('s0map',inputId);
+}
+// Changes the input (button) action to hide points
+function goToHidePointsFromHidden(divId,inputId){
+   document.getElementById(inputId).setAttribute( "onclick",
+   "hidePointFromHiddenData('"+divId+"','"+inputId+"');");
+}
+
+/**
+ * To hide the map in simple detail
+ */
+function hidePointFromHiddenData(divId,inputId){
+    //Hide the map
+    document.getElementById(divId).innerHTML = '';
+    //Change button title
+    changeInputText(inputId,seeOnMap);
+    //Change button  acction
+    goToShowPointsFromHidden(inputId);
+}
+// Changes the input (button) action to show points
+function goToShowPointsFromHidden(inputId){
+   document.getElementById(inputId).setAttribute( "onclick",
+   "showPointFromHiddenData('"+inputId+"');");
+}
+
+/**
+ * To get a detailed report of the query when there is one or two parameters
+ * Return a List of specimens that match with the criteria
+ */
+function showDetailsFromHiddenData(inputId){
+    //Show loading
+    YAHOO.example.container.wait.show();
+    //Getting the query parameters
+    var layers = document.getElementById('hiddenLayers').value;
+    var taxa = document.getElementById('hiddenTaxa').value;
+    var indi = document.getElementById('hiddenIndicators').value;
+    var lToShow = document.getElementById('hidLayersToShow').value;
+    //Showing the details
+    viewSimpleDetail(layers,taxa,indi,lToShow);
+    //Change button title
+    changeInputText(inputId,hideDetail);
+    //Change button acction
+    goToHideDetailFromHidden('detailedResults',inputId);
+}
+// Changes the input (button) action to hide points
+function goToHideDetailFromHidden(divId,inputId){
+   document.getElementById(inputId).setAttribute( "onclick",
+   "hideDetailFromHiddenData('"+divId+"','"+inputId+"');");
+}
+
+/**
+ * To hide the map in simple detail
+ */
+function hideDetailFromHiddenData(divId,inputId){
+    //Hide the detailed table
+    document.getElementById(divId).innerHTML = '';
+    //Change button title
+    changeInputText(inputId,seeDetail);
+    //Change button  acction
+    goToShowDetailFromHidden(inputId);
+}
+// Changes the input (button) action to show points
+function goToShowDetailFromHidden(inputId){
+   document.getElementById(inputId).setAttribute( "onclick",
+   "showDetailsFromHiddenData('"+inputId+"');");
 }
 
 /**
@@ -179,9 +253,11 @@ function showPoints(id,type){
         //Getting the query parameters
         var layersArray = layers.split('|');
         //Indicate de current selected
-        indicateCurrent('p'+id);
+        indicateCurrent('p'+id,'map');
+        //Show map
+        map.render('map');
         //Drowing the points
-        showSpecimenPoints(layersArray[id]+'|',taxa,indi);
+        showSpecimenPoints(layersArray[id]+'|',taxa,indi);        
     }
     else{
         //Show loading
@@ -189,7 +265,9 @@ function showPoints(id,type){
         //Getting the query parameters
         var indiArray = indi.split('|');
         //Indicate de current selected
-        indicateCurrent('i'+id);
+        indicateCurrent('i'+id,'map');
+        //Show map
+        map.render('map');
         //Drowing the points
         showSpecimenPoints(layers,taxa,indiArray[id]+'|');
     }
@@ -213,7 +291,7 @@ function showDetails(id,type,toShow){
         //Getting the query parameters
         var layersArray = layers.split('|');
         //Indicate de current selected
-        indicateCurrent('p'+id);
+        indicateCurrent('p'+id,'detail');
         //Drowing the points
         detailedTable(layersArray[id]+'|',taxa,indi,toShow,type,id);
     }
@@ -223,52 +301,52 @@ function showDetails(id,type,toShow){
         //Getting the query parameters
         var indiArray = indi.split('|');
         //Indicate de current selected
-        indicateCurrent('i'+id);
+        indicateCurrent('i'+id,'detail');
         //Drowing the points
         detailedTable(layers,taxa,indiArray[id]+'|',toShow,type,id);
     }
 }
 
 /**
- * To get a detailed report of the query when there is one or two parameters
- * Return a List of specimens that match with the criteria
+ * Changes the input (button) title
+ * Generic method
  */
-function showDetailsFromHiddenData(){
-    //Show loading
-    YAHOO.example.container.wait.show();
-    //Getting the query parameters
-    var layers = document.getElementById('hiddenLayers').value;
-    var taxa = document.getElementById('hiddenTaxa').value;
-    var indi = document.getElementById('hiddenIndicators').value;
-    var lToShow = document.getElementById('hidLayersToShow').value;
-    //Showing the details
-    viewSimpleDetail(layers,taxa,indi,lToShow);
-}
-
-/**
- * Get ready for a new query
- */
-function cleanPage(){
-    document.getElementById('detailedResults').innerHTML = "";
-    document.getElementById("detailedResults").className = "";
-    document.getElementById('resultsPanel').innerHTML = "";
-    replaceVectorLayer();
-    divIds = new Array();
-    callAnchor('#anchorTop');
+function changeInputText(inputId,text){
+    document.getElementById(inputId).value = text;
 }
 
 /**
  * Indicates de current selected <div> from resultsPanel
+ * type could be map or detail
  */
-function indicateCurrent(id){
-    for(var i = 0;i<divIds.length;i++){
-        if(id==divIds[i]){ //Indicar
-            document.getElementById(divIds[i]).className = "current_Selected";
-        }
-        else{ //No indicar
-            document.getElementById(divIds[i]).className = "detailed_results";
+function indicateCurrent(id,type){
+    if(type=='map'){ //Display on map
+        for(var i = 0;i<divIds.length;i++){
+            if(id==divIds[i]){ //Indicate
+                document.getElementById(divIds[i]).className = 'current_Selected';
+                document.getElementById(divIds[i]+'map').innerHTML = '<div id="map"></div>';
+            }
+            else{ //No indicate
+                document.getElementById(divIds[i]).className = 'detailed_results';
+                document.getElementById(divIds[i]+'map').innerHTML = "";
+            }
         }
     }
+    else{ //Show detail
+        for(var j = 0;j<divIds.length;j++){
+            if(id==divIds[j]){ //Indicate
+                document.getElementById(divIds[j]).className = 'current_Selected';
+            }
+            else{ //No indicate
+                document.getElementById(divIds[j]).className = 'detailed_results';
+            }
+        }
+    }
+}
+function getDivParameter(id,rest){
+    var result = new Array();
+    result.push(id+rest)
+    return result;
 }
 
 //Array to string

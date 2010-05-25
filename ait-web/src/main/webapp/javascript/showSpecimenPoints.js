@@ -43,7 +43,6 @@ function showSpecimenPoints(selectedLayers,selectedTaxa,selectedIndicators)  {
                 node.getElementsByTagName("latitude")[0].childNodes[0].nodeValue,attributes);
             }
             YAHOO.example.container.wait.hide();
-            callAnchor('#anchorTop');
         }, 
 
         //If XHR call is not successful
