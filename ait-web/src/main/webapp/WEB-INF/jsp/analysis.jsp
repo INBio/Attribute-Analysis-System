@@ -61,7 +61,8 @@
             //To create a new atribute for each specimen point
             var attributes;
             //Array that contains the id's of each <div> from multiple div results
-            var divIds = new Array();
+            var divIds = new Array(),buttonIds = new Array(),
+            ids = new Array(),types = new Array();
 
             //Internacionalization of the report texts
             var searchResults,geographical,taxonomic,indicators,speciesMatches,
@@ -179,6 +180,9 @@
             function cleanAfterRequest(){
                 document.getElementById('entryCriteria').innerHTML = "";
                 divIds = new Array();
+                buttonIds = new Array();
+                ids = new Array();
+                types = new Array();
             }
 
             /*

@@ -107,12 +107,15 @@ function createAdvancedHeader(byPolygon,byIndicator,layersShow,treeShow){
     var result = '';
     for(var i = 0;i<byPolygon.length;i++){
         divIds.push('p'+i);
+        buttonIds.push('showOnMapp'+i);
+        ids.push(i);
+        types.push('p');
         result += '<div id="p'+i+'" class="detailed_results">'+
         '<h3>'+layersShow[i]+'</h3>'+
         '<p>'+byPolygon[i].childNodes[0].nodeValue+' especies que cumplen algun indicador (FIXME)<p>';
         if(byPolygon[i].childNodes[0].nodeValue != '0'){
-            result += '<input type="button" class="simple_button" id="viewDetail'+i+'" value="'+seeDetail+'" onclick="showDetails('+i+',\'p\',\''+arrayToString(treeShow)+'\')" />'+
-        '<input type="button" class="simple_button" id="showOnMap'+i+'" value="'+seeOnMap+'" onclick="showPoints('+i+',\'p\')" />'+
+            result += '<input type="button" class="simple_button" id="viewDetailp'+i+'" value="'+seeDetail+'" onclick="showDetails('+i+',\'p\',\''+arrayToString(treeShow)+'\')" />'+
+        '<input type="button" class="simple_button" id="showOnMapp'+i+'" value="'+seeOnMap+'" onclick="showPoints('+i+',\'p\')" />'+
         '<div id="p'+i+'detail"></div><div id="p'+i+'map"></div></div>';
         }
         else{
@@ -121,12 +124,15 @@ function createAdvancedHeader(byPolygon,byIndicator,layersShow,treeShow){
     }
     for(var j = 0;j<byIndicator.length;j++){
         divIds.push('i'+j);
+        buttonIds.push('showOnMapi'+j);
+        ids.push(j);
+        types.push('i');
         result += '<div id="i'+j+'" class="detailed_results">'+
         '<h3>'+treeShow[j]+'</h3>'+
         '<p>'+byIndicator[j].childNodes[0].nodeValue+' especies que cumplen algun polígono (FIXME)</p>';
         if(byIndicator[j].childNodes[0].nodeValue != '0'){
-            result += '<input type="button" class="simple_button" id="viewDetail'+i+'" value="'+seeDetail+'" onclick="showDetails('+j+',\'i\',\''+arrayToString(layersShow)+'\')" />'+
-        '<input type="button" class="simple_button" id="showOnMap'+i+'" value="'+seeOnMap+'" onclick="showPoints('+j+',\'i\')" />'+
+            result += '<input type="button" class="simple_button" id="viewDetaili'+j+'" value="'+seeDetail+'" onclick="showDetails('+j+',\'i\',\''+arrayToString(layersShow)+'\')" />'+
+        '<input type="button" class="simple_button" id="showOnMapi'+j+'" value="'+seeOnMap+'" onclick="showPoints('+j+',\'i\')" />'+
         '<div id="i'+j+'detail"></div><div id="i'+j+'map"></div></div>';
         }
         else{
@@ -215,14 +221,14 @@ function showDetailsFromHiddenData(inputId){
     //Change button acction
     goToHideDetailFromHidden('detailedResults',inputId);
 }
-// Changes the input (button) action to hide points
+// Changes the input (button) action to hide details
 function goToHideDetailFromHidden(divId,inputId){
    document.getElementById(inputId).setAttribute( "onclick",
    "hideDetailFromHiddenData('"+divId+"','"+inputId+"');");
 }
 
 /**
- * To hide the map in simple detail
+ * To hide details in simple detail
  */
 function hideDetailFromHiddenData(divId,inputId){
     //Hide the detailed table
@@ -232,7 +238,7 @@ function hideDetailFromHiddenData(divId,inputId){
     //Change button  acction
     goToShowDetailFromHidden(inputId);
 }
-// Changes the input (button) action to show points
+// Changes the input (button) action to show detail
 function goToShowDetailFromHidden(inputId){
    document.getElementById(inputId).setAttribute( "onclick",
    "showDetailsFromHiddenData('"+inputId+"');");
@@ -257,7 +263,11 @@ function showPoints(id,type){
         //Show map
         map.render('map');
         //Drowing the points
-        showSpecimenPoints(layersArray[id]+'|',taxa,indi);        
+        showSpecimenPoints(layersArray[id]+'|',taxa,indi);
+        //Change button title
+        changeInputText('showOnMapp'+id,hideMap); //button,text
+        //Change button acction
+        goToHideMap(type+id+'map','showOnMapp'+id,id,type); //div,button
     }
     else{
         //Show loading
@@ -270,7 +280,33 @@ function showPoints(id,type){
         map.render('map');
         //Drowing the points
         showSpecimenPoints(layers,taxa,indiArray[id]+'|');
+        //Change button title
+        changeInputText('showOnMapi'+id,hideMap); //button,text
+        //Change button acction
+        goToHideMap(type+id+'map','showOnMapi'+id,id,type); //div,button,id,type
     }
+}
+// Changes the input (button) action to hide map
+function goToHideMap(divId,inputId,id,type){
+   document.getElementById(inputId).setAttribute( "onclick",
+   "hidePoints('"+divId+"','"+inputId+"','"+id+"','"+type+"');");
+}
+
+/**
+ * To hide the map in multiple detailed results
+ */
+function hidePoints(divId,inputId,id,type){
+    //Hide the map
+    document.getElementById(divId).innerHTML = '';
+    //Change button title
+    changeInputText(inputId,seeOnMap);
+    //Change button  acction
+    goToShowMap(inputId,id,type);
+}
+// Changes the input (button) action to show map
+function goToShowMap(inputId,id,type){
+   document.getElementById(inputId).setAttribute( "onclick",
+   "showPoints('"+id+"','"+type+"');");
 }
 
 /**
@@ -294,6 +330,10 @@ function showDetails(id,type,toShow){
         indicateCurrent('p'+id,'detail');
         //Drowing the points
         detailedTable(layersArray[id]+'|',taxa,indi,toShow,type,id);
+        //Change button title
+        changeInputText('viewDetailp'+id,hideDetail); //button,text
+        //Change button acction
+        goToHideDetail(type+id+'detail','viewDetailp'+id,id,type); //div,button
     }
     else{
         //Show loading
@@ -304,7 +344,33 @@ function showDetails(id,type,toShow){
         indicateCurrent('i'+id,'detail');
         //Drowing the points
         detailedTable(layers,taxa,indiArray[id]+'|',toShow,type,id);
+        //Change button title
+        changeInputText('viewDetaili'+id,hideDetail); //button,text
+        //Change button acction
+        goToHideDetail(type+id+'detail','viewDetaili'+id,id,type,toShow); //div,button
     }
+}
+// Changes the input (button) action to hide detail
+function goToHideDetail(divId,inputId,id,type,toShow){
+   document.getElementById(inputId).setAttribute( "onclick",
+   "hideDetails('"+divId+"','"+inputId+"','"+id+"','"+type+"','"+toShow+"');");
+}
+
+/**
+ * To hide a detail in multiple detailed results
+ */
+function hideDetails(divId,inputId,id,type,toShow){
+    //Hide the detail
+    document.getElementById(divId).innerHTML = '';
+    //Change button title
+    changeInputText(inputId,seeDetail);
+    //Change button  acction
+    goToShowDetail(inputId,id,type,toShow);
+}
+// Changes the input (button) action to show detail
+function goToShowDetail(inputId,id,type,toShow){
+   document.getElementById(inputId).setAttribute( "onclick",
+   "showDetails('"+id+"','"+type+"','"+toShow+"');");
 }
 
 /**
@@ -318,6 +384,7 @@ function changeInputText(inputId,text){
 /**
  * Indicates de current selected <div> from resultsPanel
  * type could be map or detail
+ * id = div identificator
  */
 function indicateCurrent(id,type){
     if(type=='map'){ //Display on map
@@ -329,6 +396,12 @@ function indicateCurrent(id,type){
             else{ //No indicate
                 document.getElementById(divIds[i]).className = 'detailed_results';
                 document.getElementById(divIds[i]+'map').innerHTML = "";
+                if(document.getElementById(buttonIds[i]) != null){
+                    //Change button title
+                    changeInputText(buttonIds[i],seeOnMap);
+                    //Change button  acction
+                    goToShowMap(buttonIds[i],ids[i],types[i]);
+                }
             }
         }
     }

@@ -214,7 +214,7 @@ body {
 }
 
 .detailed_results{
-   background-color:#F6F8FF;
+   background-color:white;
    border:1px dashed #A3B4B7;
    margin-bottom:2px;
    padding:5px;
@@ -223,7 +223,7 @@ body {
 }
 
 .current_Selected{
-   background-color:#D7D8DE;
+   background-color:#EFF1F7;
    border:1px dashed #A3B4B7;
    margin-bottom:2px;
    padding:5px;
@@ -313,6 +313,7 @@ table.contacts
     border-collapse: collapse;
     border-spacing: 0px;
     margin-top:4px;
+    margin-bottom:4px;
 }
 
 th.contactDept{

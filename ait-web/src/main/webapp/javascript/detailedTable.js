@@ -55,7 +55,7 @@ function detailedTable(selectedLayers,selectedTaxa,selectedIndicators,toShow,typ
             }
             result += '</table>';
 
-            document.getElementById(type+id).innerHTML += result;
+            document.getElementById(type+id+'detail').innerHTML = result;
             YAHOO.example.container.wait.hide();
         },
 
