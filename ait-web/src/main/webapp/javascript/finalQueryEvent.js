@@ -72,13 +72,37 @@ function executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators,
                     break;
 
                 case '1': // 1 means 3 different criteria categories
-                    //Getting the xml dom
-                    document.getElementById('resultsPanel').innerHTML = xmlDoc.toString();
+                    //Get total count data
+                    var total1 = xmlDoc.getElementsByTagName("total")[0].childNodes[0].nodeValue;
+                    //Show general result and the search criteria
+                    var criteria1 = "";
+                    if(layersShow.length>0){
+                        criteria1 += "<b>"+geographical+" </b>";
+                        for(var o = 0;o<layersShow.length;o++){
+                            criteria1 += layersShow[o]+"   ";
+                        }
+                        criteria1 += "<br>";
+                    }
+                    if(taxonsShow.length>0){
+                        criteria1 += "<b>"+taxonomic+" </b>";
+                        for(var p = 0;p<taxonsShow.length;p++){
+                            criteria1 += taxonsShow[p]+"   ";
+                        }
+                        criteria1 += "<br>";
+                    }
+                    if(treeShow.length>0){
+                        criteria1 += "<b>"+indicators+" </b>";
+                        for(var q = 0;q<treeShow.length;q++){
+                            criteria1 += treeShow[q]+"   ";
+                        }
+                        criteria1 += "<br>";
+                    }
                     //Variables that are going to contain the results
                     var byPolygon = xmlDoc.getElementsByTagName("bypolygon");
                     var byIndicator = xmlDoc.getElementsByTagName("byindicator");
                     //Show the results
-                    var result = createAdvancedHeader(byPolygon,byIndicator,layersShow,treeShow);
+                    var result = createAdvancedHeader(byPolygon,byIndicator,layersShow,
+                    treeShow,total1,criteria1);
                     document.getElementById('resultsPanel').innerHTML = result;
                     //Close de "Loading image"
                     YAHOO.example.container.wait.hide();
@@ -103,8 +127,21 @@ function executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators,
  * This function creates the general report, so, return an html string
  * to show on results panel
  */
-function createAdvancedHeader(byPolygon,byIndicator,layersShow,treeShow){
+function createAdvancedHeader(byPolygon,byIndicator,layersShow,treeShow,total1,criteria1){
     var result = '';
+    //Adding general result (with all search criteria)
+    divIds.push('t0');
+    buttonIds.push('showOnMapt0');
+    ids.push(0);
+    types.push('t');
+    result += '<div id="t0" class="detailed_results">'+
+    '<h3>'+searchCriteria+'</h3>'+criteria1+
+    '<h3>'+total1+' '+speciesMatches+'</h3>';
+    if(total1 > 0){
+        result += '<input type="button" class="simple_button" id="showOnMapt0" value="'+seeOnMap+'" onclick="showPoints(0,\'t\')" />'+
+        '<div id="t0map"></div></div>';
+    }
+    //Adding results by polygon
     for(var i = 0;i<byPolygon.length;i++){
         divIds.push('p'+i);
         buttonIds.push('showOnMapp'+i);
@@ -115,13 +152,14 @@ function createAdvancedHeader(byPolygon,byIndicator,layersShow,treeShow){
         '<p>'+byPolygon[i].childNodes[0].nodeValue+' '+layerMatches+'<p>';
         if(byPolygon[i].childNodes[0].nodeValue != '0'){
             result += '<input type="button" class="simple_button" id="viewDetailp'+i+'" value="'+seeDetail+'" onclick="showDetails('+i+',\'p\',\''+arrayToString(treeShow)+'\')" />'+
-        '<input type="button" class="simple_button" id="showOnMapp'+i+'" value="'+seeOnMap+'" onclick="showPoints('+i+',\'p\')" />'+
-        '<div id="p'+i+'detail"></div><div id="p'+i+'map"></div></div>';
+            '<input type="button" class="simple_button" id="showOnMapp'+i+'" value="'+seeOnMap+'" onclick="showPoints('+i+',\'p\')" />'+
+            '<div id="p'+i+'detail"></div><div id="p'+i+'map"></div></div>';
         }
         else{
             result += '<div id="p'+i+'detail"></div><div id="p'+i+'map"></div></div>';
         }
     }
+    //Adding results by indicators
     for(var j = 0;j<byIndicator.length;j++){
         divIds.push('i'+j);
         buttonIds.push('showOnMapi'+j);
@@ -132,8 +170,8 @@ function createAdvancedHeader(byPolygon,byIndicator,layersShow,treeShow){
         '<p>'+byIndicator[j].childNodes[0].nodeValue+' '+indicatorMatches+'</p>';
         if(byIndicator[j].childNodes[0].nodeValue != '0'){
             result += '<input type="button" class="simple_button" id="viewDetaili'+j+'" value="'+seeDetail+'" onclick="showDetails('+j+',\'i\',\''+arrayToString(layersShow)+'\')" />'+
-        '<input type="button" class="simple_button" id="showOnMapi'+j+'" value="'+seeOnMap+'" onclick="showPoints('+j+',\'i\')" />'+
-        '<div id="i'+j+'detail"></div><div id="i'+j+'map"></div></div>';
+            '<input type="button" class="simple_button" id="showOnMapi'+j+'" value="'+seeOnMap+'" onclick="showPoints('+j+',\'i\')" />'+
+            '<div id="i'+j+'detail"></div><div id="i'+j+'map"></div></div>';
         }
         else{
             result += '<div id="i'+j+'detail"></div><div id="i'+j+'map"></div></div>';
@@ -253,7 +291,21 @@ function showPoints(id,type){
     var layers = document.getElementById('hiddenLayers').value;
     var taxa = document.getElementById('hiddenTaxa').value;
     var indi = document.getElementById('hiddenIndicators').value;
-    if(type=='p'){
+    if(type=='t'){ //All search criteria
+        //Show loading
+        YAHOO.example.container.wait.show();
+        //Indicate de current selected
+        indicateCurrent('t'+id,'map');
+        //Show map
+        map.render('map');
+        //Drowing the points
+        showSpecimenPoints(layers,taxa,indi);
+        //Change button title
+        changeInputText('showOnMapt'+id,hideMap); //button,text
+        //Change button acction
+        goToHideMap(type+id+'map','showOnMapt'+id,id,type); //div,button
+    }
+    else if(type=='p'){ //By polygon
         //Show loading
         YAHOO.example.container.wait.show();
         //Getting the query parameters
@@ -269,22 +321,22 @@ function showPoints(id,type){
         //Change button acction
         goToHideMap(type+id+'map','showOnMapp'+id,id,type); //div,button
     }
-    else{
-        //Show loading
-        YAHOO.example.container.wait.show();
-        //Getting the query parameters
-        var indiArray = indi.split('|');
-        //Indicate de current selected
-        indicateCurrent('i'+id,'map');
-        //Show map
-        map.render('map');
-        //Drowing the points
-        showSpecimenPoints(layers,taxa,indiArray[id]+'|');
-        //Change button title
-        changeInputText('showOnMapi'+id,hideMap); //button,text
-        //Change button acction
-        goToHideMap(type+id+'map','showOnMapi'+id,id,type); //div,button,id,type
-    }
+        else{ //By indicator
+            //Show loading
+            YAHOO.example.container.wait.show();
+            //Getting the query parameters
+            var indiArray = indi.split('|');
+            //Indicate de current selected
+            indicateCurrent('i'+id,'map');
+            //Show map
+            map.render('map');
+            //Drowing the points
+            showSpecimenPoints(layers,taxa,indiArray[id]+'|');
+            //Change button title
+            changeInputText('showOnMapi'+id,hideMap); //button,text
+            //Change button acction
+            goToHideMap(type+id+'map','showOnMapi'+id,id,type); //div,button,id,type
+        }
 }
 // Changes the input (button) action to hide map
 function goToHideMap(divId,inputId,id,type){

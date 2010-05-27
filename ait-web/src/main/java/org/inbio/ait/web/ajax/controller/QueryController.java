@@ -62,6 +62,9 @@ public class QueryController implements Controller{
             }
             //If there are three criteria categories. It means type 1 on xml
             else{
+                //Total of matches
+                Long totalMatches = queryManager.countByCriteria
+                        (layerArray, taxonArray, indiArray,TaxonInfoIndexColums.SPECIES.getName());
                 //Total matches by polygon
                 List<Long> matchesByPolygon = new ArrayList<Long>();
                 for(int i=0;i<layerArray.length;i++){
@@ -78,7 +81,7 @@ public class QueryController implements Controller{
                         (layerArray, taxonArray, theIndicator,TaxonInfoIndexColums.SPECIES.getName());
                     matchesByIndicator.add(aux);
                 }
-                return writeReponse1(request,response,matchesByPolygon,matchesByIndicator);
+                return writeReponse1(request,response,matchesByPolygon,matchesByIndicator,totalMatches);
             }
 
 		} catch (IllegalArgumentException iae) {
@@ -164,7 +167,7 @@ public class QueryController implements Controller{
      */
 	private ModelAndView writeReponse1(HttpServletRequest request,
 			HttpServletResponse response, List<Long> matchesByPolygon,
-            List<Long> matchesByIndicator) throws Exception {
+            List<Long> matchesByIndicator,Long totalMatches) throws Exception {
 
 		response.setCharacterEncoding("ISO-8859-1");
 		response.setContentType("text/xml");
@@ -173,6 +176,7 @@ public class QueryController implements Controller{
         StringBuilder result = new StringBuilder();
         result.append("<?xml version='1.0' encoding='ISO-8859-1'?><response>");
         result.append("<type>1</type>");
+        result.append("<total>"+totalMatches+"</total>");
         for(Long mp : matchesByPolygon){
             result.append("<bypolygon>"+mp+"</bypolygon>");
         }

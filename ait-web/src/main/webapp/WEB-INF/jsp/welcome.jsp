@@ -23,7 +23,8 @@
         <div id="contenido">
             <!--<h2><fmt:message key="welcome"/></h2>--><br><br><br><br>
 
-            <div align="center"> <table width="50%" border="0" align="center" cellpadding="0" cellspacing="1" class="tabla-opciones">
+            <div align="center">
+                <table width="50%" border="0" align="center" cellpadding="0" cellspacing="1" class="tabla-opciones">
                     <!--<tr>
                         <td colspan="2" class="celda01-opciones"><span class="texto-principal"><fmt:message key="greeting"/></span></td>
                     </tr>-->
