@@ -58,6 +58,10 @@
             var isLeaf;
             //Layer to show specimens points
             var vectorLayer;
+            //Control to manage pop ups on the map
+            var selectControl;
+            //Current selected especimen point into the map
+            var selectedFeature;
             //To create a new atribute for each specimen point
             var attributes;
             //Array that contains the id's of each <div> from multiple div results
@@ -67,7 +71,8 @@
             //Internacionalization of the report texts
             var searchResults,geographical,taxonomic,indicators,speciesMatches,
             seeOnMap,seeDetail,searchCriteria,speciesList,newSearch,criteriaText,
-            speciesText,hideMap,hideDetail;
+            speciesText,hideMap,hideDetail,catalog,latitude,longitute,scientificName,
+            layerMatches,indicatorMatches;
 
             //Pink tile avoidance
             OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
@@ -162,6 +167,9 @@
 
                 //Clean entry criteria lists
                 cleanAfterRequest();
+
+                //To unregister the function to introduce map info to the query criteria
+                map.events.unregister('click', map, addMapListener);
                 
                 //Call the function that returns the result (xml) asincronically
                 executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators,
@@ -256,6 +264,12 @@
                 speciesText = "<fmt:message key="species"/>";
                 hideMap = "<fmt:message key="hide_map"/>";
                 hideDetail = "<fmt:message key="hide_detail"/>";
+                catalog = "<fmt:message key="catalog_number"/>";
+                latitude = "<fmt:message key="latitude"/>";
+                longitute = "<fmt:message key="longitude"/>";
+                scientificName = "<fmt:message key="scientificname"/>";
+                layerMatches = "<fmt:message key="layer_matches"/>";
+                indicatorMatches = "<fmt:message key="indicator_matches"/>";
             };
         </script>
 
@@ -282,9 +296,10 @@
 
                 <div id="entryCriteria"> <!-- Entry criteria div -->
                     <div id="querysPanel">
+
                         <!-- GIS Panel -->
-                        <div id="queryPanel1" class="queryPanel" style="background-color:#FFFFFF;">
-                            <p style="font-weight:bold;font-style:italic;margin:2px;text-align:center;">
+                        <div id="queryPanel1" class="queryPanel">
+                            <p class="criteria_title">
                                 <fmt:message key="geografical_criteria_title"/></p>
                             <div id="currentLayer"></div>
                             <div id="info"></div>
@@ -292,10 +307,10 @@
                         </div>
 
                         <!-- Taxonomy Panel -->
-                        <div id="queryPanel2" class="queryPanel" style="background-color:#FFFFFF;">
-                            <p style="font-weight:bold;font-style:italic;margin:2px;text-align:center;">
+                        <div id="queryPanel2" class="queryPanel">
+                            <p class="criteria_title">
                                 <fmt:message key="taxonomical_criteria_title"/></p>
-                            <p style="margin:1px"><a> <fmt:message key="taxonomy_level"/>: </a></p>
+                            <p style="margin:2px"><a> <fmt:message key="taxonomy_level"/>: </a></p>
                             <select name="taxonType" id="taxonTypeId" class="componentSize" tabindex="12" onchange="javascript:changeTaxonInput();" onKeyUp="javascript:changeTaxonInput();">
                                 <c:forEach items="${model.taxonFilters}" var="taxonFilter">
                                     <option value="<c:out value="${taxonFilter.id}"/>"<c:if test="${taxonFilter.id == taxonType}"> selected="selected"</c:if>>
@@ -303,7 +318,7 @@
                                     </option>
                                 </c:forEach>
                             </select>
-                            <p style="margin:1px"><a> <fmt:message key="taxon_name"/>: </a></p>
+                            <p style="margin:2px"><a> <fmt:message key="taxon_name"/>: </a></p>
                             <span id="newTaxonValue">
                                 <input id="taxonId" tabindex="13" class="componentSize" type="text" name="taxonValue" value="<c:out value="${taxonValue}"/>"/>
                                 <div id="taxonContainer"></div>
@@ -316,8 +331,8 @@
                         </div>
 
                         <!-- Indicator Panel -->
-                        <div id="queryPanel3" class="queryPanel" style="background-color:#FFFFFF;">
-                            <p style="font-weight:bold;font-style:italic;margin:2px;text-align:center;">
+                        <div id="queryPanel3" class="queryPanel">
+                            <p class="criteria_title">
                                 <fmt:message key="indicators_criteria_title"/></p>
                             <div id="treeDiv"></div>
                             <input type="button" class="my_Button" id="addToListButtonIndi" value="<fmt:message key="add_criteria"/>" onclick="addIndicatorParam()" />

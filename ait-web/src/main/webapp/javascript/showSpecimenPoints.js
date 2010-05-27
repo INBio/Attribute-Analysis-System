@@ -29,19 +29,33 @@ function showSpecimenPoints(selectedLayers,selectedTaxa,selectedIndicators)  {
 
         //If XHR call is successful
         success: function(oResponse) {
+            //Destroy map control for specimens pop ups
+            replaceMapControl();
+            //Clear map popups
+            clearPopups();
             //Clear vector layer
             replaceVectorLayer();
             //Root element -> response
             var xmlDoc = oResponse.responseXML.documentElement;
             //Get the list of specimens
             var specimenList = xmlDoc.getElementsByTagName("specimen");
-
+            //Add all the specimen point
             for(var i = 0;i<specimenList.length;i++){
                 var node = specimenList[i];
-                attributes = createAttrib(node.getElementsByTagName("scientificname")[0].childNodes[0].nodeValue);
-                addPoint(node.getElementsByTagName("longitude")[0].childNodes[0].nodeValue,
-                node.getElementsByTagName("latitude")[0].childNodes[0].nodeValue,attributes);
+                var catalog = node.getElementsByTagName("catalog")[0].childNodes[0].nodeValue;
+                var latitude = node.getElementsByTagName("latitude")[0].childNodes[0].nodeValue;
+                var longitude = node.getElementsByTagName("longitude")[0].childNodes[0].nodeValue;
+                var scientificname = node.getElementsByTagName("scientificname")[0].childNodes[0].nodeValue;
+                attributes = createAttrib(scientificname,latitude,longitude,catalog);
+                addPoint(longitude,latitude,attributes);
             }
+
+            //Set the new control for specimens pop ups
+            selectControl = new OpenLayers.Control.SelectFeature(vectorLayer,
+            {onSelect: onFeatureSelect, onUnselect: onFeatureUnselect});
+            map.addControl(selectControl);
+            selectControl.activate();
+
             YAHOO.example.container.wait.hide();
         }, 
 
@@ -67,9 +81,12 @@ function addPoint(x, y, attribute) {
 /*
  * Creates a new atributes array for each speciemns point
  */
-function createAttrib(scientificName) {
+function createAttrib(scientificName,latitude,longitude,catalog) {
     attrib = {
-        sScientificName: scientificName
+        ScientificName: scientificName,
+        Latitude: latitude,
+        Longitude: longitude,
+        Catalog: catalog
     }
     return attrib;
 }
@@ -78,8 +95,56 @@ function createAttrib(scientificName) {
  * Deletes the current specimen points
  */
 function replaceVectorLayer(){
+    //Specimen points Layer
     vectorLayer.destroy();
     vectorLayer = new OpenLayers.Layer.Vector('Specimens');
     vectorLayer.setVisibility(true);
     map.addLayer(vectorLayer);
+}
+
+/*
+ * Deletes all the current popups on the map
+ */
+function clearPopups(){
+    for (var i=0; i<map.popups.length; i++) {
+        map.removePopup(map.popups[i]);
+    }
+}
+
+/*
+ * Destroy map control for specimens pop ups
+ */
+function replaceMapControl(){
+    if(selectControl != null){
+        selectControl.destroy();
+        selectControl = null;
+    }
+}
+
+//Event on specimen Popup Close
+function onPopupClose(evt) {
+    selectControl.unselect(selectedFeature);
+}
+
+// Event onFeatureSelect (When especific specimen point was selected)
+function onFeatureSelect(feature) {
+    selectedFeature = feature;
+    popup = new OpenLayers.Popup.FramedCloud("point",
+    feature.geometry.getBounds().getCenterLonLat(),
+    null,
+    "<div style=\"font-size:.8em\">"+
+    "<br><b>"+scientificName+": </b>"+feature.attributes.ScientificName+
+    "<br><b>"+catalog+": </b>"+feature.attributes.Catalog+
+    "<br><b>"+latitude+": </b>"+feature.attributes.Latitude+
+    "<br><b>"+longitute+": </b>"+feature.attributes.Longitude+"</div>",
+    null, true, onPopupClose);
+    feature.popup = popup;
+    map.addPopup(popup);
+}
+
+//Event onFeatureUnselect
+function onFeatureUnselect(feature) {
+    map.removePopup(feature.popup);
+    feature.popup.destroy();
+    feature.popup = null;
 }

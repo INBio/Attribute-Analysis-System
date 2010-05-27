@@ -133,43 +133,43 @@ function initMap(divId){
     new Array('IABIN_Indicadores:bd_pan_areas_protegidas','Área Silvestre Protegida - PMA'));
 
     //Map event to enter the geographical parameters
-    mapParametersEvent();
+    map.events.register('click', map, addMapListener);
 
     //Build up all controls
+    map.zoomToExtent(bounds);
     map.addControl(new OpenLayers.Control.PanZoomBar({
         position: new OpenLayers.Pixel(2, 15)
     }));
     map.addControl(new OpenLayers.Control.LayerSwitcher({'ascending':false},{'position':OpenLayers.Control}));
     map.addControl(new OpenLayers.Control.Navigation());
     map.addControl(new OpenLayers.Control.Scale($('scale')));
-    map.addControl(new OpenLayers.Control.MousePosition({element: $('location')}));
-    map.zoomToExtent(bounds);
+    map.addControl(new OpenLayers.Control.MousePosition({element: $('location')}));    
 }
 
 /*
  * Event to indicate the geographical parameters into the search criteria
  */
-function mapParametersEvent(){
-    map.events.register('click', map, function (e) {
-        document.getElementById('info').innerHTML = loadingText;
-        polygonsList = null;
-        var params = { REQUEST: "GetFeatureInfo",
-            EXCEPTIONS: "application/vnd.ogc.se_xml",
-            BBOX: map.getExtent().toBBOX(),
-            X: e.xy.x,
-            Y: e.xy.y,
-            INFO_FORMAT: 'text/html',
-            QUERY_LAYERS: map.layers[layerIndex].params.LAYERS,
-            FEATURE_COUNT: 50,
-            Styles: '',
-            Layers: layerId,
-            srs: 'EPSG:900913',
-            WIDTH: map.size.w,
-            HEIGHT: map.size.h,
-            format: 'image/png' };
-        OpenLayers.loadURL("http://216.75.53.105:80/geoserver/wms", params, this, setHTML, setHTML);
-        OpenLayers.Event.stop(e);
-    });
+function addMapListener(e) {
+    document.getElementById('info').innerHTML = loadingText;
+    polygonsList = null;
+    var params = {
+        REQUEST: "GetFeatureInfo",
+        EXCEPTIONS: "application/vnd.ogc.se_xml",
+        BBOX: map.getExtent().toBBOX(),
+        X: e.xy.x,
+        Y: e.xy.y,
+        INFO_FORMAT: 'text/html',
+        QUERY_LAYERS: map.layers[layerIndex].params.LAYERS,
+        FEATURE_COUNT: 50,
+        Styles: '',
+        Layers: layerId,
+        srs: 'EPSG:900913',
+        WIDTH: map.size.w,
+        HEIGHT: map.size.h,
+        format: 'image/png'
+    };
+    OpenLayers.loadURL("http://216.75.53.105:80/geoserver/wms", params, this, setHTML, setHTML);
+    OpenLayers.Event.stop(e);
 }
 
 /*

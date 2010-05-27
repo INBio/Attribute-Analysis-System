@@ -75,6 +75,7 @@ public class PointsController implements Controller{
         for(Specimen s : specimens){
             result.append("<specimen><scientificname>"+s.getScientificname()+"</scientificname>" +
                     "<longitude>"+s.getDecimallongitude()+"</longitude>"+
+                    "<catalog>"+s.getCatalognumber()+"</catalog>"+
                     "<latitude>"+s.getDecimallatitude()+"</latitude></specimen>");
         }
         result.append("</specimens></response>");

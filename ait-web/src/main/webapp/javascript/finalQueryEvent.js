@@ -112,7 +112,7 @@ function createAdvancedHeader(byPolygon,byIndicator,layersShow,treeShow){
         types.push('p');
         result += '<div id="p'+i+'" class="detailed_results">'+
         '<h3>'+layersShow[i]+'</h3>'+
-        '<p>'+byPolygon[i].childNodes[0].nodeValue+' especies que cumplen algun indicador (FIXME)<p>';
+        '<p>'+byPolygon[i].childNodes[0].nodeValue+' '+layerMatches+'<p>';
         if(byPolygon[i].childNodes[0].nodeValue != '0'){
             result += '<input type="button" class="simple_button" id="viewDetailp'+i+'" value="'+seeDetail+'" onclick="showDetails('+i+',\'p\',\''+arrayToString(treeShow)+'\')" />'+
         '<input type="button" class="simple_button" id="showOnMapp'+i+'" value="'+seeOnMap+'" onclick="showPoints('+i+',\'p\')" />'+
@@ -129,7 +129,7 @@ function createAdvancedHeader(byPolygon,byIndicator,layersShow,treeShow){
         types.push('i');
         result += '<div id="i'+j+'" class="detailed_results">'+
         '<h3>'+treeShow[j]+'</h3>'+
-        '<p>'+byIndicator[j].childNodes[0].nodeValue+' especies que cumplen algun polígono (FIXME)</p>';
+        '<p>'+byIndicator[j].childNodes[0].nodeValue+' '+indicatorMatches+'</p>';
         if(byIndicator[j].childNodes[0].nodeValue != '0'){
             result += '<input type="button" class="simple_button" id="viewDetaili'+j+'" value="'+seeDetail+'" onclick="showDetails('+j+',\'i\',\''+arrayToString(layersShow)+'\')" />'+
         '<input type="button" class="simple_button" id="showOnMapi'+j+'" value="'+seeOnMap+'" onclick="showPoints('+j+',\'i\')" />'+
@@ -317,7 +317,6 @@ function goToShowMap(inputId,id,type){
  * toShow polygons or indicators to show in the final matrix
  */
 function showDetails(id,type,toShow){
-    replaceVectorLayer();
     var layers = document.getElementById('hiddenLayers').value;
     var taxa = document.getElementById('hiddenTaxa').value;
     var indi = document.getElementById('hiddenIndicators').value;
@@ -333,7 +332,7 @@ function showDetails(id,type,toShow){
         //Change button title
         changeInputText('viewDetailp'+id,hideDetail); //button,text
         //Change button acction
-        goToHideDetail(type+id+'detail','viewDetailp'+id,id,type); //div,button
+        goToHideDetail(type+id+'detail','viewDetailp'+id,id,type,toShow); //div,button
     }
     else{
         //Show loading

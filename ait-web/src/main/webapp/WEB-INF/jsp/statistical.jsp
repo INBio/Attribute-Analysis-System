@@ -401,7 +401,7 @@
 
                     <!-- GIS Panel -->
                     <div id="queryPanel1" class="queryPanel">
-                        <p style="font-weight:bold;font-style:italic;margin:2px;text-align:center;">
+                        <p class="criteria_title">
                         <fmt:message key="geografical_criteria_title"/></p>
                         <div id="currentLayer"></div>
                         <div id="info"></div>
@@ -410,7 +410,7 @@
 
                     <!-- Taxonomy Panel -->
                     <div id="queryPanel2" class="queryPanel">
-                        <p style="font-weight:bold;font-style:italic;margin:2px;text-align:center;">
+                        <p class="criteria_title">
                         <fmt:message key="taxonomical_criteria_title"/></p>
                         <p style="margin:1px"><a> <fmt:message key="taxonomy_level"/>: </a></p>
                         <select name="taxonType" id="taxonTypeId" class="componentSize" tabindex="12" onchange="javascript:changeTaxonInput();" onKeyUp="javascript:changeTaxonInput();">
@@ -434,7 +434,7 @@
 
                     <!-- Indicator Panel -->
                     <div id="queryPanel3" class="queryPanel">
-                        <p style="font-weight:bold;font-style:italic;margin:2px;text-align:center;">
+                        <p class="criteria_title">
                         <fmt:message key="indicators_criteria_title"/></p>
                         <div id="treeDiv"></div>
                         <input type="button" class="my_Button" id="addToListButtonIndi" value="Agregar criterio" onclick="addIndicatorParam()" />
