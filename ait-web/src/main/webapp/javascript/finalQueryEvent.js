@@ -128,7 +128,8 @@ function executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators,
  * to show on results panel
  */
 function createAdvancedHeader(byPolygon,byIndicator,layersShow,treeShow,total1,criteria1){
-    var result = '';
+    var result = ''; //Criteria with results
+    var others = '<p> Criterios sin resultados: (FIXME)</p>'; //Criteria without results
     //Adding general result (with all search criteria)
     divIds.push('t0');
     buttonIds.push('showOnMapt0');
@@ -141,43 +142,52 @@ function createAdvancedHeader(byPolygon,byIndicator,layersShow,treeShow,total1,c
         result += '<input type="button" class="simple_button" id="showOnMapt0" value="'+seeOnMap+'" onclick="showPoints(0,\'t\')" />'+
         '<div id="t0map"></div></div>';
     }
+    result += '<p> Detalles (FIXME)</p>';
     //Adding results by polygon
     for(var i = 0;i<byPolygon.length;i++){
+        //To manage the divs ids
         divIds.push('p'+i);
         buttonIds.push('showOnMapp'+i);
         ids.push(i);
         types.push('p');
-        result += '<div id="p'+i+'" class="detailed_results">'+
-        '<h3>'+layersShow[i]+'</h3>'+
-        '<p>'+byPolygon[i].childNodes[0].nodeValue+' '+layerMatches+'<p>';
+        //If the detail has results
         if(byPolygon[i].childNodes[0].nodeValue != '0'){
-            result += '<input type="button" class="simple_button" id="viewDetailp'+i+'" value="'+seeDetail+'" onclick="showDetails('+i+',\'p\',\''+arrayToString(treeShow)+'\')" />'+
+            result += '<div id="p'+i+'" class="detailed_results">'+
+            '<h3>'+layersShow[i]+'</h3>'+
+            '<p>'+byPolygon[i].childNodes[0].nodeValue+' '+layerMatches+'</p>'+
+            '<input type="button" class="simple_button" id="viewDetailp'+i+'" value="'+seeDetail+'" onclick="showDetails('+i+',\'p\',\''+arrayToString(treeShow)+'\')" />'+
             '<input type="button" class="simple_button" id="showOnMapp'+i+'" value="'+seeOnMap+'" onclick="showPoints('+i+',\'p\')" />'+
             '<div id="p'+i+'detail"></div><div id="p'+i+'map"></div></div>';
         }
-        else{
-            result += '<div id="p'+i+'detail"></div><div id="p'+i+'map"></div></div>';
+        else{ //If the detail doesn't have results
+            others += '<div id="p'+i+'" class="detailed_results">'+
+            '<h3>'+layersShow[i]+'</h3>'+
+            '<div id="p'+i+'detail"></div><div id="p'+i+'map"></div></div>';
         }
     }
     //Adding results by indicators
     for(var j = 0;j<byIndicator.length;j++){
+        //To manage the divs ids
         divIds.push('i'+j);
         buttonIds.push('showOnMapi'+j);
         ids.push(j);
         types.push('i');
-        result += '<div id="i'+j+'" class="detailed_results">'+
-        '<h3>'+treeShow[j]+'</h3>'+
-        '<p>'+byIndicator[j].childNodes[0].nodeValue+' '+indicatorMatches+'</p>';
+        //If the detail has results
         if(byIndicator[j].childNodes[0].nodeValue != '0'){
-            result += '<input type="button" class="simple_button" id="viewDetaili'+j+'" value="'+seeDetail+'" onclick="showDetails('+j+',\'i\',\''+arrayToString(layersShow)+'\')" />'+
+            result += '<div id="i'+j+'" class="detailed_results">'+
+            '<h3>'+treeShow[j]+'</h3>'+
+            '<p>'+byIndicator[j].childNodes[0].nodeValue+' '+indicatorMatches+'</p>'+
+            '<input type="button" class="simple_button" id="viewDetaili'+j+'" value="'+seeDetail+'" onclick="showDetails('+j+',\'i\',\''+arrayToString(layersShow)+'\')" />'+
             '<input type="button" class="simple_button" id="showOnMapi'+j+'" value="'+seeOnMap+'" onclick="showPoints('+j+',\'i\')" />'+
             '<div id="i'+j+'detail"></div><div id="i'+j+'map"></div></div>';
         }
-        else{
-            result += '<div id="i'+j+'detail"></div><div id="i'+j+'map"></div></div>';
+        else{ //If the detail doesn't have results
+            others += '<div id="i'+j+'" class="detailed_results">'+
+            '<h3>'+treeShow[j]+'</h3>'+
+            '<div id="i'+j+'detail"></div><div id="i'+j+'map"></div></div>';
         }
     }
-    result+='<input type="submit" class="new_search_button" id="newSearch" value="'+newSearch+'"/><br><br><br>';
+    result+='<input type="submit" class="new_search_button" id="newSearch" value="'+newSearch+'"/>'+others+'<br><br><br>';
     return result;
 }
 
