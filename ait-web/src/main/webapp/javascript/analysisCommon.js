@@ -95,16 +95,20 @@ function initMap(divId){
         projection: "EPSG:900913",
         units: 'm'
     };
-    map = new OpenLayers.Map(divId,options);
+
+    var myMapDiv = document.getElementById(divId);
+    map = new OpenLayers.Map(options);
+    map.render(myMapDiv);
 
     //Setting the default current layer (Layers drop down)
     layerId = 'IABIN_Indicadores:bd_meso_limite_paies';
-    layerIndex = 1; //Porque la 0 es la de Virtual Earth
+    layerIndex = 1; //Porque la 0 es la capa de VE, Yahho o Google
     layerName = 'Paises - Mesoamérica';
 
     //------------------------------ Layers ------------------------------------
     //Base layer
-    virtualEarthLayer  = new OpenLayers.Layer.VirtualEarth('Virtual Earth');
+    googleLayer  = new OpenLayers.Layer.Google('Google Hybrid', {type: G_HYBRID_MAP });
+    //virtualEarthLayer  = new OpenLayers.Layer.VirtualEarth('Virtual Earth');
 
     //Setup Meso layer
     base = addLayerWMS( 'Mesoamerica','IABIN_Indicadores:bd_meso_limite_paies');
@@ -118,13 +122,10 @@ function initMap(divId){
     aspPMA = addLayerWMS( 'ASP-PMA','IABIN_Indicadores:bd_pan_areas_protegidas');
     aspPMA.setVisibility(true);
 
-    vectorLayer.setVisibility(true);
-
-    map.addLayer(virtualEarthLayer);
+    map.addLayer(googleLayer);
     map.addLayer(base);
     map.addLayer(provincias);
-    map.addLayer(aspPMA);
-    map.addLayer(vectorLayer);
+    map.addLayer(aspPMA);    
     //--------------------------------------------------------------------------
 
     //Variables to manage the events on the diferent layers (FIXME)

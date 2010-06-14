@@ -135,9 +135,9 @@ body {
 
 .queryPanel {
     background-color:#F7FFEF;
-    width:285px;
+    width:260px;
     text-align:justify;
-    padding:10px 0 10px 25px;
+    padding:10px 25px 10px 25px;
     margin-bottom:7px;
     border:solid gray 1px;
    -moz-border-radius: 5px;

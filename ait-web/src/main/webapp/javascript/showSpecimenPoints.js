@@ -96,10 +96,18 @@ function createAttrib(scientificName,latitude,longitude,catalog) {
  */
 function replaceVectorLayer(){
     //Specimen points Layer
-    vectorLayer.destroy();
-    vectorLayer = new OpenLayers.Layer.Vector('Specimens');
-    vectorLayer.setVisibility(true);
-    map.addLayer(vectorLayer);
+    if(vectorLayer != null){
+        map.removeLayer(vectorLayer);
+        vectorLayer = new OpenLayers.Layer.Vector('Specimens');
+        vectorLayer.setVisibility(true);
+        map.addLayer(vectorLayer);
+    }
+    else{
+        vectorLayer = new OpenLayers.Layer.Vector('Specimens');
+        vectorLayer.setVisibility(true);
+        map.addLayer(vectorLayer);
+    }
+
 }
 
 /*

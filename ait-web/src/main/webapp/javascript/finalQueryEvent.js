@@ -219,6 +219,7 @@ function showPointFromHiddenData(inputId){
     //Add div to show the map
     document.getElementById('s0map').innerHTML = '<div id="map"></div>';
     //Show the map
+    document.getElementById('map').appendChild(map.viewPortDiv); //Adding the new viewPort parent
     map.render('map');
     //Drowing the points
     showSpecimenPoints(layers,taxa,indi);
@@ -229,8 +230,11 @@ function showPointFromHiddenData(inputId){
 }
 // Changes the input (button) action to hide points
 function goToHidePointsFromHidden(divId,inputId){
-   document.getElementById(inputId).setAttribute( "onclick",
-   "hidePointFromHiddenData('"+divId+"','"+inputId+"');");
+   /*document.getElementById(inputId).setAttribute( "onclick",
+   "hidePointFromHiddenData('"+divId+"','"+inputId+"');");*/
+   document.getElementById(inputId).onclick = function(){
+       hidePointFromHiddenData(divId,inputId);
+   };
 }
 
 /**
@@ -238,7 +242,7 @@ function goToHidePointsFromHidden(divId,inputId){
  */
 function hidePointFromHiddenData(divId,inputId){
     //Hide the map
-    document.getElementById(divId).innerHTML = '';
+    document.getElementById(divId).innerHTML = "";
     //Change button title
     changeInputText(inputId,seeOnMap);
     //Change button  acction
@@ -246,8 +250,11 @@ function hidePointFromHiddenData(divId,inputId){
 }
 // Changes the input (button) action to show points
 function goToShowPointsFromHidden(inputId){
-   document.getElementById(inputId).setAttribute( "onclick",
-   "showPointFromHiddenData('"+inputId+"');");
+   /*document.getElementById(inputId).setAttribute( "onclick",
+   "showPointFromHiddenData('"+inputId+"');");*/
+   document.getElementById(inputId).onclick = function(){
+       showPointFromHiddenData(inputId);
+   };
 }
 
 /**
@@ -271,8 +278,11 @@ function showDetailsFromHiddenData(inputId){
 }
 // Changes the input (button) action to hide details
 function goToHideDetailFromHidden(divId,inputId){
-   document.getElementById(inputId).setAttribute( "onclick",
-   "hideDetailFromHiddenData('"+divId+"','"+inputId+"');");
+   /*document.getElementById(inputId).setAttribute( "onclick",
+   "hideDetailFromHiddenData('"+divId+"','"+inputId+"');");*/
+   document.getElementById(inputId).onclick = function(){
+       hideDetailFromHiddenData(divId,inputId);
+   };
 }
 
 /**
@@ -280,7 +290,7 @@ function goToHideDetailFromHidden(divId,inputId){
  */
 function hideDetailFromHiddenData(divId,inputId){
     //Hide the detailed table
-    document.getElementById(divId).innerHTML = '';
+    document.getElementById(divId).innerHTML = "";
     //Change button title
     changeInputText(inputId,seeDetail);
     //Change button  acction
@@ -288,8 +298,11 @@ function hideDetailFromHiddenData(divId,inputId){
 }
 // Changes the input (button) action to show detail
 function goToShowDetailFromHidden(inputId){
-   document.getElementById(inputId).setAttribute( "onclick",
-   "showDetailsFromHiddenData('"+inputId+"');");
+   /*document.getElementById(inputId).setAttribute( "onclick",
+   "showDetailsFromHiddenData('"+inputId+"');");*/
+   document.getElementById(inputId).onclick = function(){
+       showDetailsFromHiddenData(inputId);
+   };
 }
 
 /**
@@ -350,8 +363,11 @@ function showPoints(id,type){
 }
 // Changes the input (button) action to hide map
 function goToHideMap(divId,inputId,id,type){
-   document.getElementById(inputId).setAttribute( "onclick",
-   "hidePoints('"+divId+"','"+inputId+"','"+id+"','"+type+"');");
+   /*document.getElementById(inputId).setAttribute( "onclick",
+   "hidePoints('"+divId+"','"+inputId+"','"+id+"','"+type+"');");*/
+   document.getElementById(inputId).onclick = function(){
+       hidePoints(divId,inputId,id,type);
+   };
 }
 
 /**
@@ -359,7 +375,7 @@ function goToHideMap(divId,inputId,id,type){
  */
 function hidePoints(divId,inputId,id,type){
     //Hide the map
-    document.getElementById(divId).innerHTML = '';
+    document.getElementById(divId).innerHTML = "";
     //Change button title
     changeInputText(inputId,seeOnMap);
     //Change button  acction
@@ -367,8 +383,11 @@ function hidePoints(divId,inputId,id,type){
 }
 // Changes the input (button) action to show map
 function goToShowMap(inputId,id,type){
-   document.getElementById(inputId).setAttribute( "onclick",
-   "showPoints('"+id+"','"+type+"');");
+   /*document.getElementById(inputId).setAttribute( "onclick",
+   "showPoints('"+id+"','"+type+"');");*/
+   document.getElementById(inputId).onclick = function(){
+       showPoints(id,type);
+   };
 }
 
 /**
@@ -413,8 +432,11 @@ function showDetails(id,type,toShow){
 }
 // Changes the input (button) action to hide detail
 function goToHideDetail(divId,inputId,id,type,toShow){
-   document.getElementById(inputId).setAttribute( "onclick",
-   "hideDetails('"+divId+"','"+inputId+"','"+id+"','"+type+"','"+toShow+"');");
+   /*document.getElementById(inputId).setAttribute( "onclick",
+   "hideDetails('"+divId+"','"+inputId+"','"+id+"','"+type+"','"+toShow+"');");*/
+   document.getElementById(inputId).onclick = function(){
+       hideDetails(divId,inputId,id,type,toShow);
+   };
 }
 
 /**
@@ -422,7 +444,7 @@ function goToHideDetail(divId,inputId,id,type,toShow){
  */
 function hideDetails(divId,inputId,id,type,toShow){
     //Hide the detail
-    document.getElementById(divId).innerHTML = '';
+    document.getElementById(divId).innerHTML = "";
     //Change button title
     changeInputText(inputId,seeDetail);
     //Change button  acction
@@ -430,8 +452,11 @@ function hideDetails(divId,inputId,id,type,toShow){
 }
 // Changes the input (button) action to show detail
 function goToShowDetail(inputId,id,type,toShow){
-   document.getElementById(inputId).setAttribute( "onclick",
-   "showDetails('"+id+"','"+type+"','"+toShow+"');");
+   /*document.getElementById(inputId).setAttribute( "onclick",
+   "showDetails('"+id+"','"+type+"','"+toShow+"');");*/
+   document.getElementById(inputId).onclick = function(){
+       showDetails(id,type,toShow);
+   };
 }
 
 /**

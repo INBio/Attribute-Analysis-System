@@ -27,7 +27,10 @@
         <link rel="stylesheet" type="text/css" href="http://openlayers.org/theme/default/style.css"/>
         <script type="text/JavaScript" src="http://openlayers.org/api/OpenLayers.js"></script>
         
-        <script src='http://dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6.1'></script>
+        <!--<script src='http://dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6.1'></script>
+        <script src='http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAjpkAC9ePGem0lIq5XcMiuhT2yXp_ZAY8_ufC3CFXhHIE1NvwkxTS6gjckBmeABOGXIUiOiZObZESPg'></script>-->
+        <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAAGtIHQJm1-pS3ci26k9D7hRQgngloALHesSZLYd1j0z536uH2MxQmIpE6xoh3_0LA7MpmysupPTjnvg" type="text/javascript"></script>
+
         <script defer="defer" type="text/javascript">
 
             //Use a proxy for GeoServer requesting
@@ -85,8 +88,7 @@
              * Initialize the map, the indicators tree and sets the
              * internationalization to the javascript code
              */
-            function init(){
-                vectorLayer = new OpenLayers.Layer.Vector('Specimens');
+            function init(){                
                 //Load messages content
                 internationalization();
                 //initialize map functionality
