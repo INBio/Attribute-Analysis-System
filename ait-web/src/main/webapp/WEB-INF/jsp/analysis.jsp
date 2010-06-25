@@ -75,7 +75,7 @@
             var searchResults,geographical,taxonomic,indicators,speciesMatches,
             seeOnMap,seeDetail,searchCriteria,speciesList,newSearch,criteriaText,
             speciesText,hideMap,hideDetail,catalog,latitude,longitute,scientificName,
-            layerMatches,indicatorMatches;
+            layerMatches,indicatorMatches,resultDetails,criteriaWithoutResults;
 
             //Pink tile avoidance
             OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
@@ -272,6 +272,8 @@
                 scientificName = "<fmt:message key="scientificname"/>";
                 layerMatches = "<fmt:message key="layer_matches"/>";
                 indicatorMatches = "<fmt:message key="indicator_matches"/>";
+                resultDetails = "<fmt:message key="result_details"/>";
+                criteriaWithoutResults = "<fmt:message key="criteria_without_results"/>";
             };
         </script>
 

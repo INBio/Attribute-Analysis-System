@@ -24,7 +24,7 @@ body {
 	position:absolute;
 	font-family:arial, helvetica, sans-serif;
 	text-align:center;
-	font-size: 30px;
+	font-size: 32px;
 	margin:0;
 	width:100%;
 	padding: 25px 0 0 0px;
@@ -157,6 +157,10 @@ body {
     width:260px;
     text-align:justify;
     height:24px;
+}
+
+.sizeAll {
+    width:100%;
 }
 
 .my_Button{
@@ -339,6 +343,17 @@ td.contact{
     padding:1px 0 1px 15px;
 }
 
+td.contact2{
+    border: 1px #739999 solid;
+    text-align: justify;
+    font-family: Verdana, sans-serif, Arial;
+    font-weight: normal;
+    font-size: 12px;
+    color: #404040;
+    background-color: #fafafa;
+    padding:0 5px 0 3px;
+}
+
 .criteria_title{
     font-weight:bold;
     font-style:italic;
@@ -360,8 +375,8 @@ td.contact{
 	padding: 1px;
 	vertical-align: middle;
 	text-align: center;
-   -moz-border-radius: 15px;
-   -webkit-border-radius: 15px;
+   -moz-border-radius: 10px;
+   -webkit-border-radius: 10px;
 }
 
 .celda02-opciones {
@@ -370,8 +385,8 @@ td.contact{
 	vertical-align: middle;
 	text-align: left;
 	text-indent: 30px;
-   -moz-border-radius: 15px;
-   -webkit-border-radius: 15px;
+   -moz-border-radius: 10px;
+   -webkit-border-radius: 10px;
 }
 
 .link-celda02 {
@@ -382,8 +397,6 @@ td.contact{
 	font-weight: bold;
 	color: #ffffff;
 	vertical-align:middle;
-   -moz-border-radius: 15px;
-   -webkit-border-radius: 15px;
 }
 
 a.link-celda02:link {

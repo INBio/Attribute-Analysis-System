@@ -87,7 +87,7 @@
     </bean>
 
     <!-- ***********************************************************************
-    Connecting to database
+    Connecting to database (Internal Data Base)
     ************************************************************************ -->
    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="${jdbc.driverClassName}"/>
@@ -96,6 +96,9 @@
         <property name="password" value="${jdbc.password}"/>
     </bean>
 
+    <!-- ***********************************************************************
+    Configuring all the properties files
+    ************************************************************************ -->
     <bean id="propertyConfigurer"
           class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
@@ -108,8 +111,7 @@
     <!-- ***********************************************************************
     Configuring the transaction manager
     ************************************************************************ -->
-    <bean id="transactionManager"
-          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    <bean id="TransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource" />
     </bean>
 
@@ -142,6 +144,9 @@
         <property name="taxonInfoIndexDAO" ref="taxonInfoIndexDAO"/>
         <property name="taxonIndexDAO" ref="taxonIndexDAO"/>
     </bean>
+    <bean id="configManager" class="org.inbio.ait.manager.impl.ConfigManagerImpl">
+        <property name="dwcPropertyHolderDAO" ref="dwcPropertyHolderDAO"/>
+    </bean>
 
     <!--.....................................................................-->
     <!--.................... DAO Declarations ...............................-->
@@ -164,5 +169,8 @@
      <bean id="indicatorDAO" class="org.inbio.ait.dao.impl.IndicatorDAOImpl">
         <property name="dataSource" ref="dataSource" />
     </bean>
+    <!--............ DAO that not extends SimpleJdbcDaoSupport ..............-->
+    <bean id="dwcPropertyHolderDAO" class="org.inbio.ait.dao.impl.DwcPropertyHolderDAOImpl"/>
+    <bean id="dwcDataAccessDAO" class="org.inbio.ait.dao.impl.DwcDataAccessDAOImpl"/>
     
 </beans>

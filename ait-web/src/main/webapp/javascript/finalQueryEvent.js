@@ -129,7 +129,7 @@ function executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators,
  */
 function createAdvancedHeader(byPolygon,byIndicator,layersShow,treeShow,total1,criteria1){
     var result = ''; //Criteria with results
-    var others = '<p> Criterios sin resultados: (FIXME)</p>'; //Criteria without results
+    var others = '<p> '+criteriaWithoutResults+'</p>'; //Criteria without results
     //Adding general result (with all search criteria)
     divIds.push('t0');
     buttonIds.push('showOnMapt0');
@@ -142,7 +142,7 @@ function createAdvancedHeader(byPolygon,byIndicator,layersShow,treeShow,total1,c
         result += '<input type="button" class="simple_button" id="showOnMapt0" value="'+seeOnMap+'" onclick="showPoints(0,\'t\')" />'+
         '<div id="t0map"></div></div>';
     }
-    result += '<p> Detalles (FIXME)</p>';
+    result += '<p> '+resultDetails+'</p>';
     //Adding results by polygon
     for(var i = 0;i<byPolygon.length;i++){
         //To manage the divs ids

@@ -67,11 +67,6 @@ public class StatisticalController extends SimpleFormController {
      * Gets the chart parameters, build the chart based on those parameters.
      * Then, the chart is passed as atribute trhow the session to another
      * view and finally the chart is shown to the user.
-     * @param request
-     * @param response
-     * @param command
-     * @param errors
-     * @return
      * @throws java.lang.Exception
      */
     @Override

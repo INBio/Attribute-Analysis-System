@@ -1,6 +1,6 @@
 <%-- 
-    Document   : config
-    Created on : 15/01/2010, 01:32:22 PM
+    Document   : conndwcSucces
+    Created on : Jun 25, 2010, 9:06:03 AM
     Author     : esmata
 --%>
 
@@ -20,19 +20,15 @@
         <!-- Header -->
         <jsp:include page="/WEB-INF/jsp/header.jsp"/>
         <!-- Content -->
-        <form name = "config" method = "get">
-            <div id="contenido">
-                <h2><fmt:message key="config_title"/></h2><br>
-                <a href="conndwc.htm">1. <fmt:message key="dwc_config"/></a><br>
-                <a href="hi.htm">2. Configurar acceso a los datos de especies (Plinian Core) FIXME</a><br>
-                <a href="hi.htm">3. Configurar acceso a los datos de atributos taxonómicos FIXME</a><br>
-                <a href="hi.htm">4. Configurar acceso a Postgis FIXME</a><br>
-            </div>
-            <div id="footer">
-                <fmt:message key="footer_text"/>
-            </div>
-        </form>
+        <div id="contenido">
+            <h2 style="color:green"><fmt:message key="dwc_success"/></h2><br>
+            Total de registros de especímenes(Fixme): ${total} <br>
+            <a href="config.htm" ><fmt:message key="back"/></a>
+            <a href="dwcAttributes.htm"><fmt:message key="continue"/></a>
+        </div>
         <!-- Content ending -->
+        <div id="footer">
+            <fmt:message key="footer_text"/>
+        </div>
     </body>
 </html>
-

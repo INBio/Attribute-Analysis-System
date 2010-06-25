@@ -81,5 +81,17 @@
     </bean>
     <!-- Chart viewer -->
     <bean name="/chart.htm" class="org.inbio.ait.web.controller.ChartController"/>
+    <!-- Darwin Core mapping connection atributes -->
+    <bean name="/conndwc.htm" class="org.inbio.ait.web.controller.ConndwcController">
+        <property name="formView" value="conndwc"/>
+        <property name="successView" value="conndwcSuccess"/>
+        <property name="configManager" ref="configManager"/>
+    </bean>
+    <!-- Darwin Core field maping -->
+    <bean name="/dwcAttributes.htm" class="org.inbio.ait.web.controller.DwcController">
+        <property name="formView" value="dwc"/>
+        <property name="successView" value="config"/>
+        <property name="configManager" ref="configManager"/>
+    </bean>
     
 </beans>
