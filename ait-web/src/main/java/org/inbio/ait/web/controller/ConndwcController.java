@@ -84,11 +84,11 @@ public class ConndwcController extends SimpleFormController{
 		DwcPropertyHolder connection = (DwcPropertyHolder) command;
 
         //Persist the connection attributes
-        boolean saveProperties = this.configManager.saveToPropertiesFile(connection);        
+        boolean savePropertiesOk = this.configManager.saveToPropertiesFile(connection);
+        //Retrive a total count from db for the specified table (test)
+        int total = this.configManager.CountDwc();
 
-        if(saveProperties == true){ //Everything is ok
-            //Retrive a total count from db for the specified table (test)
-            int total = 0;
+        if(savePropertiesOk == true && total != -1){ //Everything is ok
             //Return the view with the required information
             ModelAndView mv = new ModelAndView(getSuccessView());
             mv.addObject("total", total);
@@ -96,7 +96,7 @@ public class ConndwcController extends SimpleFormController{
         }
         else{ //Error view
             ModelAndView mv = new ModelAndView("error");
-            String error = "Error";
+            String error = ".";
             mv.addObject("error", error);
             return mv;
         }

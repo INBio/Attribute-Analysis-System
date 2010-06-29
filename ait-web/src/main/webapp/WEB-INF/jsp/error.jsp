@@ -22,8 +22,8 @@
         <!-- Content -->
         <div id="contenido">
             <h2><fmt:message key="error"/></h2><br>
-            Error: ${error} <br>
-            <a class="link_back" href="config.htm" style="height: 24px; width: 46px">
+            <fmt:message key="error_detail"/>${error} <br><br>
+            <a class="simple_link" href="config.htm" style="height: 24px; width: 46px">
             <fmt:message key="back"/></a>
         </div>
         <!-- Content ending -->

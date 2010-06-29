@@ -20,6 +20,7 @@
 package org.inbio.ait.web.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -46,6 +47,19 @@ public class DwcController extends SimpleFormController{
     }
 
     /**
+     * Seting the current DwcPropertyHolder Object to the form
+     * @param request
+     * @return
+     * @throws java.lang.Exception
+     */
+    @Override
+    protected Object formBackingObject(HttpServletRequest request) throws Exception {
+        DwcPropertyHolder dph = (DwcPropertyHolder) super.formBackingObject(request);
+        dph = configManager.getDwcPropertyHolder();
+        return dph;
+    }
+
+    /**
      * Pass to the form the necessary data to be shown in the jsp
      * @param request
      * @return
@@ -54,6 +68,8 @@ public class DwcController extends SimpleFormController{
     @Override
     protected Map referenceData(HttpServletRequest request) throws Exception {
         Map referenceData = new HashMap();
+        List tableColumns = this.configManager.getDwcTableFields();
+        referenceData.put("cols",tableColumns);
         return referenceData;
     }
 
@@ -70,8 +86,20 @@ public class DwcController extends SimpleFormController{
         //Getting query parameters
 		DwcPropertyHolder attributes = (DwcPropertyHolder) command;
 
-        ModelAndView mv = new ModelAndView(getSuccessView());
-        return mv;
+        //Persist the connection attributes
+        boolean savePropertiesOk = this.configManager.saveToPropertiesFile(attributes);
+
+        if(savePropertiesOk == true){ //Everything is ok
+            //Return the view with the required information
+            ModelAndView mv = new ModelAndView(getSuccessView());
+            return mv;
+        }
+        else{ //Error view
+            ModelAndView mv = new ModelAndView("error");
+            String error = ".";
+            mv.addObject("error", error);
+            return mv;
+        }
     }
 
     /**

@@ -16,8 +16,6 @@
         href="<c:out value="${pageContext.request.contextPath}"/>/<spring:theme code='styleSheet'/>"/>
         <title><fmt:message key="title"/></title>
         <script type="text/javascript">
-            //Internacionalization variables
-            errorEmpty = '';
             //Verifing mandatory data
             function verify(){
                 var form = document.getElementById('connection');
@@ -86,7 +84,7 @@
                 </div>
                 <!-- Button's acctions -->
                 <div id="buttons">
-                    <input type="button" class="simple_button" id="saveConnAttributes" value="<fmt:message key="save"/>" onclick="verify()"/>
+                    <input type="button" class="simple_button" id="saveConnAttributes" value="<fmt:message key="test_conn"/>" onclick="verify()"/>
                 </div>
             </form:form>
 

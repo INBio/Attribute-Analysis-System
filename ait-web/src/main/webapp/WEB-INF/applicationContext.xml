@@ -146,6 +146,7 @@
     </bean>
     <bean id="configManager" class="org.inbio.ait.manager.impl.ConfigManagerImpl">
         <property name="dwcPropertyHolderDAO" ref="dwcPropertyHolderDAO"/>
+        <property name="dwcDataAccessDAO" ref="dwcDataAccessDAO"/>
     </bean>
 
     <!--.....................................................................-->

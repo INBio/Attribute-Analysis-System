@@ -202,6 +202,21 @@ body {
    -webkit-border-radius: 8px;
 }
 
+.simple_link{
+   height:24px;
+   background-color:#6C7487;
+   border:1px solid #7F899F;
+   font-family:sans-serif;
+   text-align:center;
+   font-size:11px;
+   color:white;
+   cursor:pointer;
+   padding:4px 10px 3px 10px;
+   margin:2px;
+   -moz-border-radius: 8px;
+   -webkit-border-radius: 8px;
+}
+
 .new_search_button{
    width:120px;
    height:24px;
@@ -247,6 +262,7 @@ body {
     background: url(images/tabs.png);
     background-repeat:no-repeat;
     background-position: 10px 3px;
+    font-weight:bold;
 }
 
 .link_back{

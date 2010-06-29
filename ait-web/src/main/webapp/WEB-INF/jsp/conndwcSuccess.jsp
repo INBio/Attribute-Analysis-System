@@ -22,9 +22,9 @@
         <!-- Content -->
         <div id="contenido">
             <h2 style="color:green"><fmt:message key="dwc_success"/></h2><br>
-            Total de registros de especímenes(Fixme): ${total} <br>
-            <a href="config.htm" ><fmt:message key="back"/></a>
-            <a href="dwcAttributes.htm"><fmt:message key="continue"/></a>
+            <fmt:message key="conn_total"/>: ${total} <br><br>
+            <a href="config.htm" class="simple_link"><fmt:message key="back"/></a>
+            <a href="dwcAttributes.htm" class="simple_link"><fmt:message key="continue"/></a>
         </div>
         <!-- Content ending -->
         <div id="footer">

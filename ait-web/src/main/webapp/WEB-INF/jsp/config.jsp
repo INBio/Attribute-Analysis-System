@@ -23,10 +23,10 @@
         <form name = "config" method = "get">
             <div id="contenido">
                 <h2><fmt:message key="config_title"/></h2><br>
-                <a href="conndwc.htm">1. <fmt:message key="dwc_config"/></a><br>
-                <a href="hi.htm">2. Configurar acceso a los datos de especies (Plinian Core) FIXME</a><br>
-                <a href="hi.htm">3. Configurar acceso a los datos de atributos taxonómicos FIXME</a><br>
-                <a href="hi.htm">4. Configurar acceso a Postgis FIXME</a><br>
+                <a href="conndwc.htm" class="link"><fmt:message key="dwc_config"/></a><br>
+                <a href="fixme.htm" class="link"><fmt:message key="plic_config"/></a><br>
+                <a href="fixme.htm" class="link"><fmt:message key="attri_config"/></a><br>
+                <a href="fixme.htm" class="link"><fmt:message key="postgis_config"/></a><br>
             </div>
             <div id="footer">
                 <fmt:message key="footer_text"/>
