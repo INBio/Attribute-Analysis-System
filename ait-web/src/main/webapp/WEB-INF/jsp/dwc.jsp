@@ -45,7 +45,7 @@
 
             <!-- Form that represents all the dwc attributes -->
             <form:form method="POST" commandName="attributes" cssStyle="margin:0">
-                <div id="configCols" style="width:500px">
+                <div id="configCols1" style="width:450px;float:left;">
                     <table class="contacts" cellspacing="0">
                         <tr>
                             <th class="contactDept" ><fmt:message key="concept"/></th>
@@ -279,6 +279,17 @@
                                 <form:select id="waterbody" path="waterbody" items="${cols}" cssClass="componentSize"/>
                             </td>
                         </tr>
+                    </table>                    
+                    <a href="config.htm" class="simple_link"><fmt:message key="back"/></a>
+                    <input type="button" class="simple_button" id="saveAttributes" value="<fmt:message key="save"/>" onclick="verify()"/>
+                    <br><br><br>
+                </div>
+                <div id="configCols2" style="width:450px;margin:0 0 0 510px;">
+                    <table class="contacts" cellspacing="0">
+                        <tr>
+                            <th class="contactDept" ><fmt:message key="concept"/></th>
+                            <th class="contactDept" ><fmt:message key="column"/></th>
+                        </tr>
                         <tr>
                             <td class="contact" width="50%"><fmt:message key="islandgroup"/></td>
                             <td class="contact" width="50%">
@@ -508,9 +519,6 @@
                             </td>
                         </tr>
                     </table>
-                    <a href="config.htm" class="simple_link"><fmt:message key="back"/></a>
-                    <input type="button" class="simple_button" id="saveAttributes" value="<fmt:message key="save"/>" onclick="verify()"/>
-                    <br><br><br>
                 </div>
             </form:form>
 

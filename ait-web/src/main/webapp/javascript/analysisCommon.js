@@ -84,13 +84,11 @@ function initLoadingPanel(){
  * Initialazing the gis functionality
  */
 function initMap(divId){
-   var bounds = new OpenLayers.Bounds(
+   var initialbounds = new OpenLayers.Bounds(
         -102.184, 7.204,
-        -77.157, 22.472
-    );
+        -77.157, 22.472);
     var options = {
         controls: [],
-        maxExtent: bounds,
         maxResolution: 0.09776171875,
         projection: "EPSG:900913",
         units: 'm'
@@ -137,7 +135,7 @@ function initMap(divId){
     map.events.register('click', map, addMapListener);
 
     //Build up all controls
-    map.zoomToExtent(bounds);
+    map.zoomToExtent(initialbounds);
     map.addControl(new OpenLayers.Control.PanZoomBar({
         position: new OpenLayers.Pixel(2, 15)
     }));

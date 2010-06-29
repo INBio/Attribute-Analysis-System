@@ -39,6 +39,9 @@ function showSpecimenPoints(selectedLayers,selectedTaxa,selectedIndicators)  {
             var xmlDoc = oResponse.responseXML.documentElement;
             //Get the list of specimens
             var specimenList = xmlDoc.getElementsByTagName("specimen");
+            //List of coordinates (to determine the posible bounderies)
+            var latArray = new Array();
+            var longArray = new Array();
             //Add all the specimen point
             for(var i = 0;i<specimenList.length;i++){
                 var node = specimenList[i];
@@ -48,6 +51,8 @@ function showSpecimenPoints(selectedLayers,selectedTaxa,selectedIndicators)  {
                 var scientificname = node.getElementsByTagName("scientificname")[0].childNodes[0].nodeValue;
                 attributes = createAttrib(scientificname,latitude,longitude,catalog);
                 addPoint(longitude,latitude,attributes);
+                latArray.push(latitude);
+                longArray.push(longitude);
             }
 
             //Set the new control for specimens pop ups
@@ -56,8 +61,18 @@ function showSpecimenPoints(selectedLayers,selectedTaxa,selectedIndicators)  {
             map.addControl(selectControl);
             selectControl.activate();
 
+            //Zooming on the correct geographical area (deppending on results)
+            var minX = getMinX(longArray);
+            var minY = getMinY(latArray);
+            var maxX = getMaxX(longArray);
+            var maxY = getMaxY(latArray);
+            var bounds = new OpenLayers.Bounds(
+                minX, minY,
+                maxX, maxY);
+            map.zoomToExtent(bounds);
+
             YAHOO.example.container.wait.hide();
-        }, 
+        },
 
         //If XHR call is not successful
         failure: function(oResponse) {
@@ -155,4 +170,52 @@ function onFeatureUnselect(feature) {
     map.removePopup(feature.popup);
     feature.popup.destroy();
     feature.popup = null;
+}
+
+//To get the maximun longitude
+function getMaxX(longitudeList) {
+    // Lets assume we are working with validated geographical coordinates, so -180 <= longitude <= l80
+    var maxX = -180;
+    for (var i = 0;i<longitudeList.length;i++) {
+        if (longitudeList[i] > maxX) {
+            maxX = longitudeList[i];
+        }
+        return maxX;
+    }
+}
+
+//To get the maximun latitud
+function getMaxY(latitudeList) {
+    // Lets assume we are working with validated geographical coordinates, so -90 <= latitude <= 90
+    var maxY = -90;
+    for (var i = 0;i<latitudeList.length;i++) {
+        if (latitudeList[i] > maxY) {
+            maxY = latitudeList[i];
+        }
+    }
+    return maxY;
+}
+
+//To get the minimun longitude
+function getMinX(longitudList) {
+    // Lets assume we are working with validated geographical coordinates, so -180 <= longitude <= l80
+    var minX = 180;
+    for (var i = 0;i<longitudList.length;i++) {
+        if (longitudList[i] < minX) {
+            minX = longitudList[i];
+        }
+    }
+    return minX;
+}
+
+//To get the minimun latitude
+function getMinY(latitudeList) {
+    // Lets assume we are working with validated geographical coordinates, so -90 <= latitude <= 90
+    var minY = 90;
+    for (var i = 0;i<latitudeList.length;i++) {
+        if (latitudeList[i] < minY) {
+            minY = latitudeList[i];
+        }
+    }
+    return minY;
 }
