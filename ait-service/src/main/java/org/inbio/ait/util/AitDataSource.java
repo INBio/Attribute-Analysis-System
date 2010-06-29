@@ -16,19 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.inbio.ait.dao;
+package org.inbio.ait.util;
 
-import java.util.List;
-import org.inbio.ait.model.DwcPropertyHolder;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 /**
- *
+ * Class to manage the jdbc conection via Java code insted of xml configuration
  * @author esmata
  */
-public interface DwcDataAccessDAO {
-
-    public List<String> getDwcTableFields(DwcPropertyHolder ph);
-
-    public int countAll(DwcPropertyHolder ph);
-
+public class AitDataSource extends DriverManagerDataSource{
+    
+    public AitDataSource(String d,String u,String un,String p){
+        this.setDriverClassName(d);
+        this.setUrl(u);
+        this.setUsername(un);
+        this.setPassword(p);
+    }  
 }

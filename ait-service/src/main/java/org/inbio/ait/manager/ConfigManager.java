@@ -18,6 +18,7 @@
 
 package org.inbio.ait.manager;
 
+import java.util.List;
 import org.inbio.ait.model.DwcPropertyHolder;
 
 /**
@@ -29,5 +30,9 @@ public interface ConfigManager {
     public DwcPropertyHolder getDwcPropertyHolder();
 
     public boolean saveToPropertiesFile(DwcPropertyHolder ph);
+
+    public int CountDwc();
+
+    public List<String> getDwcTableFields();
 
 }

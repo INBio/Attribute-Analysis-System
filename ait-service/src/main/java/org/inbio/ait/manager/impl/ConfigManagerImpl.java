@@ -18,6 +18,8 @@
 
 package org.inbio.ait.manager.impl;
 
+import java.util.List;
+import org.inbio.ait.dao.DwcDataAccessDAO;
 import org.inbio.ait.dao.DwcPropertyHolderDAO;
 import org.inbio.ait.manager.ConfigManager;
 import org.inbio.ait.model.DwcPropertyHolder;
@@ -29,6 +31,7 @@ import org.inbio.ait.model.DwcPropertyHolder;
 public class ConfigManagerImpl implements ConfigManager{
 
     private DwcPropertyHolderDAO dwcPropertyHolderDAO;
+    private DwcDataAccessDAO dwcDataAccessDAO;
 
     /**
      * Returns a DwcPropertyHolder java Object with all the
@@ -49,6 +52,24 @@ public class ConfigManagerImpl implements ConfigManager{
     }
 
     /**
+     * Return the total count of dwc registers
+     * @return
+     */
+    @Override
+    public int CountDwc(){
+        return this.dwcDataAccessDAO.countAll(this.getDwcPropertyHolder());
+    }
+
+    /**
+     * Method to get a list of all columns from the mapped dwc table
+     * trhow jdbc conection
+     */
+    @Override
+    public List<String> getDwcTableFields(){
+        return this.dwcDataAccessDAO.getDwcTableFields(this.getDwcPropertyHolder());
+    }
+
+    /**
      * @return the dwcPropertyHolderDAO
      */
     public DwcPropertyHolderDAO getDwcPropertyHolderDAO() {
@@ -60,6 +81,20 @@ public class ConfigManagerImpl implements ConfigManager{
      */
     public void setDwcPropertyHolderDAO(DwcPropertyHolderDAO dwcPropertyHolderDAO) {
         this.dwcPropertyHolderDAO = dwcPropertyHolderDAO;
+    }
+
+    /**
+     * @return the dwcDataAccessDAO
+     */
+    public DwcDataAccessDAO getDwcDataAccessDAO() {
+        return dwcDataAccessDAO;
+    }
+
+    /**
+     * @param dwcDataAccessDAO the dwcDataAccessDAO to set
+     */
+    public void setDwcDataAccessDAO(DwcDataAccessDAO dwcDataAccessDAO) {
+        this.dwcDataAccessDAO = dwcDataAccessDAO;
     }
 
 }

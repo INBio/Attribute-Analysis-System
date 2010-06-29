@@ -18,9 +18,13 @@
 
 package org.inbio.ait.dao.impl;
 
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import org.inbio.ait.dao.DwcDataAccessDAO;
+import org.inbio.ait.model.DwcPropertyHolder;
+import org.inbio.ait.util.AitDataSource;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  *
@@ -28,15 +32,51 @@ import org.inbio.ait.dao.DwcDataAccessDAO;
  */
 public class DwcDataAccessDAOImpl implements DwcDataAccessDAO{
 
+    private JdbcTemplate jdbcTemplate;
+
     /**
      * Method to get a list of all fields from the mapped dwc table
-     * trhow jdbc
+     * trhow jdbc conection
      */
     @Override
-    public List<String> getDwcTableFields(){
+    public List<String> getDwcTableFields(DwcPropertyHolder ph) {
         List<String> result = new ArrayList<String>();
+        result.add("unmapped"); //Default value
+        try {
+            //getColumns(String catalog, String schemaPattern, String tableNamePattern, String columnNamePattern)
+            ResultSet cols = this.jdbcTemplate.getDataSource().getConnection().
+                    getMetaData().getColumns(null, null, ph.getTablename(), null);
+            while (cols.next()) {
+                result.add(cols.getString("COLUMN_NAME"));
+            }
+            return result;
+        } catch (Exception e) {
+            System.out.println(e);
+            return null;
+        }
+    }
 
-        return result;
+    /**
+     * Method to get a total count of dwc registers
+     */
+    @Override
+    public int countAll(DwcPropertyHolder ph) {
+        int result = -1;
+        try {
+            //Stting up the jdbcTemplate
+            this.accessToDB(ph);
+            return this.jdbcTemplate.queryForInt("Select count(*) from " + ph.getTablename());
+        } catch (Exception e) {
+            return result;
+        }
+    }
+
+    //Getting the access to the data base
+    private void accessToDB(DwcPropertyHolder ph){
+        //Getting the data source connection
+        AitDataSource ds = new AitDataSource(ph.getDriverClassName(),
+                ph.getUrl(), ph.getUsername(), ph.getPassword());
+        this.jdbcTemplate = new JdbcTemplate(ds);
     }
 
 }
