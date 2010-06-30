@@ -16,28 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.inbio.ait.manager;
+package org.inbio.ait.dao;
 
 import java.util.List;
-import org.inbio.ait.model.DwcPropertyHolder;
 import org.inbio.ait.model.PlicPropertyHolder;
 
 /**
  *
  * @author esmata
  */
-public interface ConfigManager {
+public interface PlicDataAccessDAO {
 
-    /* Darwin Core */
-    public DwcPropertyHolder getDwcPropertyHolder();
-    public boolean saveToPropertiesFile(DwcPropertyHolder ph);
-    public int CountDwc();
-    public List<String> getDwcTableFields();
+    public List<String> getPlicTableFields(PlicPropertyHolder ph);
 
-    /* Plinian Core */
-    public PlicPropertyHolder getPlicPropertyHolder();
-    public boolean saveToPropertiesFilePlic(PlicPropertyHolder ph);
-    public int CountPlic();
-    public List<String> getPlicTableFields();
+    public int countAll(PlicPropertyHolder ph);
 
 }

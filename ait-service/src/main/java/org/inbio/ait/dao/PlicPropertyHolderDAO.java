@@ -15,29 +15,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package org.inbio.ait.dao;
 
-package org.inbio.ait.manager;
-
-import java.util.List;
-import org.inbio.ait.model.DwcPropertyHolder;
 import org.inbio.ait.model.PlicPropertyHolder;
 
 /**
  *
  * @author esmata
  */
-public interface ConfigManager {
+public interface PlicPropertyHolderDAO {
 
-    /* Darwin Core */
-    public DwcPropertyHolder getDwcPropertyHolder();
-    public boolean saveToPropertiesFile(DwcPropertyHolder ph);
-    public int CountDwc();
-    public List<String> getDwcTableFields();
+    /**
+     * This method save the info from a PlicPropertyHolder java class
+     * into the plic.properties file
+     */
+    public boolean saveToPropertiesFile(PlicPropertyHolder ph);
 
-    /* Plinian Core */
+    /**
+     * Returns a PlicPropertyHolder java Object with all the
+     * information from the plic.properties file
+     */
     public PlicPropertyHolder getPlicPropertyHolder();
-    public boolean saveToPropertiesFilePlic(PlicPropertyHolder ph);
-    public int CountPlic();
-    public List<String> getPlicTableFields();
 
 }

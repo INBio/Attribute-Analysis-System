@@ -34,7 +34,7 @@ public interface DwcPropertyHolderDAO {
 
     /**
      * Returns a DwcPropertyHolder java Object with all the
-     * information from de dwc.properties file
+     * information from the dwc.properties file
      */
     public DwcPropertyHolder getDwcPropertyHolder();
 

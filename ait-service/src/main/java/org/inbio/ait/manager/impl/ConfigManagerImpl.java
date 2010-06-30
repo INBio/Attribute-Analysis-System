@@ -21,8 +21,11 @@ package org.inbio.ait.manager.impl;
 import java.util.List;
 import org.inbio.ait.dao.DwcDataAccessDAO;
 import org.inbio.ait.dao.DwcPropertyHolderDAO;
+import org.inbio.ait.dao.PlicDataAccessDAO;
+import org.inbio.ait.dao.PlicPropertyHolderDAO;
 import org.inbio.ait.manager.ConfigManager;
 import org.inbio.ait.model.DwcPropertyHolder;
+import org.inbio.ait.model.PlicPropertyHolder;
 
 /**
  *
@@ -32,6 +35,8 @@ public class ConfigManagerImpl implements ConfigManager{
 
     private DwcPropertyHolderDAO dwcPropertyHolderDAO;
     private DwcDataAccessDAO dwcDataAccessDAO;
+    private PlicPropertyHolderDAO plicPropertyHolderDAO;
+    private PlicDataAccessDAO plicDataAccessDAO;
 
     /**
      * Returns a DwcPropertyHolder java Object with all the
@@ -69,6 +74,42 @@ public class ConfigManagerImpl implements ConfigManager{
         return this.dwcDataAccessDAO.getDwcTableFields(this.getDwcPropertyHolder());
     }
 
+        /**
+     * Returns a PlicPropertyHolder java Object with all the
+     * information from de plic.properties file
+     */
+    @Override
+    public PlicPropertyHolder getPlicPropertyHolder(){
+        return this.plicPropertyHolderDAO.getPlicPropertyHolder();
+    }
+
+    /**
+     * This method save the info from a PlicPropertyHolder java class
+     * into the plic.properties file
+     */
+    @Override
+    public boolean saveToPropertiesFilePlic(PlicPropertyHolder ph) {
+        return this.plicPropertyHolderDAO.saveToPropertiesFile(ph);
+    }
+
+    /**
+     * Return the total count of plic registers
+     * @return
+     */
+    @Override
+    public int CountPlic(){
+        return this.plicDataAccessDAO.countAll(this.getPlicPropertyHolder());
+    }
+
+    /**
+     * Method to get a list of all columns from the mapped plic table
+     * trhow jdbc conection
+     */
+    @Override
+    public List<String> getPlicTableFields(){
+        return this.plicDataAccessDAO.getPlicTableFields(this.getPlicPropertyHolder());
+    }
+
     /**
      * @return the dwcPropertyHolderDAO
      */
@@ -95,6 +136,34 @@ public class ConfigManagerImpl implements ConfigManager{
      */
     public void setDwcDataAccessDAO(DwcDataAccessDAO dwcDataAccessDAO) {
         this.dwcDataAccessDAO = dwcDataAccessDAO;
+    }
+
+    /**
+     * @return the plicPropertyHolderDAO
+     */
+    public PlicPropertyHolderDAO getPlicPropertyHolderDAO() {
+        return plicPropertyHolderDAO;
+    }
+
+    /**
+     * @param plicPropertyHolderDAO the plicPropertyHolderDAO to set
+     */
+    public void setPlicPropertyHolderDAO(PlicPropertyHolderDAO plicPropertyHolderDAO) {
+        this.plicPropertyHolderDAO = plicPropertyHolderDAO;
+    }
+
+    /**
+     * @return the plicDataAccessDAO
+     */
+    public PlicDataAccessDAO getPlicDataAccessDAO() {
+        return plicDataAccessDAO;
+    }
+
+    /**
+     * @param plicDataAccessDAO the plicDataAccessDAO to set
+     */
+    public void setPlicDataAccessDAO(PlicDataAccessDAO plicDataAccessDAO) {
+        this.plicDataAccessDAO = plicDataAccessDAO;
     }
 
 }
