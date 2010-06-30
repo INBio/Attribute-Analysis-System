@@ -23,7 +23,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.inbio.ait.manager.ConfigManager;
-import org.inbio.ait.model.DwcPropertyHolder;
+import org.inbio.ait.model.PlicPropertyHolder;
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
@@ -32,31 +32,30 @@ import org.springframework.web.servlet.mvc.SimpleFormController;
  *
  * @author esmata
  */
-public class ConndwcController extends SimpleFormController{
+public class ConnplicController extends SimpleFormController{
 
     private ConfigManager configManager;
 
     /**
      * Setting command class and command name
      */
-    public ConndwcController() {
-        setCommandClass(DwcPropertyHolder.class);
+    public ConnplicController() {
+        setCommandClass(PlicPropertyHolder.class);
         setCommandName("connection");
     }
 
     /**
-     * Seting the current DwcPropertyHolder Object to the form
+     * Seting the current plicPropertyHolder Object to the form
      * @param request
      * @return
      * @throws java.lang.Exception
      */
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
-        DwcPropertyHolder dph = (DwcPropertyHolder) super.formBackingObject(request);
-        dph = configManager.getDwcPropertyHolder();
+        PlicPropertyHolder dph = (PlicPropertyHolder) super.formBackingObject(request);
+        dph = configManager.getPlicPropertyHolder();
         return dph;
     }
-
 
     /**
      * Pass to the form the necessary data to be shown in the jsp
@@ -71,8 +70,8 @@ public class ConndwcController extends SimpleFormController{
     }
 
     /**
-     * Gets the Darwin Core Maping object to be persisted in the
-     * dwc.properties file. This file eventually will to be used
+     * Gets the Plinian Core Maping object to be persisted in the
+     * plic.properties file. This file eventually will to be used
      * in the indexing proccess
      * @throws java.lang.Exception
      */
@@ -81,12 +80,12 @@ public class ConndwcController extends SimpleFormController{
             Object command, BindException errors) throws Exception{
 
         //Getting query parameters
-		DwcPropertyHolder connection = (DwcPropertyHolder) command;
+		PlicPropertyHolder connection = (PlicPropertyHolder) command;
 
         //Persist the connection attributes
-        boolean savePropertiesOk = this.configManager.saveToPropertiesFile(connection);
+        boolean savePropertiesOk = this.configManager.saveToPropertiesFilePlic(connection);
         //Retrive a total count from db for the specified table (test)
-        int total = this.configManager.CountDwc();
+        int total = this.configManager.CountPlic();
 
         if(savePropertiesOk == true && total != -1){ //Everything is ok
             //Return the view with the required information
@@ -100,7 +99,6 @@ public class ConndwcController extends SimpleFormController{
             mv.addObject("error", error);
             return mv;
         }
-
     }
 
     /**
@@ -116,5 +114,4 @@ public class ConndwcController extends SimpleFormController{
     public void setConfigManager(ConfigManager configManager) {
         this.configManager = configManager;
     }
-
 }

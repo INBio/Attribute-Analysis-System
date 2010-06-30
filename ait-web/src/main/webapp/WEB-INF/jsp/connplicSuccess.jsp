@@ -1,6 +1,6 @@
 <%-- 
-    Document   : config
-    Created on : 15/01/2010, 01:32:22 PM
+    Document   : connplicSuccess
+    Created on : Jun 29, 2010, 4:20:03 PM
     Author     : esmata
 --%>
 
@@ -20,19 +20,15 @@
         <!-- Header -->
         <jsp:include page="/WEB-INF/jsp/header.jsp"/>
         <!-- Content -->
-        <form name = "config" method = "get">
-            <div id="contenido">
-                <h2><fmt:message key="config_title"/></h2><br>
-                <a href="conndwc.htm" class="link"><fmt:message key="dwc_config"/></a><br>
-                <a href="connplic.htm" class="link"><fmt:message key="plic_config"/></a><br>
-                <a href="fixme.htm" class="link"><fmt:message key="attri_config"/></a><br>
-                <a href="fixme.htm" class="link"><fmt:message key="postgis_config"/></a><br>
-            </div>
-            <div id="footer">
-                <fmt:message key="footer_text"/>
-            </div>
-        </form>
+        <div id="contenido">
+            <h2 style="color:green"><fmt:message key="dwc_success"/></h2><br>
+            <fmt:message key="conn_total"/>: ${total} <br><br>
+            <a href="config.htm" class="simple_link"><fmt:message key="back"/></a>
+            <a href="plicAttributes.htm" class="simple_link"><fmt:message key="continue"/></a>
+        </div>
         <!-- Content ending -->
+        <div id="footer">
+            <fmt:message key="footer_text"/>
+        </div>
     </body>
 </html>
-

@@ -93,5 +93,17 @@
         <property name="successView" value="config"/>
         <property name="configManager" ref="configManager"/>
     </bean>
+    <!-- Plinian Core mapping connection atributes -->
+    <bean name="/connplic.htm" class="org.inbio.ait.web.controller.ConnplicController">
+        <property name="formView" value="connplic"/>
+        <property name="successView" value="connplicSuccess"/>
+        <property name="configManager" ref="configManager"/>
+    </bean>
+    <!-- Plinian Core field maping -->
+    <bean name="/plicAttributes.htm" class="org.inbio.ait.web.controller.PlicController">
+        <property name="formView" value="plic"/>
+        <property name="successView" value="config"/>
+        <property name="configManager" ref="configManager"/>
+    </bean>
     
 </beans>
