@@ -16,26 +16,47 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.inbio.ait.dao;
-
-import org.inbio.ait.model.PlicPropertyHolder;
+package org.inbio.ait.model;
 
 /**
  *
  * @author esmata
  */
-public interface PlicPropertyHolderDAO {
+public class PostgisLayers {
+
+    //Contructor
+    public PostgisLayers(){}
+
+    //Attributes
+    private String[] layers;
+    private String base;
 
     /**
-     * This method save the info from a PlicPropertyHolder java class
-     * into the plic.properties file
+     * @return the layers
      */
-    public boolean saveToPropertiesFile(PlicPropertyHolder ph);
+    public String[] getLayers() {
+        return layers;
+    }
 
     /**
-     * Returns a PlicPropertyHolder java Object with all the
-     * information from the plic.properties file
+     * @param layers the layers to set
      */
-    public PlicPropertyHolder getPlicPropertyHolder();
+    public void setLayers(String[] layers) {
+        this.layers = layers;
+    }
+
+    /**
+     * @return the base
+     */
+    public String getBase() {
+        return base;
+    }
+
+    /**
+     * @param base the base to set
+     */
+    public void setBase(String base) {
+        this.base = base;
+    }
 
 }

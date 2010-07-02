@@ -20,7 +20,9 @@ package org.inbio.ait.manager;
 
 import java.util.List;
 import org.inbio.ait.model.DwcPropertyHolder;
+import org.inbio.ait.model.LayerPropertyHolder;
 import org.inbio.ait.model.PlicPropertyHolder;
+import org.inbio.ait.model.PostgisLayers;
 
 /**
  *
@@ -39,5 +41,15 @@ public interface ConfigManager {
     public boolean saveToPropertiesFilePlic(PlicPropertyHolder ph);
     public int CountPlic();
     public List<String> getPlicTableFields();
+
+    /* Layers Postgis */
+    public LayerPropertyHolder getLayerPropertyHolder();
+    public boolean saveToPropertiesFileLayer(LayerPropertyHolder ph);
+    public List<String> getLayerTables();
+    public int countAllLayerTables();
+
+    /* Layers local */
+    public PostgisLayers getLayersList();
+    public boolean saveLayersList(PostgisLayers pl);
 
 }

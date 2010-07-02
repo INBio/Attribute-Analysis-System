@@ -21,8 +21,8 @@ package org.inbio.ait.dao.impl;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import org.inbio.ait.dao.DwcDataAccessDAO;
-import org.inbio.ait.model.DwcPropertyHolder;
+import org.inbio.ait.dao.LayerDataAccessDAO;
+import org.inbio.ait.model.LayerPropertyHolder;
 import org.inbio.ait.util.AitDataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -30,26 +30,25 @@ import org.springframework.jdbc.core.JdbcTemplate;
  *
  * @author esmata
  */
-public class DwcDataAccessDAOImpl implements DwcDataAccessDAO{
+public class LayerDataAccessDAOImpl implements LayerDataAccessDAO{
 
     private JdbcTemplate jdbcTemplate;
 
     /**
-     * Method to get a list of all fields from the mapped dwc table
-     * trhow jdbc conection
+     * Method to get a list of all the tables existing on the data base
      */
     @Override
-    public List<String> getDwcTableFields(DwcPropertyHolder ph) {
+    public List<String> getLayerTables(LayerPropertyHolder ph) {
         List<String> result = new ArrayList<String>();
         result.add("unmapped"); //Default value
         try {
             //Stting up the jdbcTemplate
             this.accessToDB(ph);
-            //getColumns(String catalog, String schemaPattern, String tableNamePattern, String columnNamePattern)
-            ResultSet cols = this.jdbcTemplate.getDataSource().getConnection().
-                    getMetaData().getColumns(null, null, ph.getTablename(), null);
-            while (cols.next()) {
-                result.add(cols.getString("COLUMN_NAME"));
+            //getTables(String catalog,String schemaPattern,String tableNamePattern,String[] types)
+            ResultSet tables = this.jdbcTemplate.getDataSource().getConnection().
+                    getMetaData().getTables(null, null, null,new String[] {"TABLE"});
+            while (tables.next()) {
+                result.add(tables.getString("TABLE_NAME"));
             }
             return result;
         } catch (Exception e) {
@@ -59,22 +58,28 @@ public class DwcDataAccessDAOImpl implements DwcDataAccessDAO{
     }
 
     /**
-     * Method to get a total count of dwc registers
+     * Coutn all tables from data base
      */
     @Override
-    public int countAll(DwcPropertyHolder ph) {
-        int result = -1;
+    public int countAllTables(LayerPropertyHolder ph) {
+        int result = 0;
         try {
             //Stting up the jdbcTemplate
             this.accessToDB(ph);
-            return this.jdbcTemplate.queryForInt("Select count(*) from " + ph.getTablename());
-        } catch (Exception e) {
+            //getTables(String catalog,String schemaPattern,String tableNamePattern,String[] types)
+            ResultSet tables = this.jdbcTemplate.getDataSource().getConnection().
+                    getMetaData().getTables(null, null, null,new String[] {"TABLE"});
+            while (tables.next()) {
+                result++;
+            }
             return result;
+        } catch (Exception e) {
+            return -1;
         }
     }
 
     //Getting the access to the data base
-    private void accessToDB(DwcPropertyHolder ph){
+    private void accessToDB(LayerPropertyHolder ph){
         //Getting the data source connection
         AitDataSource ds = new AitDataSource(ph.getDriverClassName(),
                 ph.getUrl(), ph.getUsername(), ph.getPassword());

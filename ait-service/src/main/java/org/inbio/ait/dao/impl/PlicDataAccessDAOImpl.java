@@ -43,6 +43,8 @@ public class PlicDataAccessDAOImpl implements PlicDataAccessDAO{
         List<String> result = new ArrayList<String>();
         result.add("unmapped"); //Default value
         try {
+            //Stting up the jdbcTemplate
+            this.accessToDB(ph);
             //getColumns(String catalog, String schemaPattern, String tableNamePattern, String columnNamePattern)
             ResultSet cols = this.jdbcTemplate.getDataSource().getConnection().
                     getMetaData().getColumns(null, null, ph.getTablename(), null);

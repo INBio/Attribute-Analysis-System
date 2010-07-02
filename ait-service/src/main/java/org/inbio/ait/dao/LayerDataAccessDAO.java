@@ -18,24 +18,17 @@
 
 package org.inbio.ait.dao;
 
-import org.inbio.ait.model.PlicPropertyHolder;
+import java.util.List;
+import org.inbio.ait.model.LayerPropertyHolder;
 
 /**
  *
  * @author esmata
  */
-public interface PlicPropertyHolderDAO {
+public interface LayerDataAccessDAO {
 
-    /**
-     * This method save the info from a PlicPropertyHolder java class
-     * into the plic.properties file
-     */
-    public boolean saveToPropertiesFile(PlicPropertyHolder ph);
+    public List<String> getLayerTables(LayerPropertyHolder ph);
 
-    /**
-     * Returns a PlicPropertyHolder java Object with all the
-     * information from the plic.properties file
-     */
-    public PlicPropertyHolder getPlicPropertyHolder();
+    public int countAllTables(LayerPropertyHolder ph);
 
 }

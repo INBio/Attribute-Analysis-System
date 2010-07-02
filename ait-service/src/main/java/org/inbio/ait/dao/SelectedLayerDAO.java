@@ -18,24 +18,32 @@
 
 package org.inbio.ait.dao;
 
-import org.inbio.ait.model.PlicPropertyHolder;
+import java.util.List;
 
 /**
  *
  * @author esmata
  */
-public interface PlicPropertyHolderDAO {
+public interface SelectedLayerDAO {
 
     /**
-     * This method save the info from a PlicPropertyHolder java class
-     * into the plic.properties file
+     * Persist a single layer
      */
-    public boolean saveToPropertiesFile(PlicPropertyHolder ph);
+    public boolean saveLayers(String layerName);
 
     /**
-     * Returns a PlicPropertyHolder java Object with all the
-     * information from the plic.properties file
+     * Gets the complete list of selected layers
      */
-    public PlicPropertyHolder getPlicPropertyHolder();
+    public List<String> getLayersNames();
+
+    /**
+     * Gets the base layer (position 0)
+     */
+    public List<String> getBaseLayers();
+
+    /**
+     * Updates a single layer (just the base value)
+     */
+    public boolean updateBase(String layerName);
 
 }
