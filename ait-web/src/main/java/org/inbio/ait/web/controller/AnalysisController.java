@@ -27,8 +27,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.inbio.ait.manager.AnalysisManager;
+import org.inbio.ait.manager.ConfigManager;
+import org.inbio.ait.model.PostgisLayers;
 import org.inbio.ait.web.filter.FilterMapWrapper;
 
 /**
@@ -41,8 +44,9 @@ public class AnalysisController implements Controller{
     private FilterMapWrapper filtersMap;
     private String filtersKey;
 
-    // Analysis manager class
+    // Manager classes
     private AnalysisManager analysisManager;
+    private ConfigManager configManager;
 
     /**
      * Method that handle the http request
@@ -58,9 +62,16 @@ public class AnalysisController implements Controller{
         //Map to storage all madel data needed
         Map<String, Object> myModel = new HashMap<String, Object>();
 
+        //Gets the list of selected layers
+        PostgisLayers pl = this.configManager.getLayersList();
+        String[] layers = pl.getLayers();
+
         logger.info("Initialazing geoespatial analysis page");
 
         myModel.put(filtersKey,filtersMap.getFilters());
+        myModel.put("geoserver", "IABIN_Indicadores:");
+        myModel.put("layers", layers);
+
         return new ModelAndView("analysis", "model", myModel);
     }
 
@@ -95,6 +106,20 @@ public class AnalysisController implements Controller{
      */
     public void setFiltersMap(FilterMapWrapper filtersMap) {
         this.filtersMap = filtersMap;
+    }
+
+    /**
+     * @return the configManager
+     */
+    public ConfigManager getConfigManager() {
+        return configManager;
+    }
+
+    /**
+     * @param configManager the configManager to set
+     */
+    public void setConfigManager(ConfigManager configManager) {
+        this.configManager = configManager;
     }
 
 }

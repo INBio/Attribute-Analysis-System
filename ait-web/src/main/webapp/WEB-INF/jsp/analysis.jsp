@@ -43,7 +43,7 @@
             var currentPolygonId; //(FID)
             var currentPolygonName; //(Name)
             //Available layers [[id,name],...]
-            var layersList;
+            var layersList = new Array();
             //Current selected layer
             var layerId; //(FID)
             var layerName; //(Name)
@@ -90,6 +90,16 @@
             function init(){                
                 //Load messages content
                 internationalization();
+
+                //Sets the layersList values
+                <c:forEach var="var" items="${model.layers}" begin="0">
+                layersList.push(new Array('${model.geoserver}${var}','${var}')); //(id,name)
+                </c:forEach>
+                //Sets the layerId,layerIndex and layerName values
+                layerId = layersList[1][0];
+                layerIndex = 1;
+                layerName = layersList[1][1];
+                
                 //initialize map functionality
                 initMap('map');
                 //Create a drop down to specified the current layer

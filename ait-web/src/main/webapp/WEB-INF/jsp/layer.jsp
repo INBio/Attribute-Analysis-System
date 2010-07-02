@@ -15,19 +15,6 @@
         <link rel="stylesheet" type="text/css"
         href="<c:out value="${pageContext.request.contextPath}"/>/<spring:theme code='styleSheet'/>"/>
         <title><fmt:message key="title"/></title>
-        <script type="text/javascript">
-            //Validate mandatory field
-            function validate(){
-                var form = document.getElementById('attributes');
-                var baseLayer = document.getElementById('base');
-                if(baseLayer.value != 'unmapped'){
-                    form.submit();
-                }
-                else{
-                    alert('<fmt:message key="mandatory_values"/>');
-                }
-            }
-        </script>
     </head>
     <body>
         <!-- Header -->
@@ -38,8 +25,10 @@
 
             <!-- Form that represents all the dwc attributes -->
             <form:form method="POST" commandName="attributes" cssStyle="margin:0">
-                <a><fmt:message key="select_base"/>(*):</a>
-                <form:select id="base" path="base" items="${tables}" cssClass="componentSize"/><br><br>
+
+                <!--<a><fmt:message key="select_base"/>(*):</a>
+                <form:select id="base" path="base" items="${tables}" cssClass="componentSize"/><br><br>-->
+                
                 <a><fmt:message key="select_layers_desc"/>:</a><br>
                 <div id="tableDiv" style="width:400px">
                     <table class="contacts" cellspacing="0">
@@ -52,7 +41,7 @@
                     </table>
                 </div>
                 <a href="config.htm" class="simple_link"><fmt:message key="back"/></a>
-                <input type="button" class="simple_button" id="saveAttributes" value="<fmt:message key="save"/>" onclick="validate()"/>
+                <input type="submit" class="simple_button" id="saveAttributes" value="<fmt:message key="save"/>"/>
                 <br><br>
             </form:form>
             <!-- Form ends -->

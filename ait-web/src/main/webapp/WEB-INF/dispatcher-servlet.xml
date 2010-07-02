@@ -64,8 +64,10 @@
     <!-- The geospatial analysis controller -->
     <bean name="/analysis.htm" class="org.inbio.ait.web.controller.AnalysisController">
         <property name="analysisManager" ref="analysisManager"/>
+        <property name="configManager" ref="configManager"/>
         <property name="filtersMap" ref="taxonFilters"/>
         <property name="filtersKey" value="taxonFilters"/>
+
     </bean>
     <!-- The config controller -->
     <bean name="/config.htm" class="org.inbio.ait.web.controller.ConfigController"/>
@@ -78,6 +80,7 @@
         <property name="formView" value="statistical"/>
         <property name="successView" value="viewChart"/>
         <property name="queryManager" ref="queryManager"/>
+        <property name="configManager" ref="configManager"/>  
     </bean>
     <!-- Chart viewer -->
     <bean name="/chart.htm" class="org.inbio.ait.web.controller.ChartController"/>

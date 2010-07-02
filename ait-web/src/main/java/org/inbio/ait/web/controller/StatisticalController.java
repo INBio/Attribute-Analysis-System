@@ -20,10 +20,13 @@ package org.inbio.ait.web.controller;
 
 import java.awt.Color;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.inbio.ait.manager.ConfigManager;
 import org.inbio.ait.manager.QueryManager;
+import org.inbio.ait.model.PostgisLayers;
 import org.inbio.ait.web.filter.FilterMapWrapper;
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
@@ -41,6 +44,7 @@ public class StatisticalController extends SimpleFormController {
     private FilterMapWrapper filtersMap;
     private String filtersKey;
     private QueryManager queryManager;
+    private ConfigManager configManager;
 
     /**
      * Setting command class and command name
@@ -58,8 +62,14 @@ public class StatisticalController extends SimpleFormController {
      */
     @Override
     protected Map referenceData(HttpServletRequest request) throws Exception {
+        //Gets the list of layers
+        PostgisLayers pl = this.configManager.getLayersList();
+        String[] layers = pl.getLayers();
+        //Pass data to the view
         Map referenceData = new HashMap();
         referenceData.put(filtersKey,filtersMap.getFilters());
+        referenceData.put("geoserver", "IABIN_Indicadores:");
+        referenceData.put("layers", layers);
         return referenceData;
     }
 
@@ -198,5 +208,19 @@ public class StatisticalController extends SimpleFormController {
      */
     public void setQueryManager(QueryManager queryManager) {
         this.queryManager = queryManager;
+    }
+
+    /**
+     * @return the configManager
+     */
+    public ConfigManager getConfigManager() {
+        return configManager;
+    }
+
+    /**
+     * @param configManager the configManager to set
+     */
+    public void setConfigManager(ConfigManager configManager) {
+        this.configManager = configManager;
     }
 }
