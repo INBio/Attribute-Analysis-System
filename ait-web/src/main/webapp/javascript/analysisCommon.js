@@ -99,7 +99,7 @@ function initMap(divId){
     map.render(myMapDiv);
 
     //Setting the default current layer (Layers drop down)
-    layerId = 'IABIN_Indicadores:bd_meso_limite_paies';
+    layerId = 'IABIN_Indicadores:meso_limite_paies';
     layerIndex = 1; //Porque la 0 es la capa de VE, Yahho o Google
     layerName = 'Paises - Mesoamérica';
 
@@ -109,15 +109,15 @@ function initMap(divId){
     //virtualEarthLayer  = new OpenLayers.Layer.VirtualEarth('Virtual Earth');
 
     //Setup Meso layer
-    base = addLayerWMS( 'Mesoamerica','IABIN_Indicadores:bd_meso_limite_paies');
+    base = addLayerWMS( 'Mesoamerica','IABIN_Indicadores:meso_limite_paies');
     base.setVisibility(true);
 
     //Setup CR Provinces layer
-    provincias = addLayerWMS( 'Provincias-CR','IABIN_Indicadores:bd_cr_provincias');
+    provincias = addLayerWMS( 'Provincias-CR','IABIN_Indicadores:provincias');
     provincias.setVisibility(true);
 
     //Setup PMA ASP layer
-    aspPMA = addLayerWMS( 'ASP-PMA','IABIN_Indicadores:bd_pan_areas_protegidas');
+    aspPMA = addLayerWMS( 'ASP-PMA','IABIN_Indicadores:pan_areas_protegidas');
     aspPMA.setVisibility(true);
 
     map.addLayer(googleLayer);
@@ -127,9 +127,9 @@ function initMap(divId){
     //--------------------------------------------------------------------------
 
     //Variables to manage the events on the diferent layers (FIXME)
-    layersList = new Array(new Array('IABIN_Indicadores:bd_meso_limite_paies','Paises - Mesoamérica'),
-    new Array('IABIN_Indicadores:bd_cr_provincias','Provincias - CR'),
-    new Array('IABIN_Indicadores:bd_pan_areas_protegidas','Área Silvestre Protegida - PMA'));
+    layersList = new Array(new Array('IABIN_Indicadores:meso_limite_paies','Paises - Mesoamérica'),
+    new Array('IABIN_Indicadores:provincias','Provincias - CR'),
+    new Array('IABIN_Indicadores:pan_areas_protegidas','Área Silvestre Protegida - PMA'));
 
     //Map event to enter the geographical parameters
     map.events.register('click', map, addMapListener);
@@ -390,7 +390,7 @@ function removeTreeParamElement(divNum) {
 function clearGeograficVars(){
     currentPolygonId = null;
     currentPolygonName = null;
-    layerId = 'IABIN_Indicadores:bd_meso_limite_paies';
+    layerId = 'IABIN_Indicadores:meso_limite_paies';
     layerIndex = 0;
     layerName = 'Paises - Mesoamérica';
     polygonsList = null;

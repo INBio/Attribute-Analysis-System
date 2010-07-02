@@ -19,11 +19,12 @@
 package org.inbio.ait.web.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.inbio.ait.manager.ConfigManager;
-import org.inbio.ait.model.DwcPropertyHolder;
+import org.inbio.ait.model.PostgisLayers;
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
@@ -32,31 +33,30 @@ import org.springframework.web.servlet.mvc.SimpleFormController;
  *
  * @author esmata
  */
-public class ConndwcController extends SimpleFormController{
+public class LayerController extends SimpleFormController{
 
     private ConfigManager configManager;
 
     /**
      * Setting command class and command name
      */
-    public ConndwcController() {
-        setCommandClass(DwcPropertyHolder.class);
-        setCommandName("connection");
+    public LayerController() {
+        setCommandClass(PostgisLayers.class);
+        setCommandName("attributes");
     }
 
     /**
-     * Seting the current DwcPropertyHolder Object to the form
+     * Seting a new PostgisLayers Object to the form
      * @param request
      * @return
      * @throws java.lang.Exception
      */
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
-        DwcPropertyHolder dph = (DwcPropertyHolder) super.formBackingObject(request);
-        dph = configManager.getDwcPropertyHolder();
-        return dph;
+        PostgisLayers pl = (PostgisLayers) super.formBackingObject(request);
+        pl = this.configManager.getLayersList();
+        return pl;
     }
-
 
     /**
      * Pass to the form the necessary data to be shown in the jsp
@@ -67,13 +67,15 @@ public class ConndwcController extends SimpleFormController{
     @Override
     protected Map referenceData(HttpServletRequest request) throws Exception {
         Map referenceData = new HashMap();
+        List tables = this.configManager.getLayerTables();
+        referenceData.put("tables",tables);
         return referenceData;
     }
 
     /**
-     * Gets the Darwin Core Maping object to be persisted in the
-     * dwc.properties file. This file eventually will be used
-     * in the indexing proccess
+     * Gets the Plinian Core Maping object to be persisted in the
+     * plic.properties file. This file eventually will to be used
+     * in the tables indexing proccess
      * @throws java.lang.Exception
      */
     @Override
@@ -81,17 +83,15 @@ public class ConndwcController extends SimpleFormController{
             Object command, BindException errors) throws Exception{
 
         //Getting query parameters
-		DwcPropertyHolder connection = (DwcPropertyHolder) command;
+		PostgisLayers attributes = (PostgisLayers) command;
+        attributes.getBase();
 
-        //Persist the connection attributes
-        boolean savePropertiesOk = this.configManager.saveToPropertiesFile(connection);
-        //Retrive a total count from db for the specified table (test)
-        int total = this.configManager.CountDwc();
+        //Persist the layers
+        boolean saveLayersOk = this.configManager.saveLayersList(attributes);
 
-        if(savePropertiesOk == true && total != -1){ //Everything is ok
+        if(saveLayersOk == true){ //Everything is ok
             //Return the view with the required information
             ModelAndView mv = new ModelAndView(getSuccessView());
-            mv.addObject("total", total);
             return mv;
         }
         else{ //Error view
@@ -100,7 +100,6 @@ public class ConndwcController extends SimpleFormController{
             mv.addObject("error", error);
             return mv;
         }
-
     }
 
     /**
@@ -116,5 +115,4 @@ public class ConndwcController extends SimpleFormController{
     public void setConfigManager(ConfigManager configManager) {
         this.configManager = configManager;
     }
-
 }

@@ -71,7 +71,7 @@ public class ConnplicController extends SimpleFormController{
 
     /**
      * Gets the Plinian Core Maping object to be persisted in the
-     * plic.properties file. This file eventually will to be used
+     * plic.properties file. This file eventually will be used
      * in the indexing proccess
      * @throws java.lang.Exception
      */

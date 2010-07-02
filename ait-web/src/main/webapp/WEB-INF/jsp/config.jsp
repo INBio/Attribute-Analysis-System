@@ -26,7 +26,7 @@
                 <a href="conndwc.htm" class="link"><fmt:message key="dwc_config"/></a><br>
                 <a href="connplic.htm" class="link"><fmt:message key="plic_config"/></a><br>
                 <a href="fixme.htm" class="link"><fmt:message key="attri_config"/></a><br>
-                <a href="fixme.htm" class="link"><fmt:message key="postgis_config"/></a><br>
+                <a href="connlayer.htm" class="link"><fmt:message key="postgis_config"/></a><br>
             </div>
             <div id="footer">
                 <fmt:message key="footer_text"/>

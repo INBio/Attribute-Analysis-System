@@ -149,6 +149,9 @@
         <property name="dwcDataAccessDAO" ref="dwcDataAccessDAO"/>
         <property name="plicPropertyHolderDAO" ref="plicPropertyHolderDAO"/>
         <property name="plicDataAccessDAO" ref="plicDataAccessDAO"/>
+        <property name="layerPropertyHolderDAO" ref="layerPropertyHolderDAO"/>
+        <property name="layerDataAccessDAO" ref="layerDataAccessDAO"/>
+        <property name="selectedLayerDAO" ref="selectedLayerDAO"/>
     </bean>
 
     <!--.....................................................................-->
@@ -177,5 +180,10 @@
     <bean id="dwcDataAccessDAO" class="org.inbio.ait.dao.impl.DwcDataAccessDAOImpl"/>
     <bean id="plicPropertyHolderDAO" class="org.inbio.ait.dao.impl.PlicPropertyHolderDAOImpl"/>
     <bean id="plicDataAccessDAO" class="org.inbio.ait.dao.impl.PlicDataAccessDAOImpl"/>
+    <bean id="layerPropertyHolderDAO" class="org.inbio.ait.dao.impl.LayerPropertyHolderDAOImpl"/>
+    <bean id="layerDataAccessDAO" class="org.inbio.ait.dao.impl.LayerDataAccessDAOImpl"/>
+     <bean id="selectedLayerDAO" class="org.inbio.ait.dao.impl.SelectedLayerDAOImpl">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
     
 </beans>

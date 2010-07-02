@@ -105,5 +105,17 @@
         <property name="successView" value="config"/>
         <property name="configManager" ref="configManager"/>
     </bean>
+    <!-- Layers mapping connection atributes -->
+    <bean name="/connlayer.htm" class="org.inbio.ait.web.controller.ConnlayerController">
+        <property name="formView" value="connlayer"/>
+        <property name="successView" value="connlayerSuccess"/>
+        <property name="configManager" ref="configManager"/>
+    </bean>
+    <!-- Layers selecction -->
+    <bean name="/layerAttributes.htm" class="org.inbio.ait.web.controller.LayerController">
+        <property name="formView" value="layer"/>
+        <property name="successView" value="config"/>
+        <property name="configManager" ref="configManager"/>
+    </bean>
     
 </beans>

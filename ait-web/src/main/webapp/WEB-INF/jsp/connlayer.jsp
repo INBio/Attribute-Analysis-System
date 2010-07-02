@@ -1,6 +1,6 @@
 <%-- 
-    Document   : connplic
-    Created on : Jun 29, 2010, 3:45:44 PM
+    Document   : connlayer
+    Created on : Jul 1, 2010, 8:31:38 AM
     Author     : esmata
 --%>
 
@@ -17,15 +17,14 @@
         <title><fmt:message key="title"/></title>
         <script type="text/javascript">
             //Verifing mandatory data
-            function verify(){
+            function verifyLayer(){
                 var form = document.getElementById('connection');
                 var driver = document.getElementById('driverClassName');
                 var url = document.getElementById('url');
                 var user = document.getElementById('username');
                 var pass = document.getElementById('password');
-                var table = document.getElementById('tablename');
                 if(driver.value != 'unmapped' && url.value != '' && url.value != 'unmapped' && user.value != '' && user.value != 'unmapped'
-                    && table.value != '' && table.value != 'unmapped' && pass.value != '' && pass.value != 'unmapped'){
+                    && pass.value != '' && pass.value != 'unmapped'){
                     form.submit();
                 }
                 else{
@@ -39,9 +38,9 @@
         <jsp:include page="/WEB-INF/jsp/header.jsp"/>
         <!-- Content -->
         <div id="contenido">
-            <h2><fmt:message key="plic_mapping_connection"/></h2><br>
+            <h2><fmt:message key="mapping_connection"/></h2><br>
 
-            <!-- Form that represents all the dwc attributes -->
+            <!-- Form that represents all the layer attributes -->
             <form:form method="POST" commandName="connection" cssStyle="margin:0">
                 <div id="configConn" style="width:500px">
                     <table class="contacts" cellspacing="0">
@@ -51,8 +50,6 @@
                                 <form:select id="driverClassName" path="driverClassName" cssClass="sizeAll">
                                     <form:option value="unmapped"><fmt:message key="drop_down_null_option"/></form:option>
                                     <form:option value="org.postgresql.Driver"><fmt:message key="postgresDriver"/></form:option>
-                                    <form:option value="com.mysql.jdbc.Driver"><fmt:message key="mysqlDriver"/></form:option>
-                                    <form:option value="oracle.jdbc.OracleDriver"><fmt:message key="oracleDriver"/></form:option>
                                 </form:select>
                             </td>
                         </tr>
@@ -74,18 +71,12 @@
                                 <form:input id="password" path="password" cssClass="sizeAll"></form:input>
                             </td>
                         </tr>
-                        <tr>
-                            <td class="contact2" width="40%"><fmt:message key="db_table"/>:</td>
-                            <td class="contact2" width="60%">
-                                <form:input id="tablename" path="tablename" cssClass="sizeAll"></form:input>
-                            </td>
-                        </tr>
                     </table>
                 </div>
                 <!-- Button's acctions -->
                 <div id="buttons">
                     <a href="config.htm" class="simple_link"><fmt:message key="back"/></a>
-                    <input type="button" class="simple_button" id="saveConnAttributes" value="<fmt:message key="test_conn"/>" onclick="verify()"/>
+                    <input type="button" class="simple_button" id="saveConnAttributes" value="<fmt:message key="test_conn"/>" onclick="verifyLayer()"/>
                 </div>
             </form:form>
 
@@ -96,4 +87,3 @@
         </div>
     </body>
 </html>
-

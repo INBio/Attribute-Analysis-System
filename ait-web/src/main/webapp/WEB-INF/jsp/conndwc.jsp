@@ -25,7 +25,7 @@
                 var pass = document.getElementById('password');
                 var table = document.getElementById('tablename');
                 if(driver.value != 'unmapped' && url.value != '' && url.value != 'unmapped' && user.value != '' && user.value != 'unmapped'
-                    && table.value != '' && table.value != 'unmapped' && pass.value != ''){
+                    && table.value != '' && table.value != 'unmapped' && pass.value != '' && pass.value != 'unmapped'){
                     form.submit();
                 }
                 else{
@@ -84,6 +84,7 @@
                 </div>
                 <!-- Button's acctions -->
                 <div id="buttons">
+                    <a href="config.htm" class="simple_link"><fmt:message key="back"/></a>
                     <input type="button" class="simple_button" id="saveConnAttributes" value="<fmt:message key="test_conn"/>" onclick="verify()"/>
                 </div>
             </form:form>

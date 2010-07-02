@@ -21,7 +21,8 @@
         <jsp:include page="/WEB-INF/jsp/header.jsp"/>
         <!-- Content -->
         <div id="contenido">
-            <h2 style="color:green"><fmt:message key="dwc_success"/></h2><br>
+            <h2 style="color:green"><fmt:message key="dwc_success"/></h2>
+            <img src="${pageContext.request.contextPath}/themes/default/images/ok.png" ></img>
             <fmt:message key="conn_total"/>: ${total} <br><br>
             <a href="config.htm" class="simple_link"><fmt:message key="back"/></a>
             <a href="dwcAttributes.htm" class="simple_link"><fmt:message key="continue"/></a>

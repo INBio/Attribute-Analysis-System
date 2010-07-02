@@ -1,6 +1,6 @@
 <%-- 
-    Document   : connplicSuccess
-    Created on : Jun 29, 2010, 4:20:03 PM
+    Document   : connlayerSuccess
+    Created on : Jul 1, 2010, 9:49:50 AM
     Author     : esmata
 --%>
 
@@ -23,9 +23,9 @@
         <div id="contenido">
             <h2 style="color:green"><fmt:message key="dwc_success"/></h2>
             <img src="${pageContext.request.contextPath}/themes/default/images/ok.png" ></img>
-            <fmt:message key="conn_total"/>: ${total} <br><br>
+            <fmt:message key="conn_layer_total"/>: ${total} <br><br>
             <a href="config.htm" class="simple_link"><fmt:message key="back"/></a>
-            <a href="plicAttributes.htm" class="simple_link"><fmt:message key="continue"/></a>
+            <a href="layerAttributes.htm" class="simple_link"><fmt:message key="select_layers"/></a>
         </div>
         <!-- Content ending -->
         <div id="footer">
