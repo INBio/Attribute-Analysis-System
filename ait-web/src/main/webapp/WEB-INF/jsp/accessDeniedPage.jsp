@@ -17,15 +17,23 @@
         <title><fmt:message key="title"/></title>
     </head>
     <body>
-        <!-- Header -->
-        <jsp:include page="/WEB-INF/jsp/header.jsp"/>
         <!-- Content -->
         <div id="contenido">
-            Acceso denegado (FIXME)
+            <!-- Header -->
+            <jsp:include page="/WEB-INF/jsp/header.jsp"/>
+
+            <div id="content">
+                <br><br>
+                <img src="${pageContext.request.contextPath}/themes/default/images/error.png" ></img>
+                <fmt:message key="access_denied"/>
+                <br><br><br>
+            </div>
+
+            <!-- Footer -->
+            <div id="footer">
+                <fmt:message key="footer_text"/>
+            </div>
         </div>
         <!-- Content ending -->
-        <div id="footer">
-            <fmt:message key="footer_text"/>
-        </div>
     </body>
 </html>

@@ -17,19 +17,25 @@
         <title><fmt:message key="title"/></title>
     </head>
     <body>
-        <!-- Header -->
-        <jsp:include page="/WEB-INF/jsp/header.jsp"/>
         <!-- Content -->
         <div id="contenido">
-            <h2 style="color:green"><fmt:message key="dwc_success"/></h2>
-            <img src="${pageContext.request.contextPath}/themes/default/images/ok.png" ></img>
-            <fmt:message key="conn_total"/>: ${total} <br><br>
-            <a href="config.htm" class="simple_link"><fmt:message key="back"/></a>
-            <a href="dwcAttributes.htm" class="simple_link"><fmt:message key="continue"/></a>
+            <!-- Header -->
+            <jsp:include page="/WEB-INF/jsp/header.jsp"/>
+
+            <div id="content">
+                <h2 style="color:green"><fmt:message key="dwc_success"/></h2>
+                <img src="${pageContext.request.contextPath}/themes/default/images/ok.png" ></img>
+                <fmt:message key="conn_total"/>: ${total} <br><br>
+                <a href="config.htm" class="simple_link"><fmt:message key="back"/></a>
+                <a href="dwcAttributes.htm" class="simple_link"><fmt:message key="continue"/></a>
+            </div>
+
+            <!-- Footer -->
+            <br><br>
+            <div id="footer">
+                <fmt:message key="footer_text"/>
+            </div>
         </div>
         <!-- Content ending -->
-        <div id="footer">
-            <fmt:message key="footer_text"/>
-        </div>
     </body>
 </html>

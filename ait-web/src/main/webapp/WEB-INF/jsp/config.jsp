@@ -17,22 +17,28 @@
         <title><fmt:message key="title"/></title>
     </head>
     <body>
-        <!-- Header -->
-        <jsp:include page="/WEB-INF/jsp/header.jsp"/>
         <!-- Content -->
         <form name = "config" method = "get">
             <div id="contenido">
-                <h2><fmt:message key="config_title"/></h2><br>
-                <a href="conndwc.htm" class="link"><fmt:message key="dwc_config"/></a><br>
-                <a href="connplic.htm" class="link"><fmt:message key="plic_config"/></a><br>
-                <a href="fixme.htm" class="link"><fmt:message key="attri_config"/></a><br>
-                <a href="connlayer.htm" class="link"><fmt:message key="postgis_config"/></a><br>
+                <!-- Header -->
+                <jsp:include page="/WEB-INF/jsp/header.jsp"/>
+
+                <div id="content">
+                    <h2><fmt:message key="config_title"/></h2><br>
+                    <a href="conndwc.htm" class="link"><fmt:message key="dwc_config"/></a><br>
+                    <a href="connplic.htm" class="link"><fmt:message key="plic_config"/></a><br>
+                    <a href="fixme.htm" class="link"><fmt:message key="attri_config"/></a><br>
+                    <a href="connlayer.htm" class="link"><fmt:message key="postgis_config"/></a>
+                </div>
+
+                <!-- Footer -->
+                <br><br>
+                <div id="footer">
+                    <fmt:message key="footer_text"/>
+                </div>
             </div>
-            <div id="footer">
-                <fmt:message key="footer_text"/>
-            </div>
-        </form>
-        <!-- Content ending -->
+            <!-- Content ending -->
+        </form>        
     </body>
 </html>
 

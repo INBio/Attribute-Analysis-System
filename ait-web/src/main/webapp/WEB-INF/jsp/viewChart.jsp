@@ -92,39 +92,44 @@
         </script>
 	</head>
 	<body onload="initLoadingPanel()">
-        <!-- Header -->
-        <jsp:include page="/WEB-INF/jsp/header.jsp"/>
         <!-- Content -->
         <div id="contenido">
-            <div align="center">
-                <!-- Chart title -->
-                <!--<p class="titles" ><fmt:message key="chart_title"/></p>-->
-                <br>
-                <a class="link_back" href="statisticalParameters.htm" style="height: 24px; width: 46px">
-                    <fmt:message key="back"/></a><br>
-                <br>
-                <!-- Chart image -->
-                <c:choose>
-                    <c:when test="${chartDisplay == true}">
-                        <img src="chart.htm" ></img>
-                        <div id="details">
-                            <input type="button" class="simple_button" id="showOnMap0" value="<fmt:message key="see_detail"/>" onclick="viewChartDetail()" />
-                        </div>
-                    </c:when>
-                    <c:otherwise>
-                        <p class="titles">
-                            No data!
-                        </p>
-                    </c:otherwise>
-                </c:choose>
-                <!-- Panel to show the detailed result -->
-                <div id="detailedResults"></div>
-                <!-- Chart description -->
-                <!--<p class="texts"><fmt:message key="chart_description"/></p>-->
+            <!-- Header -->
+            <jsp:include page="/WEB-INF/jsp/header.jsp"/>
+
+            <div id="content">
+                <div align="center">
+                    <!-- Chart title -->
+                    <!--<p class="titles" ><fmt:message key="chart_title"/></p>-->
+                    <br>
+                    <a class="link_back" href="statisticalParameters.htm" style="height: 24px; width: 46px">
+                        <fmt:message key="back"/></a><br>
+                    <br>
+                    <!-- Chart image -->
+                    <c:choose>
+                        <c:when test="${chartDisplay == true}">
+                            <img src="chart.htm" ></img>
+                            <div id="details">
+                                <input type="button" class="simple_button" id="showOnMap0" value="<fmt:message key="see_detail"/>" onclick="viewChartDetail()" />
+                            </div>
+                        </c:when>
+                        <c:otherwise>
+                            <p class="titles">
+                                No data!
+                            </p>
+                        </c:otherwise>
+                    </c:choose>
+                    <!-- Panel to show the detailed result -->
+                    <div id="detailedResults"></div>
+                    <!-- Chart description -->
+                    <!--<p class="texts"><fmt:message key="chart_description"/></p>-->
+                </div>
             </div>
-        </div>
-        <div id="footer">
-            <fmt:message key="footer_text"/>
-        </div>
+
+            <!--  Footer-->
+            <div id="footer">
+                <fmt:message key="footer_text"/>
+            </div>
+        </div> <!-- Content ending -->
 	</body>
 </html>

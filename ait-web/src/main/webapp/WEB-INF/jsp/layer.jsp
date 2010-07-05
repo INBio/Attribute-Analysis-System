@@ -17,39 +17,42 @@
         <title><fmt:message key="title"/></title>
     </head>
     <body>
-        <!-- Header -->
-        <jsp:include page="/WEB-INF/jsp/header.jsp"/>
         <!-- Content -->
         <div id="contenido">
-            <h2><fmt:message key="select_layers"/></h2><br>            
+            <!-- Header -->
+            <jsp:include page="/WEB-INF/jsp/header.jsp"/>
 
-            <!-- Form that represents all the dwc attributes -->
-            <form:form method="POST" commandName="attributes" cssStyle="margin:0">
+            <div id="content">
+                <h2><fmt:message key="select_layers"/></h2><br>
+                <!-- Form that represents all the dwc attributes -->
+                <form:form method="POST" commandName="attributes" cssStyle="margin:0">
 
-                <!--<a><fmt:message key="select_base"/>(*):</a>
-                <form:select id="base" path="base" items="${tables}" cssClass="componentSize"/><br><br>-->
-                
-                <a><fmt:message key="select_layers_desc"/>:</a><br>
-                <div id="tableDiv" style="width:400px">
-                    <table class="contacts" cellspacing="0">
-                        <c:forEach var="var" items="${tables}" begin="1">
-                            <tr>
-                                <td class="contact">${var}</td>
-                                <td class="contact"><form:checkbox path="layers" value="${var}"/></td>
-                            </tr>
-                        </c:forEach>
-                    </table>
-                </div>
-                <a href="config.htm" class="simple_link"><fmt:message key="back"/></a>
-                <input type="submit" class="simple_button" id="saveAttributes" value="<fmt:message key="save"/>"/>
-                <br><br>
-            </form:form>
-            <!-- Form ends -->
+                    <!--<a><fmt:message key="select_base"/>(*):</a>
+                    <form:select id="base" path="base" items="${tables}" cssClass="componentSize"/><br><br>-->
+
+                    <a><fmt:message key="select_layers_desc"/>:</a><br>
+                    <div id="tableDiv" style="width:400px">
+                        <table class="contacts" cellspacing="0">
+                            <c:forEach var="var" items="${tables}" begin="1">
+                                <tr>
+                                    <td class="contact">${var}</td>
+                                    <td class="contact"><form:checkbox path="layers" value="${var}"/></td>
+                                </tr>
+                            </c:forEach>
+                        </table>
+                    </div>
+                    <a href="config.htm" class="simple_link"><fmt:message key="back"/></a>
+                    <input type="submit" class="simple_button" id="saveAttributes" value="<fmt:message key="save"/>"/>
+                    <br><br>
+                </form:form>
+                <!-- Form ends -->
+            </div>
             
+            <!-- Footer -->
+            <div id="footer">
+                <fmt:message key="footer_text"/>
+            </div>
         </div>
         <!-- Content ending -->
-        <div id="footer">
-            <fmt:message key="footer_text"/>
-        </div>
     </body>
 </html>

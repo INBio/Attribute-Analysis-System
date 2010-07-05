@@ -17,19 +17,25 @@
         <title><fmt:message key="title"/></title>
     </head>
     <body>
-        <!-- Header -->
-        <jsp:include page="/WEB-INF/jsp/header.jsp"/>
         <!-- Content -->
         <div id="contenido">
-            <h2><fmt:message key="error"/></h2><br>
-            <img src="${pageContext.request.contextPath}/themes/default/images/error.png" ></img>
-            <fmt:message key="error_detail"/>${error} <br><br>
-            <a class="simple_link" href="config.htm" style="height: 24px; width: 46px">
-            <fmt:message key="back"/></a>
+            <!-- Header -->
+            <jsp:include page="/WEB-INF/jsp/header.jsp"/>
+
+            <div id="content">
+                <h2><fmt:message key="error"/></h2><br>
+                <img src="${pageContext.request.contextPath}/themes/default/images/error.png" ></img>
+                <fmt:message key="error_detail"/>${error} <br><br>
+                <a class="simple_link" href="config.htm" style="height: 24px; width: 46px">
+                <fmt:message key="back"/></a>
+            </div>
+
+            <!-- Footer -->
+            <br><br>
+            <div id="footer">
+                <fmt:message key="footer_text"/>
+            </div>
         </div>
         <!-- Content ending -->
-        <div id="footer">
-            <fmt:message key="footer_text"/>
-        </div>
     </body>
 </html>

@@ -351,9 +351,6 @@
             </c:forEach>
         </script>
 
-        <!-- Header -->
-        <jsp:include page="/WEB-INF/jsp/header.jsp"/>
-
         <!-- Content -->
         <form:form method="POST" commandName="parameters" cssStyle="margin:0">
 
@@ -368,106 +365,111 @@
             <form:hidden path="title" id="ChartTitle"/>
 
             <div id="contenido">
+                <!-- Header -->
+                <jsp:include page="/WEB-INF/jsp/header.jsp"/>
 
-                <h2><fmt:message key="statistic_analysis"/></h2>
+                <div id="content">
+                    <h2><fmt:message key="statistic_analysis"/></h2>
+                    <div id="querysPanel">
 
-                <div id="querysPanel">
-
-                    <!-- Chart type Panel -->
-                    <div id="settings" class="queryPanel">
-                        <div id="chartS1" class="chartSetting" >
-                            <p style="margin:1px"><a> <fmt:message key="chart_type"/>: </a></p>
-                            <form:select id="chartType" path="type" cssClass="componentSize">
-                                <!-- See ChartType.java enum to verify de options values -->
-                                <form:option value="select"><fmt:message key="drop_down_null_option"/></form:option>
-                                <form:option value="bar"><fmt:message key="barChart"/></form:option>
-                                <form:option value="line"><fmt:message key="lineChart"/></form:option>
-                            </form:select>
+                        <!-- Chart type Panel -->
+                        <div id="settings" class="queryPanel">
+                            <div id="chartS1" class="chartSetting" >
+                                <p style="margin:1px"><a> <fmt:message key="chart_type"/>: </a></p>
+                                <form:select id="chartType" path="type" cssClass="componentSize">
+                                    <!-- See ChartType.java enum to verify de options values -->
+                                    <form:option value="select"><fmt:message key="drop_down_null_option"/></form:option>
+                                    <form:option value="bar"><fmt:message key="barChart"/></form:option>
+                                    <form:option value="line"><fmt:message key="lineChart"/></form:option>
+                                </form:select>
+                            </div>
+                            <div id="chartS2" class="chartSetting">
+                                <p style="margin:1px"><a> <fmt:message key="x_axis"/>: </a></p>
+                                <form:select id="xAxis" path="xaxis" cssClass="componentSize" onchange="changeAxis()">
+                                    <!-- See ChartCriteria.java enum to verify the options values -->
+                                    <form:option value="0"><fmt:message key="drop_down_null_option"/></form:option>
+                                    <form:option value="1"><fmt:message key="taxonomical_criteria_title"/></form:option>
+                                    <form:option value="2"><fmt:message key="geografical_criteria_title"/></form:option>
+                                    <form:option value="3"><fmt:message key="indicators_criteria_title"/></form:option>
+                                </form:select>
+                            </div>
+                            <div id="chartS3" class="chartSetting">
+                                <p style="margin:1px"><a> <fmt:message key="y_axis"/>: </a></p>
+                                <form:select id="yAxis" path="yaxis" cssClass="componentSize" onchange="changeAxis()">
+                                    <!-- See ChartCriteria.java enum to verify the options values -->
+                                    <form:option value="0"><fmt:message key="drop_down_null_option"/></form:option>
+                                    <form:option value="1"><fmt:message key="taxonomical_criteria_title"/></form:option>
+                                    <form:option value="2"><fmt:message key="geografical_criteria_title"/></form:option>
+                                    <form:option value="3"><fmt:message key="indicators_criteria_title"/></form:option>
+                                </form:select>
+                            </div>
                         </div>
-                        <div id="chartS2" class="chartSetting">
-                            <p style="margin:1px"><a> <fmt:message key="x_axis"/>: </a></p>
-                            <form:select id="xAxis" path="xaxis" cssClass="componentSize" onchange="changeAxis()">
-                                <!-- See ChartCriteria.java enum to verify the options values -->
-                                <form:option value="0"><fmt:message key="drop_down_null_option"/></form:option>
-                                <form:option value="1"><fmt:message key="taxonomical_criteria_title"/></form:option>
-                                <form:option value="2"><fmt:message key="geografical_criteria_title"/></form:option>
-                                <form:option value="3"><fmt:message key="indicators_criteria_title"/></form:option>
-                            </form:select>
+
+                        <!-- GIS Panel -->
+                        <div id="queryPanel1" class="queryPanel">
+                            <p class="criteria_title">
+                            <fmt:message key="geografical_criteria_title"/></p>
+                            <div id="currentLayer"></div>
+                            <div id="info"></div>
+                            <span id="mapParameters" style="font-size:10px"></span>
                         </div>
-                        <div id="chartS3" class="chartSetting">
-                            <p style="margin:1px"><a> <fmt:message key="y_axis"/>: </a></p>
-                            <form:select id="yAxis" path="yaxis" cssClass="componentSize" onchange="changeAxis()">
-                                <!-- See ChartCriteria.java enum to verify the options values -->
-                                <form:option value="0"><fmt:message key="drop_down_null_option"/></form:option>
-                                <form:option value="1"><fmt:message key="taxonomical_criteria_title"/></form:option>
-                                <form:option value="2"><fmt:message key="geografical_criteria_title"/></form:option>
-                                <form:option value="3"><fmt:message key="indicators_criteria_title"/></form:option>
-                            </form:select>
+
+                        <!-- Taxonomy Panel -->
+                        <div id="queryPanel2" class="queryPanel">
+                            <p class="criteria_title">
+                            <fmt:message key="taxonomical_criteria_title"/></p>
+                            <p style="margin:1px"><a> <fmt:message key="taxonomy_level"/>: </a></p>
+                            <select name="taxonType" id="taxonTypeId" class="componentSize" tabindex="12" onchange="javascript:changeTaxonInput();" onKeyUp="javascript:changeTaxonInput();">
+                                <c:forEach items="${taxonFilters}" var="taxonFilter">
+                                    <option value="<c:out value="${taxonFilter.id}"/>"<c:if test="${taxonFilter.id == taxonType}"> selected="selected"</c:if>>
+                                        <fmt:message key="${taxonFilter.displayName}"/>
+                                    </option>
+                                </c:forEach>
+                            </select>
+                            <p style="margin:1px"><a> <fmt:message key="taxon_name"/>: </a></p>
+                            <span id="newTaxonValue">
+                                <input type="text" id="taxonId" tabindex="13" name="taxonValue" value="<c:out value="${taxonValue}"/>"/>
+                                <div id="taxonContainer"></div>
+                            </span>
+                            <input type="button" class="my_Button" id="addToListButtonTax" value="Agregar criterio" onclick="addTaxonParam()" />
+                            <span id="taxParameters" style="font-size:10px"></span>
+                            <script type="text/javascript">
+                                changeTaxonInput();
+                            </script>
+                        </div>
+
+                        <!-- Indicator Panel -->
+                        <div id="queryPanel3" class="queryPanel">
+                            <p class="criteria_title">
+                            <fmt:message key="indicators_criteria_title"/></p>
+                            <div id="treeDiv"></div>
+                            <input type="button" class="my_Button" id="addToListButtonIndi" value="Agregar criterio" onclick="addIndicatorParam()" />
+                            <span id="treeParameters" style="font-size:10px"></span>
+                        </div>
+
+                        <!-- Query Button -->
+                        <input type="button" class="main_Button" id="makeQueryButton" value="<fmt:message key="generate_chart"/>"
+                               onclick="validateParameters()" />
+                    </div>
+
+                    <!-- Map Panel -->
+                    <div id="mapPanel">
+                        <div id="map"> </div>
+                        <div id="wrapper">
+                            <div id="location">location</div>
+                            <div id="scale"></div>
                         </div>
                     </div>
 
-                    <!-- GIS Panel -->
-                    <div id="queryPanel1" class="queryPanel">
-                        <p class="criteria_title">
-                        <fmt:message key="geografical_criteria_title"/></p>
-                        <div id="currentLayer"></div>
-                        <div id="info"></div>
-                        <span id="mapParameters" style="font-size:10px"></span>
-                    </div>
-
-                    <!-- Taxonomy Panel -->
-                    <div id="queryPanel2" class="queryPanel">
-                        <p class="criteria_title">
-                        <fmt:message key="taxonomical_criteria_title"/></p>
-                        <p style="margin:1px"><a> <fmt:message key="taxonomy_level"/>: </a></p>
-                        <select name="taxonType" id="taxonTypeId" class="componentSize" tabindex="12" onchange="javascript:changeTaxonInput();" onKeyUp="javascript:changeTaxonInput();">
-                            <c:forEach items="${taxonFilters}" var="taxonFilter">
-                                <option value="<c:out value="${taxonFilter.id}"/>"<c:if test="${taxonFilter.id == taxonType}"> selected="selected"</c:if>>
-                                    <fmt:message key="${taxonFilter.displayName}"/>
-                                </option>
-                            </c:forEach>
-                        </select>
-                        <p style="margin:1px"><a> <fmt:message key="taxon_name"/>: </a></p>
-                        <span id="newTaxonValue">
-                            <input type="text" id="taxonId" tabindex="13" name="taxonValue" value="<c:out value="${taxonValue}"/>"/>
-                            <div id="taxonContainer"></div>
-                        </span>
-                        <input type="button" class="my_Button" id="addToListButtonTax" value="Agregar criterio" onclick="addTaxonParam()" />
-                        <span id="taxParameters" style="font-size:10px"></span>
-                        <script type="text/javascript">
-                            changeTaxonInput();
-                        </script>
-                    </div>
-
-                    <!-- Indicator Panel -->
-                    <div id="queryPanel3" class="queryPanel">
-                        <p class="criteria_title">
-                        <fmt:message key="indicators_criteria_title"/></p>
-                        <div id="treeDiv"></div>
-                        <input type="button" class="my_Button" id="addToListButtonIndi" value="Agregar criterio" onclick="addIndicatorParam()" />
-                        <span id="treeParameters" style="font-size:10px"></span>
-                    </div>
-
-                    <!-- Query Button -->
-                    <input type="button" class="main_Button" id="makeQueryButton" value="<fmt:message key="generate_chart"/>"
-                           onclick="validateParameters()" />
+                    <!-- Results Panel -->
+                    <div id="resultsPanel"></div>
                 </div>
 
-                <!-- Map Panel -->
-                <div id="mapPanel">
-                    <div id="map"> </div>
-                    <div id="wrapper">
-                        <div id="location">location</div>
-                        <div id="scale"></div>
-                    </div>
+                <!-- Footer -->
+                <br>
+                <div id="footer">
+                    <fmt:message key="footer_text"/>
                 </div>
-
-                <!-- Results Panel -->
-                <div id="resultsPanel"></div>
-
-            </div>
-            <div id="footer">
-                <fmt:message key="footer_text"/>
             </div>
         </form:form>
         <!-- Content ends -->

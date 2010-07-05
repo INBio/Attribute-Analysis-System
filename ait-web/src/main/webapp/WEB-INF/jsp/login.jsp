@@ -17,38 +17,44 @@
         <title><fmt:message key="title"/></title>
     </head>
     <body>
-        <!-- Header -->
-        <jsp:include page="/WEB-INF/jsp/header.jsp"/>
         <!-- Content -->
-        <div id="contenido"> <br><br><br>
-            <form method="post" accept-charset="UTF-8" action="j_spring_security_check">
+        <div id="contenido">
+            <!-- Header -->
+            <jsp:include page="/WEB-INF/jsp/header.jsp"/>
 
-                <c:if test="${not empty param.error}">
-                    <font color="red">${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}</font>
-                </c:if>
-
-                <%--UserName --%>
-                <label>
-                    <b><fmt:message key="login_username"/>:</b><br>
-                    <input type="text" class="componentSize" id="userNameInput" name="j_username" />
-                </label>
-                <br>
-
-                <%--Password --%>
-                <label>
-                    <b><fmt:message key="login_password"/>:</b><br>
-                    <input type="password" class="componentSize" name="j_password"/>
-                </label>
+            <div id="content">
                 <br><br>
+                <form method="post" accept-charset="UTF-8" action="j_spring_security_check">
 
-                <input type="submit" value="<fmt:message key="accept"/>" />
-                <input type="reset" name="<fmt:message key="reset"/>" />
+                    <c:if test="${not empty param.error}">
+                        <font color="red">${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}</font>
+                    </c:if>
 
-            </form>
+                    <%--UserName --%>
+                    <label>
+                        <b><fmt:message key="login_username"/>:</b><br>
+                        <input type="text" class="componentSize" id="userNameInput" name="j_username" />
+                    </label>
+                    <br>
+
+                    <%--Password --%>
+                    <label>
+                        <b><fmt:message key="login_password"/>:</b><br>
+                        <input type="password" class="componentSize" name="j_password"/>
+                    </label>
+                    <br><br>
+
+                    <input type="submit" value="<fmt:message key="accept"/>" />
+                    <input type="reset" name="<fmt:message key="reset"/>" />
+                </form>
+            </div>
+
+            <!-- Footer -->
+            <br><br>
+            <div id="footer">
+                <fmt:message key="footer_text"/>
+            </div>
         </div>
         <!-- Content ending -->
-        <div id="footer">
-            <fmt:message key="footer_text"/>
-        </div>
     </body>
 </html>

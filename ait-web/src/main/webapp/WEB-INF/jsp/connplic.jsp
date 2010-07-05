@@ -35,65 +35,68 @@
         </script>
     </head>
     <body>
-        <!-- Header -->
-        <jsp:include page="/WEB-INF/jsp/header.jsp"/>
         <!-- Content -->
         <div id="contenido">
-            <h2><fmt:message key="plic_mapping_connection"/></h2><br>
+            <!-- Header -->
+            <jsp:include page="/WEB-INF/jsp/header.jsp"/>
 
-            <!-- Form that represents all the dwc attributes -->
-            <form:form method="POST" commandName="connection" cssStyle="margin:0">
-                <div id="configConn" style="width:500px">
-                    <table class="contacts" cellspacing="0">
-                        <tr>
-                            <td class="contact2" width="40%"><fmt:message key="driver_class_name"/>:</td>
-                            <td class="contact2" width="60%">
-                                <form:select id="driverClassName" path="driverClassName" cssClass="sizeAll">
-                                    <form:option value="unmapped"><fmt:message key="drop_down_null_option"/></form:option>
-                                    <form:option value="org.postgresql.Driver"><fmt:message key="postgresDriver"/></form:option>
-                                    <form:option value="com.mysql.jdbc.Driver"><fmt:message key="mysqlDriver"/></form:option>
-                                    <form:option value="oracle.jdbc.OracleDriver"><fmt:message key="oracleDriver"/></form:option>
-                                </form:select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="contact2" width="40%"><fmt:message key="db_url"/>:</td>
-                            <td class="contact2" width="60%">
-                                <form:input id="url" path="url" cssClass="sizeAll"></form:input>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="contact2" width="40%"><fmt:message key="login_username"/>:</td>
-                            <td class="contact2" width="60%">
-                                <form:input id="username" path="username" cssClass="sizeAll"></form:input>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="contact2" width="40%"><fmt:message key="login_password"/>:</td>
-                            <td class="contact2" width="60%">
-                                <form:input id="password" path="password" cssClass="sizeAll"></form:input>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="contact2" width="40%"><fmt:message key="db_table"/>:</td>
-                            <td class="contact2" width="60%">
-                                <form:input id="tablename" path="tablename" cssClass="sizeAll"></form:input>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                <!-- Button's acctions -->
-                <div id="buttons">
-                    <a href="config.htm" class="simple_link"><fmt:message key="back"/></a>
-                    <input type="button" class="simple_button" id="saveConnAttributes" value="<fmt:message key="test_conn"/>" onclick="verify()"/>
-                </div>
-            </form:form>
+            <div id="content">
+                <h2><fmt:message key="plic_mapping_connection"/></h2><br>
+                <!-- Form that represents all the dwc attributes -->
+                <form:form method="POST" commandName="connection" cssStyle="margin:0">
+                    <div id="configConn" style="width:500px">
+                        <table class="contacts" cellspacing="0">
+                            <tr>
+                                <td class="contact2" width="40%"><fmt:message key="driver_class_name"/>:</td>
+                                <td class="contact2" width="60%">
+                                    <form:select id="driverClassName" path="driverClassName" cssClass="sizeAll">
+                                        <form:option value="unmapped"><fmt:message key="drop_down_null_option"/></form:option>
+                                        <form:option value="org.postgresql.Driver"><fmt:message key="postgresDriver"/></form:option>
+                                        <form:option value="com.mysql.jdbc.Driver"><fmt:message key="mysqlDriver"/></form:option>
+                                        <form:option value="oracle.jdbc.OracleDriver"><fmt:message key="oracleDriver"/></form:option>
+                                    </form:select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="contact2" width="40%"><fmt:message key="db_url"/>:</td>
+                                <td class="contact2" width="60%">
+                                    <form:input id="url" path="url" cssClass="sizeAll"></form:input>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="contact2" width="40%"><fmt:message key="login_username"/>:</td>
+                                <td class="contact2" width="60%">
+                                    <form:input id="username" path="username" cssClass="sizeAll"></form:input>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="contact2" width="40%"><fmt:message key="login_password"/>:</td>
+                                <td class="contact2" width="60%">
+                                    <form:input id="password" path="password" cssClass="sizeAll"></form:input>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="contact2" width="40%"><fmt:message key="db_table"/>:</td>
+                                <td class="contact2" width="60%">
+                                    <form:input id="tablename" path="tablename" cssClass="sizeAll"></form:input>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <!-- Button's acctions -->
+                    <div id="buttons">
+                        <a href="config.htm" class="simple_link"><fmt:message key="back"/></a>
+                        <input type="button" class="simple_button" id="saveConnAttributes" value="<fmt:message key="test_conn"/>" onclick="verify()"/>
+                    </div><br>
+                </form:form>
+            </div>
 
+            <!-- Footer -->
+            <div id="footer">
+                <fmt:message key="footer_text"/>
+            </div>
         </div>
         <!-- Content ending -->
-        <div id="footer">
-            <fmt:message key="footer_text"/>
-        </div>
     </body>
 </html>
 
