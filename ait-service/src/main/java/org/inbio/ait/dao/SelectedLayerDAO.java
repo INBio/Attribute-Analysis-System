@@ -46,4 +46,9 @@ public interface SelectedLayerDAO {
      */
     public boolean updateBase(String layerName);
 
+    /**
+     * Deletes all elements from ait.selected_layer table
+     */
+    public boolean deleteAllLayers();
+
 }

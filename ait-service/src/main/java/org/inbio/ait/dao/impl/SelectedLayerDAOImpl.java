@@ -45,6 +45,20 @@ public class SelectedLayerDAOImpl extends SimpleJdbcDaoSupport implements Select
         }
         return true;
     }
+    
+    /**
+     * Deletes all elements from ait.selected_layer table
+     */
+    @Override
+    public boolean deleteAllLayers() {
+        try {
+            String query = "Delete from ait.selected_layer";
+            getSimpleJdbcTemplate().update(query);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
 
     /**
      * Updates a single layer (just the base value)
@@ -52,7 +66,8 @@ public class SelectedLayerDAOImpl extends SimpleJdbcDaoSupport implements Select
     @Override
     public boolean updateBase(String layerName) {
         try {
-            getSimpleJdbcTemplate().update("Update ait.selected_layer set base = ? where name = ?",1,layerName);
+            String query = "Update ait.selected_layer set base = ? where name = ?";
+            getSimpleJdbcTemplate().update(query,1,layerName);
         } catch (Exception e) {
             return false;
         }

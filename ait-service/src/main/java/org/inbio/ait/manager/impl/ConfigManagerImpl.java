@@ -183,7 +183,9 @@ public class ConfigManagerImpl implements ConfigManager{
         String[] layers = pl.getLayers();
         String base = pl.getBase();
         try{
-            //Persist the layers
+            //Delete the selected layers from db
+            this.selectedLayerDAO.deleteAllLayers();
+            //Persist the new selected layers
             for(int i = 0;i<layers.length;i++){
                 this.selectedLayerDAO.saveLayers(layers[i]);
             }
