@@ -166,9 +166,13 @@ public class QueryManagerImpl implements QueryManager{
      * @return
      */
     @Override
-    public Long countByIndicator(String species,String indicator,String colunm){
+    public Long countByIndicator(String species,String indicator,String colunm,String polygon){
+        String[] aux = polygon.split("~");
+        String layer = aux[0];
+        String poly = aux[1];
         String query = "Select count(distinct "+colunm+") from ait.taxon_info_index where "+
-                "scientific_name_id = "+species+" and indicator_id = "+indicator;
+                "scientific_name_id = "+species+" and indicator_id = "+indicator+" and " +
+                "(layer_table = '"+layer+"' and polygom_id = "+poly+")";
         //Execute query
         return taxonInfoIndexDAO.countTaxonsByQuery(query.toString());
     }
@@ -182,12 +186,13 @@ public class QueryManagerImpl implements QueryManager{
      * @return
      */
     @Override
-    public Long countByPolygon(String species,String polygon,String colunm){
+    public Long countByPolygon(String species,String polygon,String colunm,String indicator){
         String[] aux = polygon.split("~");
         String layer = aux[0];
         String poly = aux[1];
         String query = "Select count(distinct "+colunm+") from ait.taxon_info_index where "+
-                "scientific_name_id = "+species+" and (layer_table = '"+layer+"' and polygom_id = "+poly+")";
+                "scientific_name_id = "+species+" and (layer_table = '"+layer+"' and polygom_id = "+poly+") and " +
+                "indicator_id = "+indicator+"";
         //Execute query
         return taxonInfoIndexDAO.countTaxonsByQuery(query.toString());
     }

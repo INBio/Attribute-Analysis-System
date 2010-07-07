@@ -48,8 +48,8 @@ public interface QueryManager {
      */
     public Long countByCriteria(String x,String y,int xType,int yType);
 
-    public Long countByIndicator(String species,String indicator,String colunm);
+    public Long countByIndicator(String species,String indicator,String colunm,String polygon);
 
-    public Long countByPolygon(String species,String polygon,String colunm);
+    public Long countByPolygon(String species,String polygon,String colunm,String indicator);
 
 }

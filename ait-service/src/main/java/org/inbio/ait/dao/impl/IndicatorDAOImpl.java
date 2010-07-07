@@ -37,7 +37,7 @@ public class IndicatorDAOImpl extends SimpleJdbcDaoSupport implements IndicatorD
     public List<AutocompleteNode> getChildNodesByNodeId(int nodeId) {
         List<AutocompleteNode> nodes = new ArrayList<AutocompleteNode>();
         try{
-            String query = "Select indicator_id,indicator_name from ait.indicator where indicator_ancestor_id = "+nodeId+";";
+            String query = "Select indicator_id,indicator_name from ait.indicator where indicator_ancestor_id = "+nodeId+" order by indicator_name;";
 
             nodes = getSimpleJdbcTemplate().query(query,
                     new AutocompleteMapper());
