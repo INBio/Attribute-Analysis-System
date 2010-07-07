@@ -82,4 +82,14 @@
     <param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
     <param-value>messages</param-value>
     </context-param>
+    <!-- Define the default locale to resource bundle -->
+    <context-param>
+    <param-name>
+      javax.servlet.jsp.jstl.fmt.locale
+    </param-name>
+    <param-value>
+      es
+    </param-value>
+    </context-param>
+
 </web-app>

@@ -81,6 +81,15 @@ body {
     margin: 0 0 0 320px;
 }
 
+#treeDiv{
+    width:250px;
+    max-height:160px;
+    overflow:auto;
+    border:dashed 1px gray;
+   -moz-border-radius: 5px;
+   -webkit-border-radius: 5px;
+}
+
 #resultsPanel {
     clear:both;
     font-size:12px;

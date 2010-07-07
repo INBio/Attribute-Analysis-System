@@ -72,7 +72,8 @@ public class TableController implements Controller{
                     for(int j = 0;j<y;j++){
                         matrix[i][j] = queryManager.countByIndicator(node.getId(),
                                 indiArray[j],
-                                TaxonInfoIndexColums.SPECIMENS.getName());
+                                TaxonInfoIndexColums.SPECIMENS.getName(),
+                                layerArray[0]); //species,indicator,colunm,polygon
                     }
                 }
             }
@@ -86,7 +87,8 @@ public class TableController implements Controller{
                     for(int j = 0;j<y;j++){
                         matrix[i][j] = queryManager.countByPolygon(node.getId(),
                                 layerArray[j],
-                                TaxonInfoIndexColums.SPECIMENS.getName());
+                                TaxonInfoIndexColums.SPECIMENS.getName(),
+                                indiArray[0]); //species,polygon,colunm,indicator
                     }
                 }
             }

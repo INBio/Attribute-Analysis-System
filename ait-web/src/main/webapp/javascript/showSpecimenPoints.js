@@ -62,13 +62,16 @@ function showSpecimenPoints(selectedLayers,selectedTaxa,selectedIndicators)  {
             selectControl.activate();
 
             //Zooming on the correct geographical area (deppending on results)
-            var minX = getMinX(longArray);
+            /*var minX = getMinX(longArray);
             var minY = getMinY(latArray);
             var maxX = getMaxX(longArray);
             var maxY = getMaxY(latArray);
             var bounds = new OpenLayers.Bounds(
                 minX, minY,
-                maxX, maxY);
+                maxX, maxY);*/ //FIXME
+            var bounds = new OpenLayers.Bounds(
+                -85.954, 8.04,
+                -82.553, 11.22);
             map.zoomToExtent(bounds);
 
             YAHOO.example.container.wait.hide();

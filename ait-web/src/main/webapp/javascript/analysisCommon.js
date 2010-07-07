@@ -40,7 +40,7 @@ function initIndicators(){
     //Getting a reference to the root element
     rootNode = tree.getRoot();
     //Add the root element
-    var tempNode = new YAHOO.widget.TextNode('Indicadores Taxonómicos', rootNode, false);
+    var tempNode = new YAHOO.widget.TextNode('Atributos Taxonómicos', rootNode, false);
     tempNode.data = 0;
     //Render the tree
     tree.draw();
@@ -84,9 +84,9 @@ function initLoadingPanel(){
  * Initialazing the gis functionality
  */
 function initMap(divId){
-   var initialbounds = new OpenLayers.Bounds(
-        -102.184, 7.204,
-        -77.157, 22.472);
+    var initialbounds = new OpenLayers.Bounds(
+        -85.954, 8.04,
+        -82.553, 11.22);
     var options = {
         controls: [],
         maxResolution: 0.09776171875,
@@ -229,7 +229,7 @@ function deleteSeparators(string){
 function onChangeLayer(dropdown)
 {
     var selectedIndex = dropdown.selectedIndex;
-    layerIndex  = selectedIndex+1; //+1 is because of virtual earth layer
+    layerIndex  = selectedIndex+1; //+1 is because of google layer
     layerId = layersList[selectedIndex][0];
     layerName = layersList[selectedIndex][1];
     document.getElementById('info').innerHTML = "";
@@ -364,7 +364,7 @@ function removeTreeParamElement(divNum) {
 /*
  * Set the initial value to the geografic variables
  */
-function clearGeograficVars(){
+/*function clearGeograficVars(){
     currentPolygonId = null;
     currentPolygonName = null;
     
@@ -372,4 +372,4 @@ function clearGeograficVars(){
     layerIndex = 1;
     layerName = layersList[1][1];
     polygonsList = null;
-}
+}*/

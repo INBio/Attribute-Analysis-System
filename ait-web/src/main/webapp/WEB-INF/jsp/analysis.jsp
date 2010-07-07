@@ -96,9 +96,9 @@
                 layersList.push(new Array('${model.geoserver}${var}','${var}')); //(id,name)
                 </c:forEach>
                 //Sets the layerId,layerIndex and layerName values
-                layerId = layersList[1][0];
-                layerIndex = 1;
-                layerName = layersList[1][1];
+                layerIndex = 1; //Used as id on map layer list, not in layersList
+                layerId = layersList[0][0];
+                layerName = layersList[0][1];
                 
                 //initialize map functionality
                 initMap('map');
@@ -305,9 +305,9 @@
             <div id="contenido">
                 <!-- Header -->
                 <jsp:include page="/WEB-INF/jsp/header.jsp"/>
-                <h2><fmt:message key="analysis_title"/></h2>
 
                 <div id="content">
+                    <h2><fmt:message key="analysis_title"/></h2>
                     <div id="entryCriteria"> <!-- Entry criteria div -->
                         <div id="querysPanel">
 

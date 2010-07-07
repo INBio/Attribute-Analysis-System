@@ -36,7 +36,7 @@ function executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators,
             var type = xmlDoc.getElementsByTagName("type")[0].childNodes[0].nodeValue;
 
             switch(type){
-                case '0': // 0 means one or these tow categories (geographical and taxonomical)
+                case '0': // 0 means one or this tow categories (geographical and taxonomical)
                     //Get total count data
                     var total = xmlDoc.getElementsByTagName("total")[0].childNodes[0].nodeValue;
                     //Show general result and the search criteria
