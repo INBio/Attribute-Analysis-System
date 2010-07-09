@@ -20,9 +20,11 @@ package org.inbio.ait.manager;
 
 import java.util.List;
 import org.inbio.ait.model.DwcPropertyHolder;
+import org.inbio.ait.model.IndiPropertyHolder;
 import org.inbio.ait.model.LayerPropertyHolder;
 import org.inbio.ait.model.PlicPropertyHolder;
 import org.inbio.ait.model.PostgisLayers;
+import org.inbio.ait.model.TindiPropertyHolder;
 
 /**
  *
@@ -47,6 +49,18 @@ public interface ConfigManager {
     public boolean saveToPropertiesFileLayer(LayerPropertyHolder ph);
     public List<String> getLayerTables();
     public int countAllLayerTables();
+
+    /* Indicators */
+    public IndiPropertyHolder getIndiPropertyHolder();
+    public boolean saveToPropertiesFileIndi(IndiPropertyHolder ph);
+    public int CountIndi();
+    public List<String> getIndiTableFields();
+
+    /* Taxon Indicator */
+    public TindiPropertyHolder getTindiPropertyHolder();
+    public boolean saveToPropertiesFileTindi(TindiPropertyHolder ph);
+    public int CountTindi();
+    public List<String> getTindiTableFields();
 
     /* Layers local */
     public PostgisLayers getLayersList();

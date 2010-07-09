@@ -21,8 +21,8 @@ package org.inbio.ait.dao.impl;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import org.inbio.ait.dao.DwcDataAccessDAO;
-import org.inbio.ait.model.DwcPropertyHolder;
+import org.inbio.ait.dao.TindiDataAccessDAO;
+import org.inbio.ait.model.TindiPropertyHolder;
 import org.inbio.ait.util.AitDataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -30,20 +30,20 @@ import org.springframework.jdbc.core.JdbcTemplate;
  *
  * @author esmata
  */
-public class DwcDataAccessDAOImpl implements DwcDataAccessDAO{
+public class TindiDataAccessDAOImpl implements TindiDataAccessDAO{
 
     private JdbcTemplate jdbcTemplate;
 
     /**
-     * Method to get a list of all fields from the mapped dwc table
+     * Method to get a list of all fields from the mapped taxon indicators table
      * through jdbc conection
      */
     @Override
-    public List<String> getDwcTableFields(DwcPropertyHolder ph) {
+    public List<String> getTindiTableFields(TindiPropertyHolder ph) {
         List<String> result = new ArrayList<String>();
         result.add("unmapped"); //Default value
         try {
-            //Stting up the jdbcTemplate
+            //Setting up the jdbcTemplate
             this.accessToDB(ph);
             //getColumns(String catalog, String schemaPattern, String tableNamePattern, String columnNamePattern)
             ResultSet cols = this.jdbcTemplate.getDataSource().getConnection().
@@ -58,11 +58,8 @@ public class DwcDataAccessDAOImpl implements DwcDataAccessDAO{
         }
     }
 
-    /**
-     * Method to get a total count of dwc registers
-     */
     @Override
-    public int countAll(DwcPropertyHolder ph) {
+    public int countAll(TindiPropertyHolder ph) {
         int result = -1;
         try {
             //Stting up the jdbcTemplate
@@ -74,7 +71,7 @@ public class DwcDataAccessDAOImpl implements DwcDataAccessDAO{
     }
 
     //Getting the access to the data base
-    private void accessToDB(DwcPropertyHolder ph){
+    private void accessToDB(TindiPropertyHolder ph) {
         //Getting the data source connection
         AitDataSource ds = new AitDataSource(ph.getDriverClassName(),
                 ph.getUrl(), ph.getUsername(), ph.getPassword());

@@ -21,16 +21,22 @@ package org.inbio.ait.manager.impl;
 import java.util.List;
 import org.inbio.ait.dao.DwcDataAccessDAO;
 import org.inbio.ait.dao.DwcPropertyHolderDAO;
+import org.inbio.ait.dao.IndiDataAccessDAO;
+import org.inbio.ait.dao.IndiPropertyHolderDAO;
 import org.inbio.ait.dao.LayerDataAccessDAO;
 import org.inbio.ait.dao.LayerPropertyHolderDAO;
 import org.inbio.ait.dao.PlicDataAccessDAO;
 import org.inbio.ait.dao.PlicPropertyHolderDAO;
 import org.inbio.ait.dao.SelectedLayerDAO;
+import org.inbio.ait.dao.TindiDataAccessDAO;
+import org.inbio.ait.dao.TindiPropertyHolderDAO;
 import org.inbio.ait.manager.ConfigManager;
 import org.inbio.ait.model.DwcPropertyHolder;
+import org.inbio.ait.model.IndiPropertyHolder;
 import org.inbio.ait.model.LayerPropertyHolder;
 import org.inbio.ait.model.PlicPropertyHolder;
 import org.inbio.ait.model.PostgisLayers;
+import org.inbio.ait.model.TindiPropertyHolder;
 
 /**
  *
@@ -45,6 +51,10 @@ public class ConfigManagerImpl implements ConfigManager{
     private LayerPropertyHolderDAO layerPropertyHolderDAO;
     private LayerDataAccessDAO layerDataAccessDAO;
     private SelectedLayerDAO selectedLayerDAO;
+    private IndiPropertyHolderDAO indiPropertyHolderDAO;
+    private IndiDataAccessDAO indiDataAccessDAO;
+    private TindiPropertyHolderDAO tindiPropertyHolderDAO;
+    private TindiDataAccessDAO tindiDataAccessDAO;
 
     /**
      * Returns a DwcPropertyHolder java Object with all the
@@ -75,19 +85,19 @@ public class ConfigManagerImpl implements ConfigManager{
 
     /**
      * Method to get a list of all columns from the mapped dwc table
-     * trhow jdbc conection
+     * through jdbc conection
      */
     @Override
     public List<String> getDwcTableFields(){
         return this.dwcDataAccessDAO.getDwcTableFields(this.getDwcPropertyHolder());
     }
 
-        /**
+    /**
      * Returns a PlicPropertyHolder java Object with all the
      * information from de plic.properties file
      */
     @Override
-    public PlicPropertyHolder getPlicPropertyHolder(){
+    public PlicPropertyHolder getPlicPropertyHolder() {
         return this.plicPropertyHolderDAO.getPlicPropertyHolder();
     }
 
@@ -111,11 +121,83 @@ public class ConfigManagerImpl implements ConfigManager{
 
     /**
      * Method to get a list of all columns from the mapped plic table
-     * trhow jdbc conection
+     * through jdbc conection
      */
     @Override
     public List<String> getPlicTableFields(){
         return this.plicDataAccessDAO.getPlicTableFields(this.getPlicPropertyHolder());
+    }
+
+    /**
+     * Returns a IndiPropertyHolder java Object with all the
+     * information from the indi.properties file
+     */
+    @Override
+    public IndiPropertyHolder getIndiPropertyHolder() {
+        return this.indiPropertyHolderDAO.getIndiPropertyHolder();
+    }
+
+    /**
+     * This method save the info from a IndiPropertyHolder java object
+     * into the indi.properties file
+     */
+    @Override
+    public boolean saveToPropertiesFileIndi(IndiPropertyHolder ph) {
+        return this.indiPropertyHolderDAO.saveToPropertiesFile(ph);
+    }
+
+    /**
+     * Return the total count of indicator registers
+     * @return
+     */
+    @Override
+    public int CountIndi(){
+        return this.indiDataAccessDAO.countAll(this.getIndiPropertyHolder());
+    }
+
+    /**
+     * Method to get a list of all columns from the mapped indicators table
+     * through jdbc conection
+     */
+    @Override
+    public List<String> getIndiTableFields(){
+        return this.indiDataAccessDAO.getIndiTableFields(this.getIndiPropertyHolder());
+    }
+
+    /**
+     * Returns a TindiPropertyHolder java Object with all the
+     * information from the tindi.properties file
+     */
+    @Override
+    public TindiPropertyHolder getTindiPropertyHolder() {
+        return this.tindiPropertyHolderDAO.getTindiPropertyHolder();
+    }
+
+    /**
+     * This method save the info from a TindiPropertyHolder java object
+     * into the tindi.properties file
+     */
+    @Override
+    public boolean saveToPropertiesFileTindi(TindiPropertyHolder ph) {
+        return this.tindiPropertyHolderDAO.saveToPropertiesFile(ph);
+    }
+
+    /**
+     * Return the total count of taxon indicator registers
+     * @return
+     */
+    @Override
+    public int CountTindi(){
+        return this.tindiDataAccessDAO.countAll(this.getTindiPropertyHolder());
+    }
+
+    /**
+     * Method to get a list of all columns from the mapped taxon indicators table
+     * through jdbc conection
+     */
+    @Override
+    public List<String> getTindiTableFields(){
+        return this.tindiDataAccessDAO.getTindiTableFields(this.getTindiPropertyHolder());
     }
 
     /**
@@ -292,6 +374,62 @@ public class ConfigManagerImpl implements ConfigManager{
      */
     public void setSelectedLayerDAO(SelectedLayerDAO selectedLayerDAO) {
         this.selectedLayerDAO = selectedLayerDAO;
+    }
+
+    /**
+     * @return the indiPropertyHolderDAO
+     */
+    public IndiPropertyHolderDAO getIndiPropertyHolderDAO() {
+        return indiPropertyHolderDAO;
+    }
+
+    /**
+     * @param indiPropertyHolderDAO the indiPropertyHolderDAO to set
+     */
+    public void setIndiPropertyHolderDAO(IndiPropertyHolderDAO indiPropertyHolderDAO) {
+        this.indiPropertyHolderDAO = indiPropertyHolderDAO;
+    }
+
+    /**
+     * @return the indiDataAccessDAO
+     */
+    public IndiDataAccessDAO getIndiDataAccessDAO() {
+        return indiDataAccessDAO;
+    }
+
+    /**
+     * @param indiDataAccessDAO the indiDataAccessDAO to set
+     */
+    public void setIndiDataAccessDAO(IndiDataAccessDAO indiDataAccessDAO) {
+        this.indiDataAccessDAO = indiDataAccessDAO;
+    }
+
+    /**
+     * @return the tindiPropertyHolderDAO
+     */
+    public TindiPropertyHolderDAO getTindiPropertyHolderDAO() {
+        return tindiPropertyHolderDAO;
+    }
+
+    /**
+     * @param tindiPropertyHolderDAO the tindiPropertyHolderDAO to set
+     */
+    public void setTindiPropertyHolderDAO(TindiPropertyHolderDAO tindiPropertyHolderDAO) {
+        this.tindiPropertyHolderDAO = tindiPropertyHolderDAO;
+    }
+
+    /**
+     * @return the tindiDataAccessDAO
+     */
+    public TindiDataAccessDAO getTindiDataAccessDAO() {
+        return tindiDataAccessDAO;
+    }
+
+    /**
+     * @param tindiDataAccessDAO the tindiDataAccessDAO to set
+     */
+    public void setTindiDataAccessDAO(TindiDataAccessDAO tindiDataAccessDAO) {
+        this.tindiDataAccessDAO = tindiDataAccessDAO;
     }
 
 }

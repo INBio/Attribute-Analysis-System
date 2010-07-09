@@ -36,7 +36,7 @@ public class PlicDataAccessDAOImpl implements PlicDataAccessDAO{
 
     /**
      * Method to get a list of all fields from the mapped plic table
-     * trhow jdbc conection
+     * through jdbc conection
      */
     @Override
     public List<String> getPlicTableFields(PlicPropertyHolder ph) {
