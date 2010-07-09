@@ -120,5 +120,29 @@
         <property name="successView" value="config"/>
         <property name="configManager" ref="configManager"/>
     </bean>
+    <!-- Indicators mapping connection atributes -->
+    <bean name="/connindi.htm" class="org.inbio.ait.web.controller.ConnindiController">
+        <property name="formView" value="connindi"/>
+        <property name="successView" value="connindiSuccess"/>
+        <property name="configManager" ref="configManager"/>
+    </bean>
+    <!-- Indicators field maping -->
+    <bean name="/indiAttributes.htm" class="org.inbio.ait.web.controller.IndiController">
+        <property name="formView" value="indi"/>
+        <property name="successView" value="config"/>
+        <property name="configManager" ref="configManager"/>
+    </bean>
+     <!-- Taxon Indicators mapping connection atributes -->
+    <bean name="/conntindi.htm" class="org.inbio.ait.web.controller.ConntindiController">
+        <property name="formView" value="conntindi"/>
+        <property name="successView" value="conntindiSuccess"/>
+        <property name="configManager" ref="configManager"/>
+    </bean>
+    <!-- Taxon Indicators field maping -->
+    <bean name="/tindiAttributes.htm" class="org.inbio.ait.web.controller.TindiController">
+        <property name="formView" value="tindi"/>
+        <property name="successView" value="config"/>
+        <property name="configManager" ref="configManager"/>
+    </bean>
     
 </beans>

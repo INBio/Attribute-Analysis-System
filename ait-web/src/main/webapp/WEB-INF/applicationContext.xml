@@ -152,6 +152,10 @@
         <property name="layerPropertyHolderDAO" ref="layerPropertyHolderDAO"/>
         <property name="layerDataAccessDAO" ref="layerDataAccessDAO"/>
         <property name="selectedLayerDAO" ref="selectedLayerDAO"/>
+        <property name="indiPropertyHolderDAO" ref="indiPropertyHolderDAO"/>
+        <property name="indiDataAccessDAO" ref="indiDataAccessDAO"/>
+        <property name="tindiPropertyHolderDAO" ref="tindiPropertyHolderDAO"/>
+        <property name="tindiDataAccessDAO" ref="tindiDataAccessDAO"/>
     </bean>
 
     <!--.....................................................................-->
@@ -185,5 +189,9 @@
      <bean id="selectedLayerDAO" class="org.inbio.ait.dao.impl.SelectedLayerDAOImpl">
         <property name="dataSource" ref="dataSource" />
     </bean>
-    
+    <bean id="indiPropertyHolderDAO" class="org.inbio.ait.dao.impl.IndiPropertyHolderDAOImpl"/>
+    <bean id="indiDataAccessDAO" class="org.inbio.ait.dao.impl.IndiDataAccessDAOImpl"/>
+    <bean id="tindiPropertyHolderDAO" class="org.inbio.ait.dao.impl.TindiPropertyHolderDAOImpl"/>
+    <bean id="tindiDataAccessDAO" class="org.inbio.ait.dao.impl.TindiDataAccessDAOImpl"/>
+
 </beans>

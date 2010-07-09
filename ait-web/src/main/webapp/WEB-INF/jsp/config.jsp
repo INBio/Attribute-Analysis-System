@@ -27,7 +27,8 @@
                     <h2><fmt:message key="config_title"/></h2><br>
                     <a href="conndwc.htm" class="link"><fmt:message key="dwc_config"/></a><br>
                     <a href="connplic.htm" class="link"><fmt:message key="plic_config"/></a><br>
-                    <a href="fixme.htm" class="link"><fmt:message key="attri_config"/></a><br>
+                    <a href="connindi.htm" class="link"><fmt:message key="attri_config"/></a><br>
+                    <a href="conntindi.htm" class="link"><fmt:message key="tattri_config"/></a><br>
                     <a href="connlayer.htm" class="link"><fmt:message key="postgis_config"/></a>
                 </div>
 
