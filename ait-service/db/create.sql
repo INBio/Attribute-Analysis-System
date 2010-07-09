@@ -2,16 +2,16 @@
 -- PostgreSQL database dump
 --
 
--- Started on 2010-06-17 08:56:09 CST
+-- Started on 2010-07-09 15:49:10 CST
 
-SET client_encoding = 'SQL_ASCII';
+SET client_encoding = 'UTF8';
 SET standard_conforming_strings = off;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
 SET escape_string_warning = off;
 
 --
--- TOC entry 7 (class 2615 OID 1917518)
+-- TOC entry 7 (class 2615 OID 22697)
 -- Name: ait; Type: SCHEMA; Schema: -; Owner: postgres
 --
 
@@ -27,20 +27,20 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- TOC entry 2332 (class 1259 OID 1917519)
+-- TOC entry 1492 (class 1259 OID 22698)
 -- Dependencies: 7
--- Name: darwin_core; Type: TABLE; Schema: ait; Owner: postgres; Tablespace: 
+-- Name: darwin_core; Type: TABLE; Schema: ait; Owner: postgres; Tablespace:
 --
 
 CREATE TABLE darwin_core (
     globaluniqueidentifier character varying NOT NULL,
-    datelastmodified timestamp without time zone,
-    institutioncode character varying,
-    collectioncode character varying,
-    catalognumber character varying,
+    datelastmodified timestamp without time zone NOT NULL,
+    institutioncode character varying NOT NULL,
+    collectioncode character varying NOT NULL,
+    catalognumber character varying NOT NULL,
     catalognumbernumeric numeric,
     scientificname character varying,
-    basisofrecord character varying,
+    basisofrecord character varying NOT NULL,
     informationwithheld character varying,
     kingdomid numeric,
     phylum_id numeric,
@@ -123,9 +123,9 @@ CREATE TABLE darwin_core (
 ALTER TABLE ait.darwin_core OWNER TO postgres;
 
 --
--- TOC entry 2333 (class 1259 OID 1917525)
+-- TOC entry 1493 (class 1259 OID 22704)
 -- Dependencies: 7
--- Name: indicator; Type: TABLE; Schema: ait; Owner: postgres; Tablespace: 
+-- Name: indicator; Type: TABLE; Schema: ait; Owner: postgres; Tablespace:
 --
 
 CREATE TABLE indicator (
@@ -141,9 +141,9 @@ CREATE TABLE indicator (
 ALTER TABLE ait.indicator OWNER TO postgres;
 
 --
--- TOC entry 2334 (class 1259 OID 1917531)
+-- TOC entry 1494 (class 1259 OID 22710)
 -- Dependencies: 7
--- Name: plinian_core; Type: TABLE; Schema: ait; Owner: postgres; Tablespace: 
+-- Name: plinian_core; Type: TABLE; Schema: ait; Owner: postgres; Tablespace:
 --
 
 CREATE TABLE plinian_core (
@@ -212,13 +212,76 @@ CREATE TABLE plinian_core (
 ALTER TABLE ait.plinian_core OWNER TO postgres;
 
 --
--- TOC entry 2335 (class 1259 OID 1917537)
+-- TOC entry 1495 (class 1259 OID 22716)
 -- Dependencies: 7
--- Name: taxon_index; Type: TABLE; Schema: ait; Owner: postgres; Tablespace: 
+-- Name: selected_layer_seq; Type: SEQUENCE; Schema: ait; Owner: postgres
+--
+
+CREATE SEQUENCE selected_layer_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE ait.selected_layer_seq OWNER TO postgres;
+
+--
+-- TOC entry 1813 (class 0 OID 0)
+-- Dependencies: 1495
+-- Name: selected_layer_seq; Type: SEQUENCE SET; Schema: ait; Owner: postgres
+--
+
+SELECT pg_catalog.setval('selected_layer_seq', 5, true);
+
+
+--
+-- TOC entry 1496 (class 1259 OID 22718)
+-- Dependencies: 1771 1772 7
+-- Name: selected_layer; Type: TABLE; Schema: ait; Owner: postgres; Tablespace:
+--
+
+CREATE TABLE selected_layer (
+    id numeric DEFAULT nextval('selected_layer_seq'::regclass) NOT NULL,
+    name character varying(500) NOT NULL,
+    base numeric DEFAULT 0 NOT NULL
+);
+
+
+ALTER TABLE ait.selected_layer OWNER TO postgres;
+
+--
+-- TOC entry 1497 (class 1259 OID 22726)
+-- Dependencies: 7
+-- Name: taxon_index_seq; Type: SEQUENCE; Schema: ait; Owner: postgres
+--
+
+CREATE SEQUENCE taxon_index_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE ait.taxon_index_seq OWNER TO postgres;
+
+--
+-- TOC entry 1814 (class 0 OID 0)
+-- Dependencies: 1497
+-- Name: taxon_index_seq; Type: SEQUENCE SET; Schema: ait; Owner: postgres
+--
+
+SELECT pg_catalog.setval('taxon_index_seq', 65, true);
+
+
+--
+-- TOC entry 1498 (class 1259 OID 22728)
+-- Dependencies: 1773 7
+-- Name: taxon_index; Type: TABLE; Schema: ait; Owner: postgres; Tablespace:
 --
 
 CREATE TABLE taxon_index (
-    taxon_id numeric NOT NULL,
+    taxon_id numeric DEFAULT nextval('taxon_index_seq'::regclass) NOT NULL,
     taxon_name character varying(200) NOT NULL,
     taxon_range numeric NOT NULL
 );
@@ -227,13 +290,37 @@ CREATE TABLE taxon_index (
 ALTER TABLE ait.taxon_index OWNER TO postgres;
 
 --
--- TOC entry 2336 (class 1259 OID 1917543)
+-- TOC entry 1499 (class 1259 OID 22735)
 -- Dependencies: 7
--- Name: taxon_indicator; Type: TABLE; Schema: ait; Owner: postgres; Tablespace: 
+-- Name: taxon_indicator_seq; Type: SEQUENCE; Schema: ait; Owner: postgres
+--
+
+CREATE SEQUENCE taxon_indicator_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE ait.taxon_indicator_seq OWNER TO postgres;
+
+--
+-- TOC entry 1815 (class 0 OID 0)
+-- Dependencies: 1499
+-- Name: taxon_indicator_seq; Type: SEQUENCE SET; Schema: ait; Owner: postgres
+--
+
+SELECT pg_catalog.setval('taxon_indicator_seq', 1, true);
+
+
+--
+-- TOC entry 1500 (class 1259 OID 22737)
+-- Dependencies: 1774 7
+-- Name: taxon_indicator; Type: TABLE; Schema: ait; Owner: postgres; Tablespace:
 --
 
 CREATE TABLE taxon_indicator (
-    taxon_indicator_id numeric NOT NULL,
+    taxon_indicator_id numeric DEFAULT nextval('taxon_indicator_seq'::regclass) NOT NULL,
     taxon_indicator_certainty_level character varying(200),
     taxon_indicator_evaluation_criteria character varying(200),
     taxon_indicator_regionality character varying(200),
@@ -250,9 +337,9 @@ CREATE TABLE taxon_indicator (
 ALTER TABLE ait.taxon_indicator OWNER TO postgres;
 
 --
--- TOC entry 2337 (class 1259 OID 1917549)
+-- TOC entry 1501 (class 1259 OID 22744)
 -- Dependencies: 7
--- Name: taxon_indicator_plain; Type: TABLE; Schema: ait; Owner: postgres; Tablespace: 
+-- Name: taxon_indicator_plain; Type: TABLE; Schema: ait; Owner: postgres; Tablespace:
 --
 
 CREATE TABLE taxon_indicator_plain (
@@ -264,8 +351,8 @@ CREATE TABLE taxon_indicator_plain (
 ALTER TABLE ait.taxon_indicator_plain OWNER TO postgres;
 
 --
--- TOC entry 2641 (class 0 OID 0)
--- Dependencies: 2337
+-- TOC entry 1816 (class 0 OID 0)
+-- Dependencies: 1501
 -- Name: TABLE taxon_indicator_plain; Type: COMMENT; Schema: ait; Owner: postgres
 --
 
@@ -273,13 +360,37 @@ COMMENT ON TABLE taxon_indicator_plain IS 'Tabla inicial de la cual se gererará
 
 
 --
--- TOC entry 2338 (class 1259 OID 1917552)
+-- TOC entry 1502 (class 1259 OID 22747)
 -- Dependencies: 7
--- Name: taxon_info_index; Type: TABLE; Schema: ait; Owner: postgres; Tablespace: 
+-- Name: taxon_info_index_seq; Type: SEQUENCE; Schema: ait; Owner: postgres
+--
+
+CREATE SEQUENCE taxon_info_index_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE ait.taxon_info_index_seq OWNER TO postgres;
+
+--
+-- TOC entry 1817 (class 0 OID 0)
+-- Dependencies: 1502
+-- Name: taxon_info_index_seq; Type: SEQUENCE SET; Schema: ait; Owner: postgres
+--
+
+SELECT pg_catalog.setval('taxon_info_index_seq', 4269, true);
+
+
+--
+-- TOC entry 1503 (class 1259 OID 22749)
+-- Dependencies: 1775 7
+-- Name: taxon_info_index; Type: TABLE; Schema: ait; Owner: postgres; Tablespace:
 --
 
 CREATE TABLE taxon_info_index (
-    globaluniqueidentifier character varying(70) NOT NULL,
+    globaluniqueidentifier character varying NOT NULL,
     kingdom_id numeric,
     phylum_id numeric,
     class_id numeric,
@@ -290,7 +401,7 @@ CREATE TABLE taxon_info_index (
     scientific_name_id numeric,
     indicator_id numeric,
     polygom_id numeric,
-    row_id numeric NOT NULL,
+    row_id numeric DEFAULT nextval('taxon_info_index_seq'::regclass) NOT NULL,
     layer_table character varying
 );
 
@@ -298,9 +409,9 @@ CREATE TABLE taxon_info_index (
 ALTER TABLE ait.taxon_info_index OWNER TO postgres;
 
 --
--- TOC entry 2339 (class 1259 OID 1918766)
--- Dependencies: 2619 7
--- Name: users; Type: TABLE; Schema: ait; Owner: postgres; Tablespace: 
+-- TOC entry 1504 (class 1259 OID 22756)
+-- Dependencies: 1776 7
+-- Name: users; Type: TABLE; Schema: ait; Owner: postgres; Tablespace:
 --
 
 CREATE TABLE users (
@@ -316,9 +427,9 @@ CREATE TABLE users (
 ALTER TABLE ait.users OWNER TO postgres;
 
 --
--- TOC entry 2623 (class 2606 OID 1917559)
--- Dependencies: 2333 2333
--- Name: indicator_PK; Type: CONSTRAINT; Schema: ait; Owner: postgres; Tablespace: 
+-- TOC entry 1780 (class 2606 OID 22764)
+-- Dependencies: 1493 1493
+-- Name: indicator_PK; Type: CONSTRAINT; Schema: ait; Owner: postgres; Tablespace:
 --
 
 ALTER TABLE ONLY indicator
@@ -326,9 +437,19 @@ ALTER TABLE ONLY indicator
 
 
 --
--- TOC entry 2625 (class 2606 OID 1917561)
--- Dependencies: 2334 2334
--- Name: species_pkey; Type: CONSTRAINT; Schema: ait; Owner: postgres; Tablespace: 
+-- TOC entry 1784 (class 2606 OID 22766)
+-- Dependencies: 1496 1496
+-- Name: selected_layerPK; Type: CONSTRAINT; Schema: ait; Owner: postgres; Tablespace:
+--
+
+ALTER TABLE ONLY selected_layer
+    ADD CONSTRAINT "selected_layerPK" PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1782 (class 2606 OID 22768)
+-- Dependencies: 1494 1494
+-- Name: species_pkey; Type: CONSTRAINT; Schema: ait; Owner: postgres; Tablespace:
 --
 
 ALTER TABLE ONLY plinian_core
@@ -336,9 +457,9 @@ ALTER TABLE ONLY plinian_core
 
 
 --
--- TOC entry 2621 (class 2606 OID 1917563)
--- Dependencies: 2332 2332
--- Name: specimen_pkey; Type: CONSTRAINT; Schema: ait; Owner: postgres; Tablespace: 
+-- TOC entry 1778 (class 2606 OID 22770)
+-- Dependencies: 1492 1492
+-- Name: specimen_pkey; Type: CONSTRAINT; Schema: ait; Owner: postgres; Tablespace:
 --
 
 ALTER TABLE ONLY darwin_core
@@ -346,9 +467,9 @@ ALTER TABLE ONLY darwin_core
 
 
 --
--- TOC entry 2635 (class 2606 OID 1918774)
--- Dependencies: 2339 2339
--- Name: system_user_pkey; Type: CONSTRAINT; Schema: ait; Owner: postgres; Tablespace: 
+-- TOC entry 1798 (class 2606 OID 22772)
+-- Dependencies: 1504 1504
+-- Name: system_user_pkey; Type: CONSTRAINT; Schema: ait; Owner: postgres; Tablespace:
 --
 
 ALTER TABLE ONLY users
@@ -356,9 +477,9 @@ ALTER TABLE ONLY users
 
 
 --
--- TOC entry 2637 (class 2606 OID 1918776)
--- Dependencies: 2339 2339
--- Name: system_user_username_key; Type: CONSTRAINT; Schema: ait; Owner: postgres; Tablespace: 
+-- TOC entry 1800 (class 2606 OID 22774)
+-- Dependencies: 1504 1504
+-- Name: system_user_username_key; Type: CONSTRAINT; Schema: ait; Owner: postgres; Tablespace:
 --
 
 ALTER TABLE ONLY users
@@ -366,9 +487,9 @@ ALTER TABLE ONLY users
 
 
 --
--- TOC entry 2627 (class 2606 OID 1917565)
--- Dependencies: 2335 2335
--- Name: taxon_index_PK; Type: CONSTRAINT; Schema: ait; Owner: postgres; Tablespace: 
+-- TOC entry 1788 (class 2606 OID 22776)
+-- Dependencies: 1498 1498
+-- Name: taxon_index_PK; Type: CONSTRAINT; Schema: ait; Owner: postgres; Tablespace:
 --
 
 ALTER TABLE ONLY taxon_index
@@ -376,9 +497,9 @@ ALTER TABLE ONLY taxon_index
 
 
 --
--- TOC entry 2629 (class 2606 OID 1917567)
--- Dependencies: 2336 2336
--- Name: taxon_indicator_pk; Type: CONSTRAINT; Schema: ait; Owner: postgres; Tablespace: 
+-- TOC entry 1792 (class 2606 OID 22778)
+-- Dependencies: 1500 1500
+-- Name: taxon_indicator_pk; Type: CONSTRAINT; Schema: ait; Owner: postgres; Tablespace:
 --
 
 ALTER TABLE ONLY taxon_indicator
@@ -386,9 +507,9 @@ ALTER TABLE ONLY taxon_indicator
 
 
 --
--- TOC entry 2631 (class 2606 OID 1917569)
--- Dependencies: 2337 2337 2337
--- Name: taxon_indicator_plain_PK; Type: CONSTRAINT; Schema: ait; Owner: postgres; Tablespace: 
+-- TOC entry 1794 (class 2606 OID 22780)
+-- Dependencies: 1501 1501 1501
+-- Name: taxon_indicator_plain_PK; Type: CONSTRAINT; Schema: ait; Owner: postgres; Tablespace:
 --
 
 ALTER TABLE ONLY taxon_indicator_plain
@@ -396,9 +517,9 @@ ALTER TABLE ONLY taxon_indicator_plain
 
 
 --
--- TOC entry 2633 (class 2606 OID 1917571)
--- Dependencies: 2338 2338
--- Name: taxon_info_incex_pk; Type: CONSTRAINT; Schema: ait; Owner: postgres; Tablespace: 
+-- TOC entry 1796 (class 2606 OID 22782)
+-- Dependencies: 1503 1503
+-- Name: taxon_info_incex_pk; Type: CONSTRAINT; Schema: ait; Owner: postgres; Tablespace:
 --
 
 ALTER TABLE ONLY taxon_info_index
@@ -406,8 +527,28 @@ ALTER TABLE ONLY taxon_info_index
 
 
 --
--- TOC entry 2638 (class 2606 OID 1917572)
--- Dependencies: 2622 2333 2333
+-- TOC entry 1786 (class 2606 OID 22784)
+-- Dependencies: 1496 1496
+-- Name: unique_name; Type: CONSTRAINT; Schema: ait; Owner: postgres; Tablespace:
+--
+
+ALTER TABLE ONLY selected_layer
+    ADD CONSTRAINT unique_name UNIQUE (name);
+
+
+--
+-- TOC entry 1790 (class 2606 OID 22786)
+-- Dependencies: 1498 1498
+-- Name: unique_taxon_name; Type: CONSTRAINT; Schema: ait; Owner: postgres; Tablespace:
+--
+
+ALTER TABLE ONLY taxon_index
+    ADD CONSTRAINT unique_taxon_name UNIQUE (taxon_name);
+
+
+--
+-- TOC entry 1801 (class 2606 OID 22787)
+-- Dependencies: 1779 1493 1493
 -- Name: indicator_ancestor_id_fk; Type: FK CONSTRAINT; Schema: ait; Owner: postgres
 --
 
@@ -415,9 +556,8 @@ ALTER TABLE ONLY indicator
     ADD CONSTRAINT indicator_ancestor_id_fk FOREIGN KEY (indicator_ancestor_id) REFERENCES indicator(indicator_id);
 
 
--- Completed on 2010-06-17 08:56:17 CST
+-- Completed on 2010-07-09 15:49:11 CST
 
 --
 -- PostgreSQL database dump complete
 --
-
