@@ -19,7 +19,7 @@
 package org.inbio.ait.manager.impl;
 
 import java.util.List;
-import org.inbio.ait.dao.SpecimenDAO;
+import org.inbio.ait.dao.sys.SpecimenDAO;
 import org.inbio.ait.manager.TaxonomyManager;
 import org.inbio.ait.model.AutocompleteNode;
 import org.inbio.ait.model.TaxonomicalRange;

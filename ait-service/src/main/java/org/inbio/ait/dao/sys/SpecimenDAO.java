@@ -16,40 +16,39 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.inbio.ait.manager.impl;
+package org.inbio.ait.dao.sys;
 
 import java.util.List;
-import org.inbio.ait.dao.sys.SpeciesDAO;
-import org.inbio.ait.dao.sys.SpecimenDAO;
-import org.inbio.ait.manager.AnalysisManager;
-import org.inbio.ait.model.Species;
+import org.inbio.ait.model.AutocompleteNode;
 import org.inbio.ait.model.Specimen;
 
 /**
- *
+ * Data access object interface for the Specimen model class
  * @author esmata
  */
-public class AnalysisManagerImpl implements AnalysisManager{
+public interface SpecimenDAO {
 
-     // Data Access object to species model class 
-    private SpeciesDAO speciesDAO;
-    private SpecimenDAO specimenDAO;
+    /**
+     * Getting a list of all specimens from data base via jdbc
+     * @return
+     */
+    public List<Specimen> getSpecimenList();
 
-    // Dependency injections 
-    public void setSpeciesDAO(SpeciesDAO speciesDAO) {
-        this.speciesDAO = speciesDAO;
-    }
-    public void setSpecimenDAO(SpecimenDAO specimenDAO) {
-        this.specimenDAO = specimenDAO;
-    }
+    /**
+     * Return all disctint elements for classes,phylums,kingdoms ...
+     * @param partialName
+     * @param range
+     * @param atributeName
+     * @return
+     */
+    public List<AutocompleteNode> getElementsByRange
+            (String partialName,int range,String atributeName);
 
-    @Override
-    public List<Species> getAllSpecies() {
-        return speciesDAO.getSpeciesList();
-    }
+    /**
+     * Get a specimen list by a especific query
+     * @param q
+     * @return
+     */
+    public List<Specimen> getSpecimenListByQuery(String q);
 
-    @Override
-    public List<Specimen> getAllSpecimens() {
-        return specimenDAO.getSpecimenList();
-    }
 }

@@ -16,37 +16,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.inbio.ait.manager.impl;
+package org.inbio.ait.dao.conn;
 
-import java.util.List;
-import org.inbio.ait.dao.sys.IndicatorDAO;
-import org.inbio.ait.manager.IndicatorsManager;
-import org.inbio.ait.model.AutocompleteNode;
+import org.inbio.ait.model.PlicPropertyHolder;
 
 /**
+ *
  * @author esmata
  */
-public class IndicatorsManagerImpl implements IndicatorsManager{
-
-    private IndicatorDAO indicatorDAO;
-
-    @Override
-    public List<AutocompleteNode> getChildNodesByNodeId(int nodeId) {
-        return indicatorDAO.getChildNodesByNodeId(nodeId);
-    }
+public interface PlicPropertyHolderDAO {
 
     /**
-     * @return the indicatorDAO
+     * This method save the info from a PlicPropertyHolder java class
+     * into the plic.properties file
      */
-    public IndicatorDAO getIndicatorDAO() {
-        return indicatorDAO;
-    }
+    public boolean saveToPropertiesFile(PlicPropertyHolder ph);
 
     /**
-     * @param indicatorDAO the indicatorDAO to set
+     * Returns a PlicPropertyHolder java Object with all the
+     * information from the plic.properties file
      */
-    public void setIndicatorDAO(IndicatorDAO indicatorDAO) {
-        this.indicatorDAO = indicatorDAO;
-    }
+    public PlicPropertyHolder getPlicPropertyHolder();
 
 }

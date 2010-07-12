@@ -18,7 +18,7 @@
 
 package org.inbio.ait.manager.impl;
 
-import org.inbio.ait.dao.SystemUserDAO;
+import org.inbio.ait.dao.sys.SystemUserDAO;
 import org.inbio.ait.model.SystemUser;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.userdetails.UserDetails;

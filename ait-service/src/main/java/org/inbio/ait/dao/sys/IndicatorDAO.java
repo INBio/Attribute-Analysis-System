@@ -16,37 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.inbio.ait.manager.impl;
+package org.inbio.ait.dao.sys;
 
 import java.util.List;
-import org.inbio.ait.dao.sys.IndicatorDAO;
-import org.inbio.ait.manager.IndicatorsManager;
 import org.inbio.ait.model.AutocompleteNode;
 
 /**
+ * Data access object interface for the AutocompleteNode model class
  * @author esmata
  */
-public class IndicatorsManagerImpl implements IndicatorsManager{
-
-    private IndicatorDAO indicatorDAO;
-
-    @Override
-    public List<AutocompleteNode> getChildNodesByNodeId(int nodeId) {
-        return indicatorDAO.getChildNodesByNodeId(nodeId);
-    }
+public interface IndicatorDAO {
 
     /**
-     * @return the indicatorDAO
+     * Method to get a list of children for a especific node ID
+     * @param nodeId
+     * @return a list containing the children
      */
-    public IndicatorDAO getIndicatorDAO() {
-        return indicatorDAO;
-    }
-
-    /**
-     * @param indicatorDAO the indicatorDAO to set
-     */
-    public void setIndicatorDAO(IndicatorDAO indicatorDAO) {
-        this.indicatorDAO = indicatorDAO;
-    }
+    public List<AutocompleteNode> getChildNodesByNodeId(int nodeId);
 
 }

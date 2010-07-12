@@ -16,37 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.inbio.ait.manager.impl;
+package org.inbio.ait.dao.sys;
 
-import java.util.List;
-import org.inbio.ait.dao.sys.IndicatorDAO;
-import org.inbio.ait.manager.IndicatorsManager;
-import org.inbio.ait.model.AutocompleteNode;
+import org.inbio.ait.model.SystemUser;
 
 /**
+ *
  * @author esmata
  */
-public class IndicatorsManagerImpl implements IndicatorsManager{
+public interface SystemUserDAO {
 
-    private IndicatorDAO indicatorDAO;
-
-    @Override
-    public List<AutocompleteNode> getChildNodesByNodeId(int nodeId) {
-        return indicatorDAO.getChildNodesByNodeId(nodeId);
-    }
-
-    /**
-     * @return the indicatorDAO
-     */
-    public IndicatorDAO getIndicatorDAO() {
-        return indicatorDAO;
-    }
-
-    /**
-     * @param indicatorDAO the indicatorDAO to set
-     */
-    public void setIndicatorDAO(IndicatorDAO indicatorDAO) {
-        this.indicatorDAO = indicatorDAO;
-    }
+	/**
+	 * Find an user by its username
+	 * @param username
+	 * @return
+	 */
+  public SystemUser findByUsername(String username);
 
 }

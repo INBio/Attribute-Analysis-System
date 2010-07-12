@@ -16,37 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.inbio.ait.manager.impl;
+package org.inbio.ait.dao.sys;
 
-import java.util.List;
-import org.inbio.ait.dao.sys.IndicatorDAO;
-import org.inbio.ait.manager.IndicatorsManager;
-import org.inbio.ait.model.AutocompleteNode;
+import org.inbio.ait.model.TaxonIndex;
 
 /**
+ * Data Access Object for the TaxonIndex model class
  * @author esmata
  */
-public class IndicatorsManagerImpl implements IndicatorsManager{
-
-    private IndicatorDAO indicatorDAO;
-
-    @Override
-    public List<AutocompleteNode> getChildNodesByNodeId(int nodeId) {
-        return indicatorDAO.getChildNodesByNodeId(nodeId);
-    }
+public interface TaxonIndexDAO {
 
     /**
-     * @return the indicatorDAO
+     * Get id,range and name based on a specific taxon name
+     * @param name
+     * @return
      */
-    public IndicatorDAO getIndicatorDAO() {
-        return indicatorDAO;
-    }
+    public TaxonIndex getTaxonIndexByName(String name);
 
-    /**
-     * @param indicatorDAO the indicatorDAO to set
-     */
-    public void setIndicatorDAO(IndicatorDAO indicatorDAO) {
-        this.indicatorDAO = indicatorDAO;
-    }
+    public TaxonIndex getTaxonIndexById(String id);
 
 }

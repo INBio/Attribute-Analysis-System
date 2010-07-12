@@ -16,37 +16,39 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.inbio.ait.manager.impl;
+package org.inbio.ait.dao.sys;
 
 import java.util.List;
-import org.inbio.ait.dao.sys.IndicatorDAO;
-import org.inbio.ait.manager.IndicatorsManager;
-import org.inbio.ait.model.AutocompleteNode;
 
 /**
+ *
  * @author esmata
  */
-public class IndicatorsManagerImpl implements IndicatorsManager{
-
-    private IndicatorDAO indicatorDAO;
-
-    @Override
-    public List<AutocompleteNode> getChildNodesByNodeId(int nodeId) {
-        return indicatorDAO.getChildNodesByNodeId(nodeId);
-    }
+public interface SelectedLayerDAO {
 
     /**
-     * @return the indicatorDAO
+     * Persist a single layer
      */
-    public IndicatorDAO getIndicatorDAO() {
-        return indicatorDAO;
-    }
+    public boolean saveLayers(String layerName);
 
     /**
-     * @param indicatorDAO the indicatorDAO to set
+     * Gets the complete list of selected layers
      */
-    public void setIndicatorDAO(IndicatorDAO indicatorDAO) {
-        this.indicatorDAO = indicatorDAO;
-    }
+    public List<String> getLayersNames();
+
+    /**
+     * Gets the base layer (position 0)
+     */
+    public List<String> getBaseLayers();
+
+    /**
+     * Updates a single layer (just the base value)
+     */
+    public boolean updateBase(String layerName);
+
+    /**
+     * Deletes all elements from ait.selected_layer table
+     */
+    public boolean deleteAllLayers();
 
 }

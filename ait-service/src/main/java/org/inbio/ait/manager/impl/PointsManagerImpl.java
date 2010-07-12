@@ -18,9 +18,9 @@
 package org.inbio.ait.manager.impl;
 
 import java.util.List;
-import org.inbio.ait.dao.SpecimenDAO;
-import org.inbio.ait.dao.TaxonIndexDAO;
-import org.inbio.ait.dao.TaxonInfoIndexDAO;
+import org.inbio.ait.dao.sys.SpecimenDAO;
+import org.inbio.ait.dao.sys.TaxonIndexDAO;
+import org.inbio.ait.dao.sys.TaxonInfoIndexDAO;
 import org.inbio.ait.manager.PointsManager;
 import org.inbio.ait.model.Specimen;
 import org.inbio.ait.model.TaxonIndex;
