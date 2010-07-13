@@ -30,6 +30,7 @@ import org.inbio.ait.dao.conn.PlicPropertyHolderDAO;
 import org.inbio.ait.dao.sys.SelectedLayerDAO;
 import org.inbio.ait.dao.conn.TindiDataAccessDAO;
 import org.inbio.ait.dao.conn.TindiPropertyHolderDAO;
+import org.inbio.ait.dao.sys.CopyInfoDAO;
 import org.inbio.ait.manager.ConfigManager;
 import org.inbio.ait.model.DwcPropertyHolder;
 import org.inbio.ait.model.IndiPropertyHolder;
@@ -44,6 +45,7 @@ import org.inbio.ait.model.TindiPropertyHolder;
  */
 public class ConfigManagerImpl implements ConfigManager{
 
+    //Connection
     private DwcPropertyHolderDAO dwcPropertyHolderDAO;
     private DwcDataAccessDAO dwcDataAccessDAO;
     private PlicPropertyHolderDAO plicPropertyHolderDAO;
@@ -55,6 +57,8 @@ public class ConfigManagerImpl implements ConfigManager{
     private IndiDataAccessDAO indiDataAccessDAO;
     private TindiPropertyHolderDAO tindiPropertyHolderDAO;
     private TindiDataAccessDAO tindiDataAccessDAO;
+    //Copy data
+    private CopyInfoDAO copyInfoDAO;
 
     /**
      * Returns a DwcPropertyHolder java Object with all the
@@ -62,7 +66,7 @@ public class ConfigManagerImpl implements ConfigManager{
      */
     @Override
     public DwcPropertyHolder getDwcPropertyHolder(){
-        return this.dwcPropertyHolderDAO.getDwcPropertyHolder();
+        return this.getDwcPropertyHolderDAO().getDwcPropertyHolder();
     }
 
     /**
@@ -71,7 +75,7 @@ public class ConfigManagerImpl implements ConfigManager{
      */
     @Override
     public boolean saveToPropertiesFile(DwcPropertyHolder ph) {
-        return this.dwcPropertyHolderDAO.saveToPropertiesFile(ph);
+        return this.getDwcPropertyHolderDAO().saveToPropertiesFile(ph);
     }
 
     /**
@@ -80,7 +84,7 @@ public class ConfigManagerImpl implements ConfigManager{
      */
     @Override
     public int CountDwc(){
-        return this.dwcDataAccessDAO.countAll(this.getDwcPropertyHolder());
+        return this.getDwcDataAccessDAO().countAll(this.getDwcPropertyHolder());
     }
 
     /**
@@ -89,7 +93,7 @@ public class ConfigManagerImpl implements ConfigManager{
      */
     @Override
     public List<String> getDwcTableFields(){
-        return this.dwcDataAccessDAO.getDwcTableFields(this.getDwcPropertyHolder());
+        return this.getDwcDataAccessDAO().getDwcTableFields(this.getDwcPropertyHolder());
     }
 
     /**
@@ -98,7 +102,7 @@ public class ConfigManagerImpl implements ConfigManager{
      */
     @Override
     public PlicPropertyHolder getPlicPropertyHolder() {
-        return this.plicPropertyHolderDAO.getPlicPropertyHolder();
+        return this.getPlicPropertyHolderDAO().getPlicPropertyHolder();
     }
 
     /**
@@ -107,7 +111,7 @@ public class ConfigManagerImpl implements ConfigManager{
      */
     @Override
     public boolean saveToPropertiesFilePlic(PlicPropertyHolder ph) {
-        return this.plicPropertyHolderDAO.saveToPropertiesFile(ph);
+        return this.getPlicPropertyHolderDAO().saveToPropertiesFile(ph);
     }
 
     /**
@@ -116,7 +120,7 @@ public class ConfigManagerImpl implements ConfigManager{
      */
     @Override
     public int CountPlic(){
-        return this.plicDataAccessDAO.countAll(this.getPlicPropertyHolder());
+        return this.getPlicDataAccessDAO().countAll(this.getPlicPropertyHolder());
     }
 
     /**
@@ -125,7 +129,7 @@ public class ConfigManagerImpl implements ConfigManager{
      */
     @Override
     public List<String> getPlicTableFields(){
-        return this.plicDataAccessDAO.getPlicTableFields(this.getPlicPropertyHolder());
+        return this.getPlicDataAccessDAO().getPlicTableFields(this.getPlicPropertyHolder());
     }
 
     /**
@@ -134,7 +138,7 @@ public class ConfigManagerImpl implements ConfigManager{
      */
     @Override
     public IndiPropertyHolder getIndiPropertyHolder() {
-        return this.indiPropertyHolderDAO.getIndiPropertyHolder();
+        return this.getIndiPropertyHolderDAO().getIndiPropertyHolder();
     }
 
     /**
@@ -143,7 +147,7 @@ public class ConfigManagerImpl implements ConfigManager{
      */
     @Override
     public boolean saveToPropertiesFileIndi(IndiPropertyHolder ph) {
-        return this.indiPropertyHolderDAO.saveToPropertiesFile(ph);
+        return this.getIndiPropertyHolderDAO().saveToPropertiesFile(ph);
     }
 
     /**
@@ -152,7 +156,7 @@ public class ConfigManagerImpl implements ConfigManager{
      */
     @Override
     public int CountIndi(){
-        return this.indiDataAccessDAO.countAll(this.getIndiPropertyHolder());
+        return this.getIndiDataAccessDAO().countAll(this.getIndiPropertyHolder());
     }
 
     /**
@@ -161,7 +165,7 @@ public class ConfigManagerImpl implements ConfigManager{
      */
     @Override
     public List<String> getIndiTableFields(){
-        return this.indiDataAccessDAO.getIndiTableFields(this.getIndiPropertyHolder());
+        return this.getIndiDataAccessDAO().getIndiTableFields(this.getIndiPropertyHolder());
     }
 
     /**
@@ -170,7 +174,7 @@ public class ConfigManagerImpl implements ConfigManager{
      */
     @Override
     public TindiPropertyHolder getTindiPropertyHolder() {
-        return this.tindiPropertyHolderDAO.getTindiPropertyHolder();
+        return this.getTindiPropertyHolderDAO().getTindiPropertyHolder();
     }
 
     /**
@@ -179,7 +183,7 @@ public class ConfigManagerImpl implements ConfigManager{
      */
     @Override
     public boolean saveToPropertiesFileTindi(TindiPropertyHolder ph) {
-        return this.tindiPropertyHolderDAO.saveToPropertiesFile(ph);
+        return this.getTindiPropertyHolderDAO().saveToPropertiesFile(ph);
     }
 
     /**
@@ -188,7 +192,7 @@ public class ConfigManagerImpl implements ConfigManager{
      */
     @Override
     public int CountTindi(){
-        return this.tindiDataAccessDAO.countAll(this.getTindiPropertyHolder());
+        return this.getTindiDataAccessDAO().countAll(this.getTindiPropertyHolder());
     }
 
     /**
@@ -197,7 +201,7 @@ public class ConfigManagerImpl implements ConfigManager{
      */
     @Override
     public List<String> getTindiTableFields(){
-        return this.tindiDataAccessDAO.getTindiTableFields(this.getTindiPropertyHolder());
+        return this.getTindiDataAccessDAO().getTindiTableFields(this.getTindiPropertyHolder());
     }
 
     /**
@@ -206,7 +210,7 @@ public class ConfigManagerImpl implements ConfigManager{
      */
     @Override
     public LayerPropertyHolder getLayerPropertyHolder(){
-        return this.layerPropertyHolderDAO.getLayerPropertyHolder();
+        return this.getLayerPropertyHolderDAO().getLayerPropertyHolder();
     }
 
     /**
@@ -215,7 +219,7 @@ public class ConfigManagerImpl implements ConfigManager{
      */
     @Override
     public boolean saveToPropertiesFileLayer(LayerPropertyHolder ph) {
-        return this.layerPropertyHolderDAO.saveToPropertiesFile(ph);
+        return this.getLayerPropertyHolderDAO().saveToPropertiesFile(ph);
     }
 
     /**
@@ -224,7 +228,7 @@ public class ConfigManagerImpl implements ConfigManager{
      */
     @Override
     public List<String> getLayerTables(){
-        return this.layerDataAccessDAO.getLayerTables(this.getLayerPropertyHolder());
+        return this.getLayerDataAccessDAO().getLayerTables(this.getLayerPropertyHolder());
     }
 
     /**
@@ -233,7 +237,7 @@ public class ConfigManagerImpl implements ConfigManager{
      */
     @Override
     public int countAllLayerTables(){
-        return this.layerDataAccessDAO.countAllTables(this.getLayerPropertyHolder());
+        return this.getLayerDataAccessDAO().countAllTables(this.getLayerPropertyHolder());
     }
 
     /**
@@ -244,8 +248,8 @@ public class ConfigManagerImpl implements ConfigManager{
     @Override
     public PostgisLayers getLayersList() {
         PostgisLayers result = new PostgisLayers();
-        List<String> layers = this.selectedLayerDAO.getLayersNames();
-        List<String> base = this.selectedLayerDAO.getBaseLayers();
+        List<String> layers = this.getSelectedLayerDAO().getLayersNames();
+        List<String> base = this.getSelectedLayerDAO().getBaseLayers();
         String[] aux = new String[layers.size()];
         for(int i = 0;i<layers.size();i++){
             aux[i] = layers.get(i);
@@ -266,17 +270,32 @@ public class ConfigManagerImpl implements ConfigManager{
         String base = pl.getBase();
         try{
             //Delete the selected layers from db
-            this.selectedLayerDAO.deleteAllLayers();
+            this.getSelectedLayerDAO().deleteAllLayers();
             //Persist the new selected layers
             for(int i = 0;i<layers.length;i++){
-                this.selectedLayerDAO.saveLayers(layers[i]);
+                this.getSelectedLayerDAO().saveLayers(layers[i]);
             }
             //Indicates the base layer
-            this.selectedLayerDAO.updateBase(base);
+            this.getSelectedLayerDAO().updateBase(base);
             return true;
         }
         catch(Exception e){return false;}
     }
+
+    /**
+     * Method to migrate data from external dwc table to system dwc table
+     * @return a number of afected rows (# of insertions)
+     */
+    @Override
+    public int migrateDwc(){
+        DwcPropertyHolder ph = this.getDwcPropertyHolder();
+        return this.getCopyInfoDAO().migrateSpecimensData
+                (ph,this.dwcDataAccessDAO.countAll(ph));
+    }
+
+    /* ----------------------------------------------------
+    ----------------- Getters y Setters -------------------
+    -----------------------------------------------------*/
 
     /**
      * @return the dwcPropertyHolderDAO
@@ -430,6 +449,20 @@ public class ConfigManagerImpl implements ConfigManager{
      */
     public void setTindiDataAccessDAO(TindiDataAccessDAO tindiDataAccessDAO) {
         this.tindiDataAccessDAO = tindiDataAccessDAO;
+    }
+
+    /**
+     * @return the copyInfoDAO
+     */
+    public CopyInfoDAO getCopyInfoDAO() {
+        return copyInfoDAO;
+    }
+
+    /**
+     * @param copyInfoDAO the copyInfoDAO to set
+     */
+    public void setCopyInfoDAO(CopyInfoDAO copyInfoDAO) {
+        this.copyInfoDAO = copyInfoDAO;
     }
 
 }

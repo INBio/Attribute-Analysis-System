@@ -556,6 +556,9 @@ ALTER TABLE ONLY indicator
     ADD CONSTRAINT indicator_ancestor_id_fk FOREIGN KEY (indicator_ancestor_id) REFERENCES indicator(indicator_id);
 
 
+INSERT INTO users (user_id, fullname, username, password, enabled, roles) VALUES (1, 'Administrador', 'admin', '5fd060ad4189a1ffaa659d8c14d145b2', true, 'ROLE_USER,ROLE_ADMIN');
+INSERT INTO users (user_id, fullname, username, password, enabled, roles) VALUES (2, 'Usuario de prueba', 'beta', '987bcab01b929eb2c07877b224215c92', true, 'ROLE_USER');
+
 -- Completed on 2010-07-09 15:49:11 CST
 
 --

@@ -33,7 +33,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 public class DwcDataAccessDAOImpl implements DwcDataAccessDAO{
 
     private JdbcTemplate jdbcTemplate;
-
+    
     /**
      * Method to get a list of all fields from the mapped dwc table
      * through jdbc conection

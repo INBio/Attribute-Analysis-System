@@ -66,4 +66,7 @@ public interface ConfigManager {
     public PostgisLayers getLayersList();
     public boolean saveLayersList(PostgisLayers pl);
 
+    /* Date migration */
+    public int migrateDwc();
+
 }
