@@ -91,7 +91,7 @@
 
         </script>
 	</head>
-	<body onload="initLoadingPanel()">
+	<body onload="initLoadingPanel()" class=" yui-skin-sam">
         <!-- Content -->
         <div id="contenido">
             <!-- Header -->

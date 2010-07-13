@@ -156,42 +156,47 @@
         <property name="indiDataAccessDAO" ref="indiDataAccessDAO"/>
         <property name="tindiPropertyHolderDAO" ref="tindiPropertyHolderDAO"/>
         <property name="tindiDataAccessDAO" ref="tindiDataAccessDAO"/>
+        <property name="copyInfoDAO" ref="copyInfoDAO"/>
     </bean>
 
     <!--.....................................................................-->
     <!--.................... DAO Declarations ...............................-->
     <!--.....................................................................-->
-     <bean id="speciesDAO" class="org.inbio.ait.dao.impl.SpeciesDAOImpl">
+     <bean id="speciesDAO" class="org.inbio.ait.dao.sys.impl.SpeciesDAOImpl">
         <property name="dataSource" ref="dataSource" />
     </bean>
-     <bean id="specimenDAO" class="org.inbio.ait.dao.impl.SpecimenDAOImpl">
+     <bean id="specimenDAO" class="org.inbio.ait.dao.sys.impl.SpecimenDAOImpl">
         <property name="dataSource" ref="dataSource" />
     </bean>
-     <bean id="taxonInfoIndexDAO" class="org.inbio.ait.dao.impl.TaxonInfoIndexDAOImpl">
+     <bean id="taxonInfoIndexDAO" class="org.inbio.ait.dao.sys.impl.TaxonInfoIndexDAOImpl">
         <property name="dataSource" ref="dataSource" />
     </bean>
-     <bean id="taxonIndexDAO" class="org.inbio.ait.dao.impl.TaxonIndexDAOImpl">
+     <bean id="taxonIndexDAO" class="org.inbio.ait.dao.sys.impl.TaxonIndexDAOImpl">
         <property name="dataSource" ref="dataSource" />
     </bean>
-     <bean id="systemUserDAO" class="org.inbio.ait.dao.impl.SystemUserDAOImpl">
+     <bean id="systemUserDAO" class="org.inbio.ait.dao.sys.impl.SystemUserDAOImpl">
         <property name="dataSource" ref="dataSource" />
     </bean>
-     <bean id="indicatorDAO" class="org.inbio.ait.dao.impl.IndicatorDAOImpl">
+     <bean id="indicatorDAO" class="org.inbio.ait.dao.sys.impl.IndicatorDAOImpl">
         <property name="dataSource" ref="dataSource" />
     </bean>
+    <bean id="selectedLayerDAO" class="org.inbio.ait.dao.sys.impl.SelectedLayerDAOImpl">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+    <bean id="copyInfoDAO" class="org.inbio.ait.dao.sys.impl.CopyInfoDAOImpl">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+    
     <!--............ DAO that not extends SimpleJdbcDaoSupport ..............-->
-    <bean id="dwcPropertyHolderDAO" class="org.inbio.ait.dao.impl.DwcPropertyHolderDAOImpl"/>
-    <bean id="dwcDataAccessDAO" class="org.inbio.ait.dao.impl.DwcDataAccessDAOImpl"/>
-    <bean id="plicPropertyHolderDAO" class="org.inbio.ait.dao.impl.PlicPropertyHolderDAOImpl"/>
-    <bean id="plicDataAccessDAO" class="org.inbio.ait.dao.impl.PlicDataAccessDAOImpl"/>
-    <bean id="layerPropertyHolderDAO" class="org.inbio.ait.dao.impl.LayerPropertyHolderDAOImpl"/>
-    <bean id="layerDataAccessDAO" class="org.inbio.ait.dao.impl.LayerDataAccessDAOImpl"/>
-     <bean id="selectedLayerDAO" class="org.inbio.ait.dao.impl.SelectedLayerDAOImpl">
-        <property name="dataSource" ref="dataSource" />
-    </bean>
-    <bean id="indiPropertyHolderDAO" class="org.inbio.ait.dao.impl.IndiPropertyHolderDAOImpl"/>
-    <bean id="indiDataAccessDAO" class="org.inbio.ait.dao.impl.IndiDataAccessDAOImpl"/>
-    <bean id="tindiPropertyHolderDAO" class="org.inbio.ait.dao.impl.TindiPropertyHolderDAOImpl"/>
-    <bean id="tindiDataAccessDAO" class="org.inbio.ait.dao.impl.TindiDataAccessDAOImpl"/>
+    <bean id="dwcPropertyHolderDAO" class="org.inbio.ait.dao.conn.impl.DwcPropertyHolderDAOImpl"/>
+    <bean id="dwcDataAccessDAO" class="org.inbio.ait.dao.conn.impl.DwcDataAccessDAOImpl"/>
+    <bean id="plicPropertyHolderDAO" class="org.inbio.ait.dao.conn.impl.PlicPropertyHolderDAOImpl"/>
+    <bean id="plicDataAccessDAO" class="org.inbio.ait.dao.conn.impl.PlicDataAccessDAOImpl"/>
+    <bean id="layerPropertyHolderDAO" class="org.inbio.ait.dao.conn.impl.LayerPropertyHolderDAOImpl"/>
+    <bean id="layerDataAccessDAO" class="org.inbio.ait.dao.conn.impl.LayerDataAccessDAOImpl"/>
+    <bean id="indiPropertyHolderDAO" class="org.inbio.ait.dao.conn.impl.IndiPropertyHolderDAOImpl"/>
+    <bean id="indiDataAccessDAO" class="org.inbio.ait.dao.conn.impl.IndiDataAccessDAOImpl"/>
+    <bean id="tindiPropertyHolderDAO" class="org.inbio.ait.dao.conn.impl.TindiPropertyHolderDAOImpl"/>
+    <bean id="tindiDataAccessDAO" class="org.inbio.ait.dao.conn.impl.TindiDataAccessDAOImpl"/>
 
 </beans>

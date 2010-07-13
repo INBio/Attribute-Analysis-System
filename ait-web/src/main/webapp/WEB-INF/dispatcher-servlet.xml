@@ -144,5 +144,9 @@
         <property name="successView" value="config"/>
         <property name="configManager" ref="configManager"/>
     </bean>
+    <!-- The dwc migration controller -->
+    <bean name="/copydwc.htm" class="org.inbio.ait.web.controller.CopydwcController">
+        <property name="configManager" ref="configManager"/>
+    </bean>
     
 </beans>
