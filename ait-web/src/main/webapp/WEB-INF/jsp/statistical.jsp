@@ -86,9 +86,11 @@
                 layersList.push(new Array('${geoserver}${var}','${var}')); //(id,name)
                 </c:forEach>
                 //Sets the layerId,layerIndex and layerName values
+                if(layersList.length > 0){
+                    layerId = layersList[0][0];
+                    layerName = layersList[0][1];
+                }
                 layerIndex = 1; //Used as id on map layer list, not in layersList
-                layerId = layersList[0][0];
-                layerName = layersList[0][1];
                 
                 //initialize map functionality
                 initMap('map');
