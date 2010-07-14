@@ -148,5 +148,9 @@
     <bean name="/copydwc.htm" class="org.inbio.ait.web.controller.CopydwcController">
         <property name="configManager" ref="configManager"/>
     </bean>
+    <!-- The indicator migration controller -->
+    <bean name="/copyindi.htm" class="org.inbio.ait.web.controller.CopyindiController">
+        <property name="configManager" ref="configManager"/>
+    </bean>
     
 </beans>

@@ -28,14 +28,14 @@ import org.springframework.web.servlet.mvc.Controller;
  *
  * @author esmata
  */
-public class CopydwcController implements Controller{
+public class CopyindiController implements Controller{
 
     private ConfigManager configManager;
 
     @Override
     public ModelAndView handleRequest(HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        int inserts = this.configManager.migrateDwc();
+        int inserts = this.configManager.migrateIndicators();
         if(inserts == -1){ //Error ocurred during data migration
             ModelAndView mv = new ModelAndView("copyerror");
             return mv;
@@ -64,5 +64,4 @@ public class CopydwcController implements Controller{
     public void setConfigManager(ConfigManager configManager) {
         this.configManager = configManager;
     }
-
 }

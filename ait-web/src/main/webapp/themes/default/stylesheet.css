@@ -266,8 +266,16 @@ body {
 
 /* Para los links del menu */
 .link{
+    margin-left:20px;
     padding: 3px 0 0 35px;
     background: url(images/tabs.png);
+    background-repeat:no-repeat;
+    background-position: 10px 3px;
+}
+
+.link_tools{
+    padding: 3px 0 0 35px;
+    background: url(images/tools.png);
     background-repeat:no-repeat;
     background-position: 10px 3px;
     font-weight:bold;
