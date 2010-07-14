@@ -299,8 +299,28 @@ public class ConfigManagerImpl implements ConfigManager{
         }
         else{
             //Do migration
-            return this.getCopyInfoDAO().migrateSpecimensData
-                    (ph,this.dwcDataAccessDAO.countAll(ph));
+            return this.getCopyInfoDAO().migrateSpecimensData(ph,check);
+        }
+    }
+
+    /**
+     * Method to migrate data from external indicators table to system tables
+     * @return
+     *  -2 error conecting to the external dwc db
+     *  -1 error in data migration
+     *  <1 number of afected rows (# of insertions)
+     */
+    @Override
+    public int migrateIndicators(){
+        IndiPropertyHolder ph = this.getIndiPropertyHolder();
+        //Check if the conecction was established already
+        int check = this.getIndiDataAccessDAO().countAll(ph);
+        if(check == -1){
+            return -2; //error
+        }
+        else{
+            //Do migration
+            return this.getCopyInfoDAO().migrateIndicatorsData(ph,check);
         }
     }
 

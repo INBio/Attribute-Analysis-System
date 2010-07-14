@@ -22,7 +22,10 @@ import java.util.ArrayList;
 import java.util.List;
 import org.inbio.ait.jdbc.mapper.DwcMapper;
 import org.inbio.ait.dao.sys.CopyInfoDAO;
+import org.inbio.ait.jdbc.mapper.IndiMapper;
 import org.inbio.ait.model.DwcPropertyHolder;
+import org.inbio.ait.model.IndiPropertyHolder;
+import org.inbio.ait.model.Indicator;
 import org.inbio.ait.model.SpecimenBase;
 import org.inbio.ait.util.AitDataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -79,6 +82,54 @@ public class CopyInfoDAOImpl extends SimpleJdbcDaoSupport implements CopyInfoDAO
                     afectedRows += a;
                 }
                 jdbcFrom.getDataSource().getConnection().close();                
+            }//Ends pagination
+            return afectedRows;
+        } catch (Exception e) {
+            System.out.println(e);
+            return -1;
+        }
+    }
+
+    /**
+     * This method gets the indicators information from external data base and copy
+     * this information into the indicator system table
+     * @param ph Connection data
+     * @param totalIndi total of indicators registers
+     * @return number of afected rows (copied in this case)
+     */
+    @Override
+    public int migrateIndicatorsData(IndiPropertyHolder ph,int totalIndi){
+        //Stablish the connection to the external data base
+        this.accessToDB(ph.getDriverClassName(), ph.getUrl(), ph.getUsername(), ph.getPassword());
+
+        //Copy data from external indicators table to system indicators table
+        List<Indicator> iList = new ArrayList<Indicator>();
+        try {
+            //Delete existing data
+            if (!deleteAllGeneric("indicator")) {
+                return -1; //error deleting existing data
+            }
+            //Paginating the migration proccess
+            int afectedRows = 0;
+            for (int i = 0; i < totalIndi; i+=500) {
+                //Get data from external db
+                String getQuery = "Select * from " + ph.getTablename() + " order by " +
+                        ph.getIndicator_id() + " limit 500 offset " + i; //limit cuantos offset comienzo
+                iList = this.jdbcFrom.query(getQuery, new IndiMapper(ph));
+                //Insert external data into system db
+                for (Indicator indi : iList) {
+                    String insertQuery =
+                            "Insert into ait.indicator (indicator_id,indicator_name," +
+                            "indicator_description,indicator_applies_to_part," +
+                            "indicator_ancestor_id,indicator_references) " +
+                            "values (?,?,?,?,?,?)";
+                    int a = getSimpleJdbcTemplate().update(insertQuery, indi.getIndicator_id(),
+                            indi.getIndicator_name(), indi.getIndicator_description(),
+                            indi.getIndicator_applies_to_part(),indi.getIndicator_ancestor_id(),
+                            indi.getIndicator_references());
+                    afectedRows += a;
+                }
+                jdbcFrom.getDataSource().getConnection().close();
             }//Ends pagination
             return afectedRows;
         } catch (Exception e) {

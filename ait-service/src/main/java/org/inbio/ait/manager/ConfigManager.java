@@ -68,5 +68,6 @@ public interface ConfigManager {
 
     /* Date migration */
     public int migrateDwc();
+    public int migrateIndicators();
 
 }

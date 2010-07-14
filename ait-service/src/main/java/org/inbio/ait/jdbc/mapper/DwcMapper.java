@@ -54,7 +54,7 @@ public class DwcMapper implements ParameterizedRowMapper<SpecimenBase> {
             sp.setKingdom(rs.getString(ph.getKingdom()));
         }
         if (!ph.getPhylum().equals("unmapped")) {
-            sp.setClass1(rs.getString(ph.getPhylum()));
+            sp.setPhylum(rs.getString(ph.getPhylum()));
         }
         if (!ph.getClass1().equals("unmapped")) {
             sp.setClass1(rs.getString(ph.getClass1()));
