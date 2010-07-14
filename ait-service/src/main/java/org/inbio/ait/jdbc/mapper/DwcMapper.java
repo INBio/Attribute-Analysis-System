@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.inbio.ait.dao.mapper;
+package org.inbio.ait.jdbc.mapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

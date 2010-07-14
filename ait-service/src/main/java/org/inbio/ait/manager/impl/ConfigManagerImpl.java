@@ -284,13 +284,24 @@ public class ConfigManagerImpl implements ConfigManager{
 
     /**
      * Method to migrate data from external dwc table to system dwc table
-     * @return a number of afected rows (# of insertions)
+     * @return
+     *  -2 error conecting to the external dwc db
+     *  -1 error in data migration
+     *  <1 number of afected rows (# of insertions)
      */
     @Override
     public int migrateDwc(){
         DwcPropertyHolder ph = this.getDwcPropertyHolder();
-        return this.getCopyInfoDAO().migrateSpecimensData
-                (ph,this.dwcDataAccessDAO.countAll(ph));
+        //Check if the conecction was established already        
+        int check = this.getDwcDataAccessDAO().countAll(ph);        
+        if(check == -1){
+            return -2; //error
+        }
+        else{
+            //Do migration
+            return this.getCopyInfoDAO().migrateSpecimensData
+                    (ph,this.dwcDataAccessDAO.countAll(ph));
+        }
     }
 
     /* ----------------------------------------------------

@@ -20,7 +20,7 @@ package org.inbio.ait.dao.sys.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.inbio.ait.dao.mapper.DwcMapper;
+import org.inbio.ait.jdbc.mapper.DwcMapper;
 import org.inbio.ait.dao.sys.CopyInfoDAO;
 import org.inbio.ait.model.DwcPropertyHolder;
 import org.inbio.ait.model.SpecimenBase;
@@ -53,7 +53,7 @@ public class CopyInfoDAOImpl extends SimpleJdbcDaoSupport implements CopyInfoDAO
         try {
             //Delete existing data
             if (!deleteAllGeneric("darwin_core")) {
-                return -1;
+                return -1; //error deleting existing data
             }
             //Paginating the migration proccess
             int afectedRows = 0;
