@@ -36,8 +36,12 @@ public class CopydwcController implements Controller{
     public ModelAndView handleRequest(HttpServletRequest request,
             HttpServletResponse response) throws Exception {
         int inserts = this.configManager.migrateDwc();
-        if(inserts == -1){ //Error ocurred
+        if(inserts == -1){ //Error ocurred during data migration
             ModelAndView mv = new ModelAndView("copyerror");
+            return mv;
+        }
+        if(inserts == -2){ //Error ocurred conecting to the external dwc db
+            ModelAndView mv = new ModelAndView("error");
             return mv;
         }
         else{ //Everything ok
