@@ -24,10 +24,10 @@ body {
 	/*position:absolute;*/
 	font-family:arial, helvetica, sans-serif;
 	text-align:center;
-	font-size: 24px;
+	font-size: 20px;
 	margin:0;
 	width:100%;
-	padding: 125px 0 0 0px;
+	padding: 130px 0 0 0px;
 	color:white;
 }
 
@@ -51,6 +51,7 @@ body {
 	padding: 10px 0 0 0;
 	background-color:#000000;
 	vertical-align: middle;
+    margin-top:3px;
 }
 
 /* The map and the location bar */
@@ -82,7 +83,7 @@ body {
 }
 
 #treeDiv{
-    width:250px;
+    width:258px;
     max-height:160px;
     overflow:auto;
     border:dashed 1px gray;
@@ -112,7 +113,7 @@ body {
 /* The content of each .jsp It has the header,content and footer*/
 #contenido {
     text-align:justify;
-    margin: 4px 6% 0 6%;
+    margin: 3px 5% 0 5%;
     display: block;
     margin-bottom: 3em;
     border-left:1px solid #124A21;
@@ -274,8 +275,7 @@ body {
 }
 
 .link_tools{
-    padding: 3px 0 0 35px;
-    background: url(images/tools.png);
+    padding: 0px 0 0 5px;
     background-repeat:no-repeat;
     background-position: 10px 3px;
     font-weight:bold;

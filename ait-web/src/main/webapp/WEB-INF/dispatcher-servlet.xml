@@ -152,5 +152,9 @@
     <bean name="/copyindi.htm" class="org.inbio.ait.web.controller.CopyindiController">
         <property name="configManager" ref="configManager"/>
     </bean>
+    <!-- The taxon indicator migration controller -->
+    <bean name="/copytaxonindi.htm" class="org.inbio.ait.web.controller.CopyTaxonIndiController">
+        <property name="configManager" ref="configManager"/>
+    </bean>
     
 </beans>
