@@ -156,7 +156,9 @@
         <property name="indiDataAccessDAO" ref="indiDataAccessDAO"/>
         <property name="tindiPropertyHolderDAO" ref="tindiPropertyHolderDAO"/>
         <property name="tindiDataAccessDAO" ref="tindiDataAccessDAO"/>
-        <property name="copyInfoDAO" ref="copyInfoDAO"/>
+        <property name="indicatorDAO" ref="indicatorDAO"/>
+        <property name="specimenDAO" ref="specimenDAO"/>
+        <property name="taxonIndicatorDAO" ref="taxonIndicatorDAO"/>
     </bean>
 
     <!--.....................................................................-->
@@ -166,6 +168,9 @@
         <property name="dataSource" ref="dataSource" />
     </bean>
      <bean id="specimenDAO" class="org.inbio.ait.dao.sys.impl.SpecimenDAOImpl">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+     <bean id="taxonIndicatorDAO" class="org.inbio.ait.dao.sys.impl.TaxonIndicatorDAOImpl">
         <property name="dataSource" ref="dataSource" />
     </bean>
      <bean id="taxonInfoIndexDAO" class="org.inbio.ait.dao.sys.impl.TaxonInfoIndexDAOImpl">
@@ -181,9 +186,6 @@
         <property name="dataSource" ref="dataSource" />
     </bean>
     <bean id="selectedLayerDAO" class="org.inbio.ait.dao.sys.impl.SelectedLayerDAOImpl">
-        <property name="dataSource" ref="dataSource" />
-    </bean>
-    <bean id="copyInfoDAO" class="org.inbio.ait.dao.sys.impl.CopyInfoDAOImpl">
         <property name="dataSource" ref="dataSource" />
     </bean>
     

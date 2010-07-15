@@ -55,6 +55,8 @@
                     <a href="copyindi.htm" class="link" onclick="showLoading()"><fmt:message key="import_indi_data"/></a><br>
                     <a href="copytaxonindi.htm" class="link" onclick="showLoading()"><fmt:message key="import_indit_data"/></a><br>
 
+                    <p class="link_tools"><fmt:message key="data_index"/></p>
+
                 </div>
 
                 <!-- Footer -->
