@@ -22,7 +22,9 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import org.inbio.ait.dao.conn.DwcDataAccessDAO;
+import org.inbio.ait.jdbc.mapper.DwcMapper;
 import org.inbio.ait.model.DwcPropertyHolder;
+import org.inbio.ait.model.SpecimenBase;
 import org.inbio.ait.util.AitDataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -65,9 +67,24 @@ public class DwcDataAccessDAOImpl implements DwcDataAccessDAO{
     public int countAll(DwcPropertyHolder ph) {
         int result = -1;
         try {
-            //Stting up the jdbcTemplate
+            //Setting up the jdbcTemplate
             this.accessToDB(ph);
             return this.jdbcTemplate.queryForInt("Select count(*) from " + ph.getTablename());
+        } catch (Exception e) {
+            return result;
+        }
+    }
+
+    @Override
+    public List<SpecimenBase> getAllSpecimenBase(DwcPropertyHolder ph,int limit,int offset) {
+        List<SpecimenBase> result = new ArrayList<SpecimenBase>();
+        try {
+            //Setting up the jdbcTemplate
+            this.accessToDB(ph);
+            //Get data from external db
+            String getQuery = "Select * from " + ph.getTablename() + " order by " +
+                    ph.getGlobaluniqueidentifier() + " limit "+ limit +" offset " + offset; //limit cuantos offset comienzo
+            return this.jdbcTemplate.query(getQuery, new DwcMapper(ph));
         } catch (Exception e) {
             return result;
         }

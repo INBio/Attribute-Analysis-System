@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.inbio.ait.dao.sys.IndicatorDAO;
 import org.inbio.ait.model.AutocompleteNode;
+import org.inbio.ait.model.Indicator;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
@@ -37,7 +38,8 @@ public class IndicatorDAOImpl extends SimpleJdbcDaoSupport implements IndicatorD
     public List<AutocompleteNode> getChildNodesByNodeId(int nodeId) {
         List<AutocompleteNode> nodes = new ArrayList<AutocompleteNode>();
         try{
-            String query = "Select indicator_id,indicator_name from ait.indicator where indicator_ancestor_id = "+nodeId+" order by indicator_name;";
+            String query = "Select indicator_id,indicator_name from ait.indicator " +
+                    "where indicator_ancestor_id = "+nodeId+" order by indicator_name;";
 
             nodes = getSimpleJdbcTemplate().query(query,
                     new AutocompleteMapper());
@@ -46,6 +48,45 @@ public class IndicatorDAOImpl extends SimpleJdbcDaoSupport implements IndicatorD
         return nodes;
     }
 
+    /**
+     * Deletes all information from ait.indicator table
+     * @return
+     */
+    @Override
+    public boolean deleteAllIndicators() {
+        try {
+            String query = "Delete from ait.indicator";
+            getSimpleJdbcTemplate().update(query);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+    
+    /**
+     * Insert a single indicator into data base
+     * @return
+     */
+    @Override
+    public int InsertIndicator(Indicator indi) {
+        int result = 0;
+        try {
+            String insert =
+                    "Insert into ait.indicator (indicator_id,indicator_name," +
+                    "indicator_description,indicator_applies_to_part," +
+                    "indicator_ancestor_id,indicator_references) " +
+                    "values (?,?,?,?,?,?)";
+            result = getSimpleJdbcTemplate().update(insert, indi.getIndicator_id(),
+                    indi.getIndicator_name(), indi.getIndicator_description(),
+                    indi.getIndicator_applies_to_part(),indi.getIndicator_ancestor_id(),
+                    indi.getIndicator_references());
+        } catch (Exception e) {
+            return 0;
+        }
+        return result;
+    }
+
+    
     private static class AutocompleteMapper implements ParameterizedRowMapper<AutocompleteNode> {
 
         @Override

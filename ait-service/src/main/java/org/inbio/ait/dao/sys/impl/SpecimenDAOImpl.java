@@ -25,6 +25,7 @@ import java.util.List;
 import org.inbio.ait.dao.sys.SpecimenDAO;
 import org.inbio.ait.model.AutocompleteNode;
 import org.inbio.ait.model.Specimen;
+import org.inbio.ait.model.SpecimenBase;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
@@ -88,6 +89,47 @@ public class SpecimenDAOImpl extends SimpleJdbcDaoSupport implements SpecimenDAO
             return nodes;
         }
         return nodes;
+    }
+
+    /**
+     * Deletes all information from ait.darwin_core table
+     * @return
+     */
+    @Override
+    public boolean deleteAllSpecimens() {
+        try {
+            String query = "Delete from ait.darwin_core";
+            getSimpleJdbcTemplate().update(query);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Insert a single specimen into data base
+     * @return
+     */
+    @Override
+    public int InsertSpecimen(SpecimenBase sp) {
+        int result = 0;
+        try {
+            String insertQuery =
+                    "Insert into ait.darwin_core (globaluniqueidentifier," +
+                    "datelastmodified,institutioncode,collectioncode," +
+                    "catalognumber,scientificname,basisofrecord,kingdom,phylum,class," +
+                    "orders,family,genus,specificepithet,decimallongitude," +
+                    "decimallatitude) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            result = getSimpleJdbcTemplate().update(insertQuery, sp.getGlobaluniqueidentifier(),
+                    sp.getDatelastmodified(), sp.getInstitutioncode(), sp.getCollectioncode(),
+                    sp.getCatalognumber(), sp.getScientificname(), sp.getBasisofrecord(),
+                    sp.getKingdom(), sp.getPhylum(), sp.getClass1(), sp.getOrders(), sp.getFamily(),
+                    sp.getGenus(), sp.getSpecificepithet(), sp.getDecimallongitude(),
+                    sp.getDecimallatitude());
+        } catch (Exception e) {
+            return 0;
+        }
+        return result;
     }
 
     private static class SpecimenMapper implements ParameterizedRowMapper<Specimen> {

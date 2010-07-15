@@ -20,6 +20,7 @@ package org.inbio.ait.dao.sys;
 
 import java.util.List;
 import org.inbio.ait.model.AutocompleteNode;
+import org.inbio.ait.model.Indicator;
 
 /**
  * Data access object interface for the AutocompleteNode model class
@@ -33,5 +34,9 @@ public interface IndicatorDAO {
      * @return a list containing the children
      */
     public List<AutocompleteNode> getChildNodesByNodeId(int nodeId);
+
+    public boolean deleteAllIndicators();
+
+    public int InsertIndicator(Indicator indi);
 
 }

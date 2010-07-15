@@ -21,6 +21,7 @@ package org.inbio.ait.dao.sys;
 import java.util.List;
 import org.inbio.ait.model.AutocompleteNode;
 import org.inbio.ait.model.Specimen;
+import org.inbio.ait.model.SpecimenBase;
 
 /**
  * Data access object interface for the Specimen model class
@@ -50,5 +51,9 @@ public interface SpecimenDAO {
      * @return
      */
     public List<Specimen> getSpecimenListByQuery(String q);
+
+    public boolean deleteAllSpecimens();
+
+    public int InsertSpecimen(SpecimenBase sp);
 
 }

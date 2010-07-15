@@ -22,6 +22,8 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import org.inbio.ait.dao.conn.TindiDataAccessDAO;
+import org.inbio.ait.jdbc.mapper.TaxonIndicatorMapper;
+import org.inbio.ait.model.TaxonIndicator;
 import org.inbio.ait.model.TindiPropertyHolder;
 import org.inbio.ait.util.AitDataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -62,9 +64,24 @@ public class TindiDataAccessDAOImpl implements TindiDataAccessDAO{
     public int countAll(TindiPropertyHolder ph) {
         int result = -1;
         try {
-            //Stting up the jdbcTemplate
+            //Setting up the jdbcTemplate
             this.accessToDB(ph);
             return this.jdbcTemplate.queryForInt("Select count(*) from " + ph.getTablename());
+        } catch (Exception e) {
+            return result;
+        }
+    }
+
+    @Override
+    public List<TaxonIndicator> getAllTaxonIndicators(TindiPropertyHolder ph,int limit,int offset) {
+        List<TaxonIndicator> result = new ArrayList<TaxonIndicator>();
+        try {
+            //Setting up the jdbcTemplate
+            this.accessToDB(ph);
+            //Get data from external db
+            String getQuery = "Select * from " + ph.getTablename() + " order by " +
+                    ph.getTaxon_indicator_id() + " limit "+ limit +" offset " + offset; //limit cuantos offset comienzo
+            return this.jdbcTemplate.query(getQuery, new TaxonIndicatorMapper(ph));
         } catch (Exception e) {
             return result;
         }

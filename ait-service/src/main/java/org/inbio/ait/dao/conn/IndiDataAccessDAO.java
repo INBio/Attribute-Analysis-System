@@ -20,6 +20,7 @@ package org.inbio.ait.dao.conn;
 
 import java.util.List;
 import org.inbio.ait.model.IndiPropertyHolder;
+import org.inbio.ait.model.Indicator;
 
 /**
  *
@@ -30,5 +31,7 @@ public interface IndiDataAccessDAO {
     public List<String> getIndiTableFields(IndiPropertyHolder ph);
 
     public int countAll(IndiPropertyHolder ph);
+
+    public List<Indicator> getAllIndicators(IndiPropertyHolder ph,int limit,int offset);
 
 }

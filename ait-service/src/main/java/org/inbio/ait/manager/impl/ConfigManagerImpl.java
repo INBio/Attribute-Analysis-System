@@ -18,6 +18,7 @@
 
 package org.inbio.ait.manager.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.inbio.ait.dao.conn.DwcDataAccessDAO;
 import org.inbio.ait.dao.conn.DwcPropertyHolderDAO;
@@ -30,13 +31,18 @@ import org.inbio.ait.dao.conn.PlicPropertyHolderDAO;
 import org.inbio.ait.dao.sys.SelectedLayerDAO;
 import org.inbio.ait.dao.conn.TindiDataAccessDAO;
 import org.inbio.ait.dao.conn.TindiPropertyHolderDAO;
-import org.inbio.ait.dao.sys.CopyInfoDAO;
+import org.inbio.ait.dao.sys.IndicatorDAO;
+import org.inbio.ait.dao.sys.SpecimenDAO;
+import org.inbio.ait.dao.sys.TaxonIndicatorDAO;
 import org.inbio.ait.manager.ConfigManager;
 import org.inbio.ait.model.DwcPropertyHolder;
 import org.inbio.ait.model.IndiPropertyHolder;
+import org.inbio.ait.model.Indicator;
 import org.inbio.ait.model.LayerPropertyHolder;
 import org.inbio.ait.model.PlicPropertyHolder;
 import org.inbio.ait.model.PostgisLayers;
+import org.inbio.ait.model.SpecimenBase;
+import org.inbio.ait.model.TaxonIndicator;
 import org.inbio.ait.model.TindiPropertyHolder;
 
 /**
@@ -58,7 +64,9 @@ public class ConfigManagerImpl implements ConfigManager{
     private TindiPropertyHolderDAO tindiPropertyHolderDAO;
     private TindiDataAccessDAO tindiDataAccessDAO;
     //Copy data
-    private CopyInfoDAO copyInfoDAO;
+    private IndicatorDAO indicatorDAO;
+    private SpecimenDAO specimenDAO;
+    private TaxonIndicatorDAO taxonIndicatorDAO;
 
     /**
      * Returns a DwcPropertyHolder java Object with all the
@@ -299,7 +307,41 @@ public class ConfigManagerImpl implements ConfigManager{
         }
         else{
             //Do migration
-            return this.getCopyInfoDAO().migrateSpecimensData(ph,check);
+            return this.migrateSpecimensData(ph,check);
+        }
+    }
+
+    /**
+     * This method gets the specimens information from external data base and copy
+     * this information into the darwin_core system table
+     * @param ph Connection data
+     * @param totalDwc total of registers
+     * @return number of afected rows (copied in this case)
+     */
+    private int migrateSpecimensData(DwcPropertyHolder ph,int totalDwc){
+        //Copy data from external dwc table to system dwc table
+        List<SpecimenBase> spList = new ArrayList<SpecimenBase>();
+        try {
+            //Delete existing data
+            boolean delete = this.getSpecimenDAO().deleteAllSpecimens();
+            if (!delete) {
+                return -1; //error deleting existing data
+            }
+            //Paginating the migration proccess
+            int afectedRows = 0;
+            for (int i = 0; i < totalDwc; i+=500) {
+                //Get data from external db
+                spList = this.getDwcDataAccessDAO().getAllSpecimenBase(ph, 500, i);
+                //Insert external data into system db
+                for (SpecimenBase sp : spList) {
+                    int a = this.getSpecimenDAO().InsertSpecimen(sp);
+                    afectedRows += a;
+                }
+            }//Ends pagination
+            return afectedRows;
+        } catch (Exception e) {
+            System.out.println(e);
+            return -1;
         }
     }
 
@@ -320,7 +362,41 @@ public class ConfigManagerImpl implements ConfigManager{
         }
         else{
             //Do migration
-            return this.getCopyInfoDAO().migrateIndicatorsData(ph,check);
+            return this.migrateIndicatorsData(ph,check);
+        }
+    }
+
+    /**
+     * This method gets the indicators information from external data base and copy
+     * this information into the indicator system table
+     * @param ph Connection data
+     * @param totalIndi total of indicators registers
+     * @return number of afected rows (copied in this case)
+     */
+    private int migrateIndicatorsData(IndiPropertyHolder ph,int totalIndi){
+        //Copy data from external indicators table to system indicators table
+        List<Indicator> iList = new ArrayList<Indicator>();
+        try {
+            //Delete existing data
+            boolean delete = this.getIndicatorDAO().deleteAllIndicators();
+            if (!delete) {
+                return -1; //error deleting existing data
+            }
+            //Paginating the migration proccess
+            int afectedRows = 0;
+            for (int i = 0; i < totalIndi; i+=500) {
+                //Get data from external db
+                iList = this.getIndiDataAccessDAO().getAllIndicators(ph, 500, i);
+                //Insert external data into system db
+                for (Indicator indi : iList) {
+                    int a = this.getIndicatorDAO().InsertIndicator(indi);
+                    afectedRows += a;
+                }                
+            }//Ends pagination
+            return afectedRows;
+        } catch (Exception e) {
+            System.out.println(e);
+            return -1;
         }
     }
 
@@ -341,7 +417,41 @@ public class ConfigManagerImpl implements ConfigManager{
         }
         else{
             //Do migration
-            return this.getCopyInfoDAO().migrateTaxonIndicatorsData(ph,check);
+            return this.migrateTaxonIndicatorsData(ph,check);
+        }
+    }
+
+    /**
+     * This method gets the taxon indicators data from external data base and copy
+     * this information into the taxon indicator system table
+     * @param ph Connection data
+     * @param totalTindi total of taxon indicator registers
+     * @return number of afected rows (copied rows)
+     */
+    private int migrateTaxonIndicatorsData(TindiPropertyHolder ph,int totalTindi){
+        //Copy data from external taxon indicators table to system table
+        List<TaxonIndicator> tiList = new ArrayList<TaxonIndicator>();
+        try {
+            //Delete existing data
+            boolean delete = this.getTaxonIndicatorDAO().deleteAllTaxonIndi();
+            if (!delete) {
+                return -1; //error deleting existing data
+            }
+            //Paginating the migration proccess
+            int afectedRows = 0;
+            for (int i = 0; i < totalTindi; i+=500) {
+                //Get data from external db
+                tiList = this.getTindiDataAccessDAO().getAllTaxonIndicators(ph, 500, i);
+                //Insert external data into system db
+                for (TaxonIndicator ti : tiList) {
+                    int a = this.getTaxonIndicatorDAO().InsertTaxonIndicator(ti);
+                    afectedRows += a;
+                }
+            }//Ends pagination
+            return afectedRows;
+        } catch (Exception e) {
+            System.out.println(e);
+            return -1;
         }
     }
 
@@ -504,17 +614,45 @@ public class ConfigManagerImpl implements ConfigManager{
     }
 
     /**
-     * @return the copyInfoDAO
+     * @return the indicatorDAO
      */
-    public CopyInfoDAO getCopyInfoDAO() {
-        return copyInfoDAO;
+    public IndicatorDAO getIndicatorDAO() {
+        return indicatorDAO;
     }
 
     /**
-     * @param copyInfoDAO the copyInfoDAO to set
+     * @param indicatorDAO the indicatorDAO to set
      */
-    public void setCopyInfoDAO(CopyInfoDAO copyInfoDAO) {
-        this.copyInfoDAO = copyInfoDAO;
+    public void setIndicatorDAO(IndicatorDAO indicatorDAO) {
+        this.indicatorDAO = indicatorDAO;
+    }
+
+    /**
+     * @return the specimenDAO
+     */
+    public SpecimenDAO getSpecimenDAO() {
+        return specimenDAO;
+    }
+
+    /**
+     * @param specimenDAO the specimenDAO to set
+     */
+    public void setSpecimenDAO(SpecimenDAO specimenDAO) {
+        this.specimenDAO = specimenDAO;
+    }
+
+    /**
+     * @return the taxonIndicatorDAO
+     */
+    public TaxonIndicatorDAO getTaxonIndicatorDAO() {
+        return taxonIndicatorDAO;
+    }
+
+    /**
+     * @param taxonIndicatorDAO the taxonIndicatorDAO to set
+     */
+    public void setTaxonIndicatorDAO(TaxonIndicatorDAO taxonIndicatorDAO) {
+        this.taxonIndicatorDAO = taxonIndicatorDAO;
     }
 
 }

@@ -19,6 +19,7 @@
 package org.inbio.ait.dao.conn;
 
 import java.util.List;
+import org.inbio.ait.model.TaxonIndicator;
 import org.inbio.ait.model.TindiPropertyHolder;
 
 /**
@@ -30,5 +31,7 @@ public interface TindiDataAccessDAO {
     public List<String> getTindiTableFields(TindiPropertyHolder ph);
 
     public int countAll(TindiPropertyHolder ph);
+
+    public List<TaxonIndicator> getAllTaxonIndicators(TindiPropertyHolder ph,int limit,int offset);
 
 }

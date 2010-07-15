@@ -18,20 +18,16 @@
 
 package org.inbio.ait.dao.sys;
 
-import org.inbio.ait.model.DwcPropertyHolder;
-import org.inbio.ait.model.IndiPropertyHolder;
-import org.inbio.ait.model.TindiPropertyHolder;
+import org.inbio.ait.model.TaxonIndicator;
 
 /**
  *
  * @author esmata
  */
-public interface CopyInfoDAO {
+public interface TaxonIndicatorDAO {
 
-    public int migrateSpecimensData(DwcPropertyHolder ph,int totalDwc);
+    public boolean deleteAllTaxonIndi();
 
-    public int migrateIndicatorsData(IndiPropertyHolder ph,int totalIndi);
-
-    public int migrateTaxonIndicatorsData(TindiPropertyHolder ph,int totalTindi);
+    public int InsertTaxonIndicator(TaxonIndicator ti);
 
 }

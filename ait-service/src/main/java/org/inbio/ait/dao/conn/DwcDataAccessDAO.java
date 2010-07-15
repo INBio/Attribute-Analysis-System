@@ -20,6 +20,7 @@ package org.inbio.ait.dao.conn;
 
 import java.util.List;
 import org.inbio.ait.model.DwcPropertyHolder;
+import org.inbio.ait.model.SpecimenBase;
 
 /**
  *
@@ -30,5 +31,7 @@ public interface DwcDataAccessDAO {
     public List<String> getDwcTableFields(DwcPropertyHolder ph);
 
     public int countAll(DwcPropertyHolder ph);
+
+    public List<SpecimenBase> getAllSpecimenBase(DwcPropertyHolder ph,int limit,int offset);
 
 }

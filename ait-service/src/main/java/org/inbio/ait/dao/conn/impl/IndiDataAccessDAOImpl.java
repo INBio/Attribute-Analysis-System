@@ -22,7 +22,9 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import org.inbio.ait.dao.conn.IndiDataAccessDAO;
+import org.inbio.ait.jdbc.mapper.IndiMapper;
 import org.inbio.ait.model.IndiPropertyHolder;
+import org.inbio.ait.model.Indicator;
 import org.inbio.ait.util.AitDataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -62,9 +64,24 @@ public class IndiDataAccessDAOImpl implements IndiDataAccessDAO{
     public int countAll(IndiPropertyHolder ph) {
         int result = -1;
         try {
-            //Stting up the jdbcTemplate
+            //Setting up the jdbcTemplate
             this.accessToDB(ph);
             return this.jdbcTemplate.queryForInt("Select count(*) from " + ph.getTablename());
+        } catch (Exception e) {
+            return result;
+        }
+    }
+
+    @Override
+    public List<Indicator> getAllIndicators(IndiPropertyHolder ph,int limit,int offset) {
+        List<Indicator> result = new ArrayList<Indicator>();
+        try {
+            //Setting up the jdbcTemplate
+            this.accessToDB(ph);
+            //Get data from external db
+            String getQuery = "Select * from " + ph.getTablename() + " order by " +
+                    ph.getIndicator_id() + " limit "+ limit +" offset " + offset; //limit cuantos offset comienzo
+            return this.jdbcTemplate.query(getQuery, new IndiMapper(ph));
         } catch (Exception e) {
             return result;
         }
