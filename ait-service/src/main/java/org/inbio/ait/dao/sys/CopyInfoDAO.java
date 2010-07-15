@@ -20,6 +20,7 @@ package org.inbio.ait.dao.sys;
 
 import org.inbio.ait.model.DwcPropertyHolder;
 import org.inbio.ait.model.IndiPropertyHolder;
+import org.inbio.ait.model.TindiPropertyHolder;
 
 /**
  *
@@ -30,5 +31,7 @@ public interface CopyInfoDAO {
     public int migrateSpecimensData(DwcPropertyHolder ph,int totalDwc);
 
     public int migrateIndicatorsData(IndiPropertyHolder ph,int totalIndi);
+
+    public int migrateTaxonIndicatorsData(TindiPropertyHolder ph,int totalTindi);
 
 }

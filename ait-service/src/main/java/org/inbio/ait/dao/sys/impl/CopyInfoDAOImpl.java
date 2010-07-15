@@ -23,10 +23,13 @@ import java.util.List;
 import org.inbio.ait.jdbc.mapper.DwcMapper;
 import org.inbio.ait.dao.sys.CopyInfoDAO;
 import org.inbio.ait.jdbc.mapper.IndiMapper;
+import org.inbio.ait.jdbc.mapper.TaxonIndicatorMapper;
 import org.inbio.ait.model.DwcPropertyHolder;
 import org.inbio.ait.model.IndiPropertyHolder;
 import org.inbio.ait.model.Indicator;
 import org.inbio.ait.model.SpecimenBase;
+import org.inbio.ait.model.TaxonIndicator;
+import org.inbio.ait.model.TindiPropertyHolder;
 import org.inbio.ait.util.AitDataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
@@ -127,6 +130,59 @@ public class CopyInfoDAOImpl extends SimpleJdbcDaoSupport implements CopyInfoDAO
                             indi.getIndicator_name(), indi.getIndicator_description(),
                             indi.getIndicator_applies_to_part(),indi.getIndicator_ancestor_id(),
                             indi.getIndicator_references());
+                    afectedRows += a;
+                }
+                jdbcFrom.getDataSource().getConnection().close();
+            }//Ends pagination
+            return afectedRows;
+        } catch (Exception e) {
+            System.out.println(e);
+            return -1;
+        }
+    }
+
+    /**
+     * This method gets the taxon indicators data from external data base and copy
+     * this information into the taxon indicator system table
+     * @param ph Connection data
+     * @param totalTindi total of taxon indicator registers
+     * @return number of afected rows (copied rows)
+     */
+    @Override
+    public int migrateTaxonIndicatorsData(TindiPropertyHolder ph,int totalTindi){
+        //Stablish the connection to the external data base
+        this.accessToDB(ph.getDriverClassName(), ph.getUrl(), ph.getUsername(), ph.getPassword());
+
+        //Copy data from external taxon indicators table to system table
+        List<TaxonIndicator> tiList = new ArrayList<TaxonIndicator>();
+        try {
+            //Delete existing data
+            if (!deleteAllGeneric("taxon_indicator")) {
+                return -1; //error deleting existing data
+            }
+            //Paginating the migration proccess
+            int afectedRows = 0;
+            for (int i = 0; i < totalTindi; i+=500) {
+                //Get data from external db
+                String getQuery = "Select * from " + ph.getTablename() + " order by " +
+                        ph.getTaxon_indicator_id() + " limit 500 offset " + i; //limit cuantos offset comienzo
+                tiList = this.jdbcFrom.query(getQuery, new TaxonIndicatorMapper(ph));
+                //Insert external data into system db
+                for (TaxonIndicator ti : tiList) {
+                    String insertQuery =
+                            "Insert into ait.taxon_indicator (taxon_indicator_id," +
+                            "taxon_indicator_certainty_level,taxon_indicator_evaluation_criteria," +
+                            "taxon_indicator_regionality,taxon_indicator_temporality," +
+                            "taxon_indicator_references,taxon_indicator_notes," +
+                            "taxon_indicator_valuer_person,taxon_scientific_name," +
+                            "indicator_id,component_part) " +
+                            "values (?,?,?,?,?,?,?,?,?,?,?)";
+                    int a = getSimpleJdbcTemplate().update(insertQuery, ti.getTaxon_indicator_id(),
+                            ti.getTaxon_indicator_certainty_level(),ti.getTaxon_indicator_evaluation_criteria(),
+                            ti.getTaxon_indicator_regionality(),ti.getTaxon_indicator_temporality(),
+                            ti.getTaxon_indicator_references(),ti.getTaxon_indicator_notes(),
+                            ti.getTaxon_indicator_valuer_person(),ti.getTaxon_scientific_name(),
+                            ti.getIndicator_id(),ti.getComponent_part());
                     afectedRows += a;
                 }
                 jdbcFrom.getDataSource().getConnection().close();

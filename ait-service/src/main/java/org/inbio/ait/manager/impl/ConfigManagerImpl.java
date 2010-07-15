@@ -324,6 +324,27 @@ public class ConfigManagerImpl implements ConfigManager{
         }
     }
 
+    /**
+     * Method to migrate data from external taxon indicators table to system tables
+     * @return
+     *  -2 error conecting to the external dwc db
+     *  -1 error in data migration
+     *  <1 number of afected rows (# of insertions)
+     */
+    @Override
+    public int migrateTaxonIndicators(){
+        TindiPropertyHolder ph = this.getTindiPropertyHolder();
+        //Check if the conecction was established already
+        int check = this.getTindiDataAccessDAO().countAll(ph);
+        if(check == -1){
+            return -2; //error
+        }
+        else{
+            //Do migration
+            return this.getCopyInfoDAO().migrateTaxonIndicatorsData(ph,check);
+        }
+    }
+
     /* ----------------------------------------------------
     ----------------- Getters y Setters -------------------
     -----------------------------------------------------*/
