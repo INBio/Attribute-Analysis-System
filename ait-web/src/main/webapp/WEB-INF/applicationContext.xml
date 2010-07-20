@@ -159,6 +159,8 @@
         <property name="indicatorDAO" ref="indicatorDAO"/>
         <property name="specimenDAO" ref="specimenDAO"/>
         <property name="taxonIndicatorDAO" ref="taxonIndicatorDAO"/>
+        <property name="taxonIndexDAO" ref="taxonIndexDAO"/>
+        <property name="taxonInfoIndexDAO" ref="taxonInfoIndexDAO"/>
     </bean>
 
     <!--.....................................................................-->

@@ -156,5 +156,13 @@
     <bean name="/copytaxonindi.htm" class="org.inbio.ait.web.controller.CopyTaxonIndiController">
         <property name="configManager" ref="configManager"/>
     </bean>
+    <!-- The taxon_index indexing proccess controller -->
+    <bean name="/indextnames.htm" class="org.inbio.ait.web.controller.IndextnamesController">
+        <property name="configManager" ref="configManager"/>
+    </bean>
+    <!-- The taxon_info_index indexing proccess controller -->
+    <bean name="/indexinfo.htm" class="org.inbio.ait.web.controller.IndexinfoController">
+        <property name="configManager" ref="configManager"/>
+    </bean>
     
 </beans>

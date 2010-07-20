@@ -56,6 +56,8 @@
                     <a href="copytaxonindi.htm" class="link" onclick="showLoading()"><fmt:message key="import_indit_data"/></a><br>
 
                     <p class="link_tools"><fmt:message key="data_index"/></p>
+                    <a href="indextnames.htm" class="link" onclick="showLoading()"><fmt:message key="index_tnames"/></a><br>
+                    <a href="indexinfo.htm" class="link" onclick="showLoading()"><fmt:message key="index_info"/></a><br>
 
                 </div>
 
