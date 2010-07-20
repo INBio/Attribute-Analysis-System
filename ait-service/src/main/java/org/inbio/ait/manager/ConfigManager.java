@@ -66,9 +66,13 @@ public interface ConfigManager {
     public PostgisLayers getLayersList();
     public boolean saveLayersList(PostgisLayers pl);
 
-    /* Date migration */
+    /* Data migration */
     public int migrateDwc();
     public int migrateIndicators();
     public int migrateTaxonIndicators();
+
+    /* Data indexing */
+    public boolean taxonIndexProccess();
+    public boolean taxonInfoIndexProccess();
 
 }

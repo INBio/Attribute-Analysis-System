@@ -117,6 +117,51 @@ public class TaxonInfoIndexDAOImpl extends SimpleJdbcDaoSupport implements Taxon
         }
         return result;
     }
+
+    /**
+     * Indexation for the taxon_info_index table that contains all the indexed
+     * information prepared specifically for quering
+     * @return if the proccess was successfully completed or not
+     */
+    @Override
+    public boolean taxonInfoIndex(String layer) throws Exception{
+        boolean result = true;
+        try {
+            String sqlUpdate = "Insert into ait.taxon_info_index (globaluniqueidentifier, kingdom_id, phylum_id, " +
+                    "class_id, order_id, family_id, genus_id, specific_epithet_id, scientific_name_id, indicator_id, " +
+                    "polygom_id, layer_table) select dc.globaluniqueidentifier,k.taxon_id as kingdom_id,p.taxon_id " +
+                    "as phylum_id,c.taxon_id as class_id,o.taxon_id as order_id,f.taxon_id as family_id,g.taxon_id " +
+                    "as genus_id,s.taxon_id as specific_epithet_id,sn.taxon_id as scientific_name_id,ti.indicator_id " +
+                    "as indicator_id,(Select gid from "+layer+" where " +
+                    "ST_Contains(the_geom, 'POINT(' || dc.decimallongitude || ' ' ||  dc.decimallatitude || ')')) " +
+                    "as polygom_id,'"+layer+"' as layer_table from ait.darwin_core dc,ait.taxon_index k,ait.taxon_index p," +
+                    "ait.taxon_index c,ait.taxon_index o,ait.taxon_index f,ait.taxon_index g,ait.taxon_index s,ait.taxon_index sn," +
+                    "ait.taxon_indicator ti where k.taxon_name = dc.kingdom and p.taxon_name = dc.phylum and c.taxon_name = " +
+                    "dc.class and o.taxon_name = dc.orders and f.taxon_name = dc.family and g.taxon_name = dc.genus and s.taxon_name = " +
+                    "dc.specificepithet and sn.taxon_name = dc.scientificname and ti.taxon_scientific_name = dc.scientificname;";
+            int affected = getSimpleJdbcTemplate().update(sqlUpdate);
+            System.out.println("Affected rows - taxon_info_index -"+affected);
+        } catch (Exception e) {
+            System.out.println(e);
+            throw e;
+        }
+        return result;
+    }
+
+    /**
+     * Deletes all info from ait.taxon_info_index table
+     * @throws java.lang.Exception
+     */
+    @Override
+    public boolean deleteAllTaxonInfoIndex()  throws Exception{
+        try {
+            String query = "Delete from ait.taxon_info_index";
+            getSimpleJdbcTemplate().update(query);
+        } catch (Exception e) {
+            throw e;
+        }
+        return true;
+    }
     
     private static class tInfoMapper implements ParameterizedRowMapper<TaxonInfoIndex> {
 

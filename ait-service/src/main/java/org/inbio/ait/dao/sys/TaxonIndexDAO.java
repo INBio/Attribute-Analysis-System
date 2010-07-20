@@ -26,13 +26,12 @@ import org.inbio.ait.model.TaxonIndex;
  */
 public interface TaxonIndexDAO {
 
-    /**
-     * Get id,range and name based on a specific taxon name
-     * @param name
-     * @return
-     */
     public TaxonIndex getTaxonIndexByName(String name);
 
     public TaxonIndex getTaxonIndexById(String id);
+
+    public boolean taxonIndexByRange(int rangeId,String rangeName) throws Exception;
+
+    public boolean deleteAllTaxonIndex() throws Exception;
 
 }

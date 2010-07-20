@@ -31,6 +31,10 @@ import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
  */
 public class TaxonIndexDAOImpl extends SimpleJdbcDaoSupport implements TaxonIndexDAO{
 
+
+    /**
+     * Get id,range and name based on a specific taxon name
+     */
     @Override
     public TaxonIndex getTaxonIndexByName(String name) {
         TaxonIndex tIndex = new TaxonIndex();
@@ -40,10 +44,12 @@ public class TaxonIndexDAOImpl extends SimpleJdbcDaoSupport implements TaxonInde
         } catch (Exception e) {
             return tIndex;
         }
-
         return tIndex;
     }
 
+    /**
+     * Get id,range and name based on a specific taxon id
+     */
     @Override
     public TaxonIndex getTaxonIndexById(String id) {
         TaxonIndex tIndex = new TaxonIndex();
@@ -53,8 +59,41 @@ public class TaxonIndexDAOImpl extends SimpleJdbcDaoSupport implements TaxonInde
         } catch (Exception e) {
             return tIndex;
         }
-
         return tIndex;
+    }
+
+    /**
+     * Indexation for the taxon_index table that contains all the names from
+     * the taxonomical hierarchy
+     * @param rangeId 1 = reino, 2 = filo ...
+     * @param rangeName reino, filo ...
+     * @return number of affected rows
+     */
+    @Override
+    public boolean taxonIndexByRange(int rangeId,String rangeName) throws Exception{
+        boolean result = true;
+        try {
+            String sqlUpdate = "Insert into ait.taxon_index (taxon_name,taxon_range) " +
+                    "select "+rangeName+" as taxon_name , "+rangeId+" as taxon_range " +
+                    "from ait.darwin_core where "+rangeName+" is not null " +
+                    "group by taxon_name;";
+            int affected = getSimpleJdbcTemplate().update(sqlUpdate);
+            System.out.println("Affected rows - taxon_index -"+affected);
+        } catch (Exception e) {
+            throw e;
+        }
+        return result;
+    }
+
+    @Override
+    public boolean deleteAllTaxonIndex()  throws Exception{
+        try {
+            String query = "Delete from ait.taxon_index";
+            getSimpleJdbcTemplate().update(query);
+        } catch (Exception e) {
+            throw e;
+        }
+        return true;
     }
 
     private static class tIndexMapper implements ParameterizedRowMapper<TaxonIndex> {

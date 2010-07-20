@@ -52,4 +52,8 @@ public interface TaxonInfoIndexDAO {
 
     public List<String> getScientificNames(String q);
 
+     public boolean taxonInfoIndex(String layer) throws Exception;
+
+     public boolean deleteAllTaxonInfoIndex()  throws Exception;
+
 }

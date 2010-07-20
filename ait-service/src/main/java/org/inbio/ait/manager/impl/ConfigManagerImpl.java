@@ -33,7 +33,9 @@ import org.inbio.ait.dao.conn.TindiDataAccessDAO;
 import org.inbio.ait.dao.conn.TindiPropertyHolderDAO;
 import org.inbio.ait.dao.sys.IndicatorDAO;
 import org.inbio.ait.dao.sys.SpecimenDAO;
+import org.inbio.ait.dao.sys.TaxonIndexDAO;
 import org.inbio.ait.dao.sys.TaxonIndicatorDAO;
+import org.inbio.ait.dao.sys.TaxonInfoIndexDAO;
 import org.inbio.ait.manager.ConfigManager;
 import org.inbio.ait.model.DwcPropertyHolder;
 import org.inbio.ait.model.IndiPropertyHolder;
@@ -67,6 +69,9 @@ public class ConfigManagerImpl implements ConfigManager{
     private IndicatorDAO indicatorDAO;
     private SpecimenDAO specimenDAO;
     private TaxonIndicatorDAO taxonIndicatorDAO;
+    //Indexation
+    private TaxonIndexDAO taxonIndexDAO;
+    private TaxonInfoIndexDAO taxonInfoIndexDAO;
 
     /**
      * Returns a DwcPropertyHolder java Object with all the
@@ -455,6 +460,53 @@ public class ConfigManagerImpl implements ConfigManager{
         }
     }
 
+    /**
+     * Indexation for the taxon_index table that contains all the names from
+     * the taxonomical hierarchy
+     * @return boolean indicating if the proccess was successfull or failed
+     */
+    @Override
+    public boolean taxonIndexProccess() {
+        try {
+            //Delete existing data
+            this.getTaxonIndexDAO().deleteAllTaxonIndex();
+            //Execute indexing proccess
+            this.getTaxonIndexDAO().taxonIndexByRange(1, "kingdom");
+            this.getTaxonIndexDAO().taxonIndexByRange(2, "phylum");
+            this.getTaxonIndexDAO().taxonIndexByRange(3, "class");
+            this.getTaxonIndexDAO().taxonIndexByRange(4, "orders");
+            this.getTaxonIndexDAO().taxonIndexByRange(5, "family");
+            this.getTaxonIndexDAO().taxonIndexByRange(6, "genus");
+            this.getTaxonIndexDAO().taxonIndexByRange(7, "specificepithet");
+            this.getTaxonIndexDAO().taxonIndexByRange(8, "scientificname");
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Indexation for the taxon_info_index table that contains all the indexed
+     * information prepared specifically for quering
+     * @return if the proccess was successfully completed or not
+     */
+    @Override
+    public boolean taxonInfoIndexProccess() {
+        try {
+            //Delete existing data
+            this.getTaxonInfoIndexDAO().deleteAllTaxonInfoIndex();
+            //Get a list of selected layers
+            List<String> layers = this.getSelectedLayerDAO().getLayersNames();
+            //Indexing data
+            for(String l : layers){
+                this.getTaxonInfoIndexDAO().taxonInfoIndex(l);
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
     /* ----------------------------------------------------
     ----------------- Getters y Setters -------------------
     -----------------------------------------------------*/
@@ -653,6 +705,34 @@ public class ConfigManagerImpl implements ConfigManager{
      */
     public void setTaxonIndicatorDAO(TaxonIndicatorDAO taxonIndicatorDAO) {
         this.taxonIndicatorDAO = taxonIndicatorDAO;
+    }
+
+    /**
+     * @return the taxonIndexDAO
+     */
+    public TaxonIndexDAO getTaxonIndexDAO() {
+        return taxonIndexDAO;
+    }
+
+    /**
+     * @param taxonIndexDAO the taxonIndexDAO to set
+     */
+    public void setTaxonIndexDAO(TaxonIndexDAO taxonIndexDAO) {
+        this.taxonIndexDAO = taxonIndexDAO;
+    }
+
+    /**
+     * @return the taxonInfoIndexDAO
+     */
+    public TaxonInfoIndexDAO getTaxonInfoIndexDAO() {
+        return taxonInfoIndexDAO;
+    }
+
+    /**
+     * @param taxonInfoIndexDAO the taxonInfoIndexDAO to set
+     */
+    public void setTaxonInfoIndexDAO(TaxonInfoIndexDAO taxonInfoIndexDAO) {
+        this.taxonInfoIndexDAO = taxonInfoIndexDAO;
     }
 
 }
