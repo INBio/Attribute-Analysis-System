@@ -157,7 +157,7 @@ function addLayerWMS(name, layer)
     {layers: layer,
         transparent: "true",
         height: '478',
-        width: '512'}, {isBaseLayer: false,singleTile: true, ratio: 1});
+        width: '512'}, {isBaseLayer: false,singleTile: true, ratio: 1,opacity: 0.60});
 }
 
 /*
