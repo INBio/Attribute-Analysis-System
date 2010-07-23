@@ -78,7 +78,7 @@ public class TaxonIndexDAOImpl extends SimpleJdbcDaoSupport implements TaxonInde
                     "from ait.darwin_core where "+rangeName+" is not null " +
                     "group by taxon_name;";
             int affected = getSimpleJdbcTemplate().update(sqlUpdate);
-            System.out.println("Affected rows - taxon_index -"+affected);
+            System.out.println("Affected rows - taxon_index - "+rangeName+": "+affected);
         } catch (Exception e) {
             throw e;
         }

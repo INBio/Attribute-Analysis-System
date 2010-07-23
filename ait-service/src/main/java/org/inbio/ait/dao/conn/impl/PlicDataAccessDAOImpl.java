@@ -69,6 +69,7 @@ public class PlicDataAccessDAOImpl implements PlicDataAccessDAO{
             this.accessToDB(ph);
             return this.jdbcTemplate.queryForInt("Select count(*) from " + ph.getTablename());
         } catch (Exception e) {
+            System.out.println(e);
             return result;
         }
     }

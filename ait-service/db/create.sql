@@ -535,17 +535,6 @@ ALTER TABLE ONLY taxon_info_index
 ALTER TABLE ONLY selected_layer
     ADD CONSTRAINT unique_name UNIQUE (name);
 
-
---
--- TOC entry 1790 (class 2606 OID 22786)
--- Dependencies: 1498 1498
--- Name: unique_taxon_name; Type: CONSTRAINT; Schema: ait; Owner: postgres; Tablespace:
---
-
-ALTER TABLE ONLY taxon_index
-    ADD CONSTRAINT unique_taxon_name UNIQUE (taxon_name);
-
-
 --
 -- TOC entry 1801 (class 2606 OID 22787)
 -- Dependencies: 1779 1493 1493
