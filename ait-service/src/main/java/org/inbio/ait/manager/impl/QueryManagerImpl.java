@@ -307,6 +307,7 @@ public class QueryManagerImpl implements QueryManager{
         }
 
         //Execute query
+        //System.out.println("**** Query:\n"+query);
         return taxonInfoIndexDAO.countTaxonsByQuery(query.toString());
     }
 

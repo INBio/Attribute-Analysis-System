@@ -551,5 +551,43 @@ INSERT INTO users (user_id, fullname, username, password, enabled, roles) VALUES
 -- Completed on 2010-07-09 15:49:11 CST
 
 --
--- PostgreSQL database dump complete
+-- Creation of tables and sequences related with the regionalization of taxon-indicator
+-- Just at the country level
 --
+
+-- Sequence for contry table
+CREATE SEQUENCE ait.country_seq
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1;
+ALTER TABLE ait.country_seq OWNER TO postgres;
+
+-- Country table
+CREATE TABLE ait.country
+(
+  country_id numeric NOT NULL DEFAULT nextval('ait.country_seq'::regclass),
+  country_name character varying(100) NOT NULL,
+  CONSTRAINT pk_country_id PRIMARY KEY (country_id)
+)
+WITH (OIDS=FALSE);
+ALTER TABLE ait.country OWNER TO postgres;
+GRANT ALL ON TABLE ait.country TO postgres;
+
+--Taxon - indicator - contry table
+CREATE TABLE ait.taxon_indicator_country
+(
+  country_id numeric NOT NULL,
+  taxon_indicator_id numeric NOT NULL,
+  CONSTRAINT taxon_indicator_country_pk PRIMARY KEY (country_id, taxon_indicator_id),
+  CONSTRAINT country_fk FOREIGN KEY (country_id)
+      REFERENCES ait.country (country_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT taxon_indicator_fk FOREIGN KEY (taxon_indicator_id)
+      REFERENCES ait.taxon_indicator (taxon_indicator_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (OIDS=FALSE);
+ALTER TABLE ait.taxon_indicator_country OWNER TO postgres;
+GRANT ALL ON TABLE ait.taxon_indicator_country TO postgres;
