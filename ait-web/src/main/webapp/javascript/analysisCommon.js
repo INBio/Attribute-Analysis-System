@@ -266,7 +266,7 @@ function addLayerParam(polygon,capa,pname,cname) {
     var newdiv = document.createElement('div');
     newdiv.setAttribute("id",newCapa+"~"+newPolygon);
     newdiv.innerHTML =
-        "<a href=\"javascript:\" onclick=\"removeLayerParamElement(\'"+newCapa+"~"+newPolygon+"\')\">"+pname+"</a>";
+        "<a class=\"criteria\" href=\"javascript:\" onclick=\"removeLayerParamElement(\'"+newCapa+"~"+newPolygon+"\')\">"+pname+"</a>";
     layerslist.appendChild(newdiv);
     //Restore the mechanism for layer selection
     document.getElementById('info').innerHTML = "";
@@ -309,7 +309,7 @@ function addTaxonParam() {
     var newdiv = document.createElement('div');
     newdiv.setAttribute("id",text);
     newdiv.innerHTML =
-        "<a href=\"javascript:\" onclick=\"removeTaxonParamElement(\'"+text+"\')\">"+text+"</a>";
+        "<a class=\"criteria\" href=\"javascript:\" onclick=\"removeTaxonParamElement(\'"+text+"\')\">"+text+"</a>";
     taxonlist.appendChild(newdiv);
     txTaxon.value = '';
 }
@@ -348,7 +348,7 @@ function addIndicatorParam(){
     var newdiv = document.createElement('div');
     newdiv.setAttribute("id",selectedNodeId);
     newdiv.innerHTML =
-        "<a href=\"javascript:\" onclick=\"removeTreeParamElement(\'"+selectedNodeId+"\')\">"+selectedNodeName+"</a>";
+        "<a class=\"criteria\" href=\"javascript:\" onclick=\"removeTreeParamElement(\'"+selectedNodeId+"\')\">"+selectedNodeName+"</a>";
     indicatorslist.appendChild(newdiv);
 }
 

@@ -44,21 +44,24 @@ function executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators,
                     if(layersShow.length>0){
                         criteria += "<b>"+geographical+" </b>";
                         for(var i = 0;i<layersShow.length;i++){
-                            criteria += layersShow[i]+"   ";
+                            //criteria += layersShow[i]+"   ";
+                            criteria += "<a class=\"criteria\">"+layersShow[i]+"</a>";
                         }
                         criteria += "<br>";
                     }
                     if(taxonsShow.length>0){
                         criteria += "<b>"+taxonomic+" </b>";
                         for(var j = 0;j<taxonsShow.length;j++){
-                            criteria += taxonsShow[j]+"   ";
+                            //criteria += taxonsShow[j]+"   ";
+                            criteria += "<a class=\"criteria\">"+taxonsShow[j]+"</a>";
                         }
                         criteria += "<br>";
                     }
                     if(treeShow.length>0){
                         criteria += "<b>"+indicators+" </b>";
                         for(var k = 0;k<treeShow.length;k++){
-                            criteria += treeShow[k]+"   ";
+                            //criteria += treeShow[k]+"   ";
+                            criteria += "<a class=\"criteria\">"+treeShow[k]+"</a>";
                         }
                         criteria += "<br>";
                     }                    
@@ -79,21 +82,24 @@ function executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators,
                     if(layersShow.length>0){
                         criteria1 += "<b>"+geographical+" </b>";
                         for(var o = 0;o<layersShow.length;o++){
-                            criteria1 += layersShow[o]+"   ";
+                            //criteria1 += layersShow[o]+"   ";
+                            criteria1 += "<a class=\"criteria\">"+layersShow[o]+"</a>";
                         }
                         criteria1 += "<br>";
                     }
                     if(taxonsShow.length>0){
                         criteria1 += "<b>"+taxonomic+" </b>";
                         for(var p = 0;p<taxonsShow.length;p++){
-                            criteria1 += taxonsShow[p]+"   ";
+                            //criteria1 += taxonsShow[p]+"   ";
+                            criteria1 += "<a class=\"criteria\">"+taxonsShow[p]+"</a>";
                         }
                         criteria1 += "<br>";
                     }
                     if(treeShow.length>0){
                         criteria1 += "<b>"+indicators+" </b>";
                         for(var q = 0;q<treeShow.length;q++){
-                            criteria1 += treeShow[q]+"   ";
+                            //criteria1 += treeShow[q]+"   ";
+                            criteria1 += "<a class=\"criteria\">"+treeShow[q]+"</a>";
                         }
                         criteria1 += "<br>";
                     }
@@ -141,9 +147,9 @@ function createAdvancedHeader(byPolygon,byIndicator,layersShow,treeShow,total1,c
     if(total1 > 0){
         result += '<input type="button" class="simple_button" id="showOnMapt0" value="'+seeOnMap+'" onclick="showPoints(0,\'t\')" />'+
         '<div id="t0map"></div></div>';
-    }
-    result += '<p> '+resultDetails+'</p>';
+    }    
     //Adding results by polygon
+    result += '<p class="resultsTitle"> '+resultsGeo+'</p>';
     for(var i = 0;i<byPolygon.length;i++){
         //To manage the divs ids
         divIds.push('p'+i);
@@ -164,8 +170,9 @@ function createAdvancedHeader(byPolygon,byIndicator,layersShow,treeShow,total1,c
             '<h3>'+layersShow[i]+'</h3>'+
             '<div id="p'+i+'detail"></div><div id="p'+i+'map"></div></div>';
         }
-    }
+    }    
     //Adding results by indicators
+    result += '<p class="resultsTitle"> '+resultsIndi+'</p>';
     for(var j = 0;j<byIndicator.length;j++){
         //To manage the divs ids
         divIds.push('i'+j);
@@ -197,7 +204,7 @@ function createAdvancedHeader(byPolygon,byIndicator,layersShow,treeShow,total1,c
  */
 function createReportHeader(criteria,total){
     var result = '<div id="reportHeader">'+
-    '<h3>'+searchCriteria+'</h3>'+criteria+
+    '<h3centered>'+searchCriteria+'</h3centered>'+criteria+
     '<h3>'+total+' '+speciesMatches+'</h3>'+
     '<input type="button" class="simple_button" id="viewDetail0" value="'+seeDetail+'" onclick="showDetailsFromHiddenData(\'viewDetail0\')" />'+
     '<input type="button" class="simple_button" id="showOnMap0" value="'+seeOnMap+'" onclick="showPointFromHiddenData(\'showOnMap0\')" />'+

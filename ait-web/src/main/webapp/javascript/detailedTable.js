@@ -46,10 +46,10 @@ function detailedTable(selectedLayers,selectedTaxa,selectedIndicators,toShow,typ
             }
             result += '</tr>';
             for(var i = 0;i<rows.length;i++){ //Loop over rows
-                result += '<tr><th class="contactDept"> '+species[i].childNodes[0].nodeValue+' </th>';
+                result += '<tr><th class="species"> '+species[i].childNodes[0].nodeValue+' </th>';
                 var columns = rows[i].getElementsByTagName("column");
                 for(var j = 0;j<columns.length;j++){
-                    result += '<td class="contact"> '+columns[j].childNodes[0].nodeValue+' </td>';
+                    result += '<td class="contact"> '+columns[j].childNodes[0].nodeValue+" "+occurrences+' </td>';
                 }
                 result += '</tr>';
             }

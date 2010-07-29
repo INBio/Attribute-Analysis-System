@@ -303,6 +303,14 @@ body {
 	padding-left: 35px;
 }
 
+/* Para el link de los criterios agregados */
+.criteria{
+    padding: 1px 0 0 20px;
+    background: url(images/tabsCri.png);
+    background-repeat:no-repeat;
+    background-position: 6px 2px;
+}
+
 .user{
 	font-family: Verdana, Geneva, sans-serif;
 	font-size: 10px;
@@ -354,7 +362,7 @@ table.contacts
 }
 
 th.contactDept{
-    background-color: #DFF5FF;
+    background-color: #E4FCBC;
     border: 1px #739999 solid;
     font-family: Verdana;
     font-weight: bold;
@@ -362,6 +370,18 @@ th.contactDept{
     padding-top:3px;
     padding-bottom:3px;
     color: #404040;
+}
+
+th.species{
+    background-color: #E4FCBC;
+    border: 1px #739999 solid;
+    font-family: Verdana;
+    font-weight: bold;
+    font-size: 12px;
+    padding-top:3px;
+    padding-bottom:3px;
+    color: #404040;
+    font-style:italic;
 }
 
 td.contact{
@@ -393,6 +413,18 @@ td.contact2{
     text-align:center;
     color:#21374F;
     font-size:15px;
+}
+
+/* Separador de resultados */
+.resultsTitle {
+	background-color: #83B444; /*#6ca513*/
+    font-size:13px;
+    font-weight:bold;
+	text-align: center;
+    padding:2px 0 2px 0;
+    color:white;
+   -moz-border-radius: 5px;
+   -webkit-border-radius: 5px;
 }
 
 /* tabla opciones e íconos Leila */
