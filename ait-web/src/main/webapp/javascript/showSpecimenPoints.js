@@ -51,8 +51,8 @@ function showSpecimenPoints(selectedLayers,selectedTaxa,selectedIndicators)  {
                 var scientificname = node.getElementsByTagName("scientificname")[0].childNodes[0].nodeValue;
                 attributes = createAttrib(scientificname,latitude,longitude,catalog);
                 addPoint(longitude,latitude,attributes);
-                latArray.push(latitude);
-                longArray.push(longitude);
+                latArray.push(parseFloat(latitude));
+                longArray.push(parseFloat(longitude));
             }
 
             //Set the new control for specimens pop ups
@@ -62,16 +62,16 @@ function showSpecimenPoints(selectedLayers,selectedTaxa,selectedIndicators)  {
             selectControl.activate();
 
             //Zooming on the correct geographical area (deppending on results)
-            /*var minX = getMinX(longArray);
+            var minX = getMinX(longArray);
             var minY = getMinY(latArray);
             var maxX = getMaxX(longArray);
             var maxY = getMaxY(latArray);
             var bounds = new OpenLayers.Bounds(
-                minX, minY,
-                maxX, maxY);*/ //FIXME
-            var bounds = new OpenLayers.Bounds(
-                -85.954, 8.04,
-                -82.553, 11.22);
+                minX, minY, maxX, maxY);
+            /*var bounds = new OpenLayers.Bounds(
+                -102.184, 7.204,
+                -77.157, 22.472
+                );*/
             map.zoomToExtent(bounds);
 
             YAHOO.example.container.wait.hide();
@@ -175,50 +175,54 @@ function onFeatureUnselect(feature) {
     feature.popup = null;
 }
 
-//To get the maximun longitude
-function getMaxX(longitudeList) {
-    // Lets assume we are working with validated geographical coordinates, so -180 <= longitude <= l80
-    var maxX = -180;
-    for (var i = 0;i<longitudeList.length;i++) {
-        if (longitudeList[i] > maxX) {
-            maxX = longitudeList[i];
-        }
-        return maxX;
-    }
-}
-
-//To get the maximun latitud
-function getMaxY(latitudeList) {
-    // Lets assume we are working with validated geographical coordinates, so -90 <= latitude <= 90
-    var maxY = -90;
-    for (var i = 0;i<latitudeList.length;i++) {
-        if (latitudeList[i] > maxY) {
-            maxY = latitudeList[i];
-        }
-    }
-    return maxY;
-}
-
 //To get the minimun longitude
-function getMinX(longitudList) {
+function getMinX(longitudeList) {
     // Lets assume we are working with validated geographical coordinates, so -180 <= longitude <= l80
-    var minX = 180;
-    for (var i = 0;i<longitudList.length;i++) {
-        if (longitudList[i] < minX) {
-            minX = longitudList[i];
-        }
+    var minX = 180.0;
+    for (var i = 0;i<longitudeList.length;i++) {
+        var x = longitudeList[i];
+        if (x < minX) {
+            minX = x;
+        }        
     }
     return minX;
 }
 
-//To get the minimun latitude
+//To get the minimun latitud
 function getMinY(latitudeList) {
     // Lets assume we are working with validated geographical coordinates, so -90 <= latitude <= 90
-    var minY = 90;
+    var minY = 90.0;
     for (var i = 0;i<latitudeList.length;i++) {
-        if (latitudeList[i] < minY) {
-            minY = latitudeList[i];
+        var y = latitudeList[i];
+        if (y < minY) {
+            minY = y;
         }
     }
     return minY;
+}
+
+//To get the maximun longitude
+function getMaxX(longitudList) {
+    // Lets assume we are working with validated geographical coordinates, so -180 <= longitude <= l80
+    var maxX = -180.0;
+    for (var i = 0;i<longitudList.length;i++) {
+        var x = longitudList[i];
+        if (x > maxX) {
+            maxX = x;
+        }
+    }
+    return maxX;
+}
+
+//To get the maximun latitude
+function getMaxY(latitudeList) {
+    // Lets assume we are working with validated geographical coordinates, so -90 <= latitude <= 90
+    var maxY = -90.0;
+    for (var i = 0;i<latitudeList.length;i++) {
+        var y = latitudeList[i];
+        if (y > maxY) {
+            maxY = y;
+        }
+    }
+    return maxY;
 }
