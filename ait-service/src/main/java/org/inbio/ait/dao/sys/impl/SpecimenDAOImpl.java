@@ -69,7 +69,7 @@ public class SpecimenDAOImpl extends SimpleJdbcDaoSupport implements SpecimenDAO
         }
         return specimens;
     }
-
+    
     /**
      * Return all disctint elements for classes,phylums,kingdoms ...
      * @param partialName
@@ -127,6 +127,7 @@ public class SpecimenDAOImpl extends SimpleJdbcDaoSupport implements SpecimenDAO
                     sp.getGenus(), sp.getSpecificepithet(), sp.getDecimallongitude(),
                     sp.getDecimallatitude());
         } catch (Exception e) {
+            System.out.println(e);
             return 0;
         }
         return result;

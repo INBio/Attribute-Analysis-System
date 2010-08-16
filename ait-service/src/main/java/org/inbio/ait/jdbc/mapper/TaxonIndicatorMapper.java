@@ -42,7 +42,6 @@ public class TaxonIndicatorMapper implements ParameterizedRowMapper<TaxonIndicat
     public TaxonIndicator mapRow(ResultSet rs, int rowNum) throws SQLException {
         TaxonIndicator ti = new TaxonIndicator();
         //Mandatory data
-        ti.setTaxon_indicator_id(rs.getLong(ph.getTaxon_indicator_id()));
         ti.setIndicator_id(rs.getLong(ph.getIndicator_id()));
         ti.setTaxon_scientific_name(rs.getString(ph.getTaxon_scientific_name()));
                 //Aditional data

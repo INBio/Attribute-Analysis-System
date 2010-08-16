@@ -32,7 +32,6 @@ public class TaxonIndicator {
     /**
      * Atributes
      */
-    private Long taxon_indicator_id;
     private String taxon_indicator_certainty_level;
     private String taxon_indicator_evaluation_criteria;
     private String taxon_indicator_regionality;
@@ -43,20 +42,6 @@ public class TaxonIndicator {
     private String taxon_scientific_name;
     private Long indicator_id;
     private String component_part;
-
-    /**
-     * @return the taxon_indicator_id
-     */
-    public Long getTaxon_indicator_id() {
-        return taxon_indicator_id;
-    }
-
-    /**
-     * @param taxon_indicator_id the taxon_indicator_id to set
-     */
-    public void setTaxon_indicator_id(Long taxon_indicator_id) {
-        this.taxon_indicator_id = taxon_indicator_id;
-    }
 
     /**
      * @return the taxon_indicator_certainty_level

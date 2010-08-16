@@ -52,14 +52,14 @@ public class TaxonIndicatorDAOImpl  extends SimpleJdbcDaoSupport implements Taxo
         int result = 0;
         try {
             String insertQuery =
-                    "Insert into ait.taxon_indicator (taxon_indicator_id," +
+                    "Insert into ait.taxon_indicator (" +
                     "taxon_indicator_certainty_level,taxon_indicator_evaluation_criteria," +
                     "taxon_indicator_regionality,taxon_indicator_temporality," +
                     "taxon_indicator_references,taxon_indicator_notes," +
                     "taxon_indicator_valuer_person,taxon_scientific_name," +
                     "indicator_id,component_part) " +
-                    "values (?,?,?,?,?,?,?,?,?,?,?)";
-            result = getSimpleJdbcTemplate().update(insertQuery, ti.getTaxon_indicator_id(),
+                    "values (?,?,?,?,?,?,?,?,?,?)";
+            result = getSimpleJdbcTemplate().update(insertQuery,
                     ti.getTaxon_indicator_certainty_level(),ti.getTaxon_indicator_evaluation_criteria(),
                     ti.getTaxon_indicator_regionality(),ti.getTaxon_indicator_temporality(),
                     ti.getTaxon_indicator_references(),ti.getTaxon_indicator_notes(),

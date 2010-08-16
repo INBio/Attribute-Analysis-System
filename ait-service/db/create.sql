@@ -290,74 +290,28 @@ CREATE TABLE taxon_index (
 ALTER TABLE ait.taxon_index OWNER TO postgres;
 
 --
--- TOC entry 1499 (class 1259 OID 22735)
--- Dependencies: 7
--- Name: taxon_indicator_seq; Type: SEQUENCE; Schema: ait; Owner: postgres
---
-
-CREATE SEQUENCE taxon_indicator_seq
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
-ALTER TABLE ait.taxon_indicator_seq OWNER TO postgres;
-
---
--- TOC entry 1815 (class 0 OID 0)
--- Dependencies: 1499
--- Name: taxon_indicator_seq; Type: SEQUENCE SET; Schema: ait; Owner: postgres
---
-
-SELECT pg_catalog.setval('taxon_indicator_seq', 1, true);
-
-
---
 -- TOC entry 1500 (class 1259 OID 22737)
 -- Dependencies: 1774 7
 -- Name: taxon_indicator; Type: TABLE; Schema: ait; Owner: postgres; Tablespace:
 --
 
-CREATE TABLE taxon_indicator (
-    taxon_indicator_id numeric DEFAULT nextval('taxon_indicator_seq'::regclass) NOT NULL,
-    taxon_indicator_certainty_level character varying(200),
-    taxon_indicator_evaluation_criteria character varying(200),
-    taxon_indicator_regionality character varying(200),
-    taxon_indicator_temporality character varying(200),
-    taxon_indicator_references character varying(3000),
-    taxon_indicator_notes character varying(4000),
-    taxon_indicator_valuer_person character varying(200),
-    taxon_scientific_name character varying(200) NOT NULL,
-    indicator_id numeric NOT NULL,
-    component_part character varying(200)
-);
 
-
+CREATE TABLE ait.taxon_indicator
+(
+  taxon_indicator_certainty_level character varying(200),
+  taxon_indicator_evaluation_criteria character varying(200),
+  taxon_indicator_regionality character varying(200),
+  taxon_indicator_temporality character varying(200),
+  taxon_indicator_references character varying(3000),
+  taxon_indicator_notes character varying(4000),
+  taxon_indicator_valuer_person character varying(200),
+  taxon_scientific_name character varying(200) NOT NULL,
+  indicator_id numeric NOT NULL,
+  component_part character varying(200),
+  CONSTRAINT taxon_indicator_pk PRIMARY KEY (indicator_id, taxon_scientific_name)
+)
+WITH (OIDS=FALSE);
 ALTER TABLE ait.taxon_indicator OWNER TO postgres;
-
---
--- TOC entry 1501 (class 1259 OID 22744)
--- Dependencies: 7
--- Name: taxon_indicator_plain; Type: TABLE; Schema: ait; Owner: postgres; Tablespace:
---
-
-CREATE TABLE taxon_indicator_plain (
-    indicator character varying(200) NOT NULL,
-    scientific_name character varying(200) NOT NULL
-);
-
-
-ALTER TABLE ait.taxon_indicator_plain OWNER TO postgres;
-
---
--- TOC entry 1816 (class 0 OID 0)
--- Dependencies: 1501
--- Name: TABLE taxon_indicator_plain; Type: COMMENT; Schema: ait; Owner: postgres
---
-
-COMMENT ON TABLE taxon_indicator_plain IS 'Tabla inicial de la cual se gererarán las tablas ait.indicator y ait.taxon_indicator a través de un proceso de indexaxión de información de indicadores taxonómicos.';
-
 
 --
 -- TOC entry 1502 (class 1259 OID 22747)
@@ -495,27 +449,6 @@ ALTER TABLE ONLY users
 ALTER TABLE ONLY taxon_index
     ADD CONSTRAINT "taxon_index_PK" PRIMARY KEY (taxon_id);
 
-
---
--- TOC entry 1792 (class 2606 OID 22778)
--- Dependencies: 1500 1500
--- Name: taxon_indicator_pk; Type: CONSTRAINT; Schema: ait; Owner: postgres; Tablespace:
---
-
-ALTER TABLE ONLY taxon_indicator
-    ADD CONSTRAINT taxon_indicator_pk PRIMARY KEY (taxon_indicator_id);
-
-
---
--- TOC entry 1794 (class 2606 OID 22780)
--- Dependencies: 1501 1501 1501
--- Name: taxon_indicator_plain_PK; Type: CONSTRAINT; Schema: ait; Owner: postgres; Tablespace:
---
-
-ALTER TABLE ONLY taxon_indicator_plain
-    ADD CONSTRAINT "taxon_indicator_plain_PK" PRIMARY KEY (indicator, scientific_name);
-
-
 --
 -- TOC entry 1796 (class 2606 OID 22782)
 -- Dependencies: 1503 1503
@@ -550,10 +483,10 @@ INSERT INTO users (user_id, fullname, username, password, enabled, roles) VALUES
 
 -- Completed on 2010-07-09 15:49:11 CST
 
---
+----------------------------------------------------------------------------------------------------------------------
 -- Creation of tables and sequences related with the regionalization of taxon-indicator
 -- Just at the country level
---
+----------------------------------------------------------------------------------------------------------------------
 
 -- Sequence for contry table
 CREATE SEQUENCE ait.country_seq
@@ -579,15 +512,33 @@ GRANT ALL ON TABLE ait.country TO postgres;
 CREATE TABLE ait.taxon_indicator_country
 (
   country_id numeric NOT NULL,
-  taxon_indicator_id numeric NOT NULL,
-  CONSTRAINT taxon_indicator_country_pk PRIMARY KEY (country_id, taxon_indicator_id),
+  indicator_id numeric NOT NULL,
+  taxon_scientific_name character varying(200) NOT NULL,
+
+  CONSTRAINT taxon_indicator_country_pk PRIMARY KEY (country_id, indicator_id,taxon_scientific_name),
   CONSTRAINT country_fk FOREIGN KEY (country_id)
       REFERENCES ait.country (country_id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION,
-  CONSTRAINT taxon_indicator_fk FOREIGN KEY (taxon_indicator_id)
-      REFERENCES ait.taxon_indicator (taxon_indicator_id) MATCH SIMPLE
+
+  CONSTRAINT taxon_indicator_fk FOREIGN KEY (indicator_id,taxon_scientific_name)
+      REFERENCES ait.taxon_indicator (indicator_id,taxon_scientific_name) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION
 )
 WITH (OIDS=FALSE);
 ALTER TABLE ait.taxon_indicator_country OWNER TO postgres;
 GRANT ALL ON TABLE ait.taxon_indicator_country TO postgres;
+
+-- Adding country name colum to taxon info index table (to determine regionality)
+ALTER TABLE ait.taxon_info_index ADD COLUMN country character varying(2);
+
+---
+-- Table to manage correspondence between the country name and ISO code
+---
+CREATE TABLE ait.country_iso_3166
+(
+  country_id numeric NOT NULL,
+  iso_code character varying(2) NOT NULL,
+  CONSTRAINT iso_3166_pk PRIMARY KEY (country_id, iso_code)
+)
+WITH (OIDS=FALSE);
+ALTER TABLE ait.country_iso_3166 OWNER TO postgres;

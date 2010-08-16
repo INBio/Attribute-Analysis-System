@@ -60,8 +60,8 @@ public class QueryManagerImpl implements QueryManager{
      * @param x represents the first search criteria corresponding to the data
      * from x axis on the chart
      * @param y tha same as x but with the y axis
-     * @param xType it coul be "geo","indi" or "taxo" see ChartCriteria.java enum
-     * @param yType it coul be "geo","indi" or "taxo" see ChartCriteria.java enum
+     * @param xType it could be "geo","indi" or "taxo" see ChartCriteria.java enum
+     * @param yType it could be "geo","indi" or "taxo" see ChartCriteria.java enum
      * @return
      */
     @Override
@@ -95,6 +95,7 @@ public class QueryManagerImpl implements QueryManager{
         }
 
         //Execute query
+        //System.out.println("**** Query countByCriteria (Charts):\n"+query);
         return taxonInfoIndexDAO.countTaxonsByQuery(query.toString());
     }
 
@@ -174,6 +175,7 @@ public class QueryManagerImpl implements QueryManager{
                 "scientific_name_id = "+species+" and indicator_id = "+indicator+" and " +
                 "(layer_table = '"+layer+"' and polygom_id = "+poly+")";
         //Execute query
+        //System.out.println("**** Query countByIndicator:\n"+query);
         return taxonInfoIndexDAO.countTaxonsByQuery(query.toString());
     }
 
@@ -194,6 +196,7 @@ public class QueryManagerImpl implements QueryManager{
                 "scientific_name_id = "+species+" and (layer_table = '"+layer+"' and polygom_id = "+poly+") and " +
                 "indicator_id = "+indicator+"";
         //Execute query
+        //System.out.println("**** Query countByPolygon:\n"+query);
         return taxonInfoIndexDAO.countTaxonsByQuery(query.toString());
     }
 
@@ -307,7 +310,7 @@ public class QueryManagerImpl implements QueryManager{
         }
 
         //Execute query
-        //System.out.println("**** Query:\n"+query);
+        //System.out.println("**** Query countByCriteria:\n"+query);
         return taxonInfoIndexDAO.countTaxonsByQuery(query.toString());
     }
 
