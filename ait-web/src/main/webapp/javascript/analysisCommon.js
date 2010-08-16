@@ -85,8 +85,9 @@ function initLoadingPanel(){
  */
 function initMap(divId){
     var initialbounds = new OpenLayers.Bounds(
-        -85.954, 8.04,
-        -82.553, 11.22);
+        -102.184, 7.204,
+        -77.157, 22.472
+        );
     var options = {
         controls: [],
         maxResolution: 0.09776171875,

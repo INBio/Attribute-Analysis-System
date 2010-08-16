@@ -136,6 +136,11 @@ body {
     width:100%;
 }
 
+#rHeader{
+    text-align:justify;
+    padding:3px 25px 3px 25px;
+}
+
 /*----------------------------------- Classes -----------------------------------*/
 .detailedResults{
    text-align:justify;
@@ -417,12 +422,12 @@ td.contact2{
 
 /* Separador de resultados */
 .resultsTitle {
-	background-color: #83B444; /*#6ca513*/
+	background-color: #124A21; /*#6ca513*/
     font-size:13px;
     font-weight:bold;
 	text-align: center;
     padding:2px 0 2px 0;
-    color:white;
+    color:white;  
    -moz-border-radius: 5px;
    -webkit-border-radius: 5px;
 }

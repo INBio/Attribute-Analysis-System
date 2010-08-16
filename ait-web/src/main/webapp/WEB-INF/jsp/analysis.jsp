@@ -27,8 +27,7 @@
         <link rel="stylesheet" type="text/css" href="http://openlayers.org/theme/default/style.css"/>
         <script type="text/JavaScript" src="http://openlayers.org/api/OpenLayers.js"></script>
 
-
-        <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAAGtIHQJm1-pS3ci26k9D7hRQgngloALHesSZLYd1j0z536uH2MxQmIpE6xoh3_0LA7MpmysupPTjnvg" type="text/javascript"></script>
+        <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAAGtIHQJm1-pS3ci26k9D7hRRbo2pJpNQIEpt8-nIdM7Qcnrb6GBRgf7oLano6tXPoM6kwdMXfL49wvQ" type="text/javascript"></script>
 
         <script defer="defer" type="text/javascript">
 
@@ -75,7 +74,7 @@
             seeOnMap,seeDetail,searchCriteria,speciesList,newSearch,criteriaText,
             speciesText,hideMap,hideDetail,catalog,latitude,longitute,scientificName,
             layerMatches,indicatorMatches,resultDetails,criteriaWithoutResults,occurrences,
-            resultsGeo,resultsIndi;
+            resultsGeo,resultsIndi,institution;
 
             //Pink tile avoidance
             OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
@@ -289,6 +288,7 @@
                 occurrences = "<fmt:message key="occurrences"/>";
                 resultsGeo = "<fmt:message key="results_geo"/>";
                 resultsIndi = "<fmt:message key="results_indi"/>";
+                institution = "<fmt:message key="institution"/>";
             };
         </script>
 

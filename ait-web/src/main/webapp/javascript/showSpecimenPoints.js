@@ -49,7 +49,8 @@ function showSpecimenPoints(selectedLayers,selectedTaxa,selectedIndicators)  {
                 var latitude = node.getElementsByTagName("latitude")[0].childNodes[0].nodeValue;
                 var longitude = node.getElementsByTagName("longitude")[0].childNodes[0].nodeValue;
                 var scientificname = node.getElementsByTagName("scientificname")[0].childNodes[0].nodeValue;
-                attributes = createAttrib(scientificname,latitude,longitude,catalog);
+                var institution = node.getElementsByTagName("institution")[0].childNodes[0].nodeValue;
+                attributes = createAttrib(scientificname,latitude,longitude,catalog,institution);
                 addPoint(longitude,latitude,attributes);
                 latArray.push(parseFloat(latitude));
                 longArray.push(parseFloat(longitude));
@@ -99,12 +100,13 @@ function addPoint(x, y, attribute) {
 /*
  * Creates a new atributes array for each speciemns point
  */
-function createAttrib(scientificName,latitude,longitude,catalog) {
+function createAttrib(scientificName,latitude,longitude,catalog,institution) {
     attrib = {
         ScientificName: scientificName,
         Latitude: latitude,
         Longitude: longitude,
-        Catalog: catalog
+        Catalog: catalog,
+        Institution: institution
     }
     return attrib;
 }
@@ -160,6 +162,7 @@ function onFeatureSelect(feature) {
     null,
     "<div style=\"font-size:.8em\">"+
     "<br><b>"+scientificName+": </b>"+feature.attributes.ScientificName+
+    "<br><b>"+institution+": </b>"+feature.attributes.Institution+
     "<br><b>"+catalog+": </b>"+feature.attributes.Catalog+
     "<br><b>"+latitude+": </b>"+feature.attributes.Latitude+
     "<br><b>"+longitute+": </b>"+feature.attributes.Longitude+"</div>",

@@ -142,7 +142,7 @@ function createAdvancedHeader(byPolygon,byIndicator,layersShow,treeShow,total1,c
     ids.push(0);
     types.push('t');
     result += '<div id="t0" class="detailed_results">'+
-    '<h3>'+searchCriteria+'</h3>'+criteria1+
+    '<h3>'+searchCriteria+'</h3><div id="rHeader">'+criteria1+"</div>"+
     '<h3>'+total1+' '+speciesMatches+'</h3>';
     if(total1 > 0){
         result += '<input type="button" class="simple_button" id="showOnMapt0" value="'+seeOnMap+'" onclick="showPoints(0,\'t\')" />'+
@@ -204,7 +204,7 @@ function createAdvancedHeader(byPolygon,byIndicator,layersShow,treeShow,total1,c
  */
 function createReportHeader(criteria,total){
     var result = '<div id="reportHeader">'+
-    '<h3centered>'+searchCriteria+'</h3centered>'+criteria+
+    '<h3>'+searchCriteria+'</h3><div id="rHeader">'+criteria+"</div>"+
     '<h3>'+total+' '+speciesMatches+'</h3>'+
     '<input type="button" class="simple_button" id="viewDetail0" value="'+seeDetail+'" onclick="showDetailsFromHiddenData(\'viewDetail0\')" />'+
     '<input type="button" class="simple_button" id="showOnMap0" value="'+seeOnMap+'" onclick="showPointFromHiddenData(\'showOnMap0\')" />'+
