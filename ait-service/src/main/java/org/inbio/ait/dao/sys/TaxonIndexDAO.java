@@ -18,6 +18,7 @@
 
 package org.inbio.ait.dao.sys;
 
+import java.util.List;
 import org.inbio.ait.model.TaxonIndex;
 
 /**
@@ -26,12 +27,16 @@ import org.inbio.ait.model.TaxonIndex;
  */
 public interface TaxonIndexDAO {
 
-    public TaxonIndex getTaxonIndexByName(String name);
+    public List<String> getCountriesByTaxonIndi(String sql);
+
+    public TaxonIndex getTaxonIndexByName(String name,String range);
 
     public TaxonIndex getTaxonIndexById(String id);
 
     public boolean taxonIndexByRange(int rangeId,String rangeName) throws Exception;
 
     public boolean deleteAllTaxonIndex() throws Exception;
+
+    public List<String> getFormatedKingdoms();
 
 }

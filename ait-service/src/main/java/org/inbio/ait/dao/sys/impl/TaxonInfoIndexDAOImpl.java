@@ -84,10 +84,7 @@ public class TaxonInfoIndexDAOImpl extends SimpleJdbcDaoSupport implements Taxon
     }
 
     /**
-     * Execute any query that returns a list of TaxonInfoIndex model object
-     * just with the scientific name
-     * @param q
-     * @return
+     * Execute any query that returns a list of scientific name ids
      */
     @Override
     public List<String> getScientificNames(String q) {
@@ -96,6 +93,22 @@ public class TaxonInfoIndexDAOImpl extends SimpleJdbcDaoSupport implements Taxon
             String query = q;
             tInfo = getSimpleJdbcTemplate().query(query,
                     new tSNMapper());
+        } catch (Exception e) {
+            return tInfo;
+        }
+        return tInfo;
+    }
+
+    /**
+     * Execute any query that returns a list of scientific name NAMES
+     */
+    @Override
+    public List<String> getScientificNamesAsText(String q) {
+        List<String> tInfo = new ArrayList<String>();
+        try {
+            String query = q;
+            tInfo = getSimpleJdbcTemplate().query(query,
+                    new tSNAsTextMapper());
         } catch (Exception e) {
             return tInfo;
         }
@@ -194,6 +207,15 @@ public class TaxonInfoIndexDAOImpl extends SimpleJdbcDaoSupport implements Taxon
         }
     }
 
+    private static class tSNAsTextMapper implements ParameterizedRowMapper<String> {
+
+        @Override
+        public String mapRow(ResultSet rs, int rowNum) throws SQLException {
+            String result = rs.getString("scientific_name");
+            return result;
+        }
+    }
+
     private static class tSNMapper implements ParameterizedRowMapper<String> {
 
         @Override
@@ -205,5 +227,4 @@ public class TaxonInfoIndexDAOImpl extends SimpleJdbcDaoSupport implements Taxon
                 return result.toString();
         }
     }
-
 }
