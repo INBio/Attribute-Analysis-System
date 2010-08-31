@@ -28,6 +28,7 @@ var specifyTaxonE;
 var selectIndicatorFirstE;
 var treeLeafE;
 var loadingImage; //To store the image URL
+var treeBase;
 
 /*
  * Initialazing the indicators tree
@@ -40,7 +41,7 @@ function initIndicators(){
     //Getting a reference to the root element
     rootNode = tree.getRoot();
     //Add the root element
-    var tempNode = new YAHOO.widget.TextNode('Atributos Taxonómicos', rootNode, false);
+    var tempNode = new YAHOO.widget.TextNode(treeBase, rootNode, false);
     tempNode.data = 0;
     //Render the tree
     tree.draw();
@@ -77,6 +78,22 @@ function initLoadingPanel(){
         YAHOO.example.container.wait.setHeader(loadingText);
         YAHOO.example.container.wait.setBody(loadingImage);
         YAHOO.example.container.wait.render(document.getElementById('contenido'));
+    }
+
+    if (!YAHOO.example.container.detail) {
+       YAHOO.example.container.detail =
+            new YAHOO.widget.Panel("detail",
+        {
+            width:"600px",
+            close:true,
+            draggable:true,
+            fixedcenter:"contained",
+            constraintoviewport: true, 
+            zindex:999,
+            visible:false
+        }
+    );
+        YAHOO.example.container.detail.render(document.getElementById('contenido'));
     }
 }
 
@@ -292,6 +309,8 @@ function addTaxonParam() {
     //Get the text field value
     var txTaxon = document.getElementById('taxonId');
     var text = txTaxon.value;
+    var txRange = document.getElementById('taxonTypeId');
+	var rangeId = parseInt(txRange.value)+1;
     //Validate null values
     if(text==null||text==''){
         alert(specifyTaxonE);
@@ -308,9 +327,9 @@ function addTaxonParam() {
     //Add the search criteria
     var taxonlist = document.getElementById('taxParameters');
     var newdiv = document.createElement('div');
-    newdiv.setAttribute("id",text);
+    newdiv.setAttribute("id",text+"~"+rangeId); //Taxon~range
     newdiv.innerHTML =
-        "<a class=\"criteria\" href=\"javascript:\" onclick=\"removeTaxonParamElement(\'"+text+"\')\">"+text+"</a>";
+        "<a class=\"criteria\" href=\"javascript:\" onclick=\"removeTaxonParamElement(\'"+text+"~"+rangeId+"\')\">"+text+"</a>";
     taxonlist.appendChild(newdiv);
     txTaxon.value = '';
 }

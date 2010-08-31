@@ -27,7 +27,8 @@
         <link rel="stylesheet" type="text/css" href="http://openlayers.org/theme/default/style.css"/>
         <script type="text/JavaScript" src="http://openlayers.org/api/OpenLayers.js"></script>
 
-        <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAAGtIHQJm1-pS3ci26k9D7hRRbo2pJpNQIEpt8-nIdM7Qcnrb6GBRgf7oLano6tXPoM6kwdMXfL49wvQ" type="text/javascript"></script>
+        <!--<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAAGtIHQJm1-pS3ci26k9D7hRRbo2pJpNQIEpt8-nIdM7Qcnrb6GBRgf7oLano6tXPoM6kwdMXfL49wvQ" type="text/javascript"></script>-->
+        <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAAGtIHQJm1-pS3ci26k9D7hRRURa6X8semXTOqalZdyJcp_MFd9RS_0fj31egxhzrJ1gql_bQ3Rcc7Qw" type="text/javascript"></script>
 
         <script defer="defer" type="text/javascript">
 
@@ -153,11 +154,11 @@
                 var selectedTaxa = "";
                 for (var j =0; j <taxonlist.childNodes.length; j++){
                     if(document.all){
-                        selectedTaxa += taxonlist.childNodes[j].innerText+"|";
+                        selectedTaxa += taxonlist.childNodes[j].id+"|";
                         taxonsShow.push(taxonlist.childNodes[j].innerText);
                     }
                     else{
-                        selectedTaxa += taxonlist.childNodes[j].textContent+"|";
+                        selectedTaxa += taxonlist.childNodes[j].id+"|";
                         taxonsShow.push(taxonlist.childNodes[j].textContent);
                     }
                 }
@@ -289,6 +290,7 @@
                 resultsGeo = "<fmt:message key="results_geo"/>";
                 resultsIndi = "<fmt:message key="results_indi"/>";
                 institution = "<fmt:message key="institution"/>";
+                treeBase = "<fmt:message key="indicators_criteria_title"/>";
             };
         </script>
 

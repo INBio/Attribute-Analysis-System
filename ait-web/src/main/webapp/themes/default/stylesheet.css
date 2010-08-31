@@ -107,7 +107,6 @@ body {
     margin:0;
     text-align:justify;
     padding: 0px;
-    color:#334563;
 }
 
 /* The content of each .jsp It has the header,content and footer*/
@@ -139,6 +138,10 @@ body {
 #rHeader{
     text-align:justify;
     padding:3px 25px 3px 25px;
+    background-color:#A7B3D0;
+    color:black;
+   -moz-border-radius: 5px;
+   -webkit-border-radius: 5px;
 }
 
 /*----------------------------------- Classes -----------------------------------*/
@@ -184,20 +187,20 @@ body {
    display:block;
    width:260px;
    height:24px;
-   background-color:#B4C7D4;
+   background-color:#4E639D;
    border:1px solid #456C84;
    font-family:sans-serif;
    font-size:100%;
    line-height:130%;
    text-align:center;
    font-weight:normal;
-   color:#334563;
+   color:white;
    cursor:pointer;
    padding:1px;
    margin-top:3px;
    margin-bottom:3px;
-   -moz-border-radius: 2px;
-   -webkit-border-radius: 2px;
+   -moz-border-radius: 3px;
+   -webkit-border-radius: 3px;
 }
 
 .simple_button{
@@ -231,6 +234,18 @@ body {
    -webkit-border-radius: 8px;
 }
 
+.help_Button{
+   background: url(images/help.png);
+   background-repeat:no-repeat;
+   width:28px;
+   background-color:#F6F8FB;
+   cursor:pointer;
+   padding:1px;
+   margin:2px;
+   -moz-border-radius: 8px;
+   -webkit-border-radius: 8px;
+}
+
 .new_search_button{
    width:120px;
    height:24px;
@@ -249,18 +264,20 @@ body {
 
 .detailed_results{
    background-color:#F5F7FB;
-   border:1px solid #A3B4B7;
+   border:1px solid gray;
    margin-bottom:1px;
    padding:5px;
+   color:#2B2B2B;
    -moz-border-radius: 5px;
    -webkit-border-radius: 5px;
 }
 
 .current_Selected{
-   background-color:#C7C8CC;
+   background-color:#333333;
    border:1px solid #A3B4B7;
    margin-bottom:1px;
    padding:5px;
+   color:white;
    -moz-border-radius: 5px;
    -webkit-border-radius: 5px;
 }
@@ -378,19 +395,19 @@ th.contactDept{
 }
 
 th.species{
-    background-color: #E4FCBC;
-    border: 1px #739999 solid;
+    background-color: #71A200;
+    border: 1px #C8DCA5 solid;
     font-family: Verdana;
     font-weight: bold;
     font-size: 12px;
     padding-top:3px;
     padding-bottom:3px;
-    color: #404040;
+    color: white;
     font-style:italic;
 }
 
 td.contact{
-    border: 1px #739999 solid;
+    border: 1px #C8DCA5 solid;
     text-align: justify;
     font-family: Verdana, sans-serif, Arial;
     font-weight: normal;
@@ -401,7 +418,7 @@ td.contact{
 }
 
 td.contact2{
-    border: 1px #739999 solid;
+    border: 1px #C8DCA5 solid;
     text-align: justify;
     font-family: Verdana, sans-serif, Arial;
     font-weight: normal;
@@ -409,6 +426,35 @@ td.contact2{
     color: #404040;
     background-color: #fafafa;
     padding:0 5px 0 3px;
+}
+
+/*  Style to indicate that there are not occurrences in this specific column */
+td.contact_none{
+    background: url(images/none.png);
+    background-repeat:no-repeat;
+    background-position:center;
+    border: 1px #C8DCA5 solid;
+    font-family: Verdana, sans-serif, Arial;
+    font-weight: normal;
+    font-size: 12px;
+    color: #404040;
+    background-color: #fafafa;
+    padding:4px 0 4px 0;
+}
+
+/*  Style to indicate that there are occurrences in this specific column */
+td.contact_yes{
+    background: url(images/check.png);
+    background-repeat:no-repeat;
+    border: 1px #C8DCA5 solid;
+    font-family: Verdana, sans-serif, Arial;
+    font-weight: normal;
+    font-size: 12px;
+    color: #404040;
+    background-color: #fafafa;
+    padding:4px 0 4px 130px;
+    background-position:center;
+    text-align:center;
 }
 
 .criteria_title{
@@ -482,6 +528,14 @@ a.link-celda02:visited {
 	text-decoration: underline;
 	text-align: center;
 }
+
+/* Style for points pop up */
+.olFramedCloudPopupContent {
+    overflow:auto;
+    padding:5px;
+    color:black;
+}
+
 /* end tabla opciones e íconos Leila */
 
 /*------------------------------- Footer by Cristian Granados --------------------------------*/

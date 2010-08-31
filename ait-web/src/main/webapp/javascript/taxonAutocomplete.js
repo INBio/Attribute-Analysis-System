@@ -13,8 +13,7 @@ function changeTaxonInput() {
 	var taxonValueTextField = document.getElementById('taxonId');
 	var taxonActualValue = taxonValueTextField.value;
 	
-	
-	//get value span	
+	//Get value span
 	var valueSpan = document.getElementById('newTaxonValue');
 	removeElement(valueSpan, "INPUT");		
 	removeElement(valueSpan, "DIV");		
@@ -36,9 +35,6 @@ function changeTaxonInput() {
 	  var autoCompleteDiv = document.createElement('DIV');
 	  autoCompleteDiv.id="taxonContainer";
 	  autoCompleteDiv.className="yui-skin-m3s";
-	  
-	  //autoCompleteDiv.innerHTML ="";
-	  //autoCompleteDiv.style.left="0px";
   	  valueSpan.appendChild(autoCompleteDiv);			
   	  setupAutoComplete(taxonAutoCompleteUrls[taxonTypeId],"taxonId", "taxonContainer");
 	}

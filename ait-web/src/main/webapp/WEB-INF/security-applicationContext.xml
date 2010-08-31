@@ -8,12 +8,12 @@
 
   <http access-denied-page="/accessDeniedPage.htm">
     <!-- Access to system pages -->
-    <intercept-url pattern="/analysis.htm*" access="ROLE_USER"/>
+    <!--<intercept-url pattern="/analysis.htm*" access="ROLE_USER"/>
     <intercept-url pattern="/statisticalParameters.htm*" access="ROLE_USER"/>
-        <intercept-url pattern="/chart.htm*" access="ROLE_USER"/>
+    <intercept-url pattern="/chart.htm*" access="ROLE_USER"/>-->
     <intercept-url pattern="/config.htm*" access="ROLE_ADMIN"/>
     <!-- Access to ajax services -->
-    <intercept-url pattern="/ajax*" access="ROLE_USER" />
+    <!--<intercept-url pattern="/ajax*" access="ROLE_USER" />-->
 <!-- Login page -->
     <form-login login-page="/login.htm" default-target-url="/welcome.htm" authentication-failure-url="/accessDeniedPage.htm" />
     <logout/>

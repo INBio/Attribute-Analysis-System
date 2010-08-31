@@ -33,6 +33,8 @@
                 <prop key="/getSpecies/**/**">speciesController</prop>
             <!-- Getting detailed tables from query -->
                 <prop key="/getTable/**/**">tableController</prop>
+            <!-- Exporting to csv file the specimen info -->
+                <prop key="/exportPoints/**/**">exportCsvController</prop>
             </props>
         </property>
     </bean>
@@ -63,6 +65,13 @@
     <!--..................... Specimens map points ..........................-->
     <!--.....................................................................-->
     <bean id="pointsController" class="org.inbio.ait.web.ajax.controller.PointsController">
+      <property name="pointsManager" ref="pointsManager"/>
+    </bean>
+    
+    <!--.....................................................................-->
+    <!--..................... Specimens map points ..........................-->
+    <!--.....................................................................-->
+    <bean id="exportCsvController" class="org.inbio.ait.web.ajax.controller.ExportCsvController">
       <property name="pointsManager" ref="pointsManager"/>
     </bean>
 

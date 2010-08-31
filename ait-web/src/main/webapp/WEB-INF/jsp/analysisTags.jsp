@@ -26,3 +26,4 @@
 <script src="${pageContext.request.contextPath}/javascript/yui/container/container.js" type="text/javascript" language="javascript"></script>
 <script src="${pageContext.request.contextPath}/javascript/viewSimpleDetail.js" type="text/javascript" language="javascript"></script>
 <script src="${pageContext.request.contextPath}/javascript/detailedTable.js" type="text/javascript" language="javascript"></script>
+<script src="${pageContext.request.contextPath}/javascript/exportSpecimenPoints.js" type="text/javascript" language="javascript"></script>

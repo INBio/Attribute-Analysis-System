@@ -38,10 +38,10 @@ function detailedTable(selectedLayers,selectedTaxa,selectedIndicators,toShow,typ
             var rows = xmlDoc.getElementsByTagName("row");
             var toShowArray = toShow.split('|');
             //HTML result
-            var result = '<table class="contacts" cellspacing="0"><tr><th class="contactDept"> ---- </th>';
+            var result = '<table class="contacts" cellspacing="0"><tr><th class="species"> ---- </th>';
             for(var k = 0 ;k<toShowArray.length;k++){ //Headings row
                 if(toShowArray[k] != ""){
-                    result += '<th class="contactDept"> '+toShowArray[k]+' </th>';
+                    result += '<th class="species"> '+toShowArray[k]+' </th>';
                 }
             }
             result += '</tr>';
@@ -49,7 +49,13 @@ function detailedTable(selectedLayers,selectedTaxa,selectedIndicators,toShow,typ
                 result += '<tr><th class="species"> '+species[i].childNodes[0].nodeValue+' </th>';
                 var columns = rows[i].getElementsByTagName("column");
                 for(var j = 0;j<columns.length;j++){
-                    result += '<td class="contact"> '+columns[j].childNodes[0].nodeValue+" "+occurrences+' </td>';
+                    var current = columns[j].childNodes[0].nodeValue;
+                    if(current == 0){
+                        result += '<td class="contact_none"> </td>';
+                    }
+                    else{
+                        result += '<td class="contact_yes"> ('+current+' '+occurrences+') </td>';
+                    }
                 }
                 result += '</tr>';
             }
