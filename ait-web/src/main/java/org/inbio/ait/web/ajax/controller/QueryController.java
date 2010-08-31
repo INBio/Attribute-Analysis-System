@@ -37,14 +37,14 @@ public class QueryController implements Controller{
     private QueryManager queryManager;
 
     @Override
-    public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ModelAndView handleRequest(HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
 		String paramLayer = request.getParameter("layers");
         String paramTaxon = request.getParameter("taxons");
         String paramIndi = request.getParameter("indi");
 		String errorMsj = "Error con los parámetros: "+paramLayer+" "+paramTaxon+" "+paramIndi;
 
 		try {
-
             //Arrays that contains the parameters data
             String[] layerArray = paramLayer.split("\\|");
             String[] taxonArray = paramTaxon.split("\\|");

@@ -20,6 +20,7 @@ package org.inbio.ait.dao.sys;
 
 import java.util.List;
 import org.inbio.ait.model.TaxonInfoIndex;
+import org.inbio.ait.util.TaxonIndicatorRegionality;
 
 /**
  *
@@ -52,8 +53,10 @@ public interface TaxonInfoIndexDAO {
 
     public List<String> getScientificNames(String q);
 
-     public boolean taxonInfoIndex(String layer) throws Exception;
+    public List<String> getScientificNamesAsText(String q);
 
-     public boolean deleteAllTaxonInfoIndex()  throws Exception;
+    public boolean taxonInfoIndex(String layer) throws Exception;
+
+    public boolean deleteAllTaxonInfoIndex()  throws Exception;
 
 }

@@ -45,6 +45,7 @@ import org.inbio.ait.model.PlicPropertyHolder;
 import org.inbio.ait.model.PostgisLayers;
 import org.inbio.ait.model.SpecimenBase;
 import org.inbio.ait.model.TaxonIndicator;
+import org.inbio.ait.model.TaxonomicalRange;
 import org.inbio.ait.model.TindiPropertyHolder;
 
 /**
@@ -471,14 +472,22 @@ public class ConfigManagerImpl implements ConfigManager{
             //Delete existing data
             this.getTaxonIndexDAO().deleteAllTaxonIndex();
             //Execute indexing proccess
-            this.getTaxonIndexDAO().taxonIndexByRange(1, "kingdom");
-            this.getTaxonIndexDAO().taxonIndexByRange(2, "phylum");
-            this.getTaxonIndexDAO().taxonIndexByRange(3, "class");
-            this.getTaxonIndexDAO().taxonIndexByRange(4, "orders");
-            this.getTaxonIndexDAO().taxonIndexByRange(5, "family");
-            this.getTaxonIndexDAO().taxonIndexByRange(6, "genus");
-            this.getTaxonIndexDAO().taxonIndexByRange(7, "specificepithet");
-            this.getTaxonIndexDAO().taxonIndexByRange(8, "scientificname");
+            this.getTaxonIndexDAO().taxonIndexByRange
+                    (1, TaxonomicalRange.KINGDOM.getDwcFieldName());
+            this.getTaxonIndexDAO().taxonIndexByRange
+                    (2, TaxonomicalRange.PHYLUM.getDwcFieldName());
+            this.getTaxonIndexDAO().taxonIndexByRange
+                    (3, TaxonomicalRange.CLASS.getDwcFieldName());
+            this.getTaxonIndexDAO().taxonIndexByRange
+                    (4, TaxonomicalRange.ORDER.getDwcFieldName());
+            this.getTaxonIndexDAO().taxonIndexByRange
+                    (5, TaxonomicalRange.FAMILY.getDwcFieldName());
+            this.getTaxonIndexDAO().taxonIndexByRange
+                    (6, TaxonomicalRange.GENUS.getDwcFieldName());
+            this.getTaxonIndexDAO().taxonIndexByRange
+                    (7, TaxonomicalRange.SPECIFICEPITHET.getDwcFieldName());
+            this.getTaxonIndexDAO().taxonIndexByRange
+                    (8, TaxonomicalRange.SCIENTIFICNAME.getDwcFieldName());
         } catch (Exception e) {
             return false;
         }

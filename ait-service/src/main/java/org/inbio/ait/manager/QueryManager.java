@@ -20,6 +20,7 @@ package org.inbio.ait.manager;
 
 import java.util.List;
 import org.inbio.ait.model.TaxonInfoIndex;
+import org.inbio.ait.util.TaxonIndicatorRegionality;
 
 /**
  * @author esmata
@@ -51,5 +52,20 @@ public interface QueryManager {
     public Long countByIndicator(String species,String indicator,String colunm,String polygon);
 
     public Long countByPolygon(String species,String polygon,String colunm,String indicator);
+
+    public List<TaxonIndicatorRegionality> getRegionalityList(String[] taxonList,
+            String[] indicList);
+
+    public String countByCriteriaSql(String[] layerList, String[] taxonList,
+            String[] indicList,String colum);
+
+    public String countByCriteriaRegSql(String[] layerList,String colum,
+            List<TaxonIndicatorRegionality> regList);
+
+    public String elementsByCriteriaRegSql(String[] layerList,String colum,
+            List<TaxonIndicatorRegionality> regList);
+
+    public String elementsByCriteriaSql(String[] layerList, String[] taxonList,
+            String[] indicList,String colum);
 
 }

@@ -20,6 +20,8 @@ package org.inbio.ait.dao.sys.impl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import org.inbio.ait.dao.sys.TaxonIndexDAO;
 import org.inbio.ait.model.TaxonIndex;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
@@ -33,13 +35,31 @@ public class TaxonIndexDAOImpl extends SimpleJdbcDaoSupport implements TaxonInde
 
 
     /**
-     * Get id,range and name based on a specific taxon name
+     * Gets the list of countries linked with a specific taxon-indicator
+     * @param sql
+     * @return
      */
     @Override
-    public TaxonIndex getTaxonIndexByName(String name) {
+    public List<String> getCountriesByTaxonIndi(String sql){
+        List<String> result = new ArrayList<String>();
+        try {
+            result = getSimpleJdbcTemplate().query(sql,new countriesMapper());
+        } catch (Exception e) {
+            //System.out.println(e);
+            return result;
+        }
+        return result;
+    }
+
+    /**
+     * Get id,range and name based on a specific taxon name and range
+     */
+    @Override
+    public TaxonIndex getTaxonIndexByName(String name,String range) {
         TaxonIndex tIndex = new TaxonIndex();
         try {
-            String query = "Select * from ait.taxon_index where taxon_name = '"+ name +"';";
+            String query = "Select * from ait.taxon_index where taxon_name = '"+
+                    name +"' and taxon_range = "+range+";";
             tIndex = getSimpleJdbcTemplate().queryForObject(query,new tIndexMapper());
         } catch (Exception e) {
             return tIndex;
@@ -85,6 +105,10 @@ public class TaxonIndexDAOImpl extends SimpleJdbcDaoSupport implements TaxonInde
         return result;
     }
 
+    /**
+     * Delete all taxon_index registers
+     * @throws java.lang.Exception
+     */
     @Override
     public boolean deleteAllTaxonIndex()  throws Exception{
         try {
@@ -96,6 +120,22 @@ public class TaxonIndexDAOImpl extends SimpleJdbcDaoSupport implements TaxonInde
         return true;
     }
 
+    /**
+     * Returns a list of kingdom with the format: kingdom~1 where kingdom
+     * represents the name and ~1 the range
+     */
+    @Override
+    public List<String> getFormatedKingdoms(){
+        List<String> result = new ArrayList<String>();
+        try {
+            String query = "Select taxon_name from ait.taxon_index where taxon_range = 1";
+            result = getSimpleJdbcTemplate().query(query,new kingdomsMapper());
+        } catch (Exception e) {
+            return result;
+        }
+        return result;
+    }
+
     private static class tIndexMapper implements ParameterizedRowMapper<TaxonIndex> {
 
         @Override
@@ -105,6 +145,26 @@ public class TaxonIndexDAOImpl extends SimpleJdbcDaoSupport implements TaxonInde
             ti.setTaxon_name(rs.getString("taxon_name"));
             ti.setTaxon_range(rs.getLong("taxon_range"));
             return ti;
+        }
+    }
+
+    private static class countriesMapper implements ParameterizedRowMapper<String> {
+
+        @Override
+        public String mapRow(ResultSet rs, int rowNum) throws SQLException {
+            String r = new String();
+            r = rs.getString("r");
+            return r;
+        }
+    }
+
+    private static class kingdomsMapper implements ParameterizedRowMapper<String> {
+
+        @Override
+        public String mapRow(ResultSet rs, int rowNum) throws SQLException {
+            String r = new String();
+            r = rs.getString("taxon_name")+"~1";
+            return r;
         }
     }
 

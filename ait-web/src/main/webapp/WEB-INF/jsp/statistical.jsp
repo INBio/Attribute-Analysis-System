@@ -27,7 +27,8 @@
         <link rel="stylesheet" type="text/css" href="http://openlayers.org/theme/default/style.css"/>
         <script type="text/JavaScript" src="http://openlayers.org/api/OpenLayers.js"></script>
 
-        <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAAGtIHQJm1-pS3ci26k9D7hRRbo2pJpNQIEpt8-nIdM7Qcnrb6GBRgf7oLano6tXPoM6kwdMXfL49wvQ" type="text/javascript"></script>
+        <!--<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAAGtIHQJm1-pS3ci26k9D7hRRbo2pJpNQIEpt8-nIdM7Qcnrb6GBRgf7oLano6tXPoM6kwdMXfL49wvQ" type="text/javascript"></script>-->
+        <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAAGtIHQJm1-pS3ci26k9D7hRRURa6X8semXTOqalZdyJcp_MFd9RS_0fj31egxhzrJ1gql_bQ3Rcc7Qw" type="text/javascript"></script>
 
         <script defer="defer" type="text/javascript">
 
@@ -60,7 +61,7 @@
             //To create a new atribute for each specimen point
             var attributes;
             //Internationalization variable
-            var chartTitle;
+            var chartTitle;            
 
             //Pink tile avoidance
             OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
@@ -138,11 +139,11 @@
                 //Loop over taxonomic criteria
                 for (var j =0; j <taxonParams.childNodes.length; j++){
                     if(document.all){
-                        selectedTaxa += taxonParams.childNodes[j].innerText+"|";
+                        selectedTaxa += taxonParams.childNodes[j].id+"|";
                         taxaToShow += taxonParams.childNodes[j].innerText+"|";
                     }
                     else{
-                        selectedTaxa += taxonParams.childNodes[j].textContent+"|";
+                        selectedTaxa += taxonParams.childNodes[j].id+"|";
                         taxaToShow += taxonParams.childNodes[j].textContent+"|";
                     }
                 }
@@ -164,36 +165,36 @@
                     case 1: //taxonomical
                         xData.value = selectedTaxa;
                         xDataToShow.value = taxaToShow;
-                        xTitle.value = "<fmt:message key="taxonomical_criteria_title"/>";
+                        xTitle.value = "<fmt:message key="taxonomical_criteria_chart"/>";
                         break;
                     case 2: //geographical
                         xData.value = selectedLayers;
                         xDataToShow.value = layersToShow;
-                        xTitle.value = "<fmt:message key="geografical_criteria_title"/>";
+                        xTitle.value = "<fmt:message key="geografical_criteria_chart"/>";
                         isGeo.value = "x";
                         break;
                     case 3: //indicators
                         xData.value = selectedIndicators;
                         xDataToShow.value = indiToShow;
-                        xTitle.value = "<fmt:message key="indicators_criteria_title"/>";
+                        xTitle.value = "<fmt:message key="indicators_criteria_chart"/>";
                         break;
                 }
                 switch(y){
                     case 1: //taxonomical
                         yData.value = selectedTaxa;
                         yDataToShow.value = taxaToShow;
-                        yTitle.value = "<fmt:message key="species_number"/>";
+                        yTitle.value = "<fmt:message key="species_number_chart"/>";
                         break;
                     case 2: //geographical
                         yData.value = selectedLayers;
                         yDataToShow.value = layersToShow;
-                        yTitle.value = "<fmt:message key="species_number"/>";
+                        yTitle.value = "<fmt:message key="species_number_chart"/>";
                         isGeo.value = "y";
                         break;
                     case 3: //indicators
                         yData.value = selectedIndicators;
                         yDataToShow.value = indiToShow;
-                        yTitle.value = "<fmt:message key="species_number"/>";
+                        yTitle.value = "<fmt:message key="species_number_chart"/>";
                         break;
                 }                
 
@@ -337,6 +338,7 @@
                 treeLeafE = "<fmt:message key="indicator_leaf"/>";
                 loadingImage = "<img src=\"${pageContext.request.contextPath}/themes/default/images/ajax-loader.gif\" ></img>";
                 chartTitle = "<fmt:message key="chart_title"/>";
+                treeBase = "<fmt:message key="indicators_criteria_title"/>";
             };
         </script>
 

@@ -70,7 +70,7 @@ public class TableController implements Controller{
                     SpeciesNode node = species.get(i);
                     //Loop over columns
                     for(int j = 0;j<y;j++){
-                        matrix[i][j] = queryManager.countByIndicator(node.getId(),
+                        matrix[i][j] = queryManager.countByIndicator(node.getName(),
                                 indiArray[j],
                                 TaxonInfoIndexColums.SPECIMENS.getName(),
                                 layerArray[0]); //species,indicator,colunm,polygon
@@ -85,7 +85,7 @@ public class TableController implements Controller{
                     SpeciesNode node = species.get(i);
                     //Loop over columns
                     for(int j = 0;j<y;j++){
-                        matrix[i][j] = queryManager.countByPolygon(node.getId(),
+                        matrix[i][j] = queryManager.countByPolygon(node.getName(),
                                 layerArray[j],
                                 TaxonInfoIndexColums.SPECIMENS.getName(),
                                 indiArray[0]); //species,polygon,colunm,indicator

@@ -19,7 +19,7 @@
             <ref bean="orderFilter" />
             <ref bean="familyFilter" />
             <ref bean="genusFilter" />
-            <ref bean="specificEpithetFilter" />
+            <!--<ref bean="specificEpithetFilter" />-->
             <ref bean="scientificnameFilter" />
           </list>
         </property>
@@ -139,10 +139,12 @@
         <property name="taxonInfoIndexDAO" ref="taxonInfoIndexDAO"/>
         <property name="taxonIndexDAO" ref="taxonIndexDAO"/>
         <property name="specimenDAO" ref="specimenDAO"/>
+        <property name="queryManager" ref="queryManager"/>
     </bean>
     <bean id="speciesManager" class="org.inbio.ait.manager.impl.SpeciesManagerImpl">
         <property name="taxonInfoIndexDAO" ref="taxonInfoIndexDAO"/>
         <property name="taxonIndexDAO" ref="taxonIndexDAO"/>
+        <property name="queryManager" ref="queryManager"/>
     </bean>
     <bean id="configManager" class="org.inbio.ait.manager.impl.ConfigManagerImpl">
         <property name="dwcPropertyHolderDAO" ref="dwcPropertyHolderDAO"/>

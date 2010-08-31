@@ -163,6 +163,7 @@ function createAdvancedHeader(byPolygon,byIndicator,layersShow,treeShow,total1,c
             '<p>'+byPolygon[i].childNodes[0].nodeValue+' '+layerMatches+'</p>'+
             '<input type="button" class="simple_button" id="viewDetailp'+i+'" value="'+seeDetail+'" onclick="showDetails('+i+',\'p\',\''+arrayToString(treeShow)+'\')" />'+
             '<input type="button" class="simple_button" id="showOnMapp'+i+'" value="'+seeOnMap+'" onclick="showPoints('+i+',\'p\')" />'+
+            '<input type="button" class="simple_button" id="exportPoint'+i+'" value="'+occurrences+'" onclick="exportPoints('+i+',\'p\')" />'+
             '<div id="p'+i+'detail"></div><div id="p'+i+'map"></div></div>';
         }
         else{ //If the detail doesn't have results
@@ -186,6 +187,7 @@ function createAdvancedHeader(byPolygon,byIndicator,layersShow,treeShow,total1,c
             '<p>'+byIndicator[j].childNodes[0].nodeValue+' '+indicatorMatches+'</p>'+
             '<input type="button" class="simple_button" id="viewDetaili'+j+'" value="'+seeDetail+'" onclick="showDetails('+j+',\'i\',\''+arrayToString(layersShow)+'\')" />'+
             '<input type="button" class="simple_button" id="showOnMapi'+j+'" value="'+seeOnMap+'" onclick="showPoints('+j+',\'i\')" />'+
+            '<input type="button" class="simple_button" id="exportPointi'+j+'" value="'+occurrences+'" onclick="exportPoints('+j+',\'i\')" />'+
             '<div id="i'+j+'detail"></div><div id="i'+j+'map"></div></div>';
         }
         else{ //If the detail doesn't have results
@@ -194,7 +196,7 @@ function createAdvancedHeader(byPolygon,byIndicator,layersShow,treeShow,total1,c
             '<div id="i'+j+'detail"></div><div id="i'+j+'map"></div></div>';
         }
     }
-    result+='<input type="submit" class="new_search_button" id="newSearch" value="'+newSearch+'"/>'+others+'<br><br><br>';
+    result+='<input type="submit" class="new_search_button" id="newSearch" value="'+newSearch+'"/>'+others+'<br>';
     return result;
 }
 
@@ -310,6 +312,45 @@ function goToShowDetailFromHidden(inputId){
    document.getElementById(inputId).onclick = function(){
        showDetailsFromHiddenData(inputId);
    };
+}
+
+/**
+ * To export the specimen points on csv format
+ * id = polygon id or indicator id
+ * type p = polygon or i = indicator
+ */
+function exportPoints(id,type){
+    var layers = document.getElementById('hiddenLayers').value;
+    var taxa = document.getElementById('hiddenTaxa').value;
+    var indi = document.getElementById('hiddenIndicators').value;
+    if(type=='t'){ //All search criteria
+        //Show loading
+        YAHOO.example.container.wait.show();
+        //Indicate de current selected
+        indicateCurrent('t'+id,'detail');
+        //Export points info
+        exportSpecimenPoints(layers,taxa,indi);
+    }
+    else if(type=='p'){ //By polygon
+        //Show loading
+        YAHOO.example.container.wait.show();
+        //Getting the query parameters
+        var layersArray = layers.split('|');
+        //Indicate de current selected
+        indicateCurrent('p'+id,'detail');
+        //Export points info
+        exportSpecimenPoints(layersArray[id]+'|',taxa,indi);
+    }
+        else{ //By indicator
+            //Show loading
+            YAHOO.example.container.wait.show();
+            //Getting the query parameters
+            var indiArray = indi.split('|');
+            //Indicate de current selected
+            indicateCurrent('i'+id,'detail');
+            //Export points info
+            exportSpecimenPoints(layers,taxa,indiArray[id]+'|');
+        }
 }
 
 /**
