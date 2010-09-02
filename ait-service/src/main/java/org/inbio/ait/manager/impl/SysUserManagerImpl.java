@@ -40,7 +40,7 @@ public class SysUserManagerImpl implements UserDetailsManager{
 
     @Override
     public void updateUser(UserDetails arg0) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        systemUserDAO.updateUser((SystemUser)arg0);
     }
 
     @Override

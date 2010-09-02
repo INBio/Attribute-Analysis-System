@@ -33,4 +33,6 @@ public interface SystemUserDAO {
 	 */
   public SystemUser findByUsername(String username);
 
+  public void updateUser(SystemUser user);
+
 }

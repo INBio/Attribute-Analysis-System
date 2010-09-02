@@ -22,6 +22,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.inbio.ait.dao.sys.SystemUserDAO;
 import org.inbio.ait.model.SystemUser;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
@@ -45,6 +46,34 @@ public class SystemUserDAOImpl extends SimpleJdbcDaoSupport implements SystemUse
 
 		return systemUser;
     }
+
+	@Override
+	public void updateUser(SystemUser user) {
+		String sqlStatement = null;
+		MapSqlParameterSource args = null;
+
+        try{
+            sqlStatement = "UPDATE ait.users "+
+				"SET fullname = :fullname "+
+				", password = :password " +
+				", enabled = :enabled " +
+				", roles = :roles "+
+				" WHERE username = :username ";
+
+
+			args = new MapSqlParameterSource();
+			args.addValue("username", user.getUsername());
+			args.addValue("fullname", user.getFullname());
+			args.addValue("password", user.getPassword());
+			args.addValue("enabled", user.isEnabled());
+			args.addValue("roles", user.getRoles());
+
+            getSimpleJdbcTemplate().update(sqlStatement, args);
+
+        }catch(Exception e){
+			e.printStackTrace();
+		}
+	}
 
 	private static class SystemUserRowMapper implements ParameterizedRowMapper<SystemUser> {
 
