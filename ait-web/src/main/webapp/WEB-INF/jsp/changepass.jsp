@@ -43,33 +43,35 @@
         <div id="contenido">
             <!-- Header -->
             <jsp:include page="/WEB-INF/jsp/header.jsp"/>
+            
+            <div id="content">
+                <form:form method="POST" commandName="user">
+                    <br><br>
 
-            <form:form method="POST" commandName="user">
-                <br><br>
+                    <label>
+                        <b><fmt:message key="login_username"/>:  </b>${usuario}<br>
+                    </label>
 
-                <label>
-                    <b><fmt:message key="login_username"/>:  </b>${usuario}<br>
-                </label>
+                    <br>
 
-                <br>
+                    <label>
+                        <b><fmt:message key="new_pass"/>:</b><br>
+                        <form:password id="password" path="password" size="25"></form:password><br>
+                    </label>
 
-                <label>
-                    <b><fmt:message key="new_pass"/>:</b><br>
-                    <form:password id="password" path="password" size="25"></form:password><br>
-                </label>
+                    <br>
 
-                <br>
+                    <label>
+                        <b><fmt:message key="confirm_pass"/>:</b><br> 
+                        <input type="password" id="password2" size="25"><br><br>
+                    </label>
 
-                <label>
-                    <b><fmt:message key="confirm_pass"/>:</b><br> 
-                    <input type="password" id="password2" size="25"><br><br>
-                </label>
+                    <input type="button" value="<fmt:message key="accept"/>"
+                           onclick="validateParameter()" />
 
-                <input type="button" value="<fmt:message key="accept"/>"
-                       onclick="validateParameter()" />
-
-                <br><br>
-            </form:form>
+                    <br><br>
+                </form:form>
+            </div>
 
             <!-- ading space -->
             <br><br>
