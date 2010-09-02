@@ -43,6 +43,7 @@
 
                 <div id="content">
                     <h2><fmt:message key="config_title"/></h2>
+                    <a href="changepass.htm" class="link"><fmt:message key="change_pass"/></a><br>
                     <p class="link_tools"><fmt:message key="data_access"/></p>
                     <a href="conndwc.htm" class="link"><fmt:message key="dwc_config"/></a><br>
                     <a href="connplic.htm" class="link"><fmt:message key="plic_config"/></a><br>

@@ -82,6 +82,12 @@
         <property name="queryManager" ref="queryManager"/>
         <property name="configManager" ref="configManager"/>  
     </bean>
+    <!-- The system user change password controller -->
+    <bean name="/changepass.htm" class="org.inbio.ait.web.controller.ChangePassController">
+        <property name="formView" value="changepass"/>
+        <property name="successView" value="changepassSuccess"/>
+        <property name="sysUserManagerImpl" ref="sysUserManagerImpl"/>
+    </bean>
     <!-- Chart viewer -->
     <bean name="/chart.htm" class="org.inbio.ait.web.controller.ChartController"/>
     <!-- Darwin Core mapping connection atributes -->
