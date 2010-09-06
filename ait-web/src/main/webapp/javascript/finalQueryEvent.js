@@ -210,9 +210,24 @@ function createReportHeader(criteria,total){
     '<h3>'+total+' '+speciesMatches+'</h3>'+
     '<input type="button" class="simple_button" id="viewDetail0" value="'+seeDetail+'" onclick="showDetailsFromHiddenData(\'viewDetail0\')" />'+
     '<input type="button" class="simple_button" id="showOnMap0" value="'+seeOnMap+'" onclick="showPointFromHiddenData(\'showOnMap0\')" />'+
+    '<input type="button" class="simple_button" id="exportPoint0" value="'+occurrences+'" onclick="exportPointsFromHiddenData()" />'+
     '<input type="submit" class="new_search_button" id="newSearch" value="'+newSearch+'" /></div>'+
     '<div id="s0map"></div>';
     return result;
+}
+
+/**
+ * To show the specimen points info on a detailed table
+ */
+function exportPointsFromHiddenData(){
+    //Show loading
+    YAHOO.example.container.wait.show();
+    //Getting the query parameters
+    var layers = document.getElementById('hiddenLayers').value;
+    var taxa = document.getElementById('hiddenTaxa').value;
+    var indi = document.getElementById('hiddenIndicators').value;
+    //Export points info
+    exportSpecimenPoints(layers,taxa,indi);
 }
 
 /**
