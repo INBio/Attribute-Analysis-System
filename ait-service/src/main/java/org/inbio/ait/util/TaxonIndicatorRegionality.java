@@ -30,7 +30,7 @@ public class TaxonIndicatorRegionality {
     //Atributes
     private String taxon;
     private String indicator;
-    private List<String> countries;
+    private List<Long> countries;
 
     //Constructor
     public TaxonIndicatorRegionality(){}
@@ -66,14 +66,14 @@ public class TaxonIndicatorRegionality {
     /**
      * @return the countries
      */
-    public List<String> getCountries() {
+    public List<Long> getCountries() {
         return countries;
     }
 
     /**
      * @param countries the countries to set
      */
-    public void setCountries(List<String> countries) {
+    public void setCountries(List<Long> countries) {
         this.countries = countries;
     }
 

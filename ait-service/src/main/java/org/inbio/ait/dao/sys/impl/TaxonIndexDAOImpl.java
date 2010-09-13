@@ -40,8 +40,8 @@ public class TaxonIndexDAOImpl extends SimpleJdbcDaoSupport implements TaxonInde
      * @return
      */
     @Override
-    public List<String> getCountriesByTaxonIndi(String sql){
-        List<String> result = new ArrayList<String>();
+    public List<Long> getCountriesByTaxonIndi(String sql){
+        List<Long> result = new ArrayList<Long>();
         try {
             result = getSimpleJdbcTemplate().query(sql,new countriesMapper());
         } catch (Exception e) {
@@ -148,13 +148,10 @@ public class TaxonIndexDAOImpl extends SimpleJdbcDaoSupport implements TaxonInde
         }
     }
 
-    private static class countriesMapper implements ParameterizedRowMapper<String> {
-
+    private static class countriesMapper implements ParameterizedRowMapper<Long> {
         @Override
-        public String mapRow(ResultSet rs, int rowNum) throws SQLException {
-            String r = new String();
-            r = rs.getString("r");
-            return r;
+        public Long mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return rs.getLong("country_id");
         }
     }
 

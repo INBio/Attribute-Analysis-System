@@ -529,10 +529,12 @@ ALTER TABLE ait.taxon_indicator_country OWNER TO postgres;
 GRANT ALL ON TABLE ait.taxon_indicator_country TO postgres;
 
 -- Adding country name colum to taxon info index table (to determine regionality)
-ALTER TABLE ait.taxon_info_index ADD COLUMN country character varying(2);
+ALTER TABLE ait.taxon_info_index ADD COLUMN country numeric;
 
 ---
 -- Table to manage correspondence between the country name and ISO code
+-- This table must be fill with countries codes corresponding to the countries
+-- layer on the geoserver.
 ---
 CREATE TABLE ait.country_iso_3166
 (

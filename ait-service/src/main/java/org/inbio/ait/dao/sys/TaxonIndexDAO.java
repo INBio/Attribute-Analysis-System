@@ -27,7 +27,7 @@ import org.inbio.ait.model.TaxonIndex;
  */
 public interface TaxonIndexDAO {
 
-    public List<String> getCountriesByTaxonIndi(String sql);
+    public List<Long> getCountriesByTaxonIndi(String sql);
 
     public TaxonIndex getTaxonIndexByName(String name,String range);
 

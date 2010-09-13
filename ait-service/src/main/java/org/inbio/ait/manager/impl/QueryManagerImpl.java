@@ -151,7 +151,7 @@ public class QueryManagerImpl implements QueryManager{
     private String getCountriesByTaxonIndi(String taxon,int range,String indicator){
         String rangeName = ""; //Name of range
         StringBuilder query = new StringBuilder();
-        query.append("Select distinct (select country_name from ait.country where country_id = tic.country_id) as r ");
+        query.append("Select distinct tic.country_id ");
         query.append("from ait.taxon_indicator_country tic,ait.darwin_core dc where ");
         //Determine the taxonomical level of the taxon
         switch (range) {
@@ -334,12 +334,12 @@ public class QueryManagerImpl implements QueryManager{
                         else{
                             for(int j = 0; j < current.getCountries().size(); j++){
                                 if(j==current.getCountries().size()-1){ //last element
-                                    String cAux = current.getCountries().get(j);
-                                    query.append("(" + levelColum + " = " + taxonId + " and indicator_id = "+indiId+" and country = '"+cAux+"')");
+                                    Long cAux = current.getCountries().get(j);
+                                    query.append("(" + levelColum + " = " + taxonId + " and indicator_id = "+indiId+" and country = "+cAux+")");
                                 }
                                 else{
-                                    String cAux = current.getCountries().get(j);
-                                    query.append("(" + levelColum + " = " + taxonId + " and indicator_id = "+indiId+" and country = '"+cAux+"') or ");
+                                    Long cAux = current.getCountries().get(j);
+                                    query.append("(" + levelColum + " = " + taxonId + " and indicator_id = "+indiId+" and country = "+cAux+") or ");
                                 }
                             }                            
                         }
@@ -353,8 +353,8 @@ public class QueryManagerImpl implements QueryManager{
                         //If there is asociated countries
                         else{
                             for (int j = 0; j < current.getCountries().size(); j++) {
-                                String cAux = current.getCountries().get(j);
-                                query.append("(" + levelColum + " = " + taxonId + " and indicator_id = " + indiId + " and country = '"+cAux+"') or ");
+                                Long cAux = current.getCountries().get(j);
+                                query.append("(" + levelColum + " = " + taxonId + " and indicator_id = " + indiId + " and country = "+cAux+") or ");
                             }
                         }
                     }
@@ -580,12 +580,12 @@ public class QueryManagerImpl implements QueryManager{
                         else{
                             for(int j = 0; j < current.getCountries().size(); j++){
                                 if(j==current.getCountries().size()-1){ //last element
-                                    String cAux = current.getCountries().get(j);
-                                    query.append("(" + levelColum + " = " + taxonId + " and indicator_id = "+indiId+" and country = '"+cAux+"')");
+                                    Long cAux = current.getCountries().get(j);
+                                    query.append("(" + levelColum + " = " + taxonId + " and indicator_id = "+indiId+" and country = "+cAux+")");
                                 }
                                 else{
-                                    String cAux = current.getCountries().get(j);
-                                    query.append("(" + levelColum + " = " + taxonId + " and indicator_id = "+indiId+" and country = '"+cAux+"') or ");
+                                    Long cAux = current.getCountries().get(j);
+                                    query.append("(" + levelColum + " = " + taxonId + " and indicator_id = "+indiId+" and country = "+cAux+") or ");
                                 }
                             }
                         }
@@ -599,8 +599,8 @@ public class QueryManagerImpl implements QueryManager{
                         //If there is asociated countries
                         else{
                             for (int j = 0; j < current.getCountries().size(); j++) {
-                                String cAux = current.getCountries().get(j);
-                                query.append("(" + levelColum + " = " + taxonId + " and indicator_id = " + indiId + " and country = '"+cAux+"') or ");
+                                Long cAux = current.getCountries().get(j);
+                                query.append("(" + levelColum + " = " + taxonId + " and indicator_id = " + indiId + " and country = "+cAux+") or ");
                             }
                         }
                     }
