@@ -29,6 +29,7 @@ var selectIndicatorFirstE;
 var treeLeafE;
 var loadingImage; //To store the image URL
 var treeBase;
+var addAll;
 
 /*
  * Initialazing the indicators tree
@@ -215,12 +216,14 @@ function parseHTML(html){
  */
 function createDDLayers(){
     var dropdown = "<p style=\"margin:1px\"><a> "+layerText+": </a></p>";
-    dropdown += "<select name=ddLayer class=\"componentSize\" onchange='onChangeLayer(this.form.ddLayer);'>";
+    dropdown += "<div id=\"layerComponents\" style=\"width:260px;\">"+
+                "<select name=ddLayer style=\"width:75%;\" onchange=\"onChangeLayer(this.form.ddLayer,this.form.cbAll);\">";
     //Setting drop down options
     for(var i=0;i<layersList.length;i++){
         dropdown+= "<option>"+layersList[i][1]+"</option>";
     }
-    dropdown+= "</select>";
+    dropdown+= "</select><input type=\"checkbox\" name=\"cbAll\" style=\"width:25%;\""+
+               " onchange=\"onChangeSelectAll(this.form.cbAll,this.form.ddLayer);\"</input>"+addAll+"</div>";
     document.getElementById('currentLayer').innerHTML = dropdown;
 }
 
@@ -244,7 +247,7 @@ function deleteSeparators(string){
 /*
  * When the value of layers drop down is changed
  */
-function onChangeLayer(dropdown)
+function onChangeLayer(dropdown,checkbox)
 {
     var selectedIndex = dropdown.selectedIndex;
     layerIndex  = selectedIndex+1; //+1 is because of google layer
@@ -254,7 +257,20 @@ function onChangeLayer(dropdown)
     currentPolygonId = null;
     currentPolygonName = null;
     polygonsList = null;
+    checkbox.checked = false;
     return true;
+}
+
+/*
+ * User selects or unselects all the polygons from a specific layer
+ */
+function onChangeSelectAll(checkbox,dropdown){
+    var selectedIndex = dropdown.selectedIndex;
+    var lId = layersList[selectedIndex][0];
+    var lName = layersList[selectedIndex][1];
+    //alert(lId+' / '+lName);
+    var selected = checkbox.checked;
+    //alert(selected);
 }
 
 /*
