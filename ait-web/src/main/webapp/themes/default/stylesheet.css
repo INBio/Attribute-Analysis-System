@@ -536,6 +536,17 @@ a.link-celda02:visited {
     color:black;
 }
 
+.geoCommons{
+    height:24px;
+    margin-right:20px;
+}
+
+.geoClear{
+    height:24px;
+	background-image: url(images/clear.png);
+	background-repeat: no-repeat;
+    background-color:transparent;
+}
 /* end tabla opciones e íconos Leila */
 
 /*------------------------------- Footer by Cristian Granados --------------------------------*/

@@ -316,7 +316,7 @@
                 //Add the polygon to the geografical criteria list
                 currentPolygonId = polygonsList[0][0];
                 currentPolygonName = polygonsList[0][1];
-                addLayerParam(currentPolygonId,layerId,currentPolygonName,layerName);
+                addLayerParam(currentPolygonId,layerId,currentPolygonName);
                 //Clean the Loading status
                 document.getElementById('info').innerHTML = "";
             }
@@ -410,15 +410,6 @@
                             </div>
                         </div>
 
-                        <!-- GIS Panel -->
-                        <div id="queryPanel1" class="queryPanel">
-                            <p class="criteria_title">
-                            <fmt:message key="geografical_criteria_title"/></p>
-                            <div id="currentLayer"></div>
-                            <div id="info"></div>
-                            <span id="mapParameters" style="font-size:10px"></span>
-                        </div>
-
                         <!-- Taxonomy Panel -->
                         <div id="queryPanel2" class="queryPanel">
                             <p class="criteria_title">
@@ -450,6 +441,15 @@
                             <div id="treeDiv"></div>
                             <input type="button" class="my_Button" id="addToListButtonIndi" value="Agregar criterio" onclick="addIndicatorParam()" />
                             <span id="treeParameters" style="font-size:10px"></span>
+                        </div>
+
+                        <!-- GIS Panel -->
+                        <div id="queryPanel1" class="queryPanel">
+                            <p class="criteria_title">
+                            <fmt:message key="geografical_criteria_title"/></p>
+                            <div id="currentLayer"></div>
+                            <div id="info"></div>
+                            <span id="mapParameters" style="font-size:10px"></span>
                         </div>
 
                         <!-- Query Button -->

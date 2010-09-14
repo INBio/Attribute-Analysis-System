@@ -35,6 +35,8 @@
                 <prop key="/getTable/**/**">tableController</prop>
             <!-- Exporting to csv file the specimen info -->
                 <prop key="/exportPoints/**/**">exportCsvController</prop>
+            <!-- Select all polygons from a specific layer -->
+                <prop key="/selectAll/**/**">selectAllController</prop>
             </props>
         </property>
     </bean>
@@ -89,6 +91,13 @@
     <bean id="tableController" class="org.inbio.ait.web.ajax.controller.TableController">
       <property name="speciesManager" ref="speciesManager"/>
       <property name="queryManager" ref="queryManager"/>
+    </bean>
+
+    <!--.....................................................................-->
+    <!--................. Select all polygons from a layer ..................-->
+    <!--.....................................................................-->
+    <bean id="selectAllController" class="org.inbio.ait.web.ajax.controller.SelectAllController">
+        <property name="allPolygonsManager" ref="allPolygonsManager"/>
     </bean>
 
 </beans>

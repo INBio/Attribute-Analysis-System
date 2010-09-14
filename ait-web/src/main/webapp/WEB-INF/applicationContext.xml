@@ -164,6 +164,10 @@
         <property name="taxonIndexDAO" ref="taxonIndexDAO"/>
         <property name="taxonInfoIndexDAO" ref="taxonInfoIndexDAO"/>
     </bean>
+    <bean id="allPolygonsManager" class="org.inbio.ait.manager.impl.AllPolygonsManagerImpl">
+        <property name="layerDataAccessDAO" ref="layerDataAccessDAO"/>
+        <property name="layerPropertyHolderDAO" ref="layerPropertyHolderDAO"/>
+    </bean>
 
     <!--.....................................................................-->
     <!--.................... DAO Declarations ...............................-->

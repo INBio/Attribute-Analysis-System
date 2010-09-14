@@ -217,13 +217,16 @@ function parseHTML(html){
 function createDDLayers(){
     var dropdown = "<p style=\"margin:1px\"><a> "+layerText+": </a></p>";
     dropdown += "<div id=\"layerComponents\" style=\"width:260px;\">"+
-                "<select name=ddLayer style=\"width:75%;\" onchange=\"onChangeLayer(this.form.ddLayer,this.form.cbAll);\">";
+                "<select name=ddLayer style=\"width:120px;\" class=\"geoCommons\" "+
+                "onchange=\"onChangeLayer(this.form.ddLayer,this.form.cbAll);\">";
     //Setting drop down options
     for(var i=0;i<layersList.length;i++){
         dropdown+= "<option>"+layersList[i][1]+"</option>";
     }
-    dropdown+= "</select><input type=\"checkbox\" name=\"cbAll\" style=\"width:25%;\""+
-               " onchange=\"onChangeSelectAll(this.form.cbAll,this.form.ddLayer);\"</input>"+addAll+"</div>";
+    dropdown+= "</select>"+addAll+"<input type=\"checkbox\" name=\"cbAll\" style=\"width:20px;\" class=\"geoCommons\""+
+               " onchange=\"onChangeSelectAll(this.form.cbAll,this.form.ddLayer);\"</input>"+
+               "<input type=\"button\" name=\"clearAll\" style=\"width:25px;\" class=\"geoClear\""+
+               " onclick=\"clearAllPolygons(this.form.cbAll);\"</input></>"+"</div>";
     document.getElementById('currentLayer').innerHTML = dropdown;
 }
 
@@ -265,18 +268,32 @@ function onChangeLayer(dropdown,checkbox)
  * User selects or unselects all the polygons from a specific layer
  */
 function onChangeSelectAll(checkbox,dropdown){
+    //Add polygons to the list
     var selectedIndex = dropdown.selectedIndex;
-    var lId = layersList[selectedIndex][0];
-    var lName = layersList[selectedIndex][1];
-    //alert(lId+' / '+lName);
-    var selected = checkbox.checked;
-    //alert(selected);
+    var layer = layersList[selectedIndex][1]; //Layer name
+    var selected = checkbox.checked; //Is layer selected? true or false
+    if(selected == true){
+        //Loading message
+        YAHOO.example.container.wait.show();
+        //Call a method to add all polygons from the selected layer
+        addAllPolygons(layer);
+    }
+}
+
+/**
+ * Deletes all polygons from geographical criteria selected items list
+ */
+function clearAllPolygons(checkbox){
+    //Limpiar la lista
+    document.getElementById('mapParameters').innerHTML = "";
+    //limpiar la selecci[on
+    checkbox.checked = false;
 }
 
 /*
  * Add a new geographic filter
  */
-function addLayerParam(polygon,capa,pname,cname) {
+function addLayerParam(polygon,capa,pname) {
     //Validate null parameters
     if(capa==null||polygon==null){
         alert(selectLayerPolyE);
