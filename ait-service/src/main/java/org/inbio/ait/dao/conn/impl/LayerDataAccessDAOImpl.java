@@ -19,12 +19,15 @@
 package org.inbio.ait.dao.conn.impl;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import org.inbio.ait.dao.conn.LayerDataAccessDAO;
 import org.inbio.ait.model.LayerPropertyHolder;
+import org.inbio.ait.model.Polygon;
 import org.inbio.ait.util.AitDataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 
 /**
  *
@@ -42,7 +45,7 @@ public class LayerDataAccessDAOImpl implements LayerDataAccessDAO{
         List<String> result = new ArrayList<String>();
         result.add("unmapped"); //Default value
         try {
-            //Stting up the jdbcTemplate
+            //Setting up the jdbcTemplate
             this.accessToDB(ph);
             //getTables(String catalog,String schemaPattern,String tableNamePattern,String[] types)
             ResultSet tables = this.jdbcTemplate.getDataSource().getConnection().
@@ -64,7 +67,7 @@ public class LayerDataAccessDAOImpl implements LayerDataAccessDAO{
     public int countAllTables(LayerPropertyHolder ph) {
         int result = 0;
         try {
-            //Stting up the jdbcTemplate
+            //Setting up the jdbcTemplate
             this.accessToDB(ph);
             //getTables(String catalog,String schemaPattern,String tableNamePattern,String[] types)
             ResultSet tables = this.jdbcTemplate.getDataSource().getConnection().
@@ -78,12 +81,48 @@ public class LayerDataAccessDAOImpl implements LayerDataAccessDAO{
         }
     }
 
+    @Override
+    public List<Polygon> getAllPolygonsByLayer(String layer,LayerPropertyHolder ph) {
+        List<Polygon> result = new ArrayList<Polygon>();
+        try {
+            //Setting up the jdbcTemplate
+            this.accessToDB(ph);
+            String q = "Select * from "+layer;
+            result = this.jdbcTemplate.query(q,new polygonsMapper());
+        } catch (Exception e) {
+            //System.out.println(e);
+            return result;
+        }
+        return result;
+    }
+
     //Getting the access to the data base
     private void accessToDB(LayerPropertyHolder ph){
         //Getting the data source connection
         AitDataSource ds = new AitDataSource(ph.getDriverClassName(),
                 ph.getUrl(), ph.getUsername(), ph.getPassword());
         this.jdbcTemplate = new JdbcTemplate(ds);
+    }
+
+    private static class polygonsMapper implements ParameterizedRowMapper<Polygon> {
+
+        @Override
+        public Polygon mapRow(ResultSet rs, int rowNum) throws SQLException {
+            Polygon p = new Polygon();
+            p.setId(rs.getLong("gid"));
+            String rest = " ";
+            for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+                  String cName = rs.getMetaData().getColumnName(i);
+                  if(!(cName.equals("gid")) && !(cName.equals("the_geom"))){
+                      Object data = rs.getObject(cName);
+                      if(data != null){
+                          rest+= data+" ";
+                      }
+                  }
+                }
+            p.setName(rest);
+            return p;
+        }
     }
 
 }

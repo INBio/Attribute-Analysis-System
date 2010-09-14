@@ -20,6 +20,7 @@ package org.inbio.ait.dao.conn;
 
 import java.util.List;
 import org.inbio.ait.model.LayerPropertyHolder;
+import org.inbio.ait.model.Polygon;
 
 /**
  *
@@ -30,5 +31,7 @@ public interface LayerDataAccessDAO {
     public List<String> getLayerTables(LayerPropertyHolder ph);
 
     public int countAllTables(LayerPropertyHolder ph);
+
+    public List<Polygon> getAllPolygonsByLayer(String layer,LayerPropertyHolder ph);
 
 }

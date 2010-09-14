@@ -19,14 +19,16 @@
 package org.inbio.ait.manager;
 
 import java.util.List;
-import org.inbio.ait.model.Specimen;
+import org.inbio.ait.model.LayerPropertyHolder;
+import org.inbio.ait.model.Polygon;
 
 /**
- *
  * @author esmata
  */
-public interface PointsManager {
+public interface AllPolygonsManager {
 
-    public List<Specimen> specimensByCriteria(String[] layerList, String[] taxonList, String[] indicList);
+    public List<Polygon> getAllPolygons(String layer);
+
+    public LayerPropertyHolder getLayerPropertyHolder();
 
 }

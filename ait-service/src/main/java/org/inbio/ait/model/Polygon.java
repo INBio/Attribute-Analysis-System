@@ -16,17 +16,48 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.inbio.ait.manager;
-
-import java.util.List;
-import org.inbio.ait.model.Specimen;
+package org.inbio.ait.model;
 
 /**
  *
  * @author esmata
  */
-public interface PointsManager {
+public class Polygon {
 
-    public List<Specimen> specimensByCriteria(String[] layerList, String[] taxonList, String[] indicList);
+    //Atributes
+    private Long id;
+    private String name;
+
+    //Constructor
+    public Polygon(){
+    }
+
+    /**
+     * @return the id
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
 
 }
