@@ -30,6 +30,8 @@ var treeLeafE;
 var loadingImage; //To store the image URL
 var treeBase;
 var addAll;
+var invalidChar;
+var limitLayers;
 
 /*
  * Initialazing the indicators tree
@@ -144,9 +146,20 @@ function initMap(divId){
 /*
  * Event to indicate the geographical parameters into the search criteria
  */
-function addMapListener(e) {
-    document.getElementById('info').innerHTML = loadingText;
-    polygonsList = null;
+function addMapListener(e) {    
+    polygonsList = null; //Clear polygon list
+    var layerIdAux,layerIndexAux;
+    //If the user is selecting limit polygons
+    if(isLimitPolygon){
+        document.getElementById('infoLimit').innerHTML = loadingText;
+        layerIdAux = layerLimitId;
+        layerIndexAux = layerLimitIndex;
+    }
+    else{ //If the user is selecting normal polygons
+        document.getElementById('info').innerHTML = loadingText;
+        layerIdAux = layerId;
+        layerIndexAux = layerIndex;
+    }
     var params = {
         REQUEST: "GetFeatureInfo",
         EXCEPTIONS: "application/vnd.ogc.se_xml",
@@ -154,10 +167,10 @@ function addMapListener(e) {
         X: e.xy.x,
         Y: e.xy.y,
         INFO_FORMAT: 'text/html',
-        QUERY_LAYERS: map.layers[layerIndex].params.LAYERS,
+        QUERY_LAYERS: map.layers[layerIndexAux].params.LAYERS,
         FEATURE_COUNT: 50,
         Styles: '',
-        Layers: layerId,
+        Layers: layerIdAux,
         srs: 'EPSG:900913',
         WIDTH: map.size.w,
         HEIGHT: map.size.h,
@@ -215,19 +228,33 @@ function parseHTML(html){
  * Create a drop down to specified the current layer
  */
 function createDDLayers(){
-    var dropdown = "<p style=\"margin:1px\"><a> "+layerText+": </a></p>";
-    dropdown += "<div id=\"layerComponents\" style=\"width:260px;\">"+
-                "<select name=ddLayer style=\"width:120px;\" class=\"geoCommons\" "+
-                "onchange=\"onChangeLayer(this.form.ddLayer,this.form.cbAll);\">";
-    //Setting drop down options
-    for(var i=0;i<layersList.length;i++){
-        dropdown+= "<option>"+layersList[i][1]+"</option>";
+    var geoCriteria = "<p style=\"margin:1px\"><a> "+layerText+": </a>"+
+                      "<a href=\"javascript:\" onclick=\"shiftGeo()\" class=\"shift\">Cambiar</a></p>";
+    var geoLimit = "<p style=\"margin:1px\"><a> "+limitLayers+": </a></p>";
+    //Geographical layers
+    geoCriteria += "<div id=\"layerComponents\" style=\"width:260px;\">"+
+                   "<select name=ddLayer style=\"width:120px;\" class=\"geoCommons\" "+
+                   "onchange=\"onChangeLayer(this.form.ddLayer,this.form.cbAll);\">";
+    for(var i=0;i<layersList.length;i++){ //Setting drop down options
+        geoCriteria+= "<option>"+layersList[i][1]+"</option>";
     }
-    dropdown+= "</select>"+addAll+"<input type=\"checkbox\" name=\"cbAll\" style=\"width:20px;\" class=\"geoCommons\""+
-               " onchange=\"onChangeSelectAll(this.form.cbAll,this.form.ddLayer);\"</input>"+
-               "<input type=\"button\" name=\"clearAll\" style=\"width:25px;\" class=\"geoClear\""+
-               " onclick=\"clearAllPolygons(this.form.cbAll);\"</input></>"+"</div>";
-    document.getElementById('currentLayer').innerHTML = dropdown;
+    geoCriteria+= "</select>"+addAll+"<input type=\"checkbox\" name=\"cbAll\" style=\"width:20px;\" class=\"geoCommons\""+
+                  " onchange=\"onChangeSelectAll(this.form.cbAll,this.form.ddLayer);\"</input>"+
+                  "<input type=\"button\" name=\"clearAll\" style=\"width:25px;\" class=\"geoClear\""+
+                  " onclick=\"clearAllPolygons(this.form.cbAll);\"</input></>"+"</div>";
+    document.getElementById('currentLayer').innerHTML = geoCriteria;
+    //Limit layer
+    geoLimit += "<div id=\"layerLimitComponents\" style=\"width:260px;display:none;\">"+
+                   "<select name=ddLimitLayer style=\"width:120px;\" class=\"geoCommons\" "+
+                   "onchange=\"onChangeLimitLayer(this.form.ddLimitLayer,this.form.cbLimitAll);\">";
+    for(var j=0;j<layersList.length;j++){ //Setting drop down options
+        geoLimit+= "<option>"+layersList[j][1]+"</option>";
+    }
+    geoLimit+= "</select>"+addAll+"<input type=\"checkbox\" name=\"cbLimitAll\" style=\"width:20px;\" class=\"geoCommons\""+
+                  " onchange=\"onChangeSelectAllLimits(this.form.cbLimitAll,this.form.ddLimitLayer);\"</input>"+
+                  "<input type=\"button\" name=\"clearAll\" style=\"width:25px;\" class=\"geoClear\""+
+                  " onclick=\"clearAllLimitPolygons(this.form.cbLimitAll);\"</input></>"+"</div>";
+    document.getElementById('currentLimitLayer').innerHTML = geoLimit;
 }
 
 /*
@@ -265,6 +292,40 @@ function onChangeLayer(dropdown,checkbox)
 }
 
 /*
+ * When the value of limit layers drop down is changed
+ */
+function onChangeLimitLayer(dropdown,checkbox)
+{
+    var selectedIndex = dropdown.selectedIndex;
+    layerLimitIndex  = selectedIndex+1; //+1 is because of google layer
+    layerLimitId = layersList[selectedIndex][0];
+    layerLimitName = layersList[selectedIndex][1];
+    document.getElementById('infoLimit').innerHTML = "";
+    currentPolygonLimitId = null;
+    currentPolygonLimitName = null;
+    polygonsList = null;
+    checkbox.checked = false;
+    return true;
+}
+
+/*
+ * Shift between geographical criteria and geographical LIMIT criteria
+ * based on isLimitPolygon boolean var
+ */
+function shiftGeo(){
+    if(isLimitPolygon){ //if geografical LIMIT criteria is on
+        document.getElementById("layerComponents").style.display = "";
+        document.getElementById("layerLimitComponents").style.display = "none";
+        isLimitPolygon = false;
+    }
+    else{ //if geografical LIMIT criteria is off
+        document.getElementById("layerComponents").style.display = "none";
+        document.getElementById("layerLimitComponents").style.display = "";
+        isLimitPolygon = true;
+    }
+}
+
+/*
  * User selects or unselects all the polygons from a specific layer
  */
 function onChangeSelectAll(checkbox,dropdown){
@@ -280,12 +341,39 @@ function onChangeSelectAll(checkbox,dropdown){
     }
 }
 
+/*
+ * User selects or unselects all the polygons from a specific layer
+ */
+function onChangeSelectAllLimits(checkbox,dropdown){
+    //Add polygons to the list
+    var selectedIndex = dropdown.selectedIndex;
+    var layer = layersList[selectedIndex][1]; //Layer name
+    var selected = checkbox.checked; //Is layer selected? true or false
+    if(selected == true){
+        //Loading message
+        YAHOO.example.container.wait.show();
+        //Call a method to add all polygons from the selected layer
+        addAllLimitPolygons(layer);
+    }
+}
+
+
 /**
  * Deletes all polygons from geographical criteria selected items list
  */
 function clearAllPolygons(checkbox){
     //Limpiar la lista
     document.getElementById('mapParameters').innerHTML = "";
+    //limpiar la selecci[on
+    checkbox.checked = false;
+}
+
+/**
+ * Deletes all polygons from geographical criteria selected items list
+ */
+function clearAllLimitPolygons(checkbox){
+    //Limpiar la lista
+    document.getElementById('mapLimitParameters').innerHTML = "";
     //limpiar la selecci[on
     checkbox.checked = false;
 }
@@ -336,6 +424,51 @@ function removeLayerParamElement(divNum) {
 }
 
 /*
+ * Add a new geographic limit polygon
+ */
+function addLayerLimitParam(polygon,capa,pname) {
+    //Validate null parameters
+    if(capa==null||polygon==null){
+        alert(selectLayerPolyE);
+        return;
+    }
+    //Get just the plain data of layer and polygon
+    var newCapa = capa.split(":")[1];
+    var newPolygon = polygon.split(".")[1];
+    //Validate repeated layer/polygon
+    var aux_exist = document.getElementById(newCapa+"~"+newPolygon+"~L"); //+"~L" means limit
+    if(aux_exist!=null){
+        alert(alreadyAddedE);
+        document.getElementById('infoLimit').innerHTML = "";
+        currentPolygonLimitId = null;
+        currentPolygonLimitName = null;
+        polygonsList = null;
+        return;
+    }
+    //Add the parameter to the list
+    var layerslist = document.getElementById('mapLimitParameters');
+    var newdiv = document.createElement('div');
+    newdiv.setAttribute("id",newCapa+"~"+newPolygon+"~L");
+    newdiv.innerHTML =
+        "<a class=\"criteria\" href=\"javascript:\" onclick=\"removeLayerLimitParamElement(\'"+newCapa+"~"+newPolygon+"~L"+"\')\">"+pname+"</a>";
+    layerslist.appendChild(newdiv);
+    //Restore the mechanism for layer selection
+    document.getElementById('infoLimit').innerHTML = "";
+    currentPolygonLimitId = null;
+    currentPolygonLimitName = null;
+    polygonsList = null;
+}
+
+/*
+ * Deletes an element by it's id (Limit polygons)
+ */
+function removeLayerLimitParamElement(divNum) {
+  var d = document.getElementById('mapLimitParameters');
+  var olddiv = document.getElementById(divNum);
+  d.removeChild(olddiv);
+}
+
+/*
  * Add a new taxonomic filter
  */
 function addTaxonParam() {
@@ -344,6 +477,11 @@ function addTaxonParam() {
     var text = txTaxon.value;
     var txRange = document.getElementById('taxonTypeId');
 	var rangeId = parseInt(txRange.value)+1;
+    //Validate special characters (' or ")
+    if((text.match("\"") == "\"") || (text.match("'") == "'") || (text.match("<") == "<") || (text.match("/") == "/")){
+        alert(invalidChar);
+        return;
+    }
     //Validate null values
     if(text==null||text==''){
         alert(specifyTaxonE);
@@ -426,3 +564,4 @@ function removeTreeParamElement(divNum) {
     layerName = layersList[1][1];
     polygonsList = null;
 }*/
+ 

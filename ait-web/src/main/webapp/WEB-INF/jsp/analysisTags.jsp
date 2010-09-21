@@ -28,3 +28,4 @@
 <script src="${pageContext.request.contextPath}/javascript/detailedTable.js" type="text/javascript" language="javascript"></script>
 <script src="${pageContext.request.contextPath}/javascript/exportSpecimenPoints.js" type="text/javascript" language="javascript"></script>
 <script src="${pageContext.request.contextPath}/javascript/addAllPolygons.js" type="text/javascript" language="javascript"></script>
+<script src="${pageContext.request.contextPath}/javascript/addAllLimitPolygons.js" type="text/javascript" language="javascript"></script>

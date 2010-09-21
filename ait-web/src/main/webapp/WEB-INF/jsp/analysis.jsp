@@ -40,15 +40,15 @@
             //Available poligons [[id,name],...] Depends on layersList
             var polygonsList;
             //Current selected polygon
-            var currentPolygonId; //(FID)
-            var currentPolygonName; //(Name)
+            var currentPolygonId,currentPolygonLimitId; //(FID)
+            var currentPolygonName,currentPolygonLimitName; //(Name)
             //Available layers [[id,name],...]
             var layersList = new Array();
             //Current selected layer
-            var layerId; //(FID)
-            var layerName; //(Name)
+            var layerId,layerLimitId; //(FID)
+            var layerName,layerLimitName; //(Name)
             //Current layer index (numeric)
-            var layerIndex;
+            var layerIndex,layerLimitIndex;
             //Indicators tree
             var tree;
             var currentIconMode;
@@ -69,6 +69,8 @@
             //Array that contains the id's of each <div> from multiple div results
             var divIds = new Array(),buttonIds = new Array(),
             ids = new Array(),types = new Array();
+            //Var to know if the selected polygon is a limit polygon (% functionality)
+            var isLimitPolygon = false;
 
             //Internacionalization of the report texts
             var searchResults,geographical,taxonomic,indicators,speciesMatches,
@@ -99,9 +101,12 @@
                 //Sets the layerId,layerIndex and layerName values
                 if(layersList.length > 0){
                     layerId = layersList[0][0];
+                    layerLimitId = layersList[0][0];
                     layerName = layersList[0][1];
+                    layerLimitName = layersList[0][1];
                 }
                 layerIndex = 1; //Used as id on map layer list, not in layersList
+                layerLimitIndex = 1;
                 
                 //initialize map functionality
                 initMap('map');
@@ -235,12 +240,23 @@
                     alert(selectOnePolygonE);
                     return;
                 }
-                //Add the polygon to the geografical criteria list
-                currentPolygonId = polygonsList[0][0];
-                currentPolygonName = polygonsList[0][1];
-                addLayerParam(currentPolygonId,layerId,currentPolygonName);
-                //Clean the Loading status
-                document.getElementById('info').innerHTML = "";
+                // If adding limit polygons
+                if(isLimitPolygon){
+                    //Add the polygon to the geografical criteria list
+                    currentPolygonLimitId = polygonsList[0][0];
+                    currentPolygonLimitName = polygonsList[0][1];
+                    addLayerLimitParam(currentPolygonLimitId,layerLimitId,currentPolygonLimitName);
+                    //Clean the Loading status
+                    document.getElementById('infoLimit').innerHTML = "";
+                }
+                else{ //If adding normal polygons
+                    //Add the polygon to the geografical criteria list
+                    currentPolygonId = polygonsList[0][0];
+                    currentPolygonName = polygonsList[0][1];
+                    addLayerParam(currentPolygonId,layerId,currentPolygonName);
+                    //Clean the Loading status
+                    document.getElementById('info').innerHTML = "";
+                }
             }
 
             //Go to anchor
@@ -292,6 +308,8 @@
                 institution = "<fmt:message key="institution"/>";
                 treeBase = "<fmt:message key="indicators_criteria_title"/>";
                 addAll = "<fmt:message key="add_all"/>";
+                invalidChar = "<fmt:message key="invalid_char"/>";
+                limitLayers = "<fmt:message key="limit_layers"/>";
             };
         </script>
 
@@ -356,10 +374,16 @@
                             <!-- GIS Panel -->
                             <div id="queryPanel1" class="queryPanel">
                                 <p class="criteria_title">
-                                    <fmt:message key="geografical_criteria_title"/></p>
+                                    <fmt:message key="geografical_criteria_title"/>
+                                </p>
+                                <!-- Selected polygons -->
                                 <div id="currentLayer"></div>
                                 <div id="info"></div>
                                 <span id="mapParameters" style="font-size:10px"></span>
+                                <!-- Selected limit polygons -->
+                                <div id="currentLimitLayer" style="border-top:dashed 2px gray;padding-top:6px;margin-top:6px"></div>
+                                <div id="infoLimit"></div>
+                                <span id="mapLimitParameters" style="font-size:10px"></span>
                             </div>
 
                             <!-- Query Button -->

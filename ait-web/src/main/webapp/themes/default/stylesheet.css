@@ -58,7 +58,7 @@ body {
 #map {
     position: relative;
     width: 100%;
-    height: 395px;
+    height: 414px;
     border: 1px solid silver;
     border-style:solid;
    -moz-border-radius: 5px;
@@ -478,8 +478,27 @@ td.contact_yes{
    -webkit-border-radius: 5px;
 }
 
-/* tabla opciones e íconos Leila */
 
+.geoCommons{
+    height:24px;
+    margin-right:20px;
+}
+
+.geoClear{
+    height:24px;
+	background-image: url(images/clear.png);
+	background-repeat: no-repeat;
+    background-color:transparent;
+}
+
+.shift{
+    margin-left:2px;
+    padding:2px 0 4px 24px;
+	background-image: url(images/shift.png);
+	background-repeat: no-repeat;
+}
+
+/* tabla opciones e íconos Leila */
 .tabla-opciones {
 	margin: 1px;
 	vertical-align: middle;
@@ -534,18 +553,6 @@ a.link-celda02:visited {
     overflow:auto;
     padding:5px;
     color:black;
-}
-
-.geoCommons{
-    height:24px;
-    margin-right:20px;
-}
-
-.geoClear{
-    height:24px;
-	background-image: url(images/clear.png);
-	background-repeat: no-repeat;
-    background-color:transparent;
 }
 /* end tabla opciones e íconos Leila */
 
