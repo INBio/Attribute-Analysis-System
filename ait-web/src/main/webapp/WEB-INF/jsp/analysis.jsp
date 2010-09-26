@@ -77,7 +77,7 @@
             seeOnMap,seeDetail,searchCriteria,speciesList,newSearch,criteriaText,
             speciesText,hideMap,hideDetail,catalog,latitude,longitute,scientificName,
             layerMatches,indicatorMatches,resultDetails,criteriaWithoutResults,occurrences,
-            resultsGeo,resultsIndi,institution;
+            resultsGeo,resultsIndi,institution,percentText1,percentText2,percentText2S;
 
             //Pink tile avoidance
             OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
@@ -129,12 +129,14 @@
                 replaceVectorLayer();
                 //Getting the parameter lists
                 var layerslist = document.getElementById('mapParameters');
+                var layersLimitlist = document.getElementById('mapLimitParameters');
                 var taxonlist = document.getElementById('taxParameters');
                 var treelist = document.getElementById('treeParameters');
                 //Arrays with parameters data (to show on the results table)
-                var layersShow = new Array(),taxonsShow = new Array(),treeShow = new Array();
+                var layersShow = new Array(),taxonsShow = new Array(),treeShow = new Array(),
+                layersLimitShow = new Array();
                 //String with parameters data (to store in hidden field)
-                var layersAsText = '',indiAsText = '';
+                var layersAsText = '',indiAsText = '',layersLimitAsText = '';
                 //Validate that exist at least one search criteria
                 if(layerslist.childNodes.length==0&&taxonlist.childNodes.length==0&&treelist.childNodes.length==0){
                     alert(selectCriteriaE);
@@ -142,7 +144,7 @@
                     YAHOO.example.container.wait.hide();
                     return;
                 }
-                //Loop over geographical criteria
+                //Loop over geographical criteria (Selected polygons)
                 var selectedLayers = "";
                 for (var i =0; i <layerslist.childNodes.length; i++){
                     selectedLayers += layerslist.childNodes[i].id+"|";
@@ -153,6 +155,19 @@
                     else{
                         layersShow.push(layerslist.childNodes[i].textContent);
                         layersAsText += layerslist.childNodes[i].textContent+'|';
+                    }
+                }
+                //Loop over geographical criteria (Limit polygons)
+                var selectedLimit = "";
+                for (var i =0; i <layersLimitlist.childNodes.length; i++){
+                    selectedLimit += layersLimitlist.childNodes[i].id+"|";
+                    if(document.all){
+                        layersLimitShow.push(layersLimitlist.childNodes[i].innerText);
+                        layersLimitAsText += layersLimitlist.childNodes[i].innerText+'|';
+                    }
+                    else{
+                        layersLimitShow.push(layersLimitlist.childNodes[i].textContent);
+                        layersLimitAsText += layersLimitlist.childNodes[i].textContent+'|';
                     }
                 }
                 //Loop over taxonomic criteria
@@ -182,7 +197,7 @@
                 }
                 //Setting to hidden fields the query values.
                 setHiddenValues(selectedLayers,selectedTaxa,selectedIndicators,
-                layersAsText,indiAsText);
+                layersAsText,indiAsText,layersLimitAsText,selectedLimit);
 
                 //Clean entry criteria lists
                 cleanAfterRequest();
@@ -191,8 +206,8 @@
                 map.events.unregister('click', map, addMapListener);
                 
                 //Call the function that returns the result (xml) asincronically
-                executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators,
-                layersShow,taxonsShow,treeShow);
+                executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators,selectedLimit,
+                layersShow,taxonsShow,treeShow,layersLimitShow);
             };
 
             function simpleCleannig(){
@@ -216,12 +231,16 @@
              * Setting to hidden fields the query values. Those info are going to
              * be used to show specimens point into the map (not in use yet)
              */
-            function setHiddenValues(selectedLayers,selectedTaxa,selectedIndicators,layersAsText,indiAsText){
-                document.getElementById('hiddenLayers').value = selectedLayers;
+            function setHiddenValues(selectedLayers,selectedTaxa,selectedIndicators,layersAsText,indiAsText,
+            layersLimitAsText,selectedLimit){
+                document.getElementById('hiddenLayers').value = selectedLayers;                
                 document.getElementById('hiddenTaxa').value = selectedTaxa;
                 document.getElementById('hiddenIndicators').value = selectedIndicators;
+                document.getElementById('hiddenLimitLayers').value = selectedLimit;
+
                 document.getElementById('hidLayersToShow').value = layersAsText;
                 document.getElementById('hiddenIndiToShow').value = indiAsText;
+                document.getElementById('hiddenLimitToShow').value = layersLimitAsText;
             }
 
             /*
@@ -310,6 +329,9 @@
                 addAll = "<fmt:message key="add_all"/>";
                 invalidChar = "<fmt:message key="invalid_char"/>";
                 limitLayers = "<fmt:message key="limit_layers"/>";
+                percentText1 = "<fmt:message key="percentage_one"/>";
+                percentText2 = "<fmt:message key="percentage_two"/>";
+                percentText2S = "<fmt:message key="percentage_simple"/>";
             };
         </script>
 
@@ -411,10 +433,13 @@
 
                     <!-- To show specimens points into the map -->
                     <input type="hidden" id="hiddenLayers" value="">
+                    <input type="hidden" id="hiddenLimitLayers" value="">
                     <input type="hidden" id="hiddenTaxa" value="">
                     <input type="hidden" id="hiddenIndicators" value="">
+
                     <input type="hidden" id="hidLayersToShow" value="">
                     <input type="hidden" id="hiddenIndiToShow" value="">
+                    <input type="hidden" id="hiddenLimitToShow" value="">
                 </div>
 
                 <!-- Footer -->

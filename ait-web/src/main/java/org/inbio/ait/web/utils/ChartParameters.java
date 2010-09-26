@@ -36,6 +36,9 @@ public class ChartParameters {
     private String isgeo; //Bool that indicates if there is geo parameters
     //Chart title
     private String title;
+    //To store limit polygons info
+    private String ldata;
+    private String ldatatoshow;
 
     /**
      * @return the xdata
@@ -189,5 +192,33 @@ public class ChartParameters {
      */
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    /**
+     * @return the ldata
+     */
+    public String getLdata() {
+        return ldata;
+    }
+
+    /**
+     * @param ldata the ldata to set
+     */
+    public void setLdata(String ldata) {
+        this.ldata = ldata;
+    }
+
+    /**
+     * @return the ldatatoshow
+     */
+    public String getLdatatoshow() {
+        return ldatatoshow;
+    }
+
+    /**
+     * @param ldatatoshow the ldatatoshow to set
+     */
+    public void setLdatatoshow(String ldatatoshow) {
+        this.ldatatoshow = ldatatoshow;
     }
 }

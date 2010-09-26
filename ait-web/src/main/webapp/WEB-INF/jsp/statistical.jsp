@@ -110,7 +110,7 @@
             }
 
             //Passing parameters to controller class throw path property
-            function doSubmit(mapParams,taxonParams,treeParams){
+            function doSubmit(mapParams,taxonParams,treeParams,mapLimitParams){
 
                 //Getting the form reference
                 var form = document.getElementById('parameters');
@@ -123,16 +123,18 @@
                 var xDataToShow = document.getElementById('xDataToShow');
                 var yDataToShow = document.getElementById('yDataToShow');
                 var isGeo = document.getElementById('isGeo');
-                var ChartTitle = document.getElementById('ChartTitle');
+                var chartTitleP = document.getElementById('chartTitleP');
+                var lData = document.getElementById('lData');
+                var lDataToShow = document.getElementById('lDataToShow');
                 var aux = prompt(chartTitle,'');
-                ChartTitle.value = aux;
+                chartTitleP.value = aux;
 
                 //Variables to store the search criteria
-                var selectedLayers = "",layersToShow = "";
+                var selectedLayers = "",layersToShow = "",selectedLimitLayers = "",layersLimitToShow = "";
                 var selectedTaxa = "", taxaToShow = "";
                 var selectedIndicators = "", indiToShow = "";
 
-                //Loop over geographical criteria
+                //Loop over geographical criteria (selected polygons)
                 for (var i =0; i <mapParams.childNodes.length; i++){
                     selectedLayers += mapParams.childNodes[i].id+"|";
                     if(document.all){
@@ -140,6 +142,16 @@
                     }
                     else{
                         layersToShow += mapParams.childNodes[i].textContent+"|";
+                    }
+                }
+                //Loop over geographical criteria (Limit polygons)
+                for (var i =0; i <mapLimitParams.childNodes.length; i++){
+                    selectedLimitLayers += mapLimitParams.childNodes[i].id+"|";
+                    if(document.all){
+                        layersLimitToShow += mapLimitParams.childNodes[i].innerText+"|";
+                    }
+                    else{
+                        layersLimitToShow += mapLimitParams.childNodes[i].textContent+"|";
                     }
                 }
                 //Loop over taxonomic criteria
@@ -202,7 +214,11 @@
                         yDataToShow.value = indiToShow;
                         yTitle.value = "<fmt:message key="species_number_chart"/>";
                         break;
-                }                
+                }
+
+                //Setting limit polygons data
+                lData.value = selectedLimitLayers;
+                lDataToShow.value = layersLimitToShow;
 
                 //Submiting the form
                 form.submit();
@@ -214,10 +230,6 @@
             function validateParameters(){
                 //Show loading image
                 YAHOO.example.container.wait.show();
-                //Getting the parameter lists
-                var mapParams = document.getElementById('mapParameters');
-                var taxonParams = document.getElementById('taxParameters');
-                var treeParams = document.getElementById('treeParameters');
 
                 //Getting the chart type,x axis, y axis selected values
                 var indexType = document.getElementById('chartType').selectedIndex;
@@ -245,8 +257,14 @@
                     return;
                 }
 
+                //Getting the parameter lists
+                var mapParams = document.getElementById('mapParameters');
+                var mapLimitParams = document.getElementById('mapLimitParameters');
+                var taxonParams = document.getElementById('taxParameters');
+                var treeParams = document.getElementById('treeParameters');
+
                 //If everything is ok
-                doSubmit(mapParams,taxonParams,treeParams);
+                doSubmit(mapParams,taxonParams,treeParams,mapLimitParams);
             }
 
             /*
@@ -385,7 +403,10 @@
             <form:hidden path="xdatatoshow" id="xDataToShow"/>
             <form:hidden path="ydatatoshow" id="yDataToShow"/>
             <form:hidden path="isgeo" id="isGeo"/>
-            <form:hidden path="title" id="ChartTitle"/>
+            <form:hidden path="title" id="chartTitleP"/>
+            <!-- To store limit polygons -->
+            <form:hidden path="ldata" id="lData"/>
+            <form:hidden path="ldatatoshow" id="lDataToShow"/>
 
             <div id="contenido">
                 <!-- Header -->

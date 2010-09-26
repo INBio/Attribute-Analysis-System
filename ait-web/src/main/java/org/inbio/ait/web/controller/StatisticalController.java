@@ -164,6 +164,8 @@ public class StatisticalController extends SimpleFormController {
         mv.addObject("xdatatoshow",parameters.getXdatatoshow());
         mv.addObject("ydatatoshow",parameters.getYdatatoshow());
         mv.addObject("isgeo",parameters.getIsgeo());
+        mv.addObject("ldata",parameters.getLdata());
+        mv.addObject("ldatatoshow",parameters.getLdatatoshow());
         return mv;
     }
 

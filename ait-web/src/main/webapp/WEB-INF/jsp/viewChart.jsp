@@ -26,6 +26,10 @@
             var criteriaText = "<fmt:message key="criteria"/>";
             var speciesText = "<fmt:message key="species"/>";
             var speciesList = "<fmt:message key="species_list"/>";
+            var speciesMatches = "<fmt:message key="species_matches"/>";
+            var percentText1 = "<fmt:message key="percentage_one"/>";
+            var percentText2 = "<fmt:message key="percentage_two"/>";
+            var percentText2S = "<fmt:message key="percentage_simple"/>";
 
             /*
              * Initialize a panel to show the loading image
@@ -65,6 +69,8 @@
                 var ydatatoshow = "${ydatatoshow}";
                 var isgeo = "${isgeo}";
                 var layers = "",taxa="",indi="",lToShow="";
+                var ldata = "${ldata}";
+                var ldatatoshow = "${ldatatoshow}";
 
                 if(xaxis=='1') // taxanomic
                     taxa = xdata;
@@ -86,7 +92,7 @@
                     lToShow = ydatatoshow;
                 
                 //Showing the details
-                viewSimpleDetail(layers,taxa,indi,lToShow);
+                viewSimpleDetail(layers,taxa,indi,lToShow,ldata,ldatatoshow);
             }
 
         </script>

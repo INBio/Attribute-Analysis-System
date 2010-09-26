@@ -19,11 +19,12 @@
 /**
  * Execute final query from especific parameters
  */
-function executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators,
-                           layersShow,taxonsShow,treeShow)  {
+function executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators,selectedLimit,
+                           layersShow,taxonsShow,treeShow,layersLimitShow)  {
 
     //Prepare URL for XHR request:
-    var sUrl = "/ait-web/ajax/finalQuery?layers="+selectedLayers+"&taxons="+selectedTaxa+"&indi="+selectedIndicators;
+    var sUrl = "/ait-web/ajax/finalQuery?layers="+selectedLayers+"&taxons="+selectedTaxa+"&indi="+
+        selectedIndicators+"&limit="+selectedLimit;
 
     //Prepare callback object
     var callback = {
@@ -39,6 +40,8 @@ function executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators,
                 case '0': // 0 means one or this two categories (geographical and taxonomical)
                     //Get total count data
                     var total = xmlDoc.getElementsByTagName("total")[0].childNodes[0].nodeValue;
+                    //Get total percentage data
+                    var totalPer = xmlDoc.getElementsByTagName("totalp")[0].childNodes[0].nodeValue;
                     //Show general result and the search criteria
                     var criteria = "";
                     if(layersShow.length>0){
@@ -64,9 +67,18 @@ function executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators,
                             criteria += "<a class=\"criteria\">"+treeShow[k]+"</a>";
                         }
                         criteria += "<br>";
-                    }                    
+                    }
+                    var lAsText = '';
+                    for(var lt = 0;lt<layersLimitShow.length;lt++){
+                        if(lt==layersLimitShow.length-1){ //last element
+                            lAsText+=layersLimitShow[lt]+'.';
+                        }
+                        else{
+                            lAsText+=layersLimitShow[lt]+', ';
+                        }
+                    }
                     //Show the results
-                    var resultHTML = createReportHeader(criteria, total);
+                    var resultHTML = createReportHeader(criteria, total,totalPer,lAsText);
                     document.getElementById('resultsPanel').innerHTML = resultHTML;
                     //Close de "Loading image"
                     YAHOO.example.container.wait.hide();
@@ -75,8 +87,10 @@ function executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators,
                     break;
 
                 case '1': // 1 means 3 different criteria categories
-                    //Get total count data
+                    //Get total count data (Absulute)
                     var total1 = xmlDoc.getElementsByTagName("total")[0].childNodes[0].nodeValue;
+                    //Get total percentage data
+                    var totalPer1 = xmlDoc.getElementsByTagName("totalp")[0].childNodes[0].nodeValue;
                     //Show general result and the search criteria
                     var criteria1 = "";
                     if(layersShow.length>0){
@@ -103,12 +117,21 @@ function executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators,
                         }
                         criteria1 += "<br>";
                     }
-                    //Variables that are going to contain the results
+                    //Variables that contains the results by polygon and by indicator
                     var byPolygon = xmlDoc.getElementsByTagName("bypolygon");
                     var byIndicator = xmlDoc.getElementsByTagName("byindicator");
+                    var limitAsText = '';
+                    for(var l = 0;l<layersLimitShow.length;l++){
+                        if(l==layersLimitShow.length-1){ //last element
+                            limitAsText+=layersLimitShow[l]+'.';
+                        }
+                        else{
+                            limitAsText+=layersLimitShow[l]+', ';
+                        }
+                    }
                     //Show the results
                     var result = createAdvancedHeader(byPolygon,byIndicator,layersShow,
-                    treeShow,total1,criteria1);
+                    treeShow,total1,criteria1,totalPer1,limitAsText);
                     document.getElementById('resultsPanel').innerHTML = result;
                     //Close de "Loading image"
                     YAHOO.example.container.wait.hide();
@@ -133,17 +156,20 @@ function executeFinalQuery(selectedLayers,selectedTaxa,selectedIndicators,
  * This function creates the general report, so, return an html string
  * to show on results panel
  */
-function createAdvancedHeader(byPolygon,byIndicator,layersShow,treeShow,total1,criteria1){
+function createAdvancedHeader(byPolygon,byIndicator,layersShow,treeShow,total1,criteria1,totalPer1,limitAsText){
     var result = ''; //Criteria with results
     var others = '<p> '+criteriaWithoutResults+'</p>'; //Criteria without results
-    //Adding general result (with all search criteria)
-    divIds.push('t0');
-    buttonIds.push('showOnMapt0');
-    ids.push(0);
-    types.push('t');
+    //To manage later the current selected div and action buttons
+    manageResultDivs('t0','showOnMapt0',0,'t');
+    //Creating general result with all search criteria
     result += '<div id="t0" class="detailed_results">'+
     '<h3>'+searchCriteria+'</h3><div id="rHeader">'+criteria1+"</div>"+
-    '<h3>'+total1+' '+speciesMatches+'</h3>';
+    '<h3>'+total1+' '+speciesMatches+'.</h3>';
+    //If is required to show pwrcentages
+    if(limitAsText != ''){
+        result += '<h4>'+percentText1+' '+totalPer1+'% '+percentText2+' '+limitAsText+'</h4>';
+    }
+    //If there are results, show to user the options to view details and maps
     if(total1 > 0){
         result += '<input type="button" class="simple_button" id="showOnMapt0" value="'+seeOnMap+'" onclick="showPoints(0,\'t\')" />'+
         '<div id="t0map"></div></div>';
@@ -152,15 +178,26 @@ function createAdvancedHeader(byPolygon,byIndicator,layersShow,treeShow,total1,c
     result += '<p class="resultsTitle"> '+resultsGeo+'</p>';
     for(var i = 0;i<byPolygon.length;i++){
         //To manage the divs ids
-        divIds.push('p'+i);
-        buttonIds.push('showOnMapp'+i);
-        ids.push(i);
-        types.push('p');
-        //If the detail has results
-        if(byPolygon[i].childNodes[0].nodeValue != '0'){
+        manageResultDivs('p'+i,'showOnMapp'+i,i,'p');
+        //Get the node values
+        var node = byPolygon[i];
+        var absValue = node.getElementsByTagName("abs")[0].childNodes[0].nodeValue;
+        var perValue = node.getElementsByTagName("per")[0].childNodes[0].nodeValue;
+        //If the detail has results and needs to show percentages
+        if(absValue != '0' && limitAsText != ''){
             result += '<div id="p'+i+'" class="detailed_results">'+
             '<h3>'+layersShow[i]+'</h3>'+
-            '<p>'+byPolygon[i].childNodes[0].nodeValue+' '+layerMatches+'</p>'+
+            '<p>'+absValue+' '+layerMatches+'. '+percentText1+' '+perValue+'% '+percentText2+' '+limitAsText+'</p>'+
+            '<input type="button" class="simple_button" id="viewDetailp'+i+'" value="'+seeDetail+'" onclick="showDetails('+i+',\'p\',\''+arrayToString(treeShow)+'\')" />'+
+            '<input type="button" class="simple_button" id="showOnMapp'+i+'" value="'+seeOnMap+'" onclick="showPoints('+i+',\'p\')" />'+
+            '<input type="button" class="simple_button" id="exportPoint'+i+'" value="'+occurrences+'" onclick="exportPoints('+i+',\'p\')" />'+
+            '<div id="p'+i+'detail"></div><div id="p'+i+'map"></div></div>';
+        }
+        //If the detail has results and doesn't need to show percentages
+        if(absValue != '0' && limitAsText == ''){
+            result += '<div id="p'+i+'" class="detailed_results">'+
+            '<h3>'+layersShow[i]+'</h3>'+
+            '<p>'+absValue+' '+layerMatches+'</p>'+
             '<input type="button" class="simple_button" id="viewDetailp'+i+'" value="'+seeDetail+'" onclick="showDetails('+i+',\'p\',\''+arrayToString(treeShow)+'\')" />'+
             '<input type="button" class="simple_button" id="showOnMapp'+i+'" value="'+seeOnMap+'" onclick="showPoints('+i+',\'p\')" />'+
             '<input type="button" class="simple_button" id="exportPoint'+i+'" value="'+occurrences+'" onclick="exportPoints('+i+',\'p\')" />'+
@@ -176,15 +213,26 @@ function createAdvancedHeader(byPolygon,byIndicator,layersShow,treeShow,total1,c
     result += '<p class="resultsTitle"> '+resultsIndi+'</p>';
     for(var j = 0;j<byIndicator.length;j++){
         //To manage the divs ids
-        divIds.push('i'+j);
-        buttonIds.push('showOnMapi'+j);
-        ids.push(j);
-        types.push('i');
-        //If the detail has results
-        if(byIndicator[j].childNodes[0].nodeValue != '0'){
+        manageResultDivs('i'+j,'showOnMapi'+j,j,'i')
+        //Get the node values
+        var nodeI = byIndicator[j];
+        var absValueI = nodeI.getElementsByTagName("abs")[0].childNodes[0].nodeValue;
+        var perValueI = nodeI.getElementsByTagName("per")[0].childNodes[0].nodeValue;
+        //If the detail has results and needs to show percentages
+        if(absValueI != '0' && limitAsText != ''){
             result += '<div id="i'+j+'" class="detailed_results">'+
             '<h3>'+treeShow[j]+'</h3>'+
-            '<p>'+byIndicator[j].childNodes[0].nodeValue+' '+indicatorMatches+'</p>'+
+            '<p>'+absValueI+' '+layerMatches+'. '+percentText1+' '+perValueI+'% '+percentText2+' '+limitAsText+'</p>'+
+            '<input type="button" class="simple_button" id="viewDetaili'+j+'" value="'+seeDetail+'" onclick="showDetails('+j+',\'i\',\''+arrayToString(layersShow)+'\')" />'+
+            '<input type="button" class="simple_button" id="showOnMapi'+j+'" value="'+seeOnMap+'" onclick="showPoints('+j+',\'i\')" />'+
+            '<input type="button" class="simple_button" id="exportPointi'+j+'" value="'+occurrences+'" onclick="exportPoints('+j+',\'i\')" />'+
+            '<div id="i'+j+'detail"></div><div id="i'+j+'map"></div></div>';
+        }
+        //If the detail has results and doesn't need to show percentages
+        if(absValueI != '0' && limitAsText == ''){
+            result += '<div id="i'+j+'" class="detailed_results">'+
+            '<h3>'+treeShow[j]+'</h3>'+
+            '<p>'+absValueI+' '+indicatorMatches+'</p>'+
             '<input type="button" class="simple_button" id="viewDetaili'+j+'" value="'+seeDetail+'" onclick="showDetails('+j+',\'i\',\''+arrayToString(layersShow)+'\')" />'+
             '<input type="button" class="simple_button" id="showOnMapi'+j+'" value="'+seeOnMap+'" onclick="showPoints('+j+',\'i\')" />'+
             '<input type="button" class="simple_button" id="exportPointi'+j+'" value="'+occurrences+'" onclick="exportPoints('+j+',\'i\')" />'+
@@ -200,20 +248,48 @@ function createAdvancedHeader(byPolygon,byIndicator,layersShow,treeShow,total1,c
     return result;
 }
 
+function manageResultDivs(divId,butonId,index,type){
+    divIds.push(divId);
+    buttonIds.push(butonId);
+    ids.push(index);
+    types.push(type);
+}
+
 /**
  * This function creates the general report, so, return an html string
  * based on the search criteria and the general count of matches
  */
-function createReportHeader(criteria,total){
-    var result = '<div id="reportHeader">'+
-    '<h3>'+searchCriteria+'</h3><div id="rHeader">'+criteria+"</div>"+
-    '<h3>'+total+' '+speciesMatches+'</h3>'+
-    '<input type="button" class="simple_button" id="viewDetail0" value="'+seeDetail+'" onclick="showDetailsFromHiddenData(\'viewDetail0\')" />'+
-    '<input type="button" class="simple_button" id="showOnMap0" value="'+seeOnMap+'" onclick="showPointFromHiddenData(\'showOnMap0\')" />'+
-    '<input type="button" class="simple_button" id="exportPoint0" value="'+occurrences+'" onclick="exportPointsFromHiddenData()" />'+
-    '<input type="submit" class="new_search_button" id="newSearch" value="'+newSearch+'" /></div>'+
-    '<div id="s0map"></div>';
-    return result;
+function createReportHeader(criteria,total,totalPer,limitAsText){
+    var result = '<div id="reportHeader">';
+    if(total != '0' && limitAsText != ''){
+        result += '<h3>'+searchCriteria+'</h3><div id="rHeader">'+criteria+"</div>"+
+        '<h3>'+total+' '+speciesMatches+'</h3>'+
+        '<h4>'+percentText1+' '+totalPer+'% '+percentText2S+' '+limitAsText+'</h4>'+
+        '<input type="button" class="simple_button" id="viewDetail0" value="'+seeDetail+'" onclick="showDetailsFromHiddenData(\'viewDetail0\')" />'+
+        '<input type="button" class="simple_button" id="showOnMap0" value="'+seeOnMap+'" onclick="showPointFromHiddenData(\'showOnMap0\')" />'+
+        '<input type="button" class="simple_button" id="exportPoint0" value="'+occurrences+'" onclick="exportPointsFromHiddenData()" />'+
+        '<input type="submit" class="new_search_button" id="newSearch" value="'+newSearch+'" /></div>'+
+        '<div id="s0map"></div>';
+        return result;
+    }
+    //If the detail has results and doesn't need to show percentages
+    if(total != '0' && limitAsText == ''){
+        result += '<h3>'+searchCriteria+'</h3><div id="rHeader">'+criteria+"</div>"+
+        '<h3>'+total+' '+speciesMatches+'</h3>'+
+        '<input type="button" class="simple_button" id="viewDetail0" value="'+seeDetail+'" onclick="showDetailsFromHiddenData(\'viewDetail0\')" />'+
+        '<input type="button" class="simple_button" id="showOnMap0" value="'+seeOnMap+'" onclick="showPointFromHiddenData(\'showOnMap0\')" />'+
+        '<input type="button" class="simple_button" id="exportPoint0" value="'+occurrences+'" onclick="exportPointsFromHiddenData()" />'+
+        '<input type="submit" class="new_search_button" id="newSearch" value="'+newSearch+'" /></div>'+
+        '<div id="s0map"></div>';
+        return result;
+    }
+    else{ //If the detail doesn't have results
+        result += '<h3>'+searchCriteria+'</h3><div id="rHeader">'+criteria+"</div>"+
+        '<h3>'+total+' '+speciesMatches+'</h3>'+
+        '<input type="submit" class="new_search_button" id="newSearch" value="'+newSearch+'" /></div>'+
+        '<div id="s0map"></div>';
+        return result;
+    }
 }
 
 /**
@@ -293,8 +369,10 @@ function showDetailsFromHiddenData(inputId){
     var taxa = document.getElementById('hiddenTaxa').value;
     var indi = document.getElementById('hiddenIndicators').value;
     var lToShow = document.getElementById('hidLayersToShow').value;
+    var limit = document.getElementById('hiddenLimitLayers').value;
+    var limitToShow = document.getElementById('hiddenLimitToShow').value;
     //Showing the details
-    viewSimpleDetail(layers,taxa,indi,lToShow);
+    viewSimpleDetail(layers,taxa,indi,lToShow,limit,limitToShow);
     //Change button title
     changeInputText(inputId,hideDetail);
     //Change button acction

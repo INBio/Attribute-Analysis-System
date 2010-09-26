@@ -19,10 +19,11 @@
 /**
  * Execute final query from especific parameters
  */
-function viewSimpleDetail(selectedLayers,selectedTaxa,selectedIndicators,lToShow)  {
+function viewSimpleDetail(selectedLayers,selectedTaxa,selectedIndicators,lToShow,selectedLimit,limitToshow)  {
 
     //Prepare URL for XHR request:
-    var sUrl = "/ait-web/ajax/getSpecies?layers="+selectedLayers+"&taxons="+selectedTaxa+"&indi="+selectedIndicators;
+    var sUrl = "/ait-web/ajax/getSpecies?layers="+selectedLayers+
+        "&taxons="+selectedTaxa+"&indi="+selectedIndicators+"&limit="+selectedLimit;
 
     //Prepare callback object
     var callback = {
@@ -37,30 +38,58 @@ function viewSimpleDetail(selectedLayers,selectedTaxa,selectedIndicators,lToShow
             var polygons = xmlDoc.getElementsByTagName("polygon");
             //Layers to show
             var layersToShow = lToShow.split("|");
-
-            if(polygons.length==0){ //If there are not polygons
+            //Layers limit to show
+            var lLimitToShow = limitToshow.split("|");
+            //String use to show the percentage values
+            var lAsText = '';
+            for(var lt = 0;lt<lLimitToShow.length;lt++){
+                if(lLimitToShow[lt] != ''){
+                    if(lt==lLimitToShow.length-1){ //last element
+                        lAsText+=lLimitToShow[lt]+'.';
+                    }
+                    else{
+                        lAsText+=lLimitToShow[lt]+', ';
+                    }
+                }
+            }
+            //If there are not polygons
+            if(polygons.length==0){ 
                 var dwcList = '';
                 for(var i = 0;i<species.length;i++){
                     var node = species[i];
-                    dwcList += '- '+node.childNodes[0].nodeValue+'<br>';
+                    dwcList += '<a class="criteria">'+node.childNodes[0].nodeValue+'</a><br>';
                 }
                 // Show the result
                 document.getElementById('detailedResults').innerHTML = '<p style="text-align:center;"></p>'+dwcList+'<br><br>';
                 document.getElementById("detailedResults").className = "detailedResults";
             }
-            else{
-                //Show the result in terms of polygons
+            //Show the result in terms of polygons
+            else{                
                 var resultHTML = '<table class="contacts" cellspacing="0">'+
                     '<tr><th class="contactDept" >'+criteriaText+'</th>'+
                     '<th  class="contactDept" >'+speciesText+'</th></tr>';
                 for(var l = 0;l<polygons.length;l++){
                     var spList = polygons[l].getElementsByTagName("sp");
-                    var aux = '';
+                    var absValue = polygons[l].getElementsByTagName("abs")[0].childNodes[0].nodeValue;
+                    var perValue = polygons[l].getElementsByTagName("per")[0].childNodes[0].nodeValue;
+                    var auxList = ''; //Contains the list of scientific names by polygon
                     for(var j = 0;j<spList.length;j++){
-                        aux += '- '+spList[j].childNodes[0].nodeValue+'<br>';
+                        auxList += '<a class="criteria">'+spList[j].childNodes[0].nodeValue+'</a><br>';
                     }
-                    resultHTML += '<tr><td class="contact" width="60%">'+layersToShow[l]+'</td>'+
-                    '<td class="contact" width="40%">'+aux+'</td></tr>';
+                    //If show percentages is needed
+                    var criteriaValue = '<h2 style="margin:0;text-align:center">'+layersToShow[l]+'</h2>';
+                    if(lAsText != '' && limitToshow[0] != ''){
+                        criteriaValue += '<h3 style="margin:0;text-align:justify">'+absValue+' '+speciesMatches+'</h3>'+
+                        '<h4 style="margin:0;text-align:justify">'+percentText1+' '+perValue+'% '+percentText2S+' '+lAsText+'</h4>';
+                        resultHTML += '<tr><td class="contact" width="60%">'+criteriaValue+'</td>'+
+                        '<td class="contact" width="40%">'+auxList+'</td></tr>';
+                    }
+                    //Not percentages to show
+                    else{
+                        criteriaValue += '<h3 style="margin:0;text-align:justify">'+absValue+' '+speciesMatches+'</h3>';
+                        resultHTML += '<tr><td class="contact" width="60%">'+criteriaValue+'</td>'+
+                        '<td class="contact" width="40%">'+auxList+'</td></tr>';
+                    }
                 }
                 resultHTML += '</table>';
                 // Show the result

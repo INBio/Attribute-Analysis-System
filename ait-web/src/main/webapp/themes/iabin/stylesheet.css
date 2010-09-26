@@ -110,6 +110,14 @@ body {
     padding: 0px;
 }
 
+#resultsPanel h4{
+    margin:0;
+    text-align:justify;
+    padding: 0px;
+    font-size:12px;
+    font-weight:normal;
+}
+
 /* The content of each .jsp It has the header,content and footer*/
 #contenido {
     text-align:justify;

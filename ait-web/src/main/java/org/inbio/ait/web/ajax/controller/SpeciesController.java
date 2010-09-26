@@ -25,6 +25,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.inbio.ait.manager.QueryManager;
 import org.inbio.ait.manager.SpeciesManager;
+import org.inbio.ait.web.utils.Node;
+import org.inbio.ait.web.utils.TaxonInfoIndexColums;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 
@@ -42,21 +44,37 @@ public class SpeciesController implements Controller{
 		String paramLayer = request.getParameter("layers");
         String paramTaxon = request.getParameter("taxons");
         String paramIndi = request.getParameter("indi");
+        String limitPolygons = request.getParameter("limit");
 		String errorMsj = "Error con los parámetros: "+
-                paramLayer+" "+paramTaxon+" "+paramIndi;
+                paramLayer+" "+paramTaxon+" "+paramIndi+" "+limitPolygons;
 
 		try {
             //Arrays that contains the parameters data
             String[] layerArray = paramLayer.split("\\|");
             String[] taxonArray = paramTaxon.split("\\|");
             String[] indiArray = paramIndi.split("\\|");
+            String[] limitArray = limitPolygons.split("\\|");
 
             if(layerArray!=null && !layerArray[0].equals("")){ //If there is geographical criteria
-                List<List<String>> matchesByPolygon = new ArrayList<List<String>>();
-                //Get matches by polygon
+                //Total of matches in the limit polygons
+                Long totalLimitMatches = queryManager.countByCriteria
+                        (limitArray, taxonArray, indiArray,TaxonInfoIndexColums.SPECIES.getName());
+
+                //Total matches by polygon
+                List<Node> matchesByPolygon = new ArrayList<Node>();
                 for(int i=0;i<layerArray.length;i++){
                     String[] thePolygon = {layerArray[i]};
-                    List<String> aux = speciesManager.speciesByCriteria(thePolygon, taxonArray, indiArray);
+                    Long countAbs = queryManager.countByCriteria
+                        (thePolygon, taxonArray, indiArray,TaxonInfoIndexColums.SPECIES.getName());
+                    List<String> spList = speciesManager.speciesByCriteria(thePolygon, taxonArray, indiArray);
+                    Long percentage = 0L;
+                    if(totalLimitMatches>0){
+                        percentage = (countAbs*100)/totalLimitMatches;
+                    }
+                    Node aux = new Node(); //Absulute count,percentage
+                    aux.setValue1(countAbs);
+                    aux.setValue2(percentage);
+                    aux.setValue3(spList);
                     matchesByPolygon.add(aux);
                 }
                 return writeReponse(request,response,null,matchesByPolygon);
@@ -84,7 +102,7 @@ public class SpeciesController implements Controller{
      */
 	private ModelAndView writeReponse(HttpServletRequest request,
 			HttpServletResponse response,List<String> species,
-            List<List<String>> matchesByPolygon) throws Exception {
+            List<Node> matchesByPolygon) throws Exception {
 
 		response.setCharacterEncoding("ISO-8859-1");
 		response.setContentType("text/xml");
@@ -103,9 +121,12 @@ public class SpeciesController implements Controller{
             result.append("<?xml version='1.0' encoding='ISO-8859-1'?><response>");
             result.append("<speciesList></speciesList>");
             result.append("<polygons>");
-            for(List<String> listByPolygon : matchesByPolygon){
+            for(Node node : matchesByPolygon){
+
                 result.append("<polygon>");
-                for(String sp : listByPolygon){
+                result.append("<abs>"+node.getValue1()+"</abs>");
+                result.append("<per>"+node.getValue2()+"</per>");
+                for(String sp : node.getValue3()){
                     result.append("<sp>"+sp+"</sp>");
                 }
                 result.append("</polygon>");
