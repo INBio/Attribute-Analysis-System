@@ -20,7 +20,9 @@
         <link rel="stylesheet" type="text/css"
         href="<c:out value="${pageContext.request.contextPath}"/>/<spring:theme code='tree'/>"/>
         <link rel="stylesheet" type="text/css"
-        href="<c:out value="${pageContext.request.contextPath}"/>/<spring:theme code='container'/>"/>        
+        href="<c:out value="${pageContext.request.contextPath}"/>/<spring:theme code='container'/>"/>
+        <link rel="stylesheet" type="text/css"
+        href="<c:out value="${pageContext.request.contextPath}"/>/<spring:theme code='menu'/>"/>
         
         <title><fmt:message key="title"/></title> 
 
@@ -332,6 +334,7 @@
                 percentText1 = "<fmt:message key="percentage_one"/>";
                 percentText2 = "<fmt:message key="percentage_two"/>";
                 percentText2S = "<fmt:message key="percentage_simple"/>";
+                changeSelector= "<fmt:message key="change_selector"/>";
             };
         </script>
 

@@ -194,7 +194,7 @@ function createAdvancedHeader(byPolygon,byIndicator,layersShow,treeShow,total1,c
             '<div id="p'+i+'detail"></div><div id="p'+i+'map"></div></div>';
         }
         //If the detail has results and doesn't need to show percentages
-        if(absValue != '0' && limitAsText == ''){
+        else if(absValue != '0' && limitAsText == ''){
             result += '<div id="p'+i+'" class="detailed_results">'+
             '<h3>'+layersShow[i]+'</h3>'+
             '<p>'+absValue+' '+layerMatches+'</p>'+
@@ -229,7 +229,7 @@ function createAdvancedHeader(byPolygon,byIndicator,layersShow,treeShow,total1,c
             '<div id="i'+j+'detail"></div><div id="i'+j+'map"></div></div>';
         }
         //If the detail has results and doesn't need to show percentages
-        if(absValueI != '0' && limitAsText == ''){
+        else if(absValueI != '0' && limitAsText == ''){
             result += '<div id="i'+j+'" class="detailed_results">'+
             '<h3>'+treeShow[j]+'</h3>'+
             '<p>'+absValueI+' '+indicatorMatches+'</p>'+

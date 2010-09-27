@@ -54,7 +54,7 @@ function loadNodeData(node, fnLoadComplete)  {
                  var id =  basicElement.getElementsByTagName("id")[0].childNodes[0].nodeValue; //id
                  var name =  basicElement.getElementsByTagName("name")[0].childNodes[0].nodeValue; //name
 
-                 var tempNode = new YAHOO.widget.TextNode(name, node, false);
+                 var tempNode = new YAHOO.widget.MenuNode(name, node, false);
                  tempNode.data = id;
             }
 

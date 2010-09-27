@@ -32,6 +32,7 @@ var treeBase;
 var addAll;
 var invalidChar;
 var limitLayers;
+var changeSelector;
 
 /*
  * Initialazing the indicators tree
@@ -44,7 +45,7 @@ function initIndicators(){
     //Getting a reference to the root element
     rootNode = tree.getRoot();
     //Add the root element
-    var tempNode = new YAHOO.widget.TextNode(treeBase, rootNode, false);
+    var tempNode = new YAHOO.widget.MenuNode(treeBase, rootNode, false);
     tempNode.data = 0;
     //Render the tree
     tree.draw();
@@ -229,7 +230,7 @@ function parseHTML(html){
  */
 function createDDLayers(){
     var geoCriteria = "<p style=\"margin:1px\"><a> "+layerText+": </a>"+
-                      "<a href=\"javascript:\" onclick=\"shiftGeo()\" class=\"shift\">Cambiar</a></p>";
+                      "<a href=\"javascript:\" onclick=\"shiftGeo()\" class=\"shift\">"+changeSelector+"</a></p>";
     var geoLimit = "<p style=\"margin:1px\"><a> "+limitLayers+": </a></p>";
     //Geographical layers
     geoCriteria += "<div id=\"layerComponents\" style=\"width:260px;\">"+

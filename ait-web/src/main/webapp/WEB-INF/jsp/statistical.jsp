@@ -21,6 +21,8 @@
               href="<c:out value="${pageContext.request.contextPath}"/>/<spring:theme code='tree'/>"/>
         <link rel="stylesheet" type="text/css"
               href="<c:out value="${pageContext.request.contextPath}"/>/<spring:theme code='container'/>"/>
+        <link rel="stylesheet" type="text/css"
+        href="<c:out value="${pageContext.request.contextPath}"/>/<spring:theme code='menu'/>"/>
 
         <title><fmt:message key="title"/></title>
 
@@ -376,6 +378,7 @@
                 addAll = "<fmt:message key="add_all"/>";
                 invalidChar = "<fmt:message key="invalid_char"/>";
                 limitLayers = "<fmt:message key="limit_layers"/>";
+                changeSelector= "<fmt:message key="change_selector"/>";
             };
         </script>
 
