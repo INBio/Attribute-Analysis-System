@@ -67,7 +67,7 @@ public class StatisticalController extends SimpleFormController {
         //Pass data to the view
         Map referenceData = new HashMap();
         referenceData.put(filtersKey,filtersMap.getFilters());
-        referenceData.put("geoserver", "IABIN_Indicadores:");
+        referenceData.put("geoserver", "attributes:");
         referenceData.put("layers", layers);
         return referenceData;
     }

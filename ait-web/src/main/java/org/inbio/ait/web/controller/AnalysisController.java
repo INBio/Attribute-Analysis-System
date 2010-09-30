@@ -68,7 +68,7 @@ public class AnalysisController implements Controller{
         logger.info("Initialazing geoespatial analysis page");
 
         myModel.put(filtersKey,filtersMap.getFilters());
-        myModel.put("geoserver", "IABIN_Indicadores:");
+        myModel.put("geoserver", "attributes:");
         myModel.put("layers", layers);
 
         return new ModelAndView("analysis", "model", myModel);
