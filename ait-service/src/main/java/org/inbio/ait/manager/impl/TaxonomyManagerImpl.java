@@ -40,7 +40,28 @@ public class TaxonomyManagerImpl implements TaxonomyManager {
      */
     @Override
 	public List<AutocompleteNode> getElementsByTaxonomicalRange(String value,int range) {
-        if(range == TaxonomicalRange.KINGDOM.getId()){
+        //View TaxonomicalRange enum
+        switch (range) {
+            case 1: //Kingdom
+                return specimenDAO.getElementsByRange(value,range,"kingdom");
+            case 2: //phylum
+                return specimenDAO.getElementsByRange(value,range,"phylum");
+            case 3: //class
+                return specimenDAO.getElementsByRange(value,range,"class");
+            case 4: //orders
+                return specimenDAO.getElementsByRange(value,range,"orders");
+            case 5: //family
+                return specimenDAO.getElementsByRange(value,range,"family");
+            case 6: //genus
+                return specimenDAO.getElementsByRange(value,range,"genus");
+            case 7: //specificepithet
+                return specimenDAO.getElementsByRange(value,range,"specificepithet");
+            case 8: //scientificname
+                return specimenDAO.getElementsByRange(value,range,"scientificname");
+           default:
+               return null;
+        }
+        /*if(range == TaxonomicalRange.KINGDOM.getId()){
             return specimenDAO.getElementsByRange(value,range,"kingdom");
         }
         else if(range == TaxonomicalRange.PHYLUM.getId()){
@@ -64,7 +85,7 @@ public class TaxonomyManagerImpl implements TaxonomyManager {
         else if(range == TaxonomicalRange.SCIENTIFICNAME.getId()){
             return specimenDAO.getElementsByRange(value,range,"scientificname");
         }
-        else return null;
+        else return null;*/
 	}
 
     /**

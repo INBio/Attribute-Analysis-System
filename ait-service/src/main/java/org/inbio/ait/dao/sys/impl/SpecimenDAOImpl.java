@@ -81,7 +81,7 @@ public class SpecimenDAOImpl extends SimpleJdbcDaoSupport implements SpecimenDAO
         List<AutocompleteNode> nodes = new ArrayList<AutocompleteNode>();
         try {
             String query = "Select DISTINCT " + atributeName + " from ait.darwin_core as s " +
-                    "where s." + atributeName + " like '%" + partialName + "%' limit 10 offset 0;";
+                    "where s." + atributeName + " like '%" + partialName + "%' limit 2 offset 0;";
 
             nodes = getSimpleJdbcTemplate().query(query,
                     new AutocompleteMapper(range, atributeName));
