@@ -19,6 +19,7 @@
 package org.inbio.ait.dao.sys;
 
 import java.util.List;
+import org.inbio.ait.model.AutocompleteNode;
 import org.inbio.ait.model.TaxonIndex;
 
 /**
@@ -38,5 +39,7 @@ public interface TaxonIndexDAO {
     public boolean deleteAllTaxonIndex() throws Exception;
 
     public List<String> getFormatedKingdoms();
+
+    public List<AutocompleteNode> getElementsByRange(String partialName, int range);
 
 }

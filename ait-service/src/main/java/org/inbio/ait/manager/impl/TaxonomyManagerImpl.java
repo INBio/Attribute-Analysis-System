@@ -19,10 +19,9 @@
 package org.inbio.ait.manager.impl;
 
 import java.util.List;
-import org.inbio.ait.dao.sys.SpecimenDAO;
+import org.inbio.ait.dao.sys.TaxonIndexDAO;
 import org.inbio.ait.manager.TaxonomyManager;
 import org.inbio.ait.model.AutocompleteNode;
-import org.inbio.ait.model.TaxonomicalRange;
 
 /**
  * @author esmata
@@ -30,7 +29,7 @@ import org.inbio.ait.model.TaxonomicalRange;
 public class TaxonomyManagerImpl implements TaxonomyManager {
 
 	// DAO's injection
-    private SpecimenDAO specimenDAO;
+    private TaxonIndexDAO taxonIndexDAO;
 
     /**
      * To get the elements for autocomplete by taxonomical range
@@ -43,21 +42,21 @@ public class TaxonomyManagerImpl implements TaxonomyManager {
         //View TaxonomicalRange enum
         switch (range) {
             case 1: //Kingdom
-                return specimenDAO.getElementsByRange(value,range,"kingdom");
+                return taxonIndexDAO.getElementsByRange(value,range);
             case 2: //phylum
-                return specimenDAO.getElementsByRange(value,range,"phylum");
+                return taxonIndexDAO.getElementsByRange(value,range);
             case 3: //class
-                return specimenDAO.getElementsByRange(value,range,"class");
+                return taxonIndexDAO.getElementsByRange(value,range);
             case 4: //orders
-                return specimenDAO.getElementsByRange(value,range,"orders");
+                return taxonIndexDAO.getElementsByRange(value,range);
             case 5: //family
-                return specimenDAO.getElementsByRange(value,range,"family");
+                return taxonIndexDAO.getElementsByRange(value,range);
             case 6: //genus
-                return specimenDAO.getElementsByRange(value,range,"genus");
+                return taxonIndexDAO.getElementsByRange(value,range);
             case 7: //specificepithet
-                return specimenDAO.getElementsByRange(value,range,"specificepithet");
+                return taxonIndexDAO.getElementsByRange(value,range);
             case 8: //scientificname
-                return specimenDAO.getElementsByRange(value,range,"scientificname");
+                return taxonIndexDAO.getElementsByRange(value,range);
            default:
                return null;
         }
@@ -89,18 +88,17 @@ public class TaxonomyManagerImpl implements TaxonomyManager {
 	}
 
     /**
-     * @return the specimenDAO
+     * @return the taxonIndexDAO
      */
-    public // DAO's
-    SpecimenDAO getSpecimenDAO() {
-        return specimenDAO;
+    public TaxonIndexDAO getTaxonIndexDAO() {
+        return taxonIndexDAO;
     }
 
     /**
-     * @param specimenDAO the specimenDAO to set
+     * @param taxonIndexDAO the taxonIndexDAO to set
      */
-    public void setSpecimenDAO(SpecimenDAO specimenDAO) {
-        this.specimenDAO = specimenDAO;
+    public void setTaxonIndexDAO(TaxonIndexDAO taxonIndexDAO) {
+        this.taxonIndexDAO = taxonIndexDAO;
     }
 
 }

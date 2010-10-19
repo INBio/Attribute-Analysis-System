@@ -77,6 +77,7 @@ public class SpecimenDAOImpl extends SimpleJdbcDaoSupport implements SpecimenDAO
      * @return
      */
     @Override
+    @Deprecated
     public List<AutocompleteNode> getElementsByRange(String partialName, int range, String atributeName) {
         List<AutocompleteNode> nodes = new ArrayList<AutocompleteNode>();
         try {

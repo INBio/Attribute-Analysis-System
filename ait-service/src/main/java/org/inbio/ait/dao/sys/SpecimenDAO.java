@@ -41,7 +41,7 @@ public interface SpecimenDAO {
      * @param range
      * @param atributeName
      * @return
-     */
+     */    
     public List<AutocompleteNode> getElementsByRange
             (String partialName,int range,String atributeName);
 

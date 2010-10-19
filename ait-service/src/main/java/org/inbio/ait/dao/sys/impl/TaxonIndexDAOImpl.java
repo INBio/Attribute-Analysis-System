@@ -23,6 +23,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import org.inbio.ait.dao.sys.TaxonIndexDAO;
+import org.inbio.ait.model.AutocompleteNode;
 import org.inbio.ait.model.TaxonIndex;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
@@ -134,6 +135,46 @@ public class TaxonIndexDAOImpl extends SimpleJdbcDaoSupport implements TaxonInde
             return result;
         }
         return result;
+    }
+
+    /**
+     * Return all disctint elements for classes,phylums,kingdoms ...
+     * @param partialName
+     * @param range
+     * @return
+     */
+    @Override
+    public List<AutocompleteNode> getElementsByRange(String partialName, int range) {
+        List<AutocompleteNode> nodes = new ArrayList<AutocompleteNode>();
+        try {
+            String query = "Select DISTINCT taxon_name from ait.taxon_index " +
+                    "where taxon_name like '%" + partialName + "%' and taxon_range = "+range+" limit 3;";
+
+            nodes = getSimpleJdbcTemplate().query(query,
+                    new AutocompleteMapper(range));
+        } catch (Exception e) {
+            return nodes;
+        }
+        return nodes;
+    }
+
+    private static class AutocompleteMapper implements ParameterizedRowMapper<AutocompleteNode> {
+
+        //To determine witch range is been used
+        private int range;
+
+        //Constructor
+        public AutocompleteMapper(int r){
+            this.range = r;
+        }
+
+        public AutocompleteNode mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+            AutocompleteNode acn = new AutocompleteNode();
+            acn.setItemName(rs.getString("taxon_name"));
+            acn.setItemId(rs.getString("taxon_name"));
+            return acn;
+        }
     }
 
     private static class tIndexMapper implements ParameterizedRowMapper<TaxonIndex> {
