@@ -7,8 +7,8 @@
 */
 
 html {
-        height:100%
-    }
+    height:100%
+}
 
 body {
     height: 100%;
@@ -16,7 +16,7 @@ body {
     margin:0;
     padding:0;
     font-size:0.8em;
-    }
+}
 #command {margin:0}
 
 /* Banner title */
@@ -24,23 +24,23 @@ body {
 	/*position:absolute;*/
 	font-family:helvetica, arial, sans-serif;
 	text-align:right;
-	font-size: 14px;
+	font-size: 18px;
 	margin:0;
 	width:100%;
-	padding: 130px 0 0 0px;
+	padding: 138px 0 0 0px;
 	color:white;
 }
 
 /* Banner style */
 #banner {
-	height: 126px;
-	background-image: url(images/banner-new.png);
+	height: 134px;
+	background-image: url(images/banner-ait.jpg);
 	background-repeat: no-repeat;
 }
 
 #banner-rep {
-	height:126px;
-	background-color: #4E562D;
+	height:134px;
+	background-color: #443615;
 	background-position: 0;
 }
 
@@ -238,18 +238,6 @@ body {
    color:white;
    cursor:pointer;
    padding:4px 10px 3px 10px;
-   margin:2px;
-   -moz-border-radius: 8px;
-   -webkit-border-radius: 8px;
-}
-
-.help_Button{
-   background: url(images/help.png);
-   background-repeat:no-repeat;
-   width:28px;
-   background-color:#F6F8FB;
-   cursor:pointer;
-   padding:1px;
    margin:2px;
    -moz-border-radius: 8px;
    -webkit-border-radius: 8px;
@@ -473,6 +461,14 @@ td.contact_yes{
     text-align:center;
     color:#21374F;
     font-size:15px;
+}
+
+.link_help {
+    background-repeat:no-repeat;
+    background-image: url(images/help.png);
+    width: 24px;
+    height: 24px;
+    float: right;
 }
 
 /* Separador de resultados */

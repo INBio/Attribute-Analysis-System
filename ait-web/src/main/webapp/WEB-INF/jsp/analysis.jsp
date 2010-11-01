@@ -118,6 +118,8 @@
                 initIndicators();
                 //Init the loading javascript                
                 initLoadingPanel();
+                //Init the help panel
+                initHelpPanel();
             };
             
             /*
@@ -360,13 +362,17 @@
 
                 <div id="content">
                     <h2><fmt:message key="analysis_title"/></h2>
+                    <div id="help-box" ></div>
+                    
                     <div id="entryCriteria"> <!-- Entry criteria div -->
                         <div id="querysPanel">
 
                             <!-- Taxonomy Panel -->
                             <div id="queryPanel2" class="queryPanel">
                                 <p class="criteria_title">
-                                    <fmt:message key="taxonomical_criteria_title"/></p>
+                                    <fmt:message key="taxonomical_criteria_title"/>
+                                    <a class="link_help" onclick="showPanel('<fmt:message key="help_tax_title" />','<fmt:message key="help_tax_desc" />')"></a>
+                                </p>
                                 <p style="margin:2px"><a> <fmt:message key="taxonomy_level"/>: </a></p>
                                 <select name="taxonType" id="taxonTypeId" class="componentSize" tabindex="12" onchange="javascript:changeTaxonInput();" onKeyUp="javascript:changeTaxonInput();">
                                     <c:forEach items="${model.taxonFilters}" var="taxonFilter">
@@ -390,16 +396,19 @@
                             <!-- Indicator Panel -->
                             <div id="queryPanel3" class="queryPanel">
                                 <p class="criteria_title">
-                                    <fmt:message key="indicators_criteria_title"/></p>
+                                    <fmt:message key="indicators_criteria_title"/>
+                                    <a class="link_help" onclick="showPanel('<fmt:message key="help_indi_title" />','<fmt:message key="help_indi_desc" />')"></a>
+                                </p>
                                 <div id="treeDiv"></div>
                                 <input type="button" class="my_Button" id="addToListButtonIndi" value="<fmt:message key="add_criteria"/>" onclick="addIndicatorParam()" />
                                  <span id="treeParameters" style="font-size:10px"></span>
-                            </div>
+                            </div>                        
 
                             <!-- GIS Panel -->
                             <div id="queryPanel1" class="queryPanel">
                                 <p class="criteria_title">
                                     <fmt:message key="geografical_criteria_title"/>
+                                    <a class="link_help" onclick="showPanel('<fmt:message key="help_geo_title" />','<fmt:message key="help_geo_desc" />')"></a>
                                 </p>
                                 <!-- Selected polygons -->
                                 <div id="currentLayer"></div>

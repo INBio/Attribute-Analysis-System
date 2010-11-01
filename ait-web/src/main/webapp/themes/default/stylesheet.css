@@ -242,18 +242,6 @@ body {
    -webkit-border-radius: 8px;
 }
 
-.help_Button{
-   background: url(images/help.png);
-   background-repeat:no-repeat;
-   width:28px;
-   background-color:#F6F8FB;
-   cursor:pointer;
-   padding:1px;
-   margin:2px;
-   -moz-border-radius: 8px;
-   -webkit-border-radius: 8px;
-}
-
 .new_search_button{
    width:120px;
    height:24px;
@@ -472,6 +460,14 @@ td.contact_yes{
     text-align:center;
     color:#21374F;
     font-size:15px;
+}
+
+.link_help {
+    background-repeat:no-repeat;
+    background-image: url(images/help.png);
+    width: 24px;
+    height: 24px;
+    float: right;
 }
 
 /* Separador de resultados */

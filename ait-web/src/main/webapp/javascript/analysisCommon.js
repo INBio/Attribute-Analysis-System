@@ -102,6 +102,32 @@ function initLoadingPanel(){
 }
 
 /*
+ * Initialize a panel to show the descriptions
+ */
+function initHelpPanel(){
+    if (!YAHOO.example.help) {
+        YAHOO.example.help =
+        new YAHOO.widget.Panel("help",
+        {
+            width:"500px",
+            fixedcenter:true,
+            close:true,
+            draggable:true,
+            zindex:999,
+            modal:false,
+            visible:false
+        });
+    }
+}
+//Show description panel
+function showPanel(title,description){
+    YAHOO.example.help.setHeader(title);
+    YAHOO.example.help.setBody("<p align='justify'>"+description+"</p>");
+    YAHOO.example.help.render(document.getElementById('help-box'));
+    YAHOO.example.help.show();
+}
+
+/*
  * Initialazing the gis functionality
  */
 function initMap(divId){
