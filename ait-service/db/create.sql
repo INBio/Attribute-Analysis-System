@@ -586,3 +586,24 @@ INSERT INTO ait.country_iso_3166 VALUES (39, 'SR');
 INSERT INTO ait.country_iso_3166 VALUES (40, 'GB');
 INSERT INTO ait.country_iso_3166 VALUES (41, 'UY');
 INSERT INTO ait.country_iso_3166 VALUES (42, 'VE');
+
+CREATE TABLE ait.taxon_info_index_lite
+(
+  globaluniqueidentifier character varying NOT NULL,
+  kingdom_id numeric,
+  phylum_id numeric,
+  class_id numeric,
+  order_id numeric,
+  family_id numeric,
+  genus_id numeric,
+  specific_epithet_id numeric,
+  scientific_name_id numeric,
+  indicator_id numeric,
+  polygom_id numeric,
+  row_id numeric NOT NULL DEFAULT nextval('ait.taxon_info_index_seq'::regclass),
+  layer_table character varying,
+  country numeric,
+  CONSTRAINT taxon_info_index_lite_pk PRIMARY KEY (row_id)
+)
+WITH (OIDS=FALSE);
+ALTER TABLE ait.taxon_info_index_lite OWNER TO postgres;

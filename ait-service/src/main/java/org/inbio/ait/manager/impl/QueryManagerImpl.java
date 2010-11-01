@@ -130,7 +130,7 @@ public class QueryManagerImpl implements QueryManager{
                             TaxonIndicatorRegionality node = new TaxonIndicatorRegionality();
                             node.setIndicator(indi);
                             node.setTaxon(sn+"~"+TaxonomicalRange.SCIENTIFICNAME.getId());
-                            String sql = this.getCountriesByTaxonIndi(sn, TaxonomicalRange.SCIENTIFICNAME.getId(), indi);
+                            String sql = this.getCountriesByTaxonIndi(sn, indi);
                             node.setCountries(this.taxonIndexDAO.getCountriesByTaxonIndi(sql));
                             result.add(node);
                         }
@@ -148,41 +148,12 @@ public class QueryManagerImpl implements QueryManager{
      * @param indicator id of indicator
      * @return
      */
-    private String getCountriesByTaxonIndi(String taxon,int range,String indicator){
-        String rangeName = ""; //Name of range
+    private String getCountriesByTaxonIndi(String taxon,String indicator){
         StringBuilder query = new StringBuilder();
-        query.append("Select distinct tic.country_id ");
-        query.append("from ait.taxon_indicator_country tic,ait.darwin_core dc where ");
-        //Determine the taxonomical level of the taxon
-        switch (range) {
-            case 1:
-                rangeName = TaxonomicalRange.KINGDOM.getDwcFieldName();
-                break;
-            case 2:
-                rangeName = TaxonomicalRange.PHYLUM.getDwcFieldName();
-                break;
-            case 3:
-                rangeName = TaxonomicalRange.CLASS.getDwcFieldName();
-                break;
-            case 4:
-                rangeName = TaxonomicalRange.ORDER.getDwcFieldName();
-                break;
-            case 5:
-                rangeName = TaxonomicalRange.FAMILY.getDwcFieldName();
-                break;
-            case 6:
-                rangeName = TaxonomicalRange.GENUS.getDwcFieldName();
-                break;
-            case 7:
-                rangeName = TaxonomicalRange.SPECIFICEPITHET.getDwcFieldName();
-                break;
-            default:
-                rangeName = TaxonomicalRange.SCIENTIFICNAME.getDwcFieldName();
-                break;
-        }
-        query.append("dc."+rangeName+" = '"+taxon+"' and ");
-        query.append("dc.scientificname = tic.taxon_scientific_name and ");
-        query.append("tic.indicator_id = "+indicator);
+        query.append("Select distinct country_id ");
+        query.append("from ait.taxon_indicator_country where ");
+        query.append("taxon_scientific_name = '"+taxon+"' and ");
+        query.append("indicator_id = "+indicator);
         //System.out.println(query);
         return query.toString();
     }
