@@ -23,7 +23,7 @@
                 <jsp:include page="/WEB-INF/jsp/header.jsp"/>
 
                 <div id="content">
-                    <h2><fmt:message key="about_title"/></h2>
+                    <!--<h2><fmt:message key="about_title"/></h2>
                     <p><fmt:message key="about_content"/></p>
                     <h3><fmt:message key="about_f_title"/></h3>
                     <ul>
@@ -32,7 +32,29 @@
                     <fmt:message key="about_paises"/> <a href="http://www.diva-gis.org/Data">http://www.diva-gis.org/Data</a>
                     <li><fmt:message key="about_inbio"/>
                     <li><fmt:message key="about_uicn"/> <a href="http://www.iucn.org/">http://www.iucn.org/</a>
-                    </ul>
+                    </ul>-->
+
+                    <h1 style="text-align:center"><fmt:message key="about_title"/></h1>
+                    <div id="sponsors">
+                        <h2><fmt:message key="common.sponsors"/></h2>
+                        <a id="oas-logo" href="http://www.oas.org" target="_new"></a>
+                        <a id="gef-logo" href="http://www.thegef.org" target="_new"></a>
+                        <a id="worlbank-logo" href="http://www.worldbank.org" target="_new"></a>
+                        <a id="iabin-logo" href="http://www.iabin.net" target="_new"></a>
+                        <a id="inbio-logo" href="http://www.inbio.ac.cr" target="_new"></a>
+                    </div>
+                    <br/>
+                    <br/>
+                    <div id="licenses">
+                        <br/>
+                        <h2><fmt:message key="common.license"/></h2>
+                        <br/>
+                        <h3><fmt:message key="common.softwareLicenseTitle"/></h3>
+                        <p><fmt:message key="common.softwareLicenseText"/></p>
+                        <br/>
+                        <h3><fmt:message key="common.iconLicenseTitle"/></h3>
+                        <p><fmt:message key="common.iconLicenseText"/></p>
+                    </div>
                 </div>
                 
                 <!-- Footer -->
