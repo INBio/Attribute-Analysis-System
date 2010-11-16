@@ -24,6 +24,7 @@
                             <a href="english"><fmt:message key="properties_en"/></a>-->
                     <a class="link_home" href="welcome.htm"><fmt:message key="home_title"/></a>
                     <a class="link_about" href="about.htm"><fmt:message key="about_title"/></a>
+                    <a class="link_wiki" href="http://pulsatrix.inbio.ac.cr/projects/analysis/wiki" target="_new"><fmt:message key="wiki"/></a>
                 </div>
                 <div class="user">
                     <sec:authorize ifAnyGranted="ROLE_ADMIN,ROLE_USER">
