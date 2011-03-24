@@ -138,6 +138,30 @@
         <property name="successView" value="config"/>
         <property name="configManager" ref="configManager"/>
     </bean>
+    <!-- Countries mapping connection atributes -->
+    <bean name="/conncountry.htm" class="org.inbio.ait.web.controller.ConncountryController">
+        <property name="formView" value="conncountry"/>
+        <property name="successView" value="conncountrySuccess"/>
+        <property name="configManager" ref="configManager"/>
+    </bean>
+    <!-- Countries field maping -->
+    <bean name="/countryAttributes.htm" class="org.inbio.ait.web.controller.CountryController">
+        <property name="formView" value="country"/>
+        <property name="successView" value="config"/>
+        <property name="configManager" ref="configManager"/>
+    </bean>
+    <!-- Country taxon indicator mapping connection atributes -->
+    <bean name="/conncountryti.htm" class="org.inbio.ait.web.controller.ConncountrytiController">
+        <property name="formView" value="conncountryti"/>
+        <property name="successView" value="conncountrytiSuccess"/>
+        <property name="configManager" ref="configManager"/>
+    </bean>
+    <!-- Country taxon indicator field maping -->
+    <bean name="/countrytiAttributes.htm" class="org.inbio.ait.web.controller.CountrytiController">
+        <property name="formView" value="countryti"/>
+        <property name="successView" value="config"/>
+        <property name="configManager" ref="configManager"/>
+    </bean>
      <!-- Taxon Indicators mapping connection atributes -->
     <bean name="/conntindi.htm" class="org.inbio.ait.web.controller.ConntindiController">
         <property name="formView" value="conntindi"/>
@@ -150,12 +174,26 @@
         <property name="successView" value="config"/>
         <property name="configManager" ref="configManager"/>
     </bean>
+    <!-- Configuring geoserver conection -->
+    <bean name="/geoserver.htm" class="org.inbio.ait.web.controller.GeoserverController">
+        <property name="formView" value="geoserver"/>
+        <property name="successView" value="geoserverSuccess"/>
+        <property name="configManager" ref="configManager"/>
+    </bean>
     <!-- The dwc migration controller -->
     <bean name="/copydwc.htm" class="org.inbio.ait.web.controller.CopydwcController">
         <property name="configManager" ref="configManager"/>
     </bean>
     <!-- The indicator migration controller -->
     <bean name="/copyindi.htm" class="org.inbio.ait.web.controller.CopyindiController">
+        <property name="configManager" ref="configManager"/>
+    </bean>
+    <!-- The country migration controller -->
+    <bean name="/copycountry.htm" class="org.inbio.ait.web.controller.CopycountryController">
+        <property name="configManager" ref="configManager"/>
+    </bean>
+    <!-- The taxon indicator country migration controller -->
+    <bean name="/copycountryti.htm" class="org.inbio.ait.web.controller.CopycountrytiController">
         <property name="configManager" ref="configManager"/>
     </bean>
     <!-- The taxon indicator migration controller -->

@@ -56,40 +56,40 @@
     </servlet-mapping>
 
    <!-- Main dispatcher -->
-   <servlet-mapping>
-	<servlet-name>dispatcher</servlet-name>
-	<url-pattern>*.htm</url-pattern>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>*.htm</url-pattern>
     </servlet-mapping>
 
     <!-- Ajax dispatcher -->
     <servlet-mapping>
-    <servlet-name>ajaxDispatcher</servlet-name>
-    <url-pattern>/ajax/*</url-pattern>
+        <servlet-name>ajaxDispatcher</servlet-name>
+        <url-pattern>/ajax/*</url-pattern>
     </servlet-mapping>
 
     <!-- Session time out -->
     <session-config>
-	<session-timeout>
+        <session-timeout>
 	    30
-	</session-timeout>
+        </session-timeout>
     </session-config>
     <!-- Welcome jsp -->
     <welcome-file-list>
-	<welcome-file>redirect.jsp</welcome-file>
+        <welcome-file>redirect.jsp</welcome-file>
     </welcome-file-list>
     <!-- Define the basename for a resource bundle -->
-    <context-param>
-    <param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
-    <param-value>messages</param-value>
-    </context-param>
+        <context-param>
+            <param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
+            <param-value>messages</param-value>
+        </context-param>
     <!-- Define the default locale to resource bundle -->
-    <context-param>
-    <param-name>
-      javax.servlet.jsp.jstl.fmt.locale
-    </param-name>
-    <param-value>
-      es
-    </param-value>
-    </context-param>
+        <context-param>
+            <param-name>
+                javax.servlet.jsp.jstl.fmt.locale
+            </param-name>
+            <param-value>
+                es
+            </param-value>
+        </context-param>
 
 </web-app>

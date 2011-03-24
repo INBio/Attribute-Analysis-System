@@ -66,6 +66,8 @@
             var chartTitle;
             //Var to know if the selected polygon is a limit polygon (% functionality)
             var isLimitPolygon = false;
+            //Geoserver ip address
+            var geoIpAddress = '${geoip}';
 
             //Pink tile avoidance
             OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
@@ -88,7 +90,7 @@
 
                 //Sets the layersList values
                 <c:forEach var="var" items="${layers}" begin="0">
-                layersList.push(new Array('${geoserver}${var}','${var}')); //(id,name)
+                layersList.push(new Array('${geows}${var}','${var}')); //(id,name)
                 </c:forEach>
                 //Sets the layerId,layerIndex and layerName values
                 //Sets the layerId,layerIndex and layerName values

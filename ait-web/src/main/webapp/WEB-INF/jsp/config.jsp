@@ -20,6 +20,10 @@
         <title><fmt:message key="title"/></title>
         
         <script type="text/javascript">
+
+            //Used to internationalize javascript code
+            var confirmText =  "<fmt:message key="confirm_text"/>";
+
             //Using to show the loading panel
             YAHOO.namespace("example.container");
             var loadingText = "<fmt:message key="loading"/>";
@@ -29,8 +33,12 @@
                 initLoadingPanel();
             }
             //Show loadinf panel
-            function showLoading(){       
-                YAHOO.example.container.wait.show();
+            function verifyAction(url){
+                var answer = confirm(confirmText)
+                if (answer){
+                    document.location = url;
+                    YAHOO.example.container.wait.show();
+                }
             }
         </script>
     </head>
@@ -43,22 +51,30 @@
 
                 <div id="content">
                     <h2><fmt:message key="config_title"/></h2>
+
+                    <p class="link_tools"><fmt:message key="general_config"/></p>
                     <a href="changepass.htm" class="link"><fmt:message key="change_pass"/></a><br>
-                    <p class="link_tools"><fmt:message key="data_access"/></p>
-                    <a href="conndwc.htm" class="link"><fmt:message key="dwc_config"/></a><br>
-                    <a href="connplic.htm" class="link"><fmt:message key="plic_config"/></a><br>
-                    <a href="connindi.htm" class="link"><fmt:message key="attri_config"/></a><br>
-                    <a href="conntindi.htm" class="link"><fmt:message key="tattri_config"/></a><br>
+                    <a href="geoserver.htm" class="link"><fmt:message key="map_server_link"/></a><br>
                     <a href="connlayer.htm" class="link"><fmt:message key="postgis_config"/></a><br>
 
+                    <p class="link_tools"><fmt:message key="data_access"/></p>
+                    <a href="conndwc.htm" class="link"><fmt:message key="dwc_config"/></a><br>
+                    <!--<a href="connplic.htm" class="link"><fmt:message key="plic_config"/></a><br>-->
+                    <a href="connindi.htm" class="link"><fmt:message key="attri_config"/></a><br>
+                    <a href="conntindi.htm" class="link"><fmt:message key="tattri_config"/></a><br>
+                    <a href="conncountry.htm" class="link"><fmt:message key="country_config"/></a><br>
+                    <a href="conncountryti.htm" class="link"><fmt:message key="tac_config"/></a><br>
+
                     <p class="link_tools"><fmt:message key="data_import"/></p>
-                    <a href="copydwc.htm" class="link" onclick="showLoading()"><fmt:message key="import_dwc_data"/></a><br>
-                    <a href="copyindi.htm" class="link" onclick="showLoading()"><fmt:message key="import_indi_data"/></a><br>
-                    <a href="copytaxonindi.htm" class="link" onclick="showLoading()"><fmt:message key="import_indit_data"/></a><br>
+                    <a href="javascript:verifyAction('copydwc.htm')" class="link"><fmt:message key="import_dwc_data"/></a><br>
+                    <a href="javascript:verifyAction('copyindi.htm')" class="link"><fmt:message key="import_indi_data"/></a><br>
+                    <a href="javascript:verifyAction('copytaxonindi.htm')" class="link"><fmt:message key="import_indit_data"/></a><br>
+                    <a href="javascript:verifyAction('copycountry.htm')" class="link"><fmt:message key="import_country"/></a><br>
+                    <a href="javascript:verifyAction('copycountryti.htm')" class="link"><fmt:message key="import_tac"/></a><br>
 
                     <p class="link_tools"><fmt:message key="data_index"/></p>
-                    <a href="indextnames.htm" class="link" onclick="showLoading()"><fmt:message key="index_tnames"/></a><br>
-                    <a href="indexinfo.htm" class="link" onclick="showLoading()"><fmt:message key="index_info"/></a><br>
+                    <a href="javascript:verifyAction('indextnames.htm')" class="link"><fmt:message key="index_tnames"/></a><br>
+                    <a href="javascript:verifyAction('indexinfo.htm')" class="link"><fmt:message key="index_info"/></a><br>
 
                 </div>
 

@@ -24,7 +24,7 @@
         <link rel="stylesheet" type="text/css"
         href="<c:out value="${pageContext.request.contextPath}"/>/<spring:theme code='menu'/>"/>
         
-        <title><fmt:message key="title"/></title> 
+        <title><fmt:message key="title"/></title>
 
         <link rel="stylesheet" type="text/css" href="http://openlayers.org/theme/default/style.css"/>
         <script type="text/JavaScript" src="http://openlayers.org/api/OpenLayers.js"></script>
@@ -73,6 +73,8 @@
             ids = new Array(),types = new Array();
             //Var to know if the selected polygon is a limit polygon (% functionality)
             var isLimitPolygon = false;
+            //Geoserver ip address
+            var geoIpAddress = '${model.geoip}';
 
             //Internacionalization of the report texts
             var searchResults,geographical,taxonomic,indicators,speciesMatches,
@@ -98,7 +100,7 @@
 
                 //Sets the layersList values
                 <c:forEach var="var" items="${model.layers}" begin="0">
-                layersList.push(new Array('${model.geoserver}${var}','${var}')); //(id,name)
+                layersList.push(new Array('${model.geows}${var}','${var}')); //(id,name)
                 </c:forEach>
                 //Sets the layerId,layerIndex and layerName values
                 if(layersList.length > 0){

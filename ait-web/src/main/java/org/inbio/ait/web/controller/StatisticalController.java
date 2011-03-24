@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.inbio.ait.manager.ConfigManager;
 import org.inbio.ait.manager.QueryManager;
+import org.inbio.ait.model.GeoserverPropertyHolder;
 import org.inbio.ait.model.PostgisLayers;
 import org.inbio.ait.web.filter.FilterMapWrapper;
 import org.springframework.validation.BindException;
@@ -64,12 +65,14 @@ public class StatisticalController extends SimpleFormController {
         //Gets the list of layers
         PostgisLayers pl = this.configManager.getLayersList();
         String[] layers = pl.getLayers();
+        //Getting geoserver connection data
+        GeoserverPropertyHolder ph =  this.configManager.getGeoPropertyHolder();
         //Pass data to the view
         Map referenceData = new HashMap();
         referenceData.put(filtersKey,filtersMap.getFilters());
-        // (attributes:) para IABIN
-        // (crbio:) para CRBio
-        referenceData.put("geoserver", "attributes:");
+        //Geoserver conecction values
+        referenceData.put("geoip", ph.getServerIpAddress());
+        referenceData.put("geows", ph.getLayersWorkSpace());
         referenceData.put("layers", layers);
         return referenceData;
     }

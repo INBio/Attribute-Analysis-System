@@ -156,13 +156,20 @@
         <property name="selectedLayerDAO" ref="selectedLayerDAO"/>
         <property name="indiPropertyHolderDAO" ref="indiPropertyHolderDAO"/>
         <property name="indiDataAccessDAO" ref="indiDataAccessDAO"/>
+        <property name="countryPropertyHolderDAO" ref="countryPropertyHolderDAO"/>
+        <property name="countryDataAccessDAO" ref="countryDataAccessDAO"/>
+        <property name="countrytiPropertyHolderDAO" ref="countrytiPropertyHolderDAO"/>
+        <property name="countrytiDataAccessDAO" ref="countrytiDataAccessDAO"/>
         <property name="tindiPropertyHolderDAO" ref="tindiPropertyHolderDAO"/>
         <property name="tindiDataAccessDAO" ref="tindiDataAccessDAO"/>
         <property name="indicatorDAO" ref="indicatorDAO"/>
+        <property name="countryDAO" ref="countryDAO"/>
+        <property name="countrytiDAO" ref="countrytiDAO"/>
         <property name="specimenDAO" ref="specimenDAO"/>
         <property name="taxonIndicatorDAO" ref="taxonIndicatorDAO"/>
         <property name="taxonIndexDAO" ref="taxonIndexDAO"/>
         <property name="taxonInfoIndexDAO" ref="taxonInfoIndexDAO"/>
+        <property name="geoserverPropertyHolderDAO" ref="geoserverPropertyHolderDAO"/>
     </bean>
     <bean id="allPolygonsManager" class="org.inbio.ait.manager.impl.AllPolygonsManagerImpl">
         <property name="layerDataAccessDAO" ref="layerDataAccessDAO"/>
@@ -193,11 +200,17 @@
      <bean id="indicatorDAO" class="org.inbio.ait.dao.sys.impl.IndicatorDAOImpl">
         <property name="dataSource" ref="dataSource" />
     </bean>
+    <bean id="countryDAO" class="org.inbio.ait.dao.sys.impl.CountryDAOImpl">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+    <bean id="countrytiDAO" class="org.inbio.ait.dao.sys.impl.CountrytiDAOImpl">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
     <bean id="selectedLayerDAO" class="org.inbio.ait.dao.sys.impl.SelectedLayerDAOImpl">
         <property name="dataSource" ref="dataSource" />
     </bean>
     
-    <!--............ DAO that not extends SimpleJdbcDaoSupport ..............-->
+    <!--............ DAOs that not extends from SimpleJdbcDaoSupport ..............-->
     <bean id="dwcPropertyHolderDAO" class="org.inbio.ait.dao.conn.impl.DwcPropertyHolderDAOImpl"/>
     <bean id="dwcDataAccessDAO" class="org.inbio.ait.dao.conn.impl.DwcDataAccessDAOImpl"/>
     <bean id="plicPropertyHolderDAO" class="org.inbio.ait.dao.conn.impl.PlicPropertyHolderDAOImpl"/>
@@ -206,7 +219,12 @@
     <bean id="layerDataAccessDAO" class="org.inbio.ait.dao.conn.impl.LayerDataAccessDAOImpl"/>
     <bean id="indiPropertyHolderDAO" class="org.inbio.ait.dao.conn.impl.IndiPropertyHolderDAOImpl"/>
     <bean id="indiDataAccessDAO" class="org.inbio.ait.dao.conn.impl.IndiDataAccessDAOImpl"/>
+    <bean id="countryPropertyHolderDAO" class="org.inbio.ait.dao.conn.impl.CountryPropertyHolderDAOImpl"/>
+    <bean id="countryDataAccessDAO" class="org.inbio.ait.dao.conn.impl.CountryDataAccessDAOImpl"/>
+    <bean id="countrytiPropertyHolderDAO" class="org.inbio.ait.dao.conn.impl.CountrytiPropertyHolderDAOImpl"/>
+    <bean id="countrytiDataAccessDAO" class="org.inbio.ait.dao.conn.impl.CountrytiDataAccessDAOImpl"/>
     <bean id="tindiPropertyHolderDAO" class="org.inbio.ait.dao.conn.impl.TindiPropertyHolderDAOImpl"/>
     <bean id="tindiDataAccessDAO" class="org.inbio.ait.dao.conn.impl.TindiDataAccessDAOImpl"/>
+    <bean id="geoserverPropertyHolderDAO" class="org.inbio.ait.dao.sys.impl.GeoserverPropertyHolderDAOImpl"/>
 
 </beans>

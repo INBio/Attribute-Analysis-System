@@ -203,7 +203,7 @@ function addMapListener(e) {
         HEIGHT: map.size.h,
         format: 'image/png'
     };
-    OpenLayers.loadURL("http://216.75.53.105:80/geoserver/wms", params, this, setHTML, setHTML);
+    OpenLayers.loadURL(geoIpAddress+"/geoserver/wms", params, this, setHTML, setHTML);
     OpenLayers.Event.stop(e);
 }
 
@@ -212,7 +212,7 @@ function addMapListener(e) {
  */
 function addLayerWMS(name, layer)
 {
-    return new OpenLayers.Layer.WMS( name, "http://216.75.53.105:80/geoserver/wms",
+    return new OpenLayers.Layer.WMS( name, geoIpAddress+"/geoserver/wms",
     {layers: layer,
         transparent: "true",
         height: '478',
