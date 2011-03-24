@@ -19,7 +19,10 @@
 package org.inbio.ait.manager;
 
 import java.util.List;
+import org.inbio.ait.model.CountryPropertyHolder;
+import org.inbio.ait.model.CountrytiPropertyHolder;
 import org.inbio.ait.model.DwcPropertyHolder;
+import org.inbio.ait.model.GeoserverPropertyHolder;
 import org.inbio.ait.model.IndiPropertyHolder;
 import org.inbio.ait.model.LayerPropertyHolder;
 import org.inbio.ait.model.PlicPropertyHolder;
@@ -56,11 +59,27 @@ public interface ConfigManager {
     public int CountIndi();
     public List<String> getIndiTableFields();
 
+    /*  Country  */
+    public CountryPropertyHolder getCountryPropertyHolder();
+    public boolean saveToPropertiesFileCountry(CountryPropertyHolder ph);
+    public int CountCountry();
+    public List<String> getCountryTableFields();
+
+    /*  Country taxon indicator  */
+    public CountrytiPropertyHolder getCountrytiPropertyHolder();
+    public boolean saveToPropertiesFileCountryti(CountrytiPropertyHolder ph);
+    public int CountCountryti();
+    public List<String> getCountrytiTableFields();
+
     /* Taxon Indicator */
     public TindiPropertyHolder getTindiPropertyHolder();
     public boolean saveToPropertiesFileTindi(TindiPropertyHolder ph);
     public int CountTindi();
     public List<String> getTindiTableFields();
+
+    /* Geoserver config values */
+    public GeoserverPropertyHolder getGeoPropertyHolder();
+    public boolean saveToPropertiesFileGeo(GeoserverPropertyHolder ph);
 
     /* Layers local */
     public PostgisLayers getLayersList();
@@ -70,6 +89,8 @@ public interface ConfigManager {
     public int migrateDwc();
     public int migrateIndicators();
     public int migrateTaxonIndicators();
+    public int migrateCountries();
+    public int migrateCountriesti();
 
     /* Data indexing */
     public boolean taxonIndexProccess();

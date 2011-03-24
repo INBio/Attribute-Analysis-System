@@ -57,6 +57,10 @@ public interface TaxonInfoIndexDAO {
 
     public boolean taxonInfoIndex(String layer) throws Exception;
 
+    public boolean completeIndexedTaxa() throws Exception;
+
+    public boolean createColumnIndex() throws Exception;
+
     public boolean deleteAllTaxonInfoIndex()  throws Exception;
 
 }

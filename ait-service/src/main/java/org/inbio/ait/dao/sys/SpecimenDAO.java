@@ -35,6 +35,8 @@ public interface SpecimenDAO {
      */
     public List<Specimen> getSpecimenList();
 
+    public boolean cleanDwcData() throws Exception;
+
     /**
      * Return all disctint elements for classes,phylums,kingdoms ...
      * @param partialName

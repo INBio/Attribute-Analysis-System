@@ -133,33 +133,104 @@ public class TaxonInfoIndexDAOImpl extends SimpleJdbcDaoSupport implements Taxon
 
     /**
      * Indexation for the taxon_info_index table that contains all the indexed
-     * information prepared specifically for quering
+     * information prepared specifically for quering (Step1)
      * @return if the proccess was successfully completed or not
      */
     @Override
     public boolean taxonInfoIndex(String layer) throws Exception{
-        boolean result = true;
         try {
-            String sqlUpdate = "Insert into ait.taxon_info_index (globaluniqueidentifier, kingdom_id, phylum_id, " +
-                    "class_id, order_id, family_id, genus_id, specific_epithet_id, scientific_name_id, indicator_id, " +
-                    "polygom_id, layer_table,country) select dc.globaluniqueidentifier,k.taxon_id as kingdom_id,p.taxon_id " +
-                    "as phylum_id,c.taxon_id as class_id,o.taxon_id as order_id,f.taxon_id as family_id,g.taxon_id " +
-                    "as genus_id,s.taxon_id as specific_epithet_id,sn.taxon_id as scientific_name_id,ti.indicator_id " +
-                    "as indicator_id,(Select gid from "+layer+" where " +
-                    "ST_Contains(the_geom, 'POINT(' || dc.decimallongitude || ' ' ||  dc.decimallatitude || ')')) " +
-                    "as polygom_id,'"+layer+"' as layer_table,(Select iso_code from ait.country_iso_3166 where country_id = (Select gid from meso_limite_paies where ST_Contains(the_geom, 'POINT(' || dc.decimallongitude || ' ' ||  dc.decimallatitude || ')'))) as country " +
-                    "from ait.darwin_core dc,ait.taxon_index k,ait.taxon_index p," +
-                    "ait.taxon_index c,ait.taxon_index o,ait.taxon_index f,ait.taxon_index g,ait.taxon_index s,ait.taxon_index sn," +
-                    "ait.taxon_indicator ti where k.taxon_name = dc.kingdom and p.taxon_name = dc.phylum and c.taxon_name = " +
-                    "dc.class and o.taxon_name = dc.orders and f.taxon_name = dc.family and g.taxon_name = dc.genus and s.taxon_name = " +
-                    "dc.specificepithet and sn.taxon_name = dc.scientificname and ti.taxon_scientific_name = dc.scientificname;";
+            String sqlUpdate = "insert into ait.taxon_info_index (globaluniqueidentifier,  kingdom_id,  phylum_id,  class_id,  order_id,  family_id,  genus_id,  specific_epithet_id, "+
+            "scientific_name_id,  indicator_id,  polygom_id,  layer_table,  country) "+
+            "select dc.globaluniqueidentifier,null as kingdom_id,null as phylum_id,null as class_id,null as order_id,null as family_id,null as genus_id, "+
+            "null as specific_epithet_id, sn.taxon_id as scientific_name_id, ti.indicator_id as indicator_id, "+
+            "(Select gid from "+layer+" where ST_Contains(the_geom, 'POINT(' || dc.decimallongitude || ' ' ||  dc.decimallatitude || ')') limit 1) as polygom_id, "+
+            "'"+layer+"' as layer_table, "+
+            "(Select country_id from ait.country where country_name =  "+
+            "(Select iso_code from ait.country_iso_3166 where country_id =  "+
+            "(Select gid from paises where _ST_Contains(the_geom, 'POINT(' || dc.decimallongitude || ' ' ||  dc.decimallatitude || ')') limit 1))) as country "+
+            "from ait.darwin_core dc, ait.taxon_index sn, ait.taxon_indicator ti where sn.taxon_name = dc.scientificname and "+
+            "ti.taxon_scientific_name = dc.scientificname; ";
             int affected = getSimpleJdbcTemplate().update(sqlUpdate);
             System.out.println("Affected rows - taxon_info_index -"+affected);
         } catch (Exception e) {
-            System.out.println(e);
             throw e;
         }
-        return result;
+        return true;
+    }
+
+    /**
+     * Setting the complete indexed taxonomy on ait.taxon_info_index (Step2)
+     * @return if the proccess was successfully completed or not
+     */
+    @Override
+    public boolean completeIndexedTaxa() throws Exception{
+        try {
+            String sqlUpdatek = "update ait.taxon_info_index A set kingdom_id = (select C.taxon_id from 	ait.darwin_core B, ait.taxon_index C where "+
+                                "A.globaluniqueidentifier = B.globaluniqueidentifier and B.kingdom = C.taxon_name and C.taxon_range = 1);"; //Kingdom
+            String sqlUpdatep = "update ait.taxon_info_index A set phylum_id = (select C.taxon_id from 	ait.darwin_core B, ait.taxon_index C where "+
+                                "A.globaluniqueidentifier = B.globaluniqueidentifier and B.phylum = C.taxon_name and C.taxon_range = 2);"; //phylum
+            String sqlUpdatec = "update ait.taxon_info_index A set class_id = (select C.taxon_id from ait.darwin_core B, ait.taxon_index C where "+
+                                "A.globaluniqueidentifier = B.globaluniqueidentifier and B.class = C.taxon_name and C.taxon_range = 3);"; //class
+            String sqlUpdateo = "update ait.taxon_info_index A set order_id = (select C.taxon_id from ait.darwin_core B, ait.taxon_index C where "+
+                                "A.globaluniqueidentifier = B.globaluniqueidentifier and B.orders = C.taxon_name and C.taxon_range = 4);"; //order
+            String sqlUpdatef = "update ait.taxon_info_index A set family_id = (select C.taxon_id from ait.darwin_core B, ait.taxon_index C where "+
+                                "A.globaluniqueidentifier = B.globaluniqueidentifier and B.family = C.taxon_name and C.taxon_range = 5);"; //family
+            String sqlUpdateg = "update ait.taxon_info_index A set genus_id = (select C.taxon_id from ait.darwin_core B, ait.taxon_index C where "+
+                                "A.globaluniqueidentifier = B.globaluniqueidentifier and B.genus = C.taxon_name and C.taxon_range = 6);"; //genus
+            String sqlUpdatese = "update ait.taxon_info_index A set specific_epithet_id = (select C.taxon_id from ait.darwin_core B, ait.taxon_index C where "+
+                                 "A.globaluniqueidentifier = B.globaluniqueidentifier and B.specificepithet = C.taxon_name and C.taxon_range = 7);"; //specificepithet
+            getSimpleJdbcTemplate().update(sqlUpdatek);
+            getSimpleJdbcTemplate().update(sqlUpdatep);
+            getSimpleJdbcTemplate().update(sqlUpdatec);
+            getSimpleJdbcTemplate().update(sqlUpdateo);
+            getSimpleJdbcTemplate().update(sqlUpdatef);
+            getSimpleJdbcTemplate().update(sqlUpdateg);
+            getSimpleJdbcTemplate().update(sqlUpdatese);
+        } catch (Exception e) {
+            throw e;
+        }
+        return true;
+    }
+
+    /**
+     * Creates columns index to optimize the queries
+     * @return
+     */
+    @Override
+    public boolean createColumnIndex() throws Exception{
+        try {
+            String index1 = "CREATE INDEX ci_index  ON ait.taxon_info_index USING btree (class_id);";
+            String index2 = "CREATE INDEX co_index ON ait.taxon_info_index USING btree (country);";
+            String index3 = "CREATE INDEX fi_index ON ait.taxon_info_index USING btree (family_id);";
+            String index4 = "CREATE INDEX gi_index ON ait.taxon_info_index USING btree (genus_id);";
+            String index5 = "CREATE INDEX gui_index ON ait.taxon_info_index USING btree (globaluniqueidentifier);";
+            String index6 = "CREATE INDEX ii_index ON ait.taxon_info_index USING btree (indicator_id);";
+            String index7 = "CREATE INDEX ki_index ON ait.taxon_info_index USING btree (kingdom_id);";
+            String index8 = "CREATE INDEX lti_index ON ait.taxon_info_index USING btree (layer_table);";
+            String index9 = "CREATE INDEX oi_index ON ait.taxon_info_index USING btree (order_id);";
+            String index10 = "CREATE INDEX pi_index ON ait.taxon_info_index USING btree (phylum_id);";
+            String index11 = "CREATE INDEX poi_index ON ait.taxon_info_index USING btree (polygom_id);";
+            String index12 = "CREATE INDEX ri_index ON ait.taxon_info_index USING btree (row_id);";
+            String index13 = "CREATE INDEX sci_index ON ait.taxon_info_index USING btree (scientific_name_id);";
+            String index14 = "CREATE INDEX sei_index ON ait.taxon_info_index USING btree (specific_epithet_id);";
+            getSimpleJdbcTemplate().update(index1);
+            getSimpleJdbcTemplate().update(index2);
+            getSimpleJdbcTemplate().update(index3);
+            getSimpleJdbcTemplate().update(index4);
+            getSimpleJdbcTemplate().update(index5);
+            getSimpleJdbcTemplate().update(index6);
+            getSimpleJdbcTemplate().update(index7);
+            getSimpleJdbcTemplate().update(index8);
+            getSimpleJdbcTemplate().update(index9);
+            getSimpleJdbcTemplate().update(index10);
+            getSimpleJdbcTemplate().update(index11);
+            getSimpleJdbcTemplate().update(index12);
+            getSimpleJdbcTemplate().update(index13);
+            getSimpleJdbcTemplate().update(index14);
+        } catch (Exception e) {
+            throw e;
+        }
+        return true;
     }
 
     /**

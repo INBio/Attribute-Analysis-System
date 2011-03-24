@@ -16,32 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.inbio.ait.dao.sys;
+package org.inbio.ait.dao.conn;
 
 import java.util.List;
-import org.inbio.ait.model.AutocompleteNode;
-import org.inbio.ait.model.TaxonIndex;
+import org.inbio.ait.model.CountryPropertyHolder;
+import org.inbio.ait.model.Country;
 
 /**
- * Data Access Object for the TaxonIndex model class
+ *
  * @author esmata
  */
-public interface TaxonIndexDAO {
+public interface CountryDataAccessDAO {
 
-    public List<Long> getCountriesByTaxonIndi(String sql);
+    public List<String> getCountryTableFields(CountryPropertyHolder ph);
 
-    public TaxonIndex getTaxonIndexByName(String name,String range);
+    public int countAll(CountryPropertyHolder ph);
 
-    public TaxonIndex getTaxonIndexById(String id);
-
-    public boolean taxonIndexByRange(int rangeId,String rangeName) throws Exception;
-    
-    public boolean createColumnIndex() throws Exception;
-
-    public boolean deleteAllTaxonIndex() throws Exception;
-
-    public List<String> getFormatedKingdoms();
-
-    public List<AutocompleteNode> getElementsByRange(String partialName, int range);
+    public List<Country> getAllCountries(CountryPropertyHolder ph,int limit,int offset);
 
 }

@@ -50,6 +50,45 @@ public class SpecimenDAOImpl extends SimpleJdbcDaoSupport implements SpecimenDAO
         return specimens;
     }
 
+    /**
+     * Method to clean some identified data errors from darwin core data
+     * Executes some cleaning scripts an retur true is everything was ok
+     * @return
+     */
+    @Override
+    public boolean cleanDwcData() throws Exception{
+        try {
+            String query1 = "update ait.darwin_core set decimallongitude = replace(decimallongitude, ',' , '.') where decimallongitude like '%,%';";
+            String query2 = "update ait.darwin_core set decimallatitude = replace(decimallatitude, ',' , '.') where decimallatitude like '%,%';";
+            String query3 = "update ait.darwin_core set decimallongitude = null where decimallongitude like '%W%';";
+            String query4 = "update ait.darwin_core set decimallongitude = null where decimallongitude like '%E%';";
+            String query5 = "update ait.darwin_core set decimallatitude = null where decimallatitude like '%N%';";
+            String query6 = "update ait.darwin_core set decimallatitude = null where decimallatitude like '%S%';";
+            String query7 = "update ait.darwin_core set decimallatitude = null where decimallatitude like '%\\'%';";
+            String query8 = "update ait.darwin_core set decimallongitude = null where decimallongitude like '%\\'%';";
+            String query9 = "update ait.darwin_core set decimallatitude = null where decimallatitude like '%º%';";
+            String query10 = "update ait.darwin_core set decimallongitude = null where decimallongitude like '%º%';";
+            String query11 = "update ait.darwin_core set decimallatitude = null where decimallatitude like '%°%';";
+            String query12 = "update ait.darwin_core set decimallongitude = null where decimallongitude like '%°%';";
+            String query13 = "update ait.darwin_core set decimallongitude = null,decimallatitude = null where decimallongitude is null and decimallatitude is not null or decimallongitude is not null and decimallatitude is null;";
+            getSimpleJdbcTemplate().update(query1);
+            getSimpleJdbcTemplate().update(query2);
+            getSimpleJdbcTemplate().update(query3);
+            getSimpleJdbcTemplate().update(query4);
+            getSimpleJdbcTemplate().update(query5);
+            getSimpleJdbcTemplate().update(query6);
+            getSimpleJdbcTemplate().update(query7);
+            getSimpleJdbcTemplate().update(query8);
+            getSimpleJdbcTemplate().update(query9);
+            getSimpleJdbcTemplate().update(query10);
+            getSimpleJdbcTemplate().update(query11);
+            getSimpleJdbcTemplate().update(query12);
+            getSimpleJdbcTemplate().update(query13);            
+        } catch (Exception e) {
+            throw e;
+        }
+        return true;
+    }
 
     /**
      * Get a list of specimens by their globaluniqueidentifiers

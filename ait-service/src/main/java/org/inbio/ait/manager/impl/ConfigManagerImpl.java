@@ -20,6 +20,10 @@ package org.inbio.ait.manager.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.inbio.ait.dao.conn.CountryDataAccessDAO;
+import org.inbio.ait.dao.conn.CountryPropertyHolderDAO;
+import org.inbio.ait.dao.conn.CountrytiDataAccessDAO;
+import org.inbio.ait.dao.conn.CountrytiPropertyHolderDAO;
 import org.inbio.ait.dao.conn.DwcDataAccessDAO;
 import org.inbio.ait.dao.conn.DwcPropertyHolderDAO;
 import org.inbio.ait.dao.conn.IndiDataAccessDAO;
@@ -31,13 +35,21 @@ import org.inbio.ait.dao.conn.PlicPropertyHolderDAO;
 import org.inbio.ait.dao.sys.SelectedLayerDAO;
 import org.inbio.ait.dao.conn.TindiDataAccessDAO;
 import org.inbio.ait.dao.conn.TindiPropertyHolderDAO;
+import org.inbio.ait.dao.sys.CountryDAO;
+import org.inbio.ait.dao.sys.CountrytiDAO;
+import org.inbio.ait.dao.sys.GeoserverPropertyHolderDAO;
 import org.inbio.ait.dao.sys.IndicatorDAO;
 import org.inbio.ait.dao.sys.SpecimenDAO;
 import org.inbio.ait.dao.sys.TaxonIndexDAO;
 import org.inbio.ait.dao.sys.TaxonIndicatorDAO;
 import org.inbio.ait.dao.sys.TaxonInfoIndexDAO;
 import org.inbio.ait.manager.ConfigManager;
+import org.inbio.ait.model.Country;
+import org.inbio.ait.model.CountryPropertyHolder;
+import org.inbio.ait.model.Countryti;
+import org.inbio.ait.model.CountrytiPropertyHolder;
 import org.inbio.ait.model.DwcPropertyHolder;
+import org.inbio.ait.model.GeoserverPropertyHolder;
 import org.inbio.ait.model.IndiPropertyHolder;
 import org.inbio.ait.model.Indicator;
 import org.inbio.ait.model.LayerPropertyHolder;
@@ -66,10 +78,17 @@ public class ConfigManagerImpl implements ConfigManager{
     private IndiDataAccessDAO indiDataAccessDAO;
     private TindiPropertyHolderDAO tindiPropertyHolderDAO;
     private TindiDataAccessDAO tindiDataAccessDAO;
+    private CountryPropertyHolderDAO countryPropertyHolderDAO;
+    private CountryDataAccessDAO countryDataAccessDAO;
+    private CountrytiPropertyHolderDAO countrytiPropertyHolderDAO;
+    private CountrytiDataAccessDAO countrytiDataAccessDAO;
+    private GeoserverPropertyHolderDAO geoserverPropertyHolderDAO;
     //Copy data
     private IndicatorDAO indicatorDAO;
     private SpecimenDAO specimenDAO;
     private TaxonIndicatorDAO taxonIndicatorDAO;
+    private CountryDAO countryDAO;
+    private CountrytiDAO countrytiDAO;
     //Indexation
     private TaxonIndexDAO taxonIndexDAO;
     private TaxonInfoIndexDAO taxonInfoIndexDAO;
@@ -216,6 +235,88 @@ public class ConfigManagerImpl implements ConfigManager{
     @Override
     public List<String> getTindiTableFields(){
         return this.getTindiDataAccessDAO().getTindiTableFields(this.getTindiPropertyHolder());
+    }
+
+    /**
+     * Returns a CountrytiPropertyHolder java Object with all the
+     * information from the countryti.properties file
+     */
+    @Override
+    public CountrytiPropertyHolder getCountrytiPropertyHolder() {
+        return this.getCountrytiPropertyHolderDAO().getCountrytiPropertyHolder();
+    }
+
+    /**
+     * This method save the info from a CountrytiPropertyHolder java object
+     * into the countryti.properties file
+     */
+    @Override
+    public boolean saveToPropertiesFileCountryti(CountrytiPropertyHolder ph) {
+        return this.getCountrytiPropertyHolderDAO().saveToPropertiesFile(ph);
+    }
+
+    /**
+     * Return the total count of countryti registers
+     * @return
+     */
+    @Override
+    public int CountCountryti(){
+        return this.getCountrytiDataAccessDAO().countAll(this.getCountrytiPropertyHolder());
+    }
+
+    /**
+     * Method to get a list of all columns from the mapped countryti table
+     * through jdbc conection
+     */
+    @Override
+    public List<String> getCountrytiTableFields(){
+        return this.getCountrytiDataAccessDAO().getCountrytiTableFields(this.getCountrytiPropertyHolder());
+    }
+
+    /**
+     * Returns a CountryPropertyHolder java Object with all the
+     * information from the country.properties file
+     */
+    @Override
+    public CountryPropertyHolder getCountryPropertyHolder() {
+        return this.getCountryPropertyHolderDAO().getCountryPropertyHolder();
+    }
+
+    /**
+     * This method save the info from a CountryPropertyHolder java object
+     * into the country.properties file
+     */
+    @Override
+    public boolean saveToPropertiesFileCountry(CountryPropertyHolder ph) {
+        return this.getCountryPropertyHolderDAO().saveToPropertiesFile(ph);
+    }
+
+    /**
+     * Return the total count of country registers
+     * @return
+     */
+    @Override
+    public int CountCountry(){
+        return this.getCountryDataAccessDAO().countAll(this.getCountryPropertyHolder());
+    }
+
+    /**
+     * Method to get a list of all columns from the mapped country table
+     * through jdbc conection
+     */
+    @Override
+    public List<String> getCountryTableFields(){
+        return this.getCountryDataAccessDAO().getCountryTableFields(this.getCountryPropertyHolder());
+    }
+
+    @Override
+    public GeoserverPropertyHolder getGeoPropertyHolder() {
+        return this.getGeoserverPropertyHolderDAO().getPropertyHolder();
+    }
+
+    @Override
+    public boolean saveToPropertiesFileGeo(GeoserverPropertyHolder ph) {
+        return this.getGeoserverPropertyHolderDAO().saveToPropertiesFile(ph);
     }
 
     /**
@@ -407,6 +508,116 @@ public class ConfigManagerImpl implements ConfigManager{
     }
 
     /**
+     * Method to migrate data from external country table to system tables
+     * @return
+     *  -2 error conecting to the external dwc db
+     *  -1 error in data migration
+     *  <1 number of afected rows (# of insertions)
+     */
+    @Override
+    public int migrateCountries(){
+        CountryPropertyHolder ph = this.getCountryPropertyHolder();
+        //Check if the conecction was established already
+        int check = this.getCountryDataAccessDAO().countAll(ph);
+        if(check == -1){
+            return -2; //error
+        }
+        else{
+            //Do migration
+            return this.migrateCountriesData(ph,check);
+        }
+    }
+
+    /**
+     * This method gets the countries information from external data base and copy
+     * this information into the country system table
+     * @param ph Connection data
+     * @param totalCountries total of countries registers
+     * @return number of afected rows (copied in this case)
+     */
+    private int migrateCountriesData(CountryPropertyHolder ph,int totalCountries){
+        //Copy data from external countries table to system countiey table
+        List<Country> cList = new ArrayList<Country>();
+        try {
+            //Delete existing data
+            boolean delete = this.getCountryDAO().deleteAllCountries();
+            if (!delete) {
+                return -1; //error deleting existing data
+            }
+            //Paginating the migration proccess
+            int afectedRows = 0;
+            for (int i = 0; i < totalCountries; i+=500) {
+                //Get data from external db
+                cList = this.getCountryDataAccessDAO().getAllCountries(ph, 500, i);
+                //Insert external data into system db
+                for (Country cou : cList) {
+                    int a = this.getCountryDAO().InsertCountry(cou);
+                    afectedRows += a;
+                }
+            }//Ends pagination
+            return afectedRows;
+        } catch (Exception e) {
+            System.out.println(e);
+            return -1;
+        }
+    }
+
+        /**
+     * Method to migrate data from external taxon_indicator_country table to system tables
+     * @return
+     *  -2 error conecting to the external dwc db
+     *  -1 error in data migration
+     *  <1 number of afected rows (# of insertions)
+     */
+    @Override
+    public int migrateCountriesti(){
+        CountrytiPropertyHolder ph = this.getCountrytiPropertyHolder();
+        //Check if the conecction was established already
+        int check = this.getCountrytiDataAccessDAO().countAll(ph);
+        if(check == -1){
+            return -2; //error
+        }
+        else{
+            //Do migration
+            return this.migrateCountriestiData(ph,check);
+        }
+    }
+
+    /**
+     * This method gets the taxon_indicator_country information from external data base and copy
+     * this information into the taxon_indicator_country system table
+     * @param ph Connection data
+     * @param totalCountriesti total of taxon_indicator_country registers
+     * @return number of afected rows (copied in this case)
+     */
+    private int migrateCountriestiData(CountrytiPropertyHolder ph,int totalCountriesti){
+        //Copy data from external countries table to system countiey table
+        List<Countryti> cList = new ArrayList<Countryti>();
+        try {
+            //Delete existing data
+            boolean delete = this.getCountrytiDAO().deleteAllCountriesti();
+            if (!delete) {
+                return -1; //error deleting existing data
+            }
+            //Paginating the migration proccess
+            int afectedRows = 0;
+            for (int i = 0; i < totalCountriesti; i+=500) {
+                //Get data from external db
+                cList = this.getCountrytiDataAccessDAO().getAllCountriesti(ph, 500, i);
+                //Insert external data into system db
+                for (Countryti couti : cList) {
+                    int a = this.getCountrytiDAO().InsertCountryti(couti);
+                    afectedRows += a;
+                }
+            }//Ends pagination
+            return afectedRows;
+        } catch (Exception e) {
+            System.out.println(e);
+            return -1;
+        }
+    }
+
+    /**
      * Method to migrate data from external taxon indicators table to system tables
      * @return
      *  -2 error conecting to the external dwc db
@@ -501,15 +712,23 @@ public class ConfigManagerImpl implements ConfigManager{
      */
     @Override
     public boolean taxonInfoIndexProccess() {
+        //Do indexation
         try {
+            //Clean dwc data before index that data
+            this.getSpecimenDAO().cleanDwcData();
             //Delete existing data
             this.getTaxonInfoIndexDAO().deleteAllTaxonInfoIndex();
             //Get a list of selected layers
             List<String> layers = this.getSelectedLayerDAO().getLayersNames();
-            //Indexing data
+            //Initial indexing process (Step1)
             for(String l : layers){
                 this.getTaxonInfoIndexDAO().taxonInfoIndex(l);
             }
+            //Setting the complete indexed taxonomy on ait.taxon_info_index (Step2)
+            this.getTaxonInfoIndexDAO().completeIndexedTaxa();
+            //Finally creates column index
+            this.getTaxonIndexDAO().createColumnIndex();
+            this.getTaxonInfoIndexDAO().createColumnIndex();
         } catch (Exception e) {
             return false;
         }
@@ -744,4 +963,101 @@ public class ConfigManagerImpl implements ConfigManager{
         this.taxonInfoIndexDAO = taxonInfoIndexDAO;
     }
 
+    /**
+     * @return the geoserverPropertyHolderDAO
+     */
+    public GeoserverPropertyHolderDAO getGeoserverPropertyHolderDAO() {
+        return geoserverPropertyHolderDAO;
+    }
+
+    /**
+     * @param geoserverPropertyHolderDAO the geoserverPropertyHolderDAO to set
+     */
+    public void setGeoserverPropertyHolderDAO(GeoserverPropertyHolderDAO geoserverPropertyHolderDAO) {
+        this.geoserverPropertyHolderDAO = geoserverPropertyHolderDAO;
+    }
+
+    /**
+     * @return the countryPropertyHolderDAO
+     */
+    public CountryPropertyHolderDAO getCountryPropertyHolderDAO() {
+        return countryPropertyHolderDAO;
+    }
+
+    /**
+     * @param countryPropertyHolderDAO the countryPropertyHolderDAO to set
+     */
+    public void setCountryPropertyHolderDAO(CountryPropertyHolderDAO countryPropertyHolderDAO) {
+        this.countryPropertyHolderDAO = countryPropertyHolderDAO;
+    }
+
+    /**
+     * @return the countryDataAccessDAO
+     */
+    public CountryDataAccessDAO getCountryDataAccessDAO() {
+        return countryDataAccessDAO;
+    }
+
+    /**
+     * @param countryDataAccessDAO the countryDataAccessDAO to set
+     */
+    public void setCountryDataAccessDAO(CountryDataAccessDAO countryDataAccessDAO) {
+        this.countryDataAccessDAO = countryDataAccessDAO;
+    }
+
+    /**
+     * @return the countrytiPropertyHolderDAO
+     */
+    public CountrytiPropertyHolderDAO getCountrytiPropertyHolderDAO() {
+        return countrytiPropertyHolderDAO;
+    }
+
+    /**
+     * @param countrytiPropertyHolderDAO the countrytiPropertyHolderDAO to set
+     */
+    public void setCountrytiPropertyHolderDAO(CountrytiPropertyHolderDAO countrytiPropertyHolderDAO) {
+        this.countrytiPropertyHolderDAO = countrytiPropertyHolderDAO;
+    }
+
+    /**
+     * @return the countrytiDataAccessDAO
+     */
+    public CountrytiDataAccessDAO getCountrytiDataAccessDAO() {
+        return countrytiDataAccessDAO;
+    }
+
+    /**
+     * @param countrytiDataAccessDAO the countrytiDataAccessDAO to set
+     */
+    public void setCountrytiDataAccessDAO(CountrytiDataAccessDAO countrytiDataAccessDAO) {
+        this.countrytiDataAccessDAO = countrytiDataAccessDAO;
+    }
+
+    /**
+     * @return the countryDAO
+     */
+    public CountryDAO getCountryDAO() {
+        return countryDAO;
+    }
+
+    /**
+     * @param countryDAO the countryDAO to set
+     */
+    public void setCountryDAO(CountryDAO countryDAO) {
+        this.countryDAO = countryDAO;
+    }
+
+    /**
+     * @return the countrytiDAO
+     */
+    public CountrytiDAO getCountrytiDAO() {
+        return countrytiDAO;
+    }
+
+    /**
+     * @param countrytiDAO the countrytiDAO to set
+     */
+    public void setCountrytiDAO(CountrytiDAO countrytiDAO) {
+        this.countrytiDAO = countrytiDAO;
+    }
 }

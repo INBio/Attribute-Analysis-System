@@ -16,32 +16,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.inbio.ait.dao.sys;
+package org.inbio.ait.jdbc.mapper;
 
-import java.util.List;
-import org.inbio.ait.model.AutocompleteNode;
-import org.inbio.ait.model.TaxonIndex;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import org.inbio.ait.model.CountryPropertyHolder;
+import org.inbio.ait.model.Country;
+import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 
 /**
- * Data Access Object for the TaxonIndex model class
+ *
  * @author esmata
  */
-public interface TaxonIndexDAO {
+public class CountryMapper implements ParameterizedRowMapper<Country>{
+    //Atributes
+    private CountryPropertyHolder ph;
 
-    public List<Long> getCountriesByTaxonIndi(String sql);
+    //Constructor
+    public CountryMapper(CountryPropertyHolder ph) {
+        this.ph = ph;
+    }
 
-    public TaxonIndex getTaxonIndexByName(String name,String range);
-
-    public TaxonIndex getTaxonIndexById(String id);
-
-    public boolean taxonIndexByRange(int rangeId,String rangeName) throws Exception;
-    
-    public boolean createColumnIndex() throws Exception;
-
-    public boolean deleteAllTaxonIndex() throws Exception;
-
-    public List<String> getFormatedKingdoms();
-
-    public List<AutocompleteNode> getElementsByRange(String partialName, int range);
-
+    @Override
+    public Country mapRow(ResultSet rs, int rowNum) throws SQLException {
+        Country c = new Country();
+        //Mandatory data
+        c.setCountryId(rs.getLong(ph.getCountryId()));
+        c.setCountryName(rs.getString(ph.getCountryName()));
+        return c;
+    }
 }

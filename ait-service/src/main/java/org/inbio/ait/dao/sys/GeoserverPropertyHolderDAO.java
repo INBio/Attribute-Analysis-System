@@ -18,30 +18,24 @@
 
 package org.inbio.ait.dao.sys;
 
-import java.util.List;
-import org.inbio.ait.model.AutocompleteNode;
-import org.inbio.ait.model.TaxonIndex;
+import org.inbio.ait.model.GeoserverPropertyHolder;
 
 /**
- * Data Access Object for the TaxonIndex model class
+ *
  * @author esmata
  */
-public interface TaxonIndexDAO {
+public interface GeoserverPropertyHolderDAO {
 
-    public List<Long> getCountriesByTaxonIndi(String sql);
+    /**
+     * This method save the info from a GeoserverPropertyHolder java object
+     * into the geoserver.properties file
+     */
+    public boolean saveToPropertiesFile(GeoserverPropertyHolder ph);
 
-    public TaxonIndex getTaxonIndexByName(String name,String range);
-
-    public TaxonIndex getTaxonIndexById(String id);
-
-    public boolean taxonIndexByRange(int rangeId,String rangeName) throws Exception;
-    
-    public boolean createColumnIndex() throws Exception;
-
-    public boolean deleteAllTaxonIndex() throws Exception;
-
-    public List<String> getFormatedKingdoms();
-
-    public List<AutocompleteNode> getElementsByRange(String partialName, int range);
+    /**
+     * Returns a GeoserverPropertyHolder java Object with all the
+     * information from the geoserver.properties file
+     */
+    public GeoserverPropertyHolder getPropertyHolder();
 
 }

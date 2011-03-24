@@ -16,32 +16,51 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.inbio.ait.dao.sys;
-
-import java.util.List;
-import org.inbio.ait.model.AutocompleteNode;
-import org.inbio.ait.model.TaxonIndex;
+package org.inbio.ait.model;
 
 /**
- * Data Access Object for the TaxonIndex model class
+ *
  * @author esmata
  */
-public interface TaxonIndexDAO {
+public class Country {
 
-    public List<Long> getCountriesByTaxonIndi(String sql);
+    /**
+     * Constructor
+     */
+    public Country(){}
 
-    public TaxonIndex getTaxonIndexByName(String name,String range);
+    /**
+     * Atributes
+     */
+    private Long countryId;
+    private String countryName;
 
-    public TaxonIndex getTaxonIndexById(String id);
+    /**
+     * @return the countryId
+     */
+    public Long getCountryId() {
+        return countryId;
+    }
 
-    public boolean taxonIndexByRange(int rangeId,String rangeName) throws Exception;
-    
-    public boolean createColumnIndex() throws Exception;
+    /**
+     * @param countryId the countryId to set
+     */
+    public void setCountryId(Long countryId) {
+        this.countryId = countryId;
+    }
 
-    public boolean deleteAllTaxonIndex() throws Exception;
+    /**
+     * @return the countryName
+     */
+    public String getCountryName() {
+        return countryName;
+    }
 
-    public List<String> getFormatedKingdoms();
-
-    public List<AutocompleteNode> getElementsByRange(String partialName, int range);
+    /**
+     * @param countryName the countryName to set
+     */
+    public void setCountryName(String countryName) {
+        this.countryName = countryName;
+    }
 
 }

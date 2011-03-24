@@ -107,6 +107,25 @@ public class TaxonIndexDAOImpl extends SimpleJdbcDaoSupport implements TaxonInde
     }
 
     /**
+     * Creates columns index to optimize the queries
+     * @return
+     */
+    @Override
+    public boolean createColumnIndex() throws Exception{
+        try {
+            String index1 = "CREATE INDEX tii_index ON ait.taxon_index USING btree (taxon_id);";
+            String index2 = "CREATE INDEX tni_index ON ait.taxon_index USING btree (taxon_name);";
+            String index3 = "CREATE INDEX tri_index ON ait.taxon_index USING btree (taxon_range);";
+            getSimpleJdbcTemplate().update(index1);
+            getSimpleJdbcTemplate().update(index2);
+            getSimpleJdbcTemplate().update(index3);
+        } catch (Exception e) {
+            throw e;
+        }
+        return true;
+    }
+
+    /**
      * Delete all taxon_index registers
      * @throws java.lang.Exception
      */

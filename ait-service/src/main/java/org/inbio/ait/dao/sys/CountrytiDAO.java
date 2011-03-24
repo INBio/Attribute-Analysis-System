@@ -18,30 +18,13 @@
 
 package org.inbio.ait.dao.sys;
 
-import java.util.List;
-import org.inbio.ait.model.AutocompleteNode;
-import org.inbio.ait.model.TaxonIndex;
+import org.inbio.ait.model.Countryti;
 
-/**
- * Data Access Object for the TaxonIndex model class
- * @author esmata
- */
-public interface TaxonIndexDAO {
 
-    public List<Long> getCountriesByTaxonIndi(String sql);
+public interface CountrytiDAO {
 
-    public TaxonIndex getTaxonIndexByName(String name,String range);
+    public boolean deleteAllCountriesti();
 
-    public TaxonIndex getTaxonIndexById(String id);
-
-    public boolean taxonIndexByRange(int rangeId,String rangeName) throws Exception;
-    
-    public boolean createColumnIndex() throws Exception;
-
-    public boolean deleteAllTaxonIndex() throws Exception;
-
-    public List<String> getFormatedKingdoms();
-
-    public List<AutocompleteNode> getElementsByRange(String partialName, int range);
+    public int InsertCountryti(Countryti countryti);
 
 }
